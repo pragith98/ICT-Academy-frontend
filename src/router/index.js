@@ -1,14 +1,14 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import AdminDashboard from '../views/Admin-dashboard.vue'
+import Home from '../views/Home.vue'
 
 Vue.use(VueRouter)
 
 const routes = [
   {
     path: '/',
-    name: 'AdminDashboard',
-    component: AdminDashboard
+    name: 'Home',
+    component: Home
   },
   // {
   //   path: '/about',
