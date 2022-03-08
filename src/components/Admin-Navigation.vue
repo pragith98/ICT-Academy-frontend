@@ -50,16 +50,16 @@
                 drawer:false,
                 selectedItem: 0,
                 items: [
-                    { text: 'Dashboard', icon: 'mdi-view-dashboard', link:'/Students' },
-                    { text: 'Students', icon: 'mdi-account-group', link:'/'},
-                    { text: 'Teachers', icon: 'mdi-human-male-board' },
-                    { text: 'Staff', icon: 'mdi-account-multiple' },
-                    { text: 'Parents', icon: 'mdi-account' },
-                    { text: 'Classes', icon: 'mdi-google-classroom' },
-                    { text: 'Attendance', icon: 'mdi-checkbox-marked-outline' },
-                    { text: 'Payments', icon: 'mdi-credit-card-outline' },
-                    { text: 'Accounting', icon: 'mdi-chart-donut' },
-                    { text: 'Branches', icon: 'mdi-sitemap' }
+                    { text: 'Dashboard', icon: 'mdi-view-dashboard', link:'/' },
+                    { text: 'Students', icon: 'mdi-account-group', link:'/Students'},
+                    { text: 'Teachers', icon: 'mdi-human-male-board', link:'/Teachers' },
+                    { text: 'Staff', icon: 'mdi-account-multiple', link:'/Staff' },
+                    { text: 'Parents', icon: 'mdi-account', link:'/Parents' },
+                    { text: 'Classes', icon: 'mdi-google-classroom', link:'/Classes' },
+                    { text: 'Attendance', icon: 'mdi-checkbox-marked-outline', link:'/Attendance' },
+                    { text: 'Payments', icon: 'mdi-credit-card-outline', link:'/Payments' },
+                    { text: 'Accounting', icon: 'mdi-chart-donut', link:'/Accounting' },
+                    { text: 'Branches', icon: 'mdi-sitemap', link:'/Branches' }
                 ],
             }
         },

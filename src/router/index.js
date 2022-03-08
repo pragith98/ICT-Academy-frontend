@@ -10,6 +10,15 @@ const routes = [
     name: 'Home',
     component: Home
   },
+  { path:'/Students', name:'Students', component:()=> import('../views/Students.vue')},
+  { path:'/Accounting', name:'Accounting', component:()=> import('../views/Accounting.vue')},
+  { path:'/Attendance', name:'Attendance', component:()=> import('../views/Attendance.vue')},
+  { path:'/Branches', name:'Branches', component:()=> import('../views/Branches.vue')},
+  { path:'/Classes', name:'Classes', component:()=> import('../views/Classes.vue')},
+  { path:'/Parents', name:'Parents', component:()=> import('../views/Parents.vue')},
+  { path:'/Payments', name:'Payments', component:()=> import('../views/Payments.vue')},
+  { path:'/Staff', name:'Staff', component:()=> import('../views/Staff.vue')},
+  { path:'/Teachers', name:'Teachers', component:()=> import('../views/Teachers.vue')}
   // {
   //   path: '/about',
   //   name: 'About',
