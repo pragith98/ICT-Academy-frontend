@@ -1,6 +1,6 @@
 <template>
     <nav>
-        <v-app-bar color="white" app flat>
+        <v-app-bar color="white" app >
             <v-app-bar-nav-icon @click="drawer= !drawer"></v-app-bar-nav-icon>
             <v-toolbar-title class="font-weight-black text--secondary" >ICT Academy</v-toolbar-title>
             <v-chip outlined class="ml-2" >Hakmana</v-chip>
@@ -28,7 +28,7 @@
                             </v-list-item-icon>
 
                             <v-list-item-content>
-                                <v-list-item-title v-text="item.text"></v-list-item-title>
+                                <v-list-item-title class="subtitle-2" v-text="item.text"></v-list-item-title>
                             </v-list-item-content>
                         
                     </v-list-item>
