@@ -1,24 +1,32 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
+
 import Home from '../views/Home.vue'
+import Students from '../views/Students.vue'
+import Accounting from '../views/Accounting.vue'
+import Attendance from '../views/Attendance.vue'
+import Branches from '../views/Branches.vue'
+import Classes from '../views/Classes.vue'
+import Parents from '../views/Parents.vue'
+import Payments from '../views/Payments.vue'
+import Staff from '../views/Staff.vue'
+import Teachers from '../views/Teachers.vue'
 
 Vue.use(VueRouter)
 
 const routes = [
-  {
-    path: '/',
-    name: 'Home',
-    component: Home
-  },
-  { path:'/Students', name:'Students', component:()=> import('../views/Students.vue')},
-  { path:'/Accounting', name:'Accounting', component:()=> import('../views/Accounting.vue')},
-  { path:'/Attendance', name:'Attendance', component:()=> import('../views/Attendance.vue')},
-  { path:'/Branches', name:'Branches', component:()=> import('../views/Branches.vue')},
-  { path:'/Classes', name:'Classes', component:()=> import('../views/Classes.vue')},
-  { path:'/Parents', name:'Parents', component:()=> import('../views/Parents.vue')},
-  { path:'/Payments', name:'Payments', component:()=> import('../views/Payments.vue')},
-  { path:'/Staff', name:'Staff', component:()=> import('../views/Staff.vue')},
-  { path:'/Teachers', name:'Teachers', component:()=> import('../views/Teachers.vue')}
+  { path: '/', name: 'Home', component: Home },
+  { path:'/Students', name:'Students', component:Students},
+  { path:'/Accounting', name:'Accounting', component:Accounting},
+  { path:'/Attendance', name:'Attendance', component:Attendance},
+  { path:'/Branches', name:'Branches', component:Branches},
+  { path:'/Classes', name:'Classes', component:Classes},
+  { path:'/Parents', name:'Parents', component:Parents},
+  { path:'/Payments', name:'Payments', component:Payments},
+  { path:'/Staff', name:'Staff', component:Staff},
+  { path:'/Teachers', name:'Teachers', component:Teachers},
+
+  { path:'/Students/RegisterStudent', name:'RegisterStudent', component:()=> import('../components/RegisterStudent.vue')}
   // {
   //   path: '/about',
   //   name: 'About',
