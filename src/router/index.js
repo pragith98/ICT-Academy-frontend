@@ -26,7 +26,8 @@ const routes = [
   { path:'/Staff', name:'Staff', component:Staff},
   { path:'/Teachers', name:'Teachers', component:Teachers},
 
-  { path:'/Students/RegisterStudent', name:'RegisterStudent', component:()=> import('../components/RegisterStudent.vue')}
+  { path:'/Students/StudentRegistration', name:'StudentRegistration', component:()=> import('../components/StudentRegistration.vue')},
+  { path:'/Teachers/TeacherRegistration', name:'TeacherRegistration', component:()=> import('../components/TeacherRegistration.vue')}
   // {
   //   path: '/about',
   //   name: 'About',
