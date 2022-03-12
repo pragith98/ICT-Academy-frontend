@@ -68,6 +68,14 @@
                             <v-text-field v-model="address"  :rules="addressRules" label="Address" prepend-icon="mdi-map-marker" required></v-text-field>
                         </v-col>
 
+                        <v-col cols="12" md="6" sm="6">
+                            <v-select :items="grade" :rules="gradeRules" label="Grade" prepend-icon="mdi-card-bulleted" v-model="getGrade"></v-select>
+                        </v-col>
+
+                        <v-col cols="12" md="6" sm="6">
+                            <v-select :items="brach" :rules="branchRules" label="Branch" prepend-icon="mdi-sitemap" v-model="getBrach"></v-select>
+                        </v-col>
+
                         
                         <v-card-text class="grey--text">Parent Details</v-card-text>
                         
@@ -120,6 +128,8 @@ export default {
             parentName: '',
             parent:'mother',
             getGender:'',
+            getGrade:'',
+            getBrach:'Hakmana',
 
             activePicker: null,
             date: null,
@@ -138,6 +148,10 @@ export default {
 
             genderRules: [v=> !!v || 'Gender is required'],
 
+            gradeRules: [v=> !!v || 'Grade is required'],
+
+            branchRules: [v=> !!v || 'Branch is required'],
+
             
 
             
@@ -145,6 +159,10 @@ export default {
 
             // -----------dropdown list-----------
             gender:['Male','Female','Other'],
+
+            grade:['1','2','3','4','5','6','7','8','9','10','11','12','13','NVQ'],
+
+            brach:['Hakmana','Walasmulla'],
             
 
 

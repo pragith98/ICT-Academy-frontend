@@ -14,7 +14,7 @@
                 
                 <v-card-title class="heading-1 blue lighten-4 primary--text">Teachers Registration</v-card-title>
                 <v-form ref="form" v-model="valid" lazy-validation class="px-5">
-                    <v-card-text class="grey--text">Student Details</v-card-text>
+                    <v-card-text class="grey--text">Teacher Details</v-card-text>
                     <v-responsive class="text-center">
                         <v-avatar  size="150" class="mb-2">
                             <v-icon size="150" v-if="!imageUrl">mdi-account-circle</v-icon>
@@ -89,7 +89,7 @@
                     </v-row>
                     <v-card-actions class="justify-end">
                         <v-btn   @click="Reset" outlined color="grey">Reset</v-btn>
-                        <v-btn :disabled="!valid" color="primary" @click="Register" depressed>Register</v-btn>
+                        <v-btn :disabled="!valid" color="primary" @click="Register(),scrollToTop()" depressed>Register</v-btn>
                     </v-card-actions>
     
                 </v-form>
@@ -195,7 +195,9 @@ export default {
         Reset () {
             this.$refs.form.reset()
         },
-        
+        scrollToTop() {
+            window.scrollTo(0, 0);
+        },
       
     }
 }
