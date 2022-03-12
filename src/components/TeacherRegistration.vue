@@ -152,8 +152,8 @@ export default {
 
 
             breadcrumbs: [
-                { text: 'Students', disabled: false, href: '/Students' },
-                { text: 'RegisterStudent', disabled: true, href: '/RegisterStudent' }
+                { text: 'Teachers', disabled: false, href: '/Teachers' },
+                { text: 'TeacherRegistration', disabled: true, href: '/TeacherRegistration' }
             ],
         
         }

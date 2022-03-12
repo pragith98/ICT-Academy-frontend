@@ -89,7 +89,7 @@
                     </v-row>
                     <v-card-actions class="justify-end">
                         <v-btn   @click="Reset" outlined color="grey">Reset</v-btn>
-                        <v-btn :disabled="!valid" color="primary" @click="Register" depressed>Register</v-btn>
+                        <v-btn :disabled="!valid" color="primary" @click="Register(),scrollToTop()" depressed>Register</v-btn>
                     </v-card-actions>
     
                 </v-form>
@@ -174,6 +174,7 @@ export default {
                 console.log('parent type:'+this.parent+' parent name:'+this.parentName+' parent tp:'+this.parentTp)
             }
             
+            
         },
 
         onPickFile(){
@@ -194,6 +195,9 @@ export default {
         },
         Reset () {
             this.$refs.form.reset()
+        },
+        scrollToTop() {
+            window.scrollTo(0, 0);
         },
         
       
