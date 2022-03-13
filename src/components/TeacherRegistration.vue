@@ -39,6 +39,18 @@
                             <v-text-field v-model="lname" :rules="nameRules" label="Last Name" prepend-icon="mdi-account" required></v-text-field>
                         </v-col>
 
+                        <v-col cols="12" md="6" sm="6" >
+                            <v-radio-group v-model="nicType" row style="justify-content:center !important">
+                                <v-radio label="Old NIC" value="old"></v-radio>
+                                <v-radio label="New NIC" value="new"></v-radio>
+                            </v-radio-group>
+                        </v-col>
+
+                        <v-col cols="12" md="6" sm="6">
+                            <v-text-field v-if="nicType=='new'" v-model="nicNo" :rules="newNicRules" label="NIC no.new" prepend-icon="mdi-card-bulleted" required maxlength="12"></v-text-field>
+                            <v-text-field v-else-if="nicType=='old'" v-model="nicNo" :rules="oldNicRules" label="NIC no.old" prepend-icon="mdi-card-bulleted" required maxlength="10"></v-text-field>
+                        </v-col>
+
                         <v-col cols="12" md="6" sm="6">
                             <v-select :items="gender" :rules="genderRules" label="Gender" prepend-icon="mdi-gender-male-female" v-model="getGender"></v-select>
                         </v-col>
@@ -69,23 +81,7 @@
                         </v-col>
 
                         
-                        <v-card-text class="grey--text">Parent Details</v-card-text>
                         
-                        <v-col cols="12" md="12" sm="12" >
-                            <v-radio-group v-model="parent" row style="justify-content:center !important">
-                                <v-radio label="Mother" value="mother"></v-radio>
-                                <v-radio label="Father" value="father"></v-radio>
-                                <v-radio label="Guardian" value="guardian"></v-radio>
-                            </v-radio-group>
-                        </v-col>
-
-                        <v-col cols="12" md="6" sm="6">
-                            <v-text-field v-model="parentName" :rules="nameRules" label="Name" prepend-icon="mdi-account" required></v-text-field>
-                        </v-col>
-
-                        <v-col cols="12" md="6" sm="6">
-                            <v-text-field v-model="parentTp" :rules="tpRules" label="Telephone No." prepend-icon="mdi-phone-classic" required maxlength="10"></v-text-field>
-                        </v-col>
                     </v-row>
                     <v-card-actions class="justify-end">
                         <v-btn   @click="Reset" outlined color="grey">Reset</v-btn>
@@ -116,10 +112,10 @@ export default {
             tp: '',
             email: '',
             address: '',
-            parentTp: '',
-            parentName: '',
-            parent:'mother',
             getGender:'',
+            nicNo:'',
+            nicType:'old',
+            
 
             activePicker: null,
             date: null,
@@ -137,6 +133,10 @@ export default {
             birthdayRules: [v=> !!v || 'Birthday is required'],
 
             genderRules: [v=> !!v || 'Gender is required'],
+
+            newNicRules: [v=> !!v || 'NIC is required', v => /^\d+$/.test(v) || 'Must be a number', v=> (v && v.length ==12)|| 'New Nic no. must have 12 numbers'],
+            
+            oldNicRules: [v=> !!v || 'NIC is required', v => /[0-9]+[vxVX]/.test(v) || 'Please insert valid NIC', v=> (v && v.length ==10)|| 'Old Nic no. must have 10 characters'],
 
             
 
