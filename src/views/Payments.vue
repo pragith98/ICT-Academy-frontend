@@ -41,7 +41,7 @@
         data(){
             return{
                 cardlist:[
-                    {name:'Mark Class fees', icon:'mdi-currency-usd', color:'pink lighten-2', link:'/Payments'},
+                    {name:'Mark Class fees', icon:'mdi-cash-check', color:'pink lighten-2', link:'/Payments'},
                     {name:'Payment Details', icon:'mdi-view-list', color:'orange', link:'/Payments'}
                 ],
 
