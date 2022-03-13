@@ -2,10 +2,10 @@
     <div>
 
         <v-breadcrumbs :items="breadcrumbs">
-                <template v-slot:divider>
-                    <v-icon>mdi-chevron-right</v-icon>
-                </template>
-            </v-breadcrumbs>
+            <template v-slot:divider>
+                <v-icon>mdi-chevron-right</v-icon>
+            </template>
+        </v-breadcrumbs>
         <v-container>
 
             <v-alert  type="success" max-width="700">I'm a dense alert with the <strong>text</strong> prop and a <strong>type</strong> of success</v-alert>

@@ -11,3 +11,20 @@
         <router-link to="/Staff/StaffRegistration">Register Staff</router-link>
     </div>
 </template>
+
+
+
+<script>
+
+    export default{
+
+        data(){
+            return{
+                breadcrumbs: [
+                    { text: 'Staff', disabled: true, href: '/Staff' }
+                ],
+            }
+        }
+        
+    }
+</script>
