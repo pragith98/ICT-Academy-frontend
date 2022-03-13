@@ -42,7 +42,8 @@
             return{
                 cardlist:[
                     {name:'Register Staff', icon:'mdi-account-plus', color:'teal', link:'/Staff/StaffRegistration'},
-                    {name:'Staff Details', icon:'mdi-account-plus', color:'orange', link:'/Staff'}
+                    {name:'Staff Details', icon:'mdi-account-plus', color:'orange', link:'/Staff'},
+                    {name:'System Users', icon:'mdi-account-cog', color:'purple', link:'/Staff'}
                 ],
 
 
