@@ -12,7 +12,7 @@
             <v-row>
                 <v-col lg="3" md="4" sm="6" cols="12" v-for="cardlist in cardlist" :key="cardlist.name">
                     <v-hover close-delay="100" v-slot="{hover}">
-                        <v-card  :elevation="hover? 7:0" flat class="'on-hover': hover" :to=cardlist.link :color=cardlist.color dark>
+                        <v-card  :elevation="hover? 7:0" flat class="'on-hover': hover lighten-2" :to=cardlist.link :color=cardlist.color dark>
                         
                             <v-responsive class="pt-4 text-center">
                                 <v-icon size="100">{{cardlist.icon}}</v-icon>
