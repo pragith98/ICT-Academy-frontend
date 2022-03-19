@@ -36,6 +36,7 @@
                                 <td>
                                     <app-DeleteStudent :student='row.item' @success="deleteAlert($event)" @failed="faileAlert($event)"></app-DeleteStudent>
                                 </td>
+                                <td></td>
                             </tr>
                         </template>
                     </v-data-table>
@@ -68,7 +69,8 @@
                     { text: 'GRADE', value: 'getGrade' },
                     { text: 'TELEPHONE NO.', sortable: false, value: 'tp' },
                     { text: '', sortable: false, value: 'Action' },
-                    { text: '', sortable: false, value: 'Action' }
+                    { text: '', sortable: false, value: 'Action' },
+                    { text: '', sortable: false, value: 'lname'}
                 ],
 
                 students: [
