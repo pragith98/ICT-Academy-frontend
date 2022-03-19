@@ -114,7 +114,7 @@
             </v-btn>
         </v-card-actions>
 
-        <v-snackbar v-model="hasSaved" :timeout="2000" absolute bottom left>Student details has been updated</v-snackbar>
+        <v-snackbar v-model="hasSaved" :timeout="2000" absolute bottom left color="green">Student details has been updated</v-snackbar>
 
       </v-card>
     </v-dialog>

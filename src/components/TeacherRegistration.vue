@@ -8,8 +8,8 @@
         </v-breadcrumbs>
         <v-container>
 
-            <v-alert  type="success" max-width="700">I'm a dense alert with the <strong>text</strong> prop and a <strong>type</strong> of success</v-alert>
-            <v-alert  type="error" max-width="700">I'm a dense alert with the <strong>text</strong> prop and a <strong>type</strong> of success</v-alert>
+            <v-snackbar :timeout="3000" v-model="unsuccess" color="red"  bottom ><v-icon left>mdi-alert-outline</v-icon> Teacher Registration has been<strong>failed</strong> </v-snackbar>
+            <v-snackbar :timeout="3000" v-model="success" color="green"  bottom><v-icon left>mdi-check</v-icon>Teacher Registration has been <strong>successful</strong> </v-snackbar>
             <v-card class="my-6" max-width="700" flat>
                 
                 <v-card-title class="heading-1 blue lighten-4 primary--text">Teachers Registration</v-card-title>
@@ -85,7 +85,7 @@
                     </v-row>
                     <v-card-actions class="justify-end">
                         <v-btn   @click="Reset" outlined color="grey">Reset</v-btn>
-                        <v-btn :disabled="!valid" color="primary" @click="Register(),scrollToTop()" depressed>Register</v-btn>
+                        <v-btn :disabled="!valid" color="primary" @click="Register(),scrollToTop(),successAlert()" depressed>Register</v-btn>
                     </v-card-actions>
     
                 </v-form>
@@ -155,6 +155,9 @@ export default {
                 { text: 'Teachers', disabled: false, href: '/Teachers' },
                 { text: 'TeacherRegistration', disabled: true, href: '/TeacherRegistration' }
             ],
+
+            success:false,
+            unsuccess:false,
         
         }
         
@@ -198,6 +201,12 @@ export default {
         scrollToTop() {
             window.scrollTo(0, 0);
         },
+        successAlert(){
+            this.success=true
+        },
+        failedAlert(){
+            this.unsuccess=true
+        }
       
     }
 }

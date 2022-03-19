@@ -8,9 +8,13 @@
             </v-breadcrumbs>
         <v-container>
 
-            <v-alert  type="success">I'm a dense alert with the <strong>text</strong> prop and a <strong>type</strong> of success</v-alert>
-            <v-alert  type="error">I'm a dense alert with the <strong>text</strong> prop and a <strong>type</strong> of success</v-alert>
+            <v-snackbar :timeout="3000" v-model="unsuccessAlert" color="red"  bottom ><v-icon left>mdi-alert-outline</v-icon> Student delete <strong>failed</strong> </v-snackbar>
+            <v-snackbar :timeout="3000" v-model="successAlert" color="green"  bottom><v-icon left>mdi-check</v-icon>Student delete <strong>successful</strong> </v-snackbar>
             
+            
+            
+            
+
             
 
             <template>
@@ -30,7 +34,7 @@
                                     <app-ViewStudentDetails :student='row.item'></app-ViewStudentDetails>
                                 </td>
                                 <td>
-                                    <app-DeleteStudent :student='row.item'></app-DeleteStudent>
+                                    <app-DeleteStudent :student='row.item' @success="deleteAlert($event)" @failed="faileAlert($event)"></app-DeleteStudent>
                                 </td>
                             </tr>
                         </template>
@@ -40,7 +44,6 @@
 
             
             
-               
         </v-container>
     </div>
  
@@ -81,11 +84,18 @@
                     { text: 'StudentDetails', disabled: true, href: '/Students/StudentDetails' }
                 ],
 
+                successAlert:false,
+                unsuccessAlert:false,
             }
         },
 
         methods: {
-            
+            deleteAlert(success){
+                this.successAlert = success;
+            },
+            faileAlert(failed){
+                this.unsuccessAlert = failed;
+            },
         }
     }
 </script>
