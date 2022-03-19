@@ -28,3 +28,8 @@ border-radius: 10px;
 ::-webkit-scrollbar-thumb:hover {
 background: rgb(1, 158, 158); 
 }
+
+
+/* :disabled{
+      color: black;
+} */

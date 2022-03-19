@@ -69,10 +69,10 @@
                 ],
 
                 students: [
-                    {fname:'Saman', lname:'Herath', tp:'1231235323', email:'Saman@Saman.com', address:'no1, rathnapura', parentTp:'4532346534', parentName:'Rohana Herath', parent:'father', getGender:'male', getGrade:'4', getBrach:'Hakmana', date:'2021-05-12', admissionNo:'2021'},
-                    {fname:'Dasun', lname:'Rathnayake', tp:'4321235323', email:'Dasun@Dasun.com', address:'no1, Matale', parentTp:'9872346534', parentName:'Mohan Rathnayake', parent:'father', getGender:'male', getGrade:'8', getBrach:'Hakmana', date:'2021-06-10', admissionNo:'2028'},
-                    {fname:'Kasun', lname:'Bandara', tp:'7831235323', email:'Kasun@Kasun.com', address:'no1, Kandy', parentTp:'4332346534', parentName:'Kumari', parent:'mother', getGender:'male', getGrade:'10', getBrach:'Hakmana', date:'2021-02-17', admissionNo:'2035'},
-                    {fname:'Maheshi', lname:'Ranathunga', tp:'9931235323', email:'Maheshi@Maheshi.com', address:'no1, Jafna', parentTp:'8832346534', parentName:'Ranathunga Bandara', parent:'father', getGender:'female', getGrade:'6', getBrach:'Hakmana', date:'2021-09-12', admissionNo:'2077'},
+                    {fname:'Saman', lname:'Herath', tp:'1231235323', email:'Saman@Saman.com', address:'no1, rathnapura', parentTp:'4532346534', parentName:'Rohana Herath', parent:'father', getGender:'Male', getGrade:'4', getBrach:'Hakmana', date:'2021-05-12', admissionNo:'2021'},
+                    {fname:'Dasun', lname:'Rathnayake', tp:'4321235323', email:'Dasun@Dasun.com', address:'no1, Matale', parentTp:'9872346534', parentName:'Mohan Rathnayake', parent:'father', getGender:'Male', getGrade:'8', getBrach:'Hakmana', date:'2021-06-10', admissionNo:'2028'},
+                    {fname:'Kasun', lname:'Bandara', tp:'7831235323', email:'Kasun@Kasun.com', address:'no1, Kandy', parentTp:'4332346534', parentName:'Kumari', parent:'mother', getGender:'Male', getGrade:'10', getBrach:'Hakmana', date:'2021-02-17', admissionNo:'2035'},
+                    {fname:'Maheshi', lname:'Ranathunga', tp:'9931235323', email:'Maheshi@Maheshi.com', address:'no1, Jafna', parentTp:'8832346534', parentName:'Ranathunga Bandara', parent:'father', getGender:'Female', getGrade:'6', getBrach:'Hakmana', date:'2021-09-12', admissionNo:'2077'},
                     
                 ],
 

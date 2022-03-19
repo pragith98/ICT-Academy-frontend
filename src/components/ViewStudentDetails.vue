@@ -5,7 +5,7 @@
             <v-btn class="primary" fab dark small depressed  v-bind="attrs" v-on="on"><v-icon dark>mdi-account</v-icon></v-btn>
         </template>
         <v-card max-width="700" flat>
-        <v-card-title class="heading-1 blue lighten-4 primary--text">Student Details - {{student.admissionNo}}
+        <v-card-title class="heading-1 blue lighten-4 primary--text">Admission - {{student.admissionNo}}
             <v-spacer></v-spacer>
             <v-btn depressed color="primary" dark @click="isEditing = !isEditing" v-if="!isEditing"> Edit
                 <v-icon right>mdi-account-edit</v-icon>
@@ -14,7 +14,7 @@
         
         <v-divider></v-divider>
         <v-card-text style="height: 800px;">
-            <v-form ref="form" v-model="valid" lazy-validation class="px-5" :disabled="!isEditing">
+            <v-form ref="form" v-model="valid" lazy-validation class="px-5" :disabled="!isEditing" >
                 <v-card-text class="grey--text">Student Details</v-card-text>
                 <v-responsive class="text-center">
                     <v-avatar  size="150" class="mb-2">
