@@ -2,7 +2,7 @@
   <v-row justify="end">
     <v-dialog v-model="dialog" scrollable max-width="700px" persistent>
         <template v-slot:activator="{ on, attrs }">
-            <v-btn class="primary" fab dark small depressed  v-bind="attrs" v-on="on"><v-icon dark>mdi-account</v-icon></v-btn>
+            <v-btn class="primary" dark  depressed  v-bind="attrs" v-on="on">view<v-icon dark right>mdi-account</v-icon></v-btn>
         </template>
         <v-card max-width="700" flat>
         <v-card-title class="heading-1 blue lighten-4 primary--text">Admission - {{student.admissionNo}}

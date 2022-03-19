@@ -30,7 +30,7 @@
                                     <app-ViewStudentDetails :student='row.item'></app-ViewStudentDetails>
                                 </td>
                                 <td>
-                                    <app-DeleteStudent></app-DeleteStudent>
+                                    <app-DeleteStudent :student='row.item'></app-DeleteStudent>
                                 </td>
                             </tr>
                         </template>
