@@ -14,7 +14,7 @@
         
         <v-divider></v-divider>
         <v-card-text style="height: 800px;">
-            <v-form ref="form" v-model="valid" lazy-validation class="px-5" :disabled="!isEditing" >
+            <v-form ref="form" v-model="valid" lazy-validation class="px-5" :readonly="!isEditing">
                 <v-card-text class="grey--text">Student Details</v-card-text>
                 <v-responsive class="text-center">
                     <v-avatar  size="150" class="mb-2">
@@ -46,7 +46,7 @@
                     <v-col cols="12" md="6" sm="6">
                         <template>
                             <div>
-                                <v-menu ref="menu" v-model="menu" :close-on-content-click="false" transition="scale-transition" offset-y min-width="auto">
+                                <v-menu ref="menu" v-model="menu" :close-on-content-click="false" transition="scale-transition" offset-y min-width="auto" :disabled="!isEditing">
                                     <template v-slot:activator="{ on, attrs }">
                                         <v-text-field v-model="date" label="Birthday date" prepend-icon="mdi-calendar" readonly v-bind="attrs" v-on="on" :rules="birthdayRules"></v-text-field>
                                     </template>
