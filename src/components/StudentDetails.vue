@@ -14,7 +14,7 @@
             
 
             <template>
-                <v-card>
+                <v-card flat>
                     <v-card-title class="heading-1 blue lighten-4 primary--text">Student Details</v-card-title>
                     <v-card-title><v-spacer></v-spacer><v-text-field v-model="search" append-icon="mdi-magnify" label="Search" single-line hide-details></v-text-field></v-card-title>
                     <!-- <v-data-table :headers="headers" :items="desserts" :search="search" ></v-data-table> -->
@@ -25,11 +25,16 @@
                                 <td>{{row.item.admission}}</td>
                                 <td>{{row.item.grade}}</td>
                                 <td>{{row.item.telephone}}</td>
-                                <td>
-                                    <v-btn class="success" fab dark small depressed @click="onButtonClick(row.item)"><v-icon dark>mdi-account-eye</v-icon></v-btn>
-                                    <v-btn class="ml-2 primary" fab dark small depressed @click="onButtonClick(row.item)"><v-icon dark>mdi-pencil</v-icon></v-btn>
-                                    <v-btn class="ml-2 error" fab dark small depressed @click="onButtonClick(row.item)"><v-icon dark>mdi-delete</v-icon></v-btn>
+                                <td >
+                                    <app-ViewStudentDetails></app-ViewStudentDetails>
                                 </td>
+                                <td>
+                                    <app-EditStudentDetails></app-EditStudentDetails>
+                                </td>
+                                <td>
+                                    <app-DeleteStudent></app-DeleteStudent>
+                                </td>
+                                
                             </tr>
                         </template>
                     </v-data-table>
@@ -46,9 +51,16 @@
 </template>
 
 <script>
-
+    import ViewStudentDetails from '../components/ViewStudentDetails.vue'
+    import DeleteStudent from '../components/DeleteStudent.vue'
+    import EditStudentDetails from '../components/EditStudentDetails.vue'
 
     export default {
+        components:{
+            'app-ViewStudentDetails':ViewStudentDetails,
+            'app-DeleteStudent':DeleteStudent,
+            'app-EditStudentDetails':EditStudentDetails
+        },
         data () {
             return {
                 search: '',
@@ -57,8 +69,10 @@
                     { text: 'ADMISSION NO.', sortable: false, value: 'admission' },
                     { text: 'GRADE', value: 'grade' },
                     { text: 'TELEPHONE NO.', sortable: false, value: 'telephone' },
-                    
-                    { text: 'ACTION', sortable: false, value: 'Action' }
+                    { text: '', sortable: false, value: 'Action' },
+                    { text: '', sortable: false, value: 'Action' },
+                    { text: '', sortable: false, value: 'Action' }
+                    // { text: 'ACTION', sortable: false, value: 'Action' }
                 ],
 
                 desserts: [
@@ -77,7 +91,7 @@
                     {name: 'Frozen Yogurt', admission:'202012', grade:'6', telephone:'0898123489', email:'asdff@fff.com'},
                     { name: 'Ice cream sandwich', admission:'202013', grade:'5', telephone:'0898123489', email:'asdff@fff.com'},
                     { name: 'Eclair', admission:'202016', grade:'9', telephone:'0898123489', email:'asdff@fff.com'},
-                    {name: 'Cupcake', admission:'202019', grade:'10', telephone:'0898123489', email:'asdff@fff.com'},
+                    {name: 'Cupcake', admission:'202019', grade:'10', telephone:'0718123489', email:'asdff@fff.com'},
                 ],
 
                 breadcrumbs: [
