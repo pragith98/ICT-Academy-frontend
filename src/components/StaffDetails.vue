@@ -8,8 +8,8 @@
             </v-breadcrumbs>
         <v-container>
 
-            <v-snackbar :timeout="3000" v-model="unsuccessAlert" color="red"  bottom ><v-icon left>mdi-alert-outline</v-icon> Teacher delete <strong>failed</strong> </v-snackbar>
-            <v-snackbar :timeout="3000" v-model="successAlert" color="green"  bottom><v-icon left>mdi-check</v-icon>Teacher delete <strong>successful</strong> </v-snackbar>
+            <v-snackbar :timeout="3000" v-model="unsuccessAlert" color="red"  bottom ><v-icon left>mdi-alert-outline</v-icon> Staff delete <strong>failed</strong> </v-snackbar>
+            <v-snackbar :timeout="3000" v-model="successAlert" color="green"  bottom><v-icon left>mdi-check</v-icon>Staff delete <strong>successful</strong> </v-snackbar>
             
             
  
@@ -27,7 +27,7 @@
                                 <td>{{row.item.email}}</td>
                                 <td>{{row.item.getBrach}}</td>
                                 <td >
-                                    <app-ViewTeacherDetails :staff='row.item'></app-ViewTeacherDetails>
+                                    <app-ViewStaffDetails :staff='row.item'></app-ViewStaffDetails>
                                 </td>
                                 <td>
                                     <app-DeleteStaff :staff='row.item' @success="deleteAlert($event)" @failed="faileAlert($event)"></app-DeleteStaff>
@@ -48,12 +48,12 @@
 </template>
 
 <script>
-    import ViewTeacherDetails from './ViewTeacherDetails.vue'
+    import ViewStaffDetails from './ViewStaffDetails.vue'
     import DeleteStaff from './DeleteStaff.vue'
 
     export default {
         components:{
-            'app-ViewTeacherDetails':ViewTeacherDetails,
+            'app-ViewStaffDetails':ViewStaffDetails,
             'app-DeleteStaff':DeleteStaff
         },
         data () {
