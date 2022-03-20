@@ -7,7 +7,6 @@ import Accounting from '../views/Accounting.vue'
 import Attendance from '../views/Attendance.vue'
 import Branches from '../views/Branches.vue'
 import Classes from '../views/Classes.vue'
-import Parents from '../views/Parents.vue'
 import Payments from '../views/Payments.vue'
 import Staff from '../views/Staff.vue'
 import Teachers from '../views/Teachers.vue'
@@ -21,7 +20,6 @@ const routes = [
   { path:'/Attendance', name:'Attendance', component:Attendance},
   { path:'/Branches', name:'Branches', component:Branches},
   { path:'/Classes', name:'Classes', component:Classes},
-  { path:'/Parents', name:'Parents', component:Parents},
   { path:'/Payments', name:'Payments', component:Payments},
   { path:'/Staff', name:'Staff', component:Staff},
   { path:'/Teachers', name:'Teachers', component:Teachers},

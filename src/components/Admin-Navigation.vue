@@ -54,7 +54,6 @@
                     { text: 'Students', icon: 'mdi-account-group', link:'/Students'},
                     { text: 'Teachers', icon: 'mdi-human-male-board', link:'/Teachers' },
                     { text: 'Staff', icon: 'mdi-account-multiple', link:'/Staff' },
-                    { text: 'Parents', icon: 'mdi-account', link:'/Parents' },
                     { text: 'Classes', icon: 'mdi-google-classroom', link:'/Classes' },
                     { text: 'Attendance', icon: 'mdi-checkbox-marked-outline', link:'/Attendance' },
                     { text: 'Payments', icon: 'mdi-credit-card-outline', link:'/Payments' },
