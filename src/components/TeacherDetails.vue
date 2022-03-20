@@ -29,11 +29,10 @@
                                 <td>{{row.item.tp}}</td>
                                 <td>{{row.item.email}}</td>
                                 <td >
-                                    <!-- <app-ViewStudentDetails fname='' lname='' tp='' email='' address='' parentTp='' parentName='' parent=''></app-ViewStudentDetails> -->
-                                    <app-ViewStudentDetails :teachers='row.item'></app-ViewStudentDetails>
+                                    <app-ViewStudentDetails :teacher='row.item'></app-ViewStudentDetails>
                                 </td>
                                 <td>
-                                    <app-DeleteStudent :teachers='row.item' @success="deleteAlert($event)" @failed="faileAlert($event)"></app-DeleteStudent>
+                                    <app-DeleteTeacher :teacher='row.item' @success="deleteAlert($event)" @failed="faileAlert($event)"></app-DeleteTeacher>
                                 </td>
                                 <td></td>
                             </tr>
@@ -52,12 +51,12 @@
 
 <script>
     import ViewStudentDetails from './ViewStudentDetails.vue'
-    import DeleteStudent from './DeleteStudent.vue'
+    import DeleteTeacher from './DeleteTeacher.vue'
 
     export default {
         components:{
             'app-ViewStudentDetails':ViewStudentDetails,
-            'app-DeleteStudent':DeleteStudent
+            'app-DeleteTeacher':DeleteTeacher
         },
         data () {
             return {
