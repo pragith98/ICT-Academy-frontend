@@ -29,7 +29,7 @@
                                 <td>{{row.item.tp}}</td>
                                 <td>{{row.item.email}}</td>
                                 <td >
-                                    <app-ViewStudentDetails :teacher='row.item'></app-ViewStudentDetails>
+                                    <app-ViewTeacherDetails :teacher='row.item'></app-ViewTeacherDetails>
                                 </td>
                                 <td>
                                     <app-DeleteTeacher :teacher='row.item' @success="deleteAlert($event)" @failed="faileAlert($event)"></app-DeleteTeacher>
@@ -50,12 +50,12 @@
 </template>
 
 <script>
-    import ViewStudentDetails from './ViewStudentDetails.vue'
+    import ViewTeacherDetails from './ViewTeacherDetails.vue'
     import DeleteTeacher from './DeleteTeacher.vue'
 
     export default {
         components:{
-            'app-ViewStudentDetails':ViewStudentDetails,
+            'app-ViewTeacherDetails':ViewTeacherDetails,
             'app-DeleteTeacher':DeleteTeacher
         },
         data () {
