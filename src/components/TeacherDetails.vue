@@ -82,8 +82,8 @@
                 ],
 
                 breadcrumbs: [
-                    { text: 'Students', disabled: false, href: '/Students' },
-                    { text: 'StudentDetails', disabled: true, href: '/Students/StudentDetails' }
+                    { text: 'Teachers', disabled: false, href: '/Teachers' },
+                    { text: 'TeacherDetails', disabled: true, href: '/Teachers/TeacherDetails' }
                 ],
 
                 successAlert:false,

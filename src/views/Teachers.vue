@@ -42,7 +42,7 @@
             return{
                 cardlist:[
                     {name:'Register Teachers', icon:'mdi-account-plus', color:'teal', link:'/Teachers/TeacherRegistration'},
-                    {name:'Teacher Details', icon:'mdi-view-list', color:'orange', link:'/Teachers'}
+                    {name:'Teacher Details', icon:'mdi-view-list', color:'orange', link:'/Teachers/TeacherDetails'}
                 ],
 
 
