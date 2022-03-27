@@ -29,7 +29,8 @@ const routes = [
   { path:'/Teachers/TeacherRegistration', name:'TeacherRegistration', component:()=> import('../components/TeacherRegistration.vue')},
   { path:'/Teachers/TeacherDetails', name:'TeacherDetails', component:()=> import('../components/TeacherDetails.vue')},
   { path:'/Staff/StaffRegistration', name:'StaffRegistration', component:()=> import('../components/StaffRegistration.vue')},
-  { path:'/Staff/StaffDetails', name:'StaffDetails', component:()=> import('../components/StaffDetails.vue')}
+  { path:'/Staff/StaffDetails', name:'StaffDetails', component:()=> import('../components/StaffDetails.vue')},
+  { path:'/Staff/SystemUsers', name:'SystemUsers', component:()=> import('../components/SystemUsers.vue')}
   
   // {
   //   path: '/about',
