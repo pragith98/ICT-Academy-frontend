@@ -76,6 +76,13 @@
                         <v-select :items="brach" :rules="branchRules" label="Branch" prepend-icon="mdi-sitemap" v-model="getBrach"></v-select>
                     </v-col>
 
+                    <v-col cols="12" md="6" sm="6">
+                        <v-select :items="status" :rules="statusRules" label="Status" prepend-icon="mdi-checkbox-marked-circle-outline" v-model="getStatus"></v-select>
+                    </v-col>
+
+                    <v-col cols="12" md="6" sm="6">
+                        <!-- for empty space -->
+                    </v-col>
                     
                     <v-card-text class="grey--text">Parent Details</v-card-text>
                     
@@ -143,6 +150,7 @@ export default {
             getGender:this.student.getGender,
             getGrade:this.student.getGrade,
             getBrach:this.student.getBrach,
+            getStatus:this.student.status,
 
             activePicker: null,
             date: this.student.date,
@@ -171,6 +179,8 @@ export default {
 
             branchRules: [v=> !!v || 'Branch is required'],
 
+            statusRules: [v=> !!v || 'Status is required'],
+
             
 
             
@@ -182,6 +192,8 @@ export default {
             grade:['1','2','3','4','5','6','7','8','9','10','11','12','13','NVQ'],
 
             brach:['Hakmana','Walasmulla'],
+
+            status:['Active','Suspend'],
             
 
 
