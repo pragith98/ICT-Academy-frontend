@@ -21,20 +21,16 @@
                 <v-card flat>
                     <v-card-title class="heading-1 blue lighten-4 primary--text">Student Details</v-card-title>
                     <v-card-title><v-spacer></v-spacer><v-text-field v-model="search" append-icon="mdi-magnify" label="Search" single-line hide-details></v-text-field></v-card-title>
-                    
+                    <!-- <v-data-table :headers="headers" :items="desserts" :search="search" ></v-data-table> -->
                     <v-data-table :headers="headers" :items="students" :search="search">
                         <template v-slot:item="row">
                             <tr>
                                 <td>{{row.item.fname}} {{row.item.lname}}</td>
                                 <td>{{row.item.admissionNo}}</td>
                                 <td>{{row.item.getGrade}}</td>
-                                <td>
-                                    <v-chip small :class="row.item.status" class=' white--text caption'>
-                                        {{row.item.status}}
-                                    </v-chip>
-                                </td>
+                                <td>{{row.item.tp}}</td>
                                 <td >
-                                    
+                                    <!-- <app-ViewStudentDetails fname='' lname='' tp='' email='' address='' parentTp='' parentName='' parent=''></app-ViewStudentDetails> -->
                                     <app-ViewStudentDetails :student='row.item'></app-ViewStudentDetails>
                                 </td>
                                 <td>
@@ -71,17 +67,17 @@
                     {text: 'NAME',align: 'start', sortable: false, value:'fname'},
                     { text: 'ADMISSION NO.', sortable: false, value: 'admissionNo' },
                     { text: 'GRADE', value: 'getGrade' },
-                    { text: 'STATUS', sortable: false, value: 'status' },
+                    { text: 'TELEPHONE NO.', sortable: false, value: 'tp' },
                     { text: '', sortable: false, value: 'Action' },
                     { text: '', sortable: false, value: 'Action' },
                     { text: '', sortable: false, value: 'lname'}
                 ],
 
                 students: [
-                    {fname:'Saman', lname:'Herath', tp:'1231235323', email:'Saman@Saman.com', address:'no1, rathnapura', parentTp:'4532346534', parentName:'Rohana Herath', parent:'father', getGender:'Male', getGrade:'4', getBrach:'Hakmana', date:'2021-05-12', admissionNo:'2021', status:'Suspend'},
-                    {fname:'Dasun', lname:'Rathnayake', tp:'4321235323', email:'Dasun@Dasun.com', address:'no1, Matale', parentTp:'9872346534', parentName:'Mohan Rathnayake', parent:'father', getGender:'Male', getGrade:'8', getBrach:'Hakmana', date:'2021-06-10', admissionNo:'2028', status:'Active'},
-                    {fname:'Kasun', lname:'Bandara', tp:'7831235323', email:'Kasun@Kasun.com', address:'no1, Kandy', parentTp:'4332346534', parentName:'Kumari', parent:'mother', getGender:'Male', getGrade:'10', getBrach:'Hakmana', date:'2021-02-17', admissionNo:'2035', status:'Active'},
-                    {fname:'Maheshi', lname:'Ranathunga', tp:'9931235323', email:'Maheshi@Maheshi.com', address:'no1, Jafna', parentTp:'8832346534', parentName:'Ranathunga Bandara', parent:'father', getGender:'Female', getGrade:'6', getBrach:'Hakmana', date:'2021-09-12', admissionNo:'2077', status:'Active'},
+                    {fname:'Saman', lname:'Herath', tp:'1231235323', email:'Saman@Saman.com', address:'no1, rathnapura', parentTp:'4532346534', parentName:'Rohana Herath', parent:'father', getGender:'Male', getGrade:'4', getBrach:'Hakmana', date:'2021-05-12', admissionNo:'2021'},
+                    {fname:'Dasun', lname:'Rathnayake', tp:'4321235323', email:'Dasun@Dasun.com', address:'no1, Matale', parentTp:'9872346534', parentName:'Mohan Rathnayake', parent:'father', getGender:'Male', getGrade:'8', getBrach:'Hakmana', date:'2021-06-10', admissionNo:'2028'},
+                    {fname:'Kasun', lname:'Bandara', tp:'7831235323', email:'Kasun@Kasun.com', address:'no1, Kandy', parentTp:'4332346534', parentName:'Kumari', parent:'mother', getGender:'Male', getGrade:'10', getBrach:'Hakmana', date:'2021-02-17', admissionNo:'2035'},
+                    {fname:'Maheshi', lname:'Ranathunga', tp:'9931235323', email:'Maheshi@Maheshi.com', address:'no1, Jafna', parentTp:'8832346534', parentName:'Ranathunga Bandara', parent:'father', getGender:'Female', getGrade:'6', getBrach:'Hakmana', date:'2021-09-12', admissionNo:'2077'},
                     
                 ],
 
@@ -108,14 +104,7 @@
             
 
 
-<style scoped>
-    .theme--light.v-chip:not(.v-chip--active).v-chip.Suspend{
-        background: red;
-    }
-    .theme--light.v-chip:not(.v-chip--active).v-chip.Active{
-        background: rgb(59, 218, 59);
-    }
-</style>
+
 
 
             
