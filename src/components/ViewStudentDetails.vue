@@ -5,7 +5,7 @@
             <v-btn class="primary" dark  depressed  v-bind="attrs" v-on="on">view<v-icon dark right>mdi-account</v-icon></v-btn>
         </template>
         <v-card max-width="700" flat>
-        <v-card-title class="heading-1 blue lighten-4 primary--text">Admission - {{student.admissionNo}}
+        <v-card-title class="heading-1 blue lighten-4 primary--text">Student ID - {{student.admissionNo}}
             <v-spacer></v-spacer>
             <v-btn depressed color="primary" dark @click="isEditing = !isEditing" v-if="!isEditing"> Edit
                 <v-icon right>mdi-account-edit</v-icon>
@@ -73,14 +73,6 @@
                     </v-col>
 
                     <v-col cols="12" md="6" sm="6">
-                        <v-select :items="brach" :rules="branchRules" label="Branch" prepend-icon="mdi-sitemap" v-model="getBrach"></v-select>
-                    </v-col>
-
-                    <v-col cols="12" md="6" sm="6">
-                        <v-select :items="status" :rules="statusRules" label="Status" prepend-icon="mdi-checkbox-marked-circle-outline" v-model="getStatus"></v-select>
-                    </v-col>
-
-                    <v-col cols="12" md="6" sm="6">
                         <!-- for empty space -->
                     </v-col>
                     
@@ -101,6 +93,26 @@
                     <v-col cols="12" md="6" sm="6">
                         <v-text-field v-model="parentTp" :rules="tpRules" label="Telephone No." prepend-icon="mdi-phone-classic" required maxlength="10"></v-text-field>
                     </v-col>
+
+                    <v-card-text class="grey--text">Class Details</v-card-text>
+
+                    <v-col cols="12" md="6" sm="6">
+                        <v-select :items="brach" :rules="branchRules" label="Branch" prepend-icon="mdi-sitemap" v-model="getBrach"></v-select>
+                    </v-col>
+
+                    <v-col cols="12" md="6" sm="6">
+                        <template>
+                            <div>
+                                <v-menu ref="menud" v-model="joingMenu" :close-on-content-click="false" transition="scale-transition" offset-y min-width="auto" :disabled="!isEditing">
+                                    <template v-slot:activator="{ on, attrs }">
+                                        <v-text-field v-model="joingDate" label="Join date" prepend-icon="mdi-calendar" readonly v-bind="attrs" v-on="on" :rules="joinDateRules"></v-text-field>
+                                    </template>
+                                    <v-date-picker v-model="joingDate" :active-picker.sync="joingActivePicker" :max="(new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().substr(0, 10)" min="1950-01-01"></v-date-picker>
+                                </v-menu>
+                            </div>
+                        </template>
+                    </v-col>
+
                 </v-row>
             </v-form>
             
@@ -156,6 +168,10 @@ export default {
             date: this.student.date,
             menu: false,
 
+            joingActivePicker: null,
+            joingDate: (new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().substr(0, 10),
+            joingMenu: false,
+
             dialogm1: '',
             dialog: false,
 
@@ -180,6 +196,8 @@ export default {
             branchRules: [v=> !!v || 'Branch is required'],
 
             statusRules: [v=> !!v || 'Status is required'],
+
+            joinDateRules: [v=> !!v || 'Join Date is required'],
 
             
 
