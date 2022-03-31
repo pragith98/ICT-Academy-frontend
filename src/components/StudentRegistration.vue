@@ -73,14 +73,13 @@
                         </v-col>
 
                         <v-col cols="12" md="6" sm="6">
-                            <v-select :items="brach" :rules="branchRules" label="Branch" prepend-icon="mdi-sitemap" v-model="getBrach"></v-select>
+                            <!-- for empty space -->
                         </v-col>
-
                         
                         <v-card-text class="grey--text">Parent Details</v-card-text>
                         
                         <v-col cols="12" md="12" sm="12" >
-                            <v-radio-group v-model="parent" row style="justify-content:center !important">
+                            <v-radio-group v-model="parent" row style="justify-content:center !important" :rules="guardianRules" required>
                                 <v-radio label="Mother" value="mother"></v-radio>
                                 <v-radio label="Father" value="father"></v-radio>
                                 <v-radio label="Guardian" value="guardian"></v-radio>
@@ -94,6 +93,26 @@
                         <v-col cols="12" md="6" sm="6">
                             <v-text-field v-model="parentTp" :rules="tpRules" label="Telephone No." prepend-icon="mdi-phone-classic" required maxlength="10"></v-text-field>
                         </v-col>
+
+                        <v-card-text class="grey--text">Class Details</v-card-text>
+
+                        <v-col cols="12" md="6" sm="6">
+                            <v-select :items="brach" :rules="branchRules" label="Branch" prepend-icon="mdi-sitemap" v-model="getBrach"></v-select>
+                        </v-col>
+
+                        <v-col cols="12" md="6" sm="6">
+                            <template>
+                                <div>
+                                    <v-menu ref="menud" v-model="joingMenu" :close-on-content-click="false" transition="scale-transition" offset-y min-width="auto">
+                                        <template v-slot:activator="{ on, attrs }">
+                                            <v-text-field v-model="joingDate" label="Join date" prepend-icon="mdi-calendar" readonly v-bind="attrs" v-on="on" :rules="joinDateRules"></v-text-field>
+                                        </template>
+                                        <v-date-picker v-model="joingDate" :active-picker.sync="joingActivePicker" :max="(new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().substr(0, 10)" min="1950-01-01"></v-date-picker>
+                                    </v-menu>
+                                </div>
+                            </template>
+                        </v-col>
+
                     </v-row>
                     <v-card-actions class="justify-end">
                         <v-btn   @click="Reset" outlined color="grey">Reset</v-btn>
@@ -135,6 +154,11 @@ export default {
             date: null,
             menu: false,
 
+            joingActivePicker: null,
+            joingDate: (new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().substr(0, 10),
+            joingMenu: false,
+            
+
             // -----------Validation rules-----------
             nameRules: [v=> !!v || 'Name is required', v => /^[a-zA-Z_ ]*$/.test(v) || 'Must be text only', v=> (v && v.length >3)|| 'Name must be greater than 3'],
             
@@ -151,6 +175,10 @@ export default {
             gradeRules: [v=> !!v || 'Grade is required'],
 
             branchRules: [v=> !!v || 'Branch is required'],
+
+            guardianRules: [v=> !!v || 'Guardian is required'],
+
+            joinDateRules: [v=> !!v || 'Join Date is required'],
 
             
 
@@ -190,7 +218,6 @@ export default {
 
     methods:{
         Register(){
-            // this.$refs.form.validate();
             if(this.$refs.form.validate()){
                 console.log('fname:'+this.fname+' lname:'+this.lname+' tp:'+this.tp+' email:'+this.email+' address:'+this.address+' bday:'+this.date+' gender:'+this.getGender);
                 console.log('parent type:'+this.parent+' parent name:'+this.parentName+' parent tp:'+this.parentTp)
