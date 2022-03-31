@@ -80,12 +80,23 @@
                         <v-text-field v-model="address"  :rules="addressRules" label="Address" prepend-icon="mdi-map-marker" required></v-text-field>
                     </v-col>
 
+                    <v-card-text class="grey--text">Class Details</v-card-text>
+
                     <v-col cols="12" md="6" sm="6">
                         <v-select :items="brach" :rules="branchRules" label="Branch" prepend-icon="mdi-sitemap" v-model="getBrach"></v-select>
                     </v-col>
 
                     <v-col cols="12" md="6" sm="6">
-                        <!-- for empty space -->
+                        <template>
+                            <div>
+                                <v-menu ref="menud" v-model="joingMenu" :close-on-content-click="false" transition="scale-transition" offset-y min-width="auto" :disabled="!isEditing">
+                                    <template v-slot:activator="{ on, attrs }">
+                                        <v-text-field v-model="joingDate" label="Join date" prepend-icon="mdi-calendar" readonly v-bind="attrs" v-on="on" :rules="joinDateRules"></v-text-field>
+                                    </template>
+                                    <v-date-picker v-model="joingDate" :active-picker.sync="joingActivePicker" :max="(new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().substr(0, 10)" min="1950-01-01"></v-date-picker>
+                                </v-menu>
+                            </div>
+                        </template>
                     </v-col>
                     
                 </v-row>
@@ -134,9 +145,14 @@ export default {
             getGender:this.staff.getGender,
             nicNo:this.staff.nicNo,
             nicType:this.staff.nicType,
+
             activePicker: null,
             date: this.staff.date,
             getBrach:this.staff.getBrach,
+
+            joingActivePicker: null,
+            joingDate: (new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().substr(0, 10),
+            joingMenu: false,
 
             menu: false,
 
@@ -165,7 +181,7 @@ export default {
 
             branchRules: [v=> !!v || 'Branch is required'],
 
-            
+            joinDateRules: [v=> !!v || 'Join Date is required'],
 
 
             // -----------dropdown list-----------
