@@ -20,7 +20,7 @@
 
                         
                         <v-col lg="6" md="6" sm="6" cols="12"   max-width="600" >
-                            <fieldset class="px-5 ">
+                            <fieldset class="px-5 pb-3">
                                 <legend><v-card-text class="grey--text">Teacher Details</v-card-text></legend>
                                 <v-responsive class="text-center">
                                     <v-avatar  size="150" class="mb-2">
@@ -79,16 +79,12 @@
                                         </template>
                                     </v-col>
 
-                                    <v-col cols="12" md="6" sm="6" class="mb-lg-5 mb-md-5 mb-sm-5 mb-xs-0">
-                                        <!-- for empty space -->
-                                    </v-col>
-
                                 </v-row>
                             </fieldset>
                         </v-col>
 
                         <v-col lg="6" md="6" sm="6" cols="12"  max-width="600" flat >
-                            <fieldset class="px-5 pb-3">
+                            <fieldset class="px-5 pb-lg-10 pb-md-10 pb-sm-10 pb-xs-0  pt-lg-5 pt-md-5 pt-sm-5 pt-xs-0">
                                 <legend><v-card-text class="grey--text">Contact Details</v-card-text></legend>
                                 <v-row justify="center" dense >
 
@@ -106,7 +102,7 @@
                                 </v-row>
                             </fieldset>
 
-                            <fieldset class="px-5 pb-3">
+                            <fieldset class="px-5 pb-lg-15 pb-md-15 pb-sm-15 pb-xs-0  pt-lg-5 pt-md-5 pt-sm-5 pt-xs-0">
                                 <legend><v-card-text class="grey--text">Class Details</v-card-text></legend>
                                 <v-row justify="center" dense >
 
@@ -124,6 +120,14 @@
                                     </v-col>
 
                                     <v-col cols="12" md="6" sm="6">
+                                        <!-- for empty space -->
+                                    </v-col>
+
+                                    <v-col cols="12" md="6" sm="6" class="mb-lg-15 mb-md-15 mb-sm-15 mb-xs-0">
+                                        <!-- for empty space -->
+                                    </v-col>
+
+                                    <v-col cols="12" md="12" sm="12" class="mb-lg-5 mb-md-5 mb-sm-5 mb-xs-0">
                                         <!-- for empty space -->
                                     </v-col>
 
