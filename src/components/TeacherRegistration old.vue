@@ -2,19 +2,19 @@
     <div>
 
         <v-breadcrumbs :items="breadcrumbs">
-                <template v-slot:divider>
-                    <v-icon>mdi-chevron-right</v-icon>
-                </template>
-            </v-breadcrumbs>
+            <template v-slot:divider>
+                <v-icon>mdi-chevron-right</v-icon>
+            </template>
+        </v-breadcrumbs>
         <v-container>
 
-            <v-snackbar :timeout="3000" v-model="unsuccess" color="red"  bottom ><v-icon left>mdi-alert-outline</v-icon> Student Registration has been<strong>failed</strong> </v-snackbar>
-            <v-snackbar :timeout="3000" v-model="success" color="green"  bottom><v-icon left>mdi-check</v-icon>Student Registration has been <strong>successful</strong> </v-snackbar>
+            <v-snackbar :timeout="3000" v-model="unsuccess" color="red"  bottom ><v-icon left>mdi-alert-outline</v-icon> Teacher Registration has been<strong>failed</strong> </v-snackbar>
+            <v-snackbar :timeout="3000" v-model="success" color="green"  bottom><v-icon left>mdi-check</v-icon>Teacher Registration has been <strong>successful</strong> </v-snackbar>
             <v-card class="my-6" max-width="700" flat>
                 
-                <v-card-title class="heading-1 blue lighten-4 primary--text">Student Registration</v-card-title>
+                <v-card-title class="heading-1 blue lighten-4 primary--text">Teachers Registration</v-card-title>
                 <v-form ref="form" v-model="valid" lazy-validation class="px-5">
-                    <v-card-text class="grey--text">Student Details</v-card-text>
+                    <v-card-text class="grey--text">Teacher Details</v-card-text>
                     <v-responsive class="text-center">
                         <v-avatar  size="150" class="mb-2">
                             <v-icon size="150" v-if="!imageUrl">mdi-account-circle</v-icon>
@@ -37,6 +37,18 @@
 
                         <v-col cols="12" md="6" sm="6">
                             <v-text-field v-model="lname" :rules="nameRules" label="Last Name" prepend-icon="mdi-account" required></v-text-field>
+                        </v-col>
+
+                        <v-col cols="12" md="6" sm="6" >
+                            <v-radio-group v-model="nicType" row style="justify-content:center !important">
+                                <v-radio label="Old NIC" value="old"></v-radio>
+                                <v-radio label="New NIC" value="new"></v-radio>
+                            </v-radio-group>
+                        </v-col>
+
+                        <v-col cols="12" md="6" sm="6">
+                            <v-text-field v-if="nicType=='new'" v-model="nicNo" :rules="newNicRules" label="NIC no.new" prepend-icon="mdi-card-bulleted" required maxlength="12"></v-text-field>
+                            <v-text-field v-else-if="nicType=='old'" v-model="nicNo" :rules="oldNicRules" label="NIC no.old" prepend-icon="mdi-card-bulleted" required maxlength="10"></v-text-field>
                         </v-col>
 
                         <v-col cols="12" md="6" sm="6">
@@ -68,41 +80,11 @@
                             <v-text-field v-model="address"  :rules="addressRules" label="Address" prepend-icon="mdi-map-marker" required></v-text-field>
                         </v-col>
 
-                        <v-col cols="12" md="6" sm="6">
-                            <v-select :items="grade" :rules="gradeRules" label="Grade" prepend-icon="mdi-card-bulleted" v-model="getGrade"></v-select>
-                        </v-col>
-
-                        <v-col cols="12" md="6" sm="6">
-                            <!-- for empty space -->
-                        </v-col>
-                        
-                        <v-card-text class="grey--text">Parent Details</v-card-text>
-                        
-                        <v-col cols="12" md="12" sm="12" >
-                            <v-radio-group v-model="parent" row style="justify-content:center !important" :rules="guardianRules" required>
-                                <v-radio label="Mother" value="mother"></v-radio>
-                                <v-radio label="Father" value="father"></v-radio>
-                                <v-radio label="Guardian" value="guardian"></v-radio>
-                            </v-radio-group>
-                        </v-col>
-
-                        <v-col cols="12" md="6" sm="6">
-                            <v-text-field v-model="parentName" :rules="nameRules" label="Name" prepend-icon="mdi-account" required></v-text-field>
-                        </v-col>
-
-                        <v-col cols="12" md="6" sm="6">
-                            <v-text-field v-model="parentTp" :rules="tpRules" label="Telephone No." prepend-icon="mdi-phone-classic" required maxlength="10"></v-text-field>
-                        </v-col>
-
                         <v-card-text class="grey--text">Class Details</v-card-text>
 
                         <v-col cols="12" md="6" sm="6">
-                            <v-select :items="brach" :rules="branchRules" label="Branch" prepend-icon="mdi-sitemap" v-model="getBrach"></v-select>
-                        </v-col>
-
-                        <v-col cols="12" md="6" sm="6">
                             <template>
-                                <div >
+                                <div>
                                     <v-menu ref="menud" v-model="joingMenu" :close-on-content-click="false" transition="scale-transition" offset-y min-width="auto">
                                         <template v-slot:activator="{ on, attrs }">
                                             <v-text-field v-model="joingDate" label="Join date" prepend-icon="mdi-calendar" readonly v-bind="attrs" v-on="on" :rules="joinDateRules"></v-text-field>
@@ -113,6 +95,10 @@
                             </template>
                         </v-col>
 
+                        <v-col cols="12" md="6" sm="6">
+                            <!-- for empty space -->
+                        </v-col>
+                        
                     </v-row>
                     <v-card-actions class="justify-end">
                         <v-btn   @click="Reset" outlined color="grey">Reset</v-btn>
@@ -143,12 +129,10 @@ export default {
             tp: '',
             email: '',
             address: '',
-            parentTp: '',
-            parentName: '',
-            parent:'mother',
             getGender:'',
-            getGrade:'',
-            getBrach:'Hakmana',
+            nicNo:'',
+            nicType:'old',
+            
 
             activePicker: null,
             date: null,
@@ -157,7 +141,6 @@ export default {
             joingActivePicker: null,
             joingDate: (new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().substr(0, 10),
             joingMenu: false,
-            
 
             // -----------Validation rules-----------
             nameRules: [v=> !!v || 'Name is required', v => /^[a-zA-Z_ ]*$/.test(v) || 'Must be text only', v=> (v && v.length >3)|| 'Name must be greater than 3'],
@@ -172,25 +155,17 @@ export default {
 
             genderRules: [v=> !!v || 'Gender is required'],
 
-            gradeRules: [v=> !!v || 'Grade is required'],
-
-            branchRules: [v=> !!v || 'Branch is required'],
-
-            guardianRules: [v=> !!v || 'Guardian is required'],
+            newNicRules: [v=> !!v || 'NIC is required', v => /^\d+$/.test(v) || 'Must be a number', v=> (v && v.length ==12)|| 'New Nic no. must have 12 numbers'],
+            
+            oldNicRules: [v=> !!v || 'NIC is required', v => /[0-9]+[vxVX]/.test(v) || 'Please insert valid NIC', v=> (v && v.length ==10)|| 'Old Nic no. must have 10 characters'],
 
             joinDateRules: [v=> !!v || 'Join Date is required'],
-
-            
 
             
 
 
             // -----------dropdown list-----------
             gender:['Male','Female','Other'],
-
-            grade:['1','2','3','4','5','6','7','8','9','10','11','12','13','NVQ'],
-
-            brach:['Hakmana','Walasmulla'],
             
 
 
@@ -198,10 +173,9 @@ export default {
 
 
             breadcrumbs: [
-                { text: 'Students', disabled: false, href: '/Students' },
-                { text: 'StudentRegistration', disabled: true, href: '/StudentRegistration' }
+                { text: 'Teachers', disabled: false, href: '/Teachers' },
+                { text: 'TeacherRegistration', disabled: true, href: '/TeacherRegistration' }
             ],
-
 
             success:false,
             unsuccess:false,
@@ -218,11 +192,11 @@ export default {
 
     methods:{
         Register(){
+            // this.$refs.form.validate();
             if(this.$refs.form.validate()){
                 console.log('fname:'+this.fname+' lname:'+this.lname+' tp:'+this.tp+' email:'+this.email+' address:'+this.address+' bday:'+this.date+' gender:'+this.getGender);
                 console.log('parent type:'+this.parent+' parent name:'+this.parentName+' parent tp:'+this.parentTp)
             }
-            
             
         },
 
@@ -248,14 +222,12 @@ export default {
         scrollToTop() {
             window.scrollTo(0, 0);
         },
-
         successAlert(){
             this.success=true
         },
         failedAlert(){
             this.unsuccess=true
         }
-        
       
     }
 }
