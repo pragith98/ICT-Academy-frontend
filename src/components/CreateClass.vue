@@ -1,0 +1,110 @@
+<template>
+    <div>
+
+        <v-breadcrumbs :items="breadcrumbs">
+                <template v-slot:divider>
+                    <v-icon>mdi-chevron-right</v-icon>
+                </template>
+            </v-breadcrumbs>
+        <v-container>
+
+            <v-snackbar :timeout="3000" v-model="unsuccessAlert" color="red"  bottom ><v-icon left>mdi-alert-outline</v-icon> Staff delete <strong>failed</strong> </v-snackbar>
+            <v-snackbar :timeout="3000" v-model="successAlert" color="green"  bottom><v-icon left>mdi-check</v-icon>Staff delete <strong>successful</strong> </v-snackbar>
+            
+            
+ 
+
+            <template>
+                <v-card flat>
+                    <v-card-title class="heading-1 blue lighten-4 primary--text">Create Class</v-card-title>
+                    <v-card-title><v-spacer></v-spacer><v-text-field v-model="search" append-icon="mdi-magnify" label="Search" single-line hide-details></v-text-field></v-card-title>
+                    
+                    <v-data-table :headers="headers" :items="staff" :search="search">
+                        <template v-slot:item="row">
+                            <tr>
+                                <td>{{row.item.getTitle}}. {{row.item.fname}} {{row.item.lname}}</td>
+                                <td>{{row.item.tp}}</td>
+                                <td>{{row.item.email}}</td>
+                                <td>{{row.item.getBrach}}</td>
+                                <td >
+                                    <app-ViewStaffDetails :staff='row.item'></app-ViewStaffDetails>
+                                </td>
+                                <td>
+                                    <app-DeleteStaff :staff='row.item' @success="deleteAlert($event)" @failed="faileAlert($event)"></app-DeleteStaff>
+                                </td>
+                                <td></td>
+                            </tr>
+                        </template>
+                    </v-data-table>
+                </v-card>
+            </template>
+
+            
+            
+        </v-container>
+    </div>
+ 
+    
+</template>
+
+<script>
+    import ViewStaffDetails from './ViewStaffDetails.vue'
+    import DeleteStaff from './DeleteStaff.vue'
+
+    export default {
+        components:{
+            'app-ViewStaffDetails':ViewStaffDetails,
+            'app-DeleteStaff':DeleteStaff
+        },
+        data () {
+            return {
+                search: '',
+                headers: [
+                    {text: 'NAME',align: 'start', sortable: false, value:'fname'},
+                    { text: 'TELEPHONE NO.', sortable: false, value: 'tp' },
+                    { text: 'EMAIL', sortable: false, value: 'email' },
+                    { text: 'BRANCH', sortable: true, value: 'getBrach' },
+
+                    { text: '', sortable: false, value: 'Action' },
+                    { text: '', sortable: false, value: 'Action' },
+                    { text: '', sortable: false, value: 'lname'}
+                ],
+
+                staff: [
+                    {fname:'Saman', lname:'Herath', nicType:'old', nicNo:'871982289v', tp:'1231235323', email:'Saman@Saman.com', address:'no1, rathnapura', getGender:'Male', staffID:'2621', date:'2021-02-17', getBrach:'Hakmana',getTitle:'Mr'},
+                    {fname:'Dasun', lname:'Rathnayake', nicType:'old', nicNo:'871982289v', tp:'4321235323', email:'Dasun@Dasun.com', address:'no1, Matale', getGender:'Male', staffID:'2065', date:'2021-07-19', getBrach:'Walasmulla',getTitle:'Mr'},
+                    {fname:'Kasun', lname:'Bandara', nicType:'old', nicNo:'871982289v', tp:'7831235323', email:'Kasun@Kasun.com', address:'no1, Kandy', getGender:'Male', date:'2021-02-19', staffID:'2071', getBrach:'Hakmana', getTitle:'Mr'},
+                    {fname:'Maheshi', lname:'Ranathunga', nicType:'old', nicNo:'871982289v',tp:'9931235323', email:'Maheshi@Maheshi.com', address:'no1, Jafna', getGender:'Female', date:'2021-09-12', staffID:'2024', getBrach:'Walasmulla', getTitle:'Miss'},
+                    
+                ],
+
+                breadcrumbs: [
+                    { text: 'Classes', disabled: false, href: '/Classes' },
+                    { text: 'CreateClass', disabled: true, href: '/Class/CreateClass' }
+                ],
+
+                successAlert:false,
+                unsuccessAlert:false,
+            }
+        },
+
+        methods: {
+            deleteAlert(success){
+                this.successAlert = success;
+            },
+            faileAlert(failed){
+                this.unsuccessAlert = failed;
+            },
+        }
+    }
+</script>
+            
+
+
+
+
+
+            
+        
+        
+
