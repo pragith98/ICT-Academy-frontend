@@ -17,25 +17,59 @@
             <template>
                 <v-card flat>
                     <v-card-title class="heading-1 blue lighten-4 primary--text">Create Class</v-card-title>
-                    <v-card-title><v-spacer></v-spacer><v-text-field v-model="search" append-icon="mdi-magnify" label="Search" single-line hide-details></v-text-field></v-card-title>
                     
-                    <v-data-table :headers="headers" :items="staff" :search="search">
-                        <template v-slot:item="row">
-                            <tr>
-                                <td>{{row.item.getTitle}}. {{row.item.fname}} {{row.item.lname}}</td>
-                                <td>{{row.item.tp}}</td>
-                                <td>{{row.item.email}}</td>
-                                <td>{{row.item.getBrach}}</td>
-                                <td >
-                                    <app-ViewStaffDetails :staff='row.item'></app-ViewStaffDetails>
-                                </td>
-                                <td>
-                                    <app-DeleteStaff :staff='row.item' @success="deleteAlert($event)" @failed="faileAlert($event)"></app-DeleteStaff>
-                                </td>
-                                <td></td>
-                            </tr>
-                        </template>
-                    </v-data-table>
+                    <v-stepper v-model="e1" flat>
+                        <v-stepper-header>
+                            <v-stepper-step :complete="e1 > 1" step="1">
+                                Insert Class Details
+                            </v-stepper-step>
+                            <v-divider></v-divider>
+
+                            <v-stepper-step :complete="e1 > 2" step="2">
+                                Select Teacher
+                            </v-stepper-step>
+                            <v-divider></v-divider>
+
+                            <v-stepper-step :complete="e1 > 3" step="3">
+                                Select Subject
+                            </v-stepper-step>
+                            <v-divider></v-divider>
+
+                            <v-stepper-step step="4">
+                                Finish
+                            </v-stepper-step>
+                        </v-stepper-header>
+                        
+                        <v-stepper-items>
+                            <v-stepper-content step="1">
+                                <v-card color="grey" class="mb-12" height="200px" flat></v-card>
+                                <v-btn color="primary" @click="e1=2">Continue</v-btn>
+                                <v-btn text>Cancel</v-btn>
+                            </v-stepper-content>
+
+                            <v-stepper-content step="2">
+                                <v-card color="grey" class="mb-12" height="200px" flat></v-card>
+                                <v-btn color="primary" @click="e1=3">Continue</v-btn>
+                                <v-btn text>Cancel</v-btn>
+                            </v-stepper-content>
+
+                            <v-stepper-content step="3">
+                                <v-card color="grey" class="mb-12" height="200px" flat></v-card>
+                                <v-btn color="primary" @click="e1=4">Continue</v-btn>
+                                <v-btn text>Cancel</v-btn>
+                            </v-stepper-content>
+
+                            <v-stepper-content step="4">
+                                <v-card color="grey" class="mb-12" height="200px" flat></v-card>
+                                <v-btn color="primary" @click="e1=1">Continue</v-btn>
+                                <v-btn text>Cancel</v-btn>
+                            </v-stepper-content>
+                        </v-stepper-items>
+                        
+
+                       
+                    </v-stepper>
+
                 </v-card>
             </template>
 
@@ -48,35 +82,15 @@
 </template>
 
 <script>
-    import ViewStaffDetails from './ViewStaffDetails.vue'
-    import DeleteStaff from './DeleteStaff.vue'
+    
 
     export default {
         components:{
-            'app-ViewStaffDetails':ViewStaffDetails,
-            'app-DeleteStaff':DeleteStaff
+            
         },
         data () {
             return {
-                search: '',
-                headers: [
-                    {text: 'NAME',align: 'start', sortable: false, value:'fname'},
-                    { text: 'TELEPHONE NO.', sortable: false, value: 'tp' },
-                    { text: 'EMAIL', sortable: false, value: 'email' },
-                    { text: 'BRANCH', sortable: true, value: 'getBrach' },
-
-                    { text: '', sortable: false, value: 'Action' },
-                    { text: '', sortable: false, value: 'Action' },
-                    { text: '', sortable: false, value: 'lname'}
-                ],
-
-                staff: [
-                    {fname:'Saman', lname:'Herath', nicType:'old', nicNo:'871982289v', tp:'1231235323', email:'Saman@Saman.com', address:'no1, rathnapura', getGender:'Male', staffID:'2621', date:'2021-02-17', getBrach:'Hakmana',getTitle:'Mr'},
-                    {fname:'Dasun', lname:'Rathnayake', nicType:'old', nicNo:'871982289v', tp:'4321235323', email:'Dasun@Dasun.com', address:'no1, Matale', getGender:'Male', staffID:'2065', date:'2021-07-19', getBrach:'Walasmulla',getTitle:'Mr'},
-                    {fname:'Kasun', lname:'Bandara', nicType:'old', nicNo:'871982289v', tp:'7831235323', email:'Kasun@Kasun.com', address:'no1, Kandy', getGender:'Male', date:'2021-02-19', staffID:'2071', getBrach:'Hakmana', getTitle:'Mr'},
-                    {fname:'Maheshi', lname:'Ranathunga', nicType:'old', nicNo:'871982289v',tp:'9931235323', email:'Maheshi@Maheshi.com', address:'no1, Jafna', getGender:'Female', date:'2021-09-12', staffID:'2024', getBrach:'Walasmulla', getTitle:'Miss'},
-                    
-                ],
+                e1: 1,
 
                 breadcrumbs: [
                     { text: 'Classes', disabled: false, href: '/Classes' },
