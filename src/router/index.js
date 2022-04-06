@@ -30,7 +30,8 @@ const routes = [
   { path:'/Teachers/TeacherDetails', name:'TeacherDetails', component:()=> import('../components/TeacherDetails.vue')},
   { path:'/Staff/StaffRegistration', name:'StaffRegistration', component:()=> import('../components/StaffRegistration.vue')},
   { path:'/Staff/StaffDetails', name:'StaffDetails', component:()=> import('../components/StaffDetails.vue')},
-  { path:'/Staff/SystemUsers', name:'SystemUsers', component:()=> import('../components/SystemUsers.vue')}
+  { path:'/Staff/SystemUsers', name:'SystemUsers', component:()=> import('../components/SystemUsers.vue')},
+  { path:'/Classes/CreateClass', name:'CreateClass', component:()=> import('../components/CreateClass.vue')}
   
   // {
   //   path: '/about',
