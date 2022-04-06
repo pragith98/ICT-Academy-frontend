@@ -22,7 +22,7 @@
                     <v-data-table :headers="headers" :items="staff" :search="search">
                         <template v-slot:item="row">
                             <tr>
-                                <td>{{row.item.fname}} {{row.item.lname}}</td>
+                                <td>{{row.item.getTitle}}. {{row.item.fname}} {{row.item.lname}}</td>
                                 <td>{{row.item.tp}}</td>
                                 <td>{{row.item.email}}</td>
                                 <td>{{row.item.getBrach}}</td>
@@ -71,10 +71,10 @@
                 ],
 
                 staff: [
-                    {fname:'Saman', lname:'Herath', nicType:'old', nicNo:'871982289v', tp:'1231235323', email:'Saman@Saman.com', address:'no1, rathnapura', getGender:'Male', staffID:'2621', date:'2021-02-17', getBrach:'Hakmana', title:'Officer'},
-                    {fname:'Dasun', lname:'Rathnayake', nicType:'old', nicNo:'871982289v', tp:'4321235323', email:'Dasun@Dasun.com', address:'no1, Matale', getGender:'Male', staffID:'2065', date:'2021-07-19', getBrach:'Walasmulla', title:'Officer'},
-                    {fname:'Kasun', lname:'Bandara', nicType:'old', nicNo:'871982289v', tp:'7831235323', email:'Kasun@Kasun.com', address:'no1, Kandy', getGender:'Male', date:'2021-02-19', staffID:'2071', getBrach:'Hakmana', title:'Cleaner'},
-                    {fname:'Maheshi', lname:'Ranathunga', nicType:'old', nicNo:'871982289v',tp:'9931235323', email:'Maheshi@Maheshi.com', address:'no1, Jafna', getGender:'Female', date:'2021-09-12', staffID:'2024', getBrach:'Walasmulla', title:'Officer'},
+                    {fname:'Saman', lname:'Herath', nicType:'old', nicNo:'871982289v', tp:'1231235323', email:'Saman@Saman.com', address:'no1, rathnapura', getGender:'Male', staffID:'2621', date:'2021-02-17', getBrach:'Hakmana',getTitle:'Mr'},
+                    {fname:'Dasun', lname:'Rathnayake', nicType:'old', nicNo:'871982289v', tp:'4321235323', email:'Dasun@Dasun.com', address:'no1, Matale', getGender:'Male', staffID:'2065', date:'2021-07-19', getBrach:'Walasmulla',getTitle:'Mr'},
+                    {fname:'Kasun', lname:'Bandara', nicType:'old', nicNo:'871982289v', tp:'7831235323', email:'Kasun@Kasun.com', address:'no1, Kandy', getGender:'Male', date:'2021-02-19', staffID:'2071', getBrach:'Hakmana', getTitle:'Mr'},
+                    {fname:'Maheshi', lname:'Ranathunga', nicType:'old', nicNo:'871982289v',tp:'9931235323', email:'Maheshi@Maheshi.com', address:'no1, Jafna', getGender:'Female', date:'2021-09-12', staffID:'2024', getBrach:'Walasmulla', getTitle:'Miss'},
                     
                 ],
 

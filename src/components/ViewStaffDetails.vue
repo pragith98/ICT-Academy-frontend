@@ -31,6 +31,10 @@
 
                 <v-row justify="center" dense >
 
+                    <v-col cols="12" md="12" sm="12">
+                        <v-select :items="title" :rules="titleRules" label="Title" prepend-icon="mdi-badge-account" v-model="getTitle"></v-select>
+                    </v-col>
+
                     <v-col cols="12" md="6" sm="6">
                         <v-text-field v-model="fname" :rules="nameRules" label="First Name" prepend-icon="mdi-account" required></v-text-field>
                     </v-col>
@@ -145,6 +149,7 @@ export default {
             getGender:this.staff.getGender,
             nicNo:this.staff.nicNo,
             nicType:this.staff.nicType,
+            getTitle:this.staff.getTitle,
 
             activePicker: null,
             date: this.staff.date,
@@ -183,11 +188,15 @@ export default {
 
             joinDateRules: [v=> !!v || 'Join Date is required'],
 
+            titleRules: [v=> !!v || 'Title is required'],
+
 
             // -----------dropdown list-----------
             gender:['Male','Female','Other'],
 
-            brach:['Hakmana','Walasmulla']
+            brach:['Hakmana','Walasmulla'],
+
+            title:['Mr', 'Ms', 'Mrs', 'Miss']
 
         
         }
