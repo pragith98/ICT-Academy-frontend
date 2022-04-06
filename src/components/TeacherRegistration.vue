@@ -50,9 +50,9 @@
                                         <v-text-field v-model="lname" :rules="nameRules" label="Last Name" prepend-icon="mdi-account" required></v-text-field>
                                     </v-col>
 
-                                    <v-col cols="12" md="6" sm="6" >
-                                        <v-radio-group v-model="nicType" row style="justify-content:center !important">
-                                            <v-radio label="Old NIC" value="old"></v-radio>
+                                    <v-col cols="12" md="6" sm="6">
+                                        <v-radio-group v-model="nicType" row style="flex-wrap:nowrap !important; justify-content:center !important ">
+                                            <v-radio label="Old NIC" value="old" ></v-radio>
                                             <v-radio label="New NIC" value="new"></v-radio>
                                         </v-radio-group>
                                     </v-col>
