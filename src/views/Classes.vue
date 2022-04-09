@@ -44,7 +44,7 @@
                     {name:'Create Class', icon:'mdi-plus-box-multiple', color:'green', link:'/Classes/CreateClass'},
                     {name:'Class Details', icon:'mdi-view-list', color:'orange', link:'/Classes'},
                     {name:'Enroll Students', icon:'mdi-link-box-variant', color:'brown', link:'/Classes'},
-                    {name:'Subjects', icon:'mdi-format-align-center', color:'blue', link:'/Classes'}
+                    {name:'Subjects', icon:'mdi-format-align-center', color:'blue', link:'/Classes/Subjects'}
                 ],
 
 
