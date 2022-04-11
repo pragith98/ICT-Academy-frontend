@@ -31,7 +31,7 @@
                                 <v-spacer></v-spacer>
                                 <app-CreateSubject class="mr-2" @success="subjectCreateSuccessAlert($event)" @failed="subjectCreateFaileAlert($event)"></app-CreateSubject>
                             </v-card-title>
-                            <v-card-title><v-spacer></v-spacer><v-text-field v-model="subjectSearch" append-icon="mdi-magnify" label="Search" single-line hide-details></v-text-field></v-card-title>
+                            <v-card-title><v-spacer></v-spacer><v-text-field v-model="subjectSearch" append-icon="mdi-magnify" label="Search Subject" single-line hide-details></v-text-field></v-card-title>
                             
                             <v-data-table :headers="subjectHeaders" :items="subjects" :search="subjectSearch" :items-per-page="5">
                                 <template v-slot:item="row">
@@ -55,7 +55,7 @@
                     <v-col>
                         <v-card flat>
                             <v-card-title class="heading-1 blue lighten-4 primary--text ">Category</v-card-title>
-                            <v-card-title><v-spacer></v-spacer><v-text-field v-model="categorySearch" append-icon="mdi-magnify" label="Search" single-line hide-details></v-text-field></v-card-title>
+                            <v-card-title><v-spacer></v-spacer><v-text-field v-model="categorySearch" append-icon="mdi-magnify" label="Search Category" single-line hide-details></v-text-field></v-card-title>
                             
                             <v-data-table :headers="categoryHeaders" :items="categories" :search="categorySearch" :items-per-page="5">
                                 <template v-slot:item="row">
