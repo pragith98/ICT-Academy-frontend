@@ -10,8 +10,8 @@
 
             <!----------------------------- Alerts ---------------------------------->
 
-            <v-snackbar :timeout="3000" v-model="unsuccessAlert" color="red"  bottom ><v-icon left>mdi-alert-outline</v-icon> Student delete <strong>failed</strong> </v-snackbar>
-            <v-snackbar :timeout="3000" v-model="successAlert" color="green"  bottom><v-icon left>mdi-check</v-icon>Student delete <strong>successful</strong> </v-snackbar>
+            <v-snackbar :timeout="3000" v-model="unsuccessAlert" color="red"  bottom ><v-icon left>mdi-alert-outline</v-icon>Item delete <strong>failed</strong> </v-snackbar>
+            <v-snackbar :timeout="3000" v-model="successAlert" color="green"  bottom><v-icon left>mdi-check</v-icon>Item delete <strong>successful</strong> </v-snackbar>
             
             <v-snackbar :timeout="3000" v-model="unsuccessAlertSubjectCreate" color="red"  bottom ><v-icon left>mdi-alert-outline</v-icon>Subject Create <strong>failed</strong> </v-snackbar>
             <v-snackbar :timeout="3000" v-model="successAlertSubjectCreate" color="green"  bottom><v-icon left>mdi-check</v-icon>Subject Create <strong>successful</strong> </v-snackbar>
@@ -41,7 +41,7 @@
                                             <app-ViewStudentDetails :student='row.item'></app-ViewStudentDetails>
                                         </td>
                                         <td>
-                                            <app-DeleteStudent :student='row.item' @success="deleteAlert($event)" @failed="faileAlert($event)"></app-DeleteStudent>
+                                            <app-deleteSubject :subject='row.item' @success="deleteAlert($event)" @failed="faileAlert($event)"></app-deleteSubject>
                                         </td>
                                         
                                     </tr>
@@ -87,12 +87,14 @@
     import ViewStudentDetails from './ViewStudentDetails.vue'
     import DeleteStudent from './DeleteStudent.vue'
     import CreateSubject from './CreateSubject.vue'
+    import DeleteSubject from './DeleteSubject.vue'
 
     export default {
         components:{
             'app-ViewStudentDetails':ViewStudentDetails,
             'app-DeleteStudent':DeleteStudent,
-            'app-CreateSubject':CreateSubject
+            'app-CreateSubject':CreateSubject,
+            'app-deleteSubject':DeleteSubject
         },
         data () {
             return {
