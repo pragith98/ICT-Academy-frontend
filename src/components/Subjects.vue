@@ -63,7 +63,7 @@
                                             <app-ViewStudentDetails :student='row.item'></app-ViewStudentDetails>
                                         </td>
                                         <td>
-                                            <app-DeleteStudent :student='row.item' @success="deleteAlert($event)" @failed="faileAlert($event)"></app-DeleteStudent>
+                                            <app-deleteSubjectCategory :subjecCategory='row.item' @success="deleteAlert($event)" @failed="faileAlert($event)"></app-deleteSubjectCategory>
                                         </td>
                                         
                                     </tr>
@@ -85,16 +85,16 @@
 
 <script>
     import ViewStudentDetails from './ViewStudentDetails.vue'
-    import DeleteStudent from './DeleteStudent.vue'
     import CreateSubject from './CreateSubject.vue'
     import DeleteSubject from './DeleteSubject.vue'
+    import DeleteSubjectCategory from './DeleteSubjectCategory.vue'
 
     export default {
         components:{
             'app-ViewStudentDetails':ViewStudentDetails,
-            'app-DeleteStudent':DeleteStudent,
             'app-CreateSubject':CreateSubject,
-            'app-deleteSubject':DeleteSubject
+            'app-deleteSubject':DeleteSubject,
+            'app-deleteSubjectCategory':DeleteSubjectCategory,
         },
         data () {
             return {
