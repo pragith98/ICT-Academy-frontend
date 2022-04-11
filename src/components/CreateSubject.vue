@@ -11,7 +11,7 @@
         <v-card-text style="height: 800px;">
             <v-form ref="form" v-model="valid" lazy-validation>
                 
-                <fieldset class="px-5 pb-3">
+                <fieldset class="px-5 pb-3" :hidden="hideTable">
                     <legend><v-card-text class="grey--text">Subject Details</v-card-text></legend>
                     <v-row justify="center" dense >
                             <v-col cols="12" md="6" sm="6">
@@ -92,8 +92,13 @@
             <v-btn :disabled="!valid || !subject || !getMedium || !categoryName" color="primary" @click="Save(), successAlert(), dialog = false" depressed>Create</v-btn>
         </v-card-actions>
 
+        <v-snackbar v-model="categoryCreated" :multi-line="multiLine">
+            Category Create successfully. Now you can add it from the table.
+            <template v-slot:action="{ attrs }">
+                <v-btn color="red" text v-bind="attrs" @click="categoryCreated = false">Close</v-btn>
+            </template>
+        </v-snackbar>
         
-        <v-snackbar v-model="categoryCreated" :timeout="2000" absolute bottom left color="green">Category has been created</v-snackbar>
       </v-card>
       
     </v-dialog>
@@ -122,6 +127,8 @@ export default {
             categoryCreated:false,
 
             hideTable:false,
+
+            multiLine: true,
 
 
             search: '',
