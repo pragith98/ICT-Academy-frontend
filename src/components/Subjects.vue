@@ -15,6 +15,9 @@
             
             <v-snackbar :timeout="3000" v-model="unsuccessAlertSubjectCreate" color="red"  bottom ><v-icon left>mdi-alert-outline</v-icon>Subject Create <strong>failed</strong> </v-snackbar>
             <v-snackbar :timeout="3000" v-model="successAlertSubjectCreate" color="green"  bottom><v-icon left>mdi-check</v-icon>Subject Create <strong>successful</strong> </v-snackbar>
+
+            <v-snackbar :timeout="3000" v-model="unsuccessAlertUpdate" color="red"  bottom ><v-icon left>mdi-alert-outline</v-icon>Item update <strong>failed</strong> </v-snackbar>
+            <v-snackbar :timeout="3000" v-model="successAlertUpdate" color="cyan"  bottom><v-icon left>mdi-check</v-icon>Item update <strong>successful</strong> </v-snackbar>
             
             
             <!----------------------------- Alerts ---------------------------------->
@@ -30,7 +33,7 @@
                             </v-card-title>
                             <v-card-title><v-spacer></v-spacer><v-text-field v-model="subjectSearch" append-icon="mdi-magnify" label="Search" single-line hide-details></v-text-field></v-card-title>
                             
-                            <v-data-table :headers="subjectHeaders" :items="subjects" :search="subjectSearch">
+                            <v-data-table :headers="subjectHeaders" :items="subjects" :search="subjectSearch" :items-per-page="5">
                                 <template v-slot:item="row">
                                     <tr>
                                         <td>{{row.item.name}}</td>
@@ -38,7 +41,7 @@
                                         <td>{{row.item.medium}}</td>
                                         <td>{{row.item.category}}</td>
                                         <td >
-                                            <app-ViewStudentDetails :student='row.item'></app-ViewStudentDetails>
+                                            <app-editSubject :subjectDetails='row.item' @success="updateSuccessAlert($event)" @failed="updateFaileAlert($event)"></app-editSubject>
                                         </td>
                                         <td>
                                             <app-deleteSubject :subject='row.item' @success="deleteAlert($event)" @failed="faileAlert($event)"></app-deleteSubject>
@@ -54,7 +57,7 @@
                             <v-card-title class="heading-1 blue lighten-4 primary--text ">Category</v-card-title>
                             <v-card-title><v-spacer></v-spacer><v-text-field v-model="categorySearch" append-icon="mdi-magnify" label="Search" single-line hide-details></v-text-field></v-card-title>
                             
-                            <v-data-table :headers="categoryHeaders" :items="categories" :search="categorySearch">
+                            <v-data-table :headers="categoryHeaders" :items="categories" :search="categorySearch" :items-per-page="5">
                                 <template v-slot:item="row">
                                     <tr>
                                         <td>{{row.item.name}}</td>
@@ -65,7 +68,6 @@
                                         <td>
                                             <app-deleteSubjectCategory :subjecCategory='row.item' @success="deleteAlert($event)" @failed="faileAlert($event)"></app-deleteSubjectCategory>
                                         </td>
-                                        
                                     </tr>
                                 </template>
                             </v-data-table>
@@ -88,6 +90,7 @@
     import CreateSubject from './CreateSubject.vue'
     import DeleteSubject from './DeleteSubject.vue'
     import DeleteSubjectCategory from './DeleteSubjectCategory.vue'
+    import EditSubject from './EditSubject.vue'
 
     export default {
         components:{
@@ -95,6 +98,7 @@
             'app-CreateSubject':CreateSubject,
             'app-deleteSubject':DeleteSubject,
             'app-deleteSubjectCategory':DeleteSubjectCategory,
+            'app-editSubject':EditSubject,
         },
         data () {
             return {
@@ -142,10 +146,18 @@
                 unsuccessAlertSubjectCreate:false,
                 successAlertSubjectCreate:false,
 
+                unsuccessAlertUpdate:false,
+                successAlertUpdate:false,
+
             }
         },
 
         methods: {
+
+
+
+
+            // -------------------- alerts --------------------------------
             deleteAlert(success){
                 this.successAlert = success;
             },
@@ -158,6 +170,13 @@
             },
             subjectCreateFaileAlert(failed){
                 this.unsuccessAlertSubjectCreate = failed;
+            },
+
+            updateSuccessAlert(success){
+                this.successAlertUpdate = success;
+            },
+            updateFaileAlert(failed){
+                this.unsuccessAlertUpdate = failed;
             },
         }
     }
