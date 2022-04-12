@@ -32,7 +32,8 @@ const routes = [
   { path:'/Staff/StaffDetails', name:'StaffDetails', component:()=> import('../components/StaffDetails.vue')},
   { path:'/Staff/SystemUsers', name:'SystemUsers', component:()=> import('../components/SystemUsers.vue')},
   { path:'/Classes/CreateClass', name:'CreateClass', component:()=> import('../components/CreateClass.vue')},
-  { path:'/Classes/Subjects', name:'Subjects', component:()=> import('../components/Subjects.vue')}
+  { path:'/Classes/Subjects', name:'Subjects', component:()=> import('../components/Subjects.vue')},
+  { path:'/Classes/ClassDetails', name:'ClassDetails', component:()=> import('../components/ClassDetails.vue')}
   
   // {
   //   path: '/about',
