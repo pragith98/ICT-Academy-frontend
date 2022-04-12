@@ -37,7 +37,7 @@
                                         </td>
                                         <td>{{row.item.day}}</td>
                                         <td >
-                                            <app-ViewStudentDetails :student='row.item'></app-ViewStudentDetails>
+                                            <app-EditClass :classDetails='row.item'></app-EditClass>
                                         </td>
                                         <td>
                                             <app-DeleteClass :classDetails='row.item' @success="deleteAlert($event)" @failed="faileAlert($event)"></app-DeleteClass>
@@ -57,12 +57,12 @@
 </template>
 
 <script>
-    import ViewStudentDetails from '../components/ViewStudentDetails.vue'
+    import EditClass from '../components/EditClass.vue'
     import DeleteClass from '../components/DeleteClass.vue'
 
     export default {
         components:{
-            'app-ViewStudentDetails':ViewStudentDetails,
+            'app-EditClass':EditClass,
             'app-DeleteClass':DeleteClass
         },
         data () {
