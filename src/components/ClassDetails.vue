@@ -40,7 +40,7 @@
                                             <app-ViewStudentDetails :student='row.item'></app-ViewStudentDetails>
                                         </td>
                                         <td>
-                                            <app-DeleteStudent :student='row.item' @success="deleteAlert($event)" @failed="faileAlert($event)"></app-DeleteStudent>
+                                            <app-DeleteClass :classDetails='row.item' @success="deleteAlert($event)" @failed="faileAlert($event)"></app-DeleteClass>
                                         </td>
                                     </tr>
                                 </template>
@@ -58,12 +58,12 @@
 
 <script>
     import ViewStudentDetails from '../components/ViewStudentDetails.vue'
-    import DeleteStudent from '../components/DeleteStudent.vue'
+    import DeleteClass from '../components/DeleteClass.vue'
 
     export default {
         components:{
             'app-ViewStudentDetails':ViewStudentDetails,
-            'app-DeleteStudent':DeleteStudent
+            'app-DeleteClass':DeleteClass
         },
         data () {
             return {
@@ -77,7 +77,7 @@
                     { text: 'SUBJECT', sortable: false, value: 'subject' },
                     { text: 'FEE', sortable: false, value: 'fee', filterable:false},
                     { text: 'TIME', sortable: true, value: 'startTime' },
-                    { text: 'LOCATION', sortable: false, value: 'hall' },
+                    { text: 'LOCATION', sortable: false, value: 'location' },
                     { text: 'DAY', sortable: true, value: 'day' },
                     { text: '', sortable: false, value: 'Action' },
                     { text: '', sortable: false, value: 'Action' },
