@@ -56,8 +56,12 @@
                                 <v-stepper-content step="1">
                                     <v-card class="mb-12" flat min-height="250px">
                                         <v-row dense>
-                                            <v-col cols="12" md="12" sm="12">
+                                            <v-col cols="12" md="6" sm="6">
                                                 <v-text-field v-model="className" label="Class Name" prepend-icon="mdi-home-variant" :rules="nameRules" required ></v-text-field>
+                                            </v-col>
+
+                                            <v-col cols="12" md="6" sm="6">
+                                                <v-select :items="grade" :rules="gradeRules" label="Grade" prepend-icon="mdi-card-bulleted" v-model="getGrade"></v-select>
                                             </v-col>
 
                                             <v-col cols="12" md="6" sm="6">
@@ -104,7 +108,7 @@
                                     <v-card-actions>
                                         <v-spacer></v-spacer>
                                         <v-btn outlined color="grey" @click="Reset(),scrollToTop()">Cancel</v-btn>
-                                        <v-btn color="primary" @click="e1=2" depressed :disabled="!valid || !className || !getFeeType || !fee || !getLocation || !getDay || !startTime || !endTime">Next
+                                        <v-btn color="primary" @click="e1=2" depressed :disabled="!valid || !className || !getFeeType || !fee || !getLocation || !getDay || !startTime || !endTime || !getGrade">Next
                                             <v-icon>mdi-chevron-right</v-icon>
                                         </v-btn>
                                     </v-card-actions>
@@ -262,6 +266,7 @@
                 getFeeType:'Daily Pay',
                 className:'',
                 fee:'',
+                getGrade:'',
 
 
                 startTimeMenu: false,
@@ -323,6 +328,8 @@
 
                 subjectRules: [v=> !!v || 'Subject is required'],
 
+                gradeRules: [v=> !!v || 'Grade is required'],
+
 
 
                 // -----------dropdown list-----------
@@ -331,6 +338,10 @@
                 day:['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'],
 
                 feeType:['Monthly Pay','Daily Pay'],
+
+                grade:['1','2','3','4','5','6','7','8','9','10','11','12','13','Other'],
+
+
 
                 successAlert:false,
                 unsuccessAlert:false,
