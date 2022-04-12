@@ -106,7 +106,7 @@
                                         <v-divider></v-divider>
                                         <v-card-actions>
                                             <v-spacer></v-spacer>
-                                            <v-btn outlined color="grey" @click="Reset(),scrollToTop()">Cancel</v-btn>
+                                            <v-btn outlined color="grey" @click="Reset(),scrollToTop(),dialogMain = false">Cancel</v-btn>
                                             <v-btn color="primary" @click="e1=2" depressed :disabled="!valid || !className || !getFeeType || !fee || !getLocation || !getDay || !startTime || !endTime || !getGrade">Next
                                                 <v-icon>mdi-chevron-right</v-icon>
                                             </v-btn>
