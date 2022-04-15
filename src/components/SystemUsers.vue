@@ -11,12 +11,15 @@
             <v-snackbar :timeout="3000" v-model="unsuccessAlert" color="red"  bottom ><v-icon left>mdi-alert-outline</v-icon>Account remove <strong>failed</strong> </v-snackbar>
             <v-snackbar :timeout="3000" v-model="successAlert" color="green"  bottom><v-icon left>mdi-check</v-icon>Account remove <strong>successful</strong> </v-snackbar>
             
-            
+            <v-snackbar :timeout="3000" v-model="unsuccessCreateAlert" color="red"  bottom ><v-icon left>mdi-alert-outline</v-icon>Account Create <strong>failed</strong> </v-snackbar>
+            <v-snackbar :timeout="3000" v-model="successCreateAlert" color="green"  bottom><v-icon left>mdi-check</v-icon>Account Create <strong>successful</strong> </v-snackbar>
  
 
             <template>
                 <v-card flat>
-                    <v-card-title class="heading-1 blue lighten-4 primary--text">System Users</v-card-title>
+                    <v-card-title class="heading-1 blue lighten-4 primary--text">System Users
+                        <app-CreateSystemUser class="mr-2" @success="createSuccessAlert($event)" @failed="createFailAlert($event)"></app-CreateSystemUser>
+                    </v-card-title>
                     <v-card-title><v-spacer></v-spacer><v-text-field v-model="search" append-icon="mdi-magnify" label="Search" single-line hide-details></v-text-field></v-card-title>
                     <v-data-table :headers="headers" :items="staff" :search="search">
                         <template v-slot:item="row">
@@ -56,11 +59,13 @@
 <script>
     import ViewStaffDetails from './ViewStaffDetails.vue'
     import RemoveSystemUser from './RemoveSystemUser.vue'
+    import CreateSystemUser from './CreateSystemUser.vue'
 
     export default {
         components:{
             'app-ViewStaffDetails':ViewStaffDetails,
-            'app-RemoveSystemUser':RemoveSystemUser
+            'app-RemoveSystemUser':RemoveSystemUser,
+            'app-CreateSystemUser':CreateSystemUser
         },
         data () {
             return {
@@ -93,6 +98,8 @@
 
                 successAlert:false,
                 unsuccessAlert:false,
+                unsuccessCreateAlert:false,
+                successCreateAlert:false
             }
         },
 
@@ -103,6 +110,13 @@
             faileAlert(failed){
                 this.unsuccessAlert = failed;
             },
+
+            createSuccessAlert(success){
+                this.successCreateAlert = success
+            },
+            createFailAlert(failed){
+                this.unsuccessCreateAlert = failed
+            }
         }
     }
 </script>

@@ -4,6 +4,8 @@ import router from './router'
 import vuetify from './plugins/vuetify'
 require('./assets/custom-globle.css');
 
+
+
 Vue.config.productionTip = false
 
 new Vue({
