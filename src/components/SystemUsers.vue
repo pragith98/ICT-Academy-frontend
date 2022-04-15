@@ -36,7 +36,7 @@
                                     <v-chip outlined small>{{row.item.getBrach}}</v-chip>
                                 </td>
                                 <td >
-                                    <app-ViewStaffDetails :staff='row.item'></app-ViewStaffDetails>
+                                    <app-EditSystemUser :staff='row.item'></app-EditSystemUser>
                                 </td>
                                 <td>
                                     <app-RemoveSystemUser :staff='row.item' @success="deleteAlert($event)" @failed="faileAlert($event)"></app-RemoveSystemUser>
@@ -57,15 +57,15 @@
 </template>
 
 <script>
-    import ViewStaffDetails from './ViewStaffDetails.vue'
     import RemoveSystemUser from './RemoveSystemUser.vue'
     import CreateSystemUser from './CreateSystemUser.vue'
+    import EditSystemUser from './EditSystemUser.vue'
 
     export default {
         components:{
-            'app-ViewStaffDetails':ViewStaffDetails,
             'app-RemoveSystemUser':RemoveSystemUser,
-            'app-CreateSystemUser':CreateSystemUser
+            'app-CreateSystemUser':CreateSystemUser,
+            'app-EditSystemUser':EditSystemUser
         },
         data () {
             return {
