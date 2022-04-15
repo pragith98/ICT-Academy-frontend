@@ -6,8 +6,10 @@
             <v-chip outlined class="ml-2" >Hakmana</v-chip>
             <v-spacer></v-spacer>
             <h1 class="subtitle-1">Hi! Daminda</h1>
-            <v-btn depressed color="grey" dark class="ml-5 lighten-1" small>
-                Logout
+            <v-btn depressed color="grey" dark class="ml-5 lighten-1" small to="/Login">Login
+                <v-icon right>mdi-login</v-icon>
+            </v-btn>
+            <v-btn depressed color="grey" dark class="ml-5 lighten-1" small>Logout
                 <v-icon right>mdi-logout</v-icon>
             </v-btn>
         </v-app-bar>
