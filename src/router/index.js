@@ -11,6 +11,7 @@ import Payments from '../views/Payments.vue'
 import Staff from '../views/Staff.vue'
 import Teachers from '../views/Teachers.vue'
 import Login from '../views/Login.vue'
+import ForgotPassword from '../views/ForgotPassword.vue'
 
 Vue.use(VueRouter)
 
@@ -25,6 +26,7 @@ const routes = [
   { path:'/Staff', name:'Staff', component:Staff},
   { path:'/Teachers', name:'Teachers', component:Teachers},
   { path:'/Login', name:'Login', component:Login},
+  { path:'/ForgotPassword', name:'ForgotPassword', component:ForgotPassword},
 
   { path:'/Students/StudentRegistration', name:'StudentRegistration', component:()=> import('../components/StudentRegistration.vue')},
   { path:'/Students/StudentDetails', name:'StudentDetails', component:()=> import('../components/StudentDetails.vue')},
