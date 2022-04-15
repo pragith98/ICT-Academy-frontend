@@ -10,6 +10,7 @@ import Classes from '../views/Classes.vue'
 import Payments from '../views/Payments.vue'
 import Staff from '../views/Staff.vue'
 import Teachers from '../views/Teachers.vue'
+import Login from '../views/Login.vue'
 
 Vue.use(VueRouter)
 
@@ -23,6 +24,7 @@ const routes = [
   { path:'/Payments', name:'Payments', component:Payments},
   { path:'/Staff', name:'Staff', component:Staff},
   { path:'/Teachers', name:'Teachers', component:Teachers},
+  { path:'/Login', name:'Login', component:Login},
 
   { path:'/Students/StudentRegistration', name:'StudentRegistration', component:()=> import('../components/StudentRegistration.vue')},
   { path:'/Students/StudentDetails', name:'StudentDetails', component:()=> import('../components/StudentDetails.vue')},
