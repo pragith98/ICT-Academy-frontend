@@ -47,6 +47,11 @@ const routes = [
   // }
 ]
 
+// router.beforeEach(() =>{
+//   console.log("auth")
+// })
+
+
 const router = new VueRouter({
   routes,
   mode:'history'
