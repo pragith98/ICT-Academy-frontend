@@ -37,7 +37,8 @@ const routes = [
   { path:'/Staff/SystemUsers', name:'SystemUsers', component:()=> import('../components/SystemUsers.vue')},
   { path:'/Classes/CreateClass', name:'CreateClass', component:()=> import('../components/CreateClass.vue')},
   { path:'/Classes/Subjects', name:'Subjects', component:()=> import('../components/Subjects.vue')},
-  { path:'/Classes/ClassDetails', name:'ClassDetails', component:()=> import('../components/ClassDetails.vue')}
+  { path:'/Classes/ClassDetails', name:'ClassDetails', component:()=> import('../components/ClassDetails.vue')},
+  { path:'/Classes/EnrollDetails', name:'EnrollDetails', component:()=> import('../components/EnrollDetails.vue')}
   
   // {
   //   path: '/about',
