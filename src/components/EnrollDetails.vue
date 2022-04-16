@@ -27,20 +27,15 @@
                                 <template v-slot:item="row">
                                     <tr>
                                         <td>{{row.item.name}}</td>
-                                        <td>{{row.item.teacher}}</td>
-                                        <td>{{row.item.grade}}</td>
-                                        <td>{{row.item.subject}}</td>
-                                        <td>{{row.item.fee}}</td>
-                                        <td>{{row.item.startTime}} - {{row.item.endTime}}</td>
-                                        <td>
-                                            <v-chip small :color="row.item.color" dark>{{row.item.location}}</v-chip>
-                                        </td>
-                                        <td>{{row.item.day}}</td>
+                                        <td>{{row.item.students}}</td>
                                         <td >
                                             <app-EditClass :classDetails='row.item'></app-EditClass>
                                         </td>
+                                        <td >
+                                            <app-EnrollStudents :classDetails='row.item'></app-EnrollStudents>
+                                        </td>
                                         <td>
-                                            <app-DeleteClass :classDetails='row.item' @success="deleteAlert($event)" @failed="faileAlert($event)"></app-DeleteClass>
+                                            <app-EditClass :classDetails='row.item'></app-EditClass>
                                         </td>
                                     </tr>
                                 </template>
@@ -59,11 +54,13 @@
 <script>
     import EditClass from './EditClass.vue'
     import DeleteClass from './DeleteClass.vue'
+    import EnrollStudents from './EnrollStudents.vue'
 
     export default {
         components:{
             'app-EditClass':EditClass,
-            'app-DeleteClass':DeleteClass
+            'app-DeleteClass':DeleteClass,
+            'app-EnrollStudents':EnrollStudents
         },
         data () {
             return {
@@ -71,24 +68,19 @@
 
                 search: '',
                 headers: [
-                    { text: 'NAME',align: 'start', sortable: false, value:'name'},
-                    { text: 'TEACHER', sortable: false, value: 'teacher' },
-                    { text: 'GRADE',sortable: true, value: 'grade' },
-                    { text: 'SUBJECT', sortable: false, value: 'subject' },
-                    { text: 'FEE', sortable: false, value: 'fee', filterable:false},
-                    { text: 'TIME', sortable: true, value: 'startTime' },
-                    { text: 'LOCATION', sortable: false, value: 'location' },
-                    { text: 'DAY', sortable: true, value: 'day' },
+                    { text: 'Class',align: 'start', sortable: false, value:'name'},
+                    { text: 'Students Count', sortable: false, value: 'students' },
+                    { text: '', sortable: false, value: 'Action' },
                     { text: '', sortable: false, value: 'Action' },
                     { text: '', sortable: false, value: 'Action' },
                 ],
 
                 classes: [
-                    {name:'Sinhala 8', teacher:'Mr.Smantha Bandara', grade:'8', subject:'Sinhala', fee:'1500.00', startTime:'08:00', endTime:'10:00', location:'Hall 1', day:'Sunday', id:'clz8473', color:'green'},
-                    {name:'Maths 8', teacher:'Mr.Kelum Saranga', grade:'8', subject:'Maths', fee:'1500.00', startTime:'08:00', endTime:'10:00', location:'Hall 3', day:'Monday', id:'clz8473', color:'red'},
-                    {name:'Science 9', teacher:'Ms.Nirosha Damayanthi', grade:'9', subject:'Science', fee:'1500.00', startTime:'08:00', endTime:'10:00', location:'Hall 2', day:'Sunday', id:'clz8473', color:'blue'},
-                    {name:'History 6', teacher:'Mr.Nimal Santha', grade:'6', subject:'History', fee:'1500.00', startTime:'08:00', endTime:'10:00', location:'Hall 1', day:'Sunday', id:'clz8473', color:'brown'},
-                    {name:'Sinhala 7', teacher:'Mr.Kusal Bandara', grade:'7', subject:'Sinhala', fee:'1500.00', startTime:'08:00', endTime:'10:00', location:'Online', day:'Sunday', id:'clz8473', color:'grey'},
+                    {name:'Sinhala 8', students:'30', id:'clz8773'},
+                    {name:'Maths 8', students:'15', id:'clz8343'},
+                    {name:'Science 9', students:'400', id:'clz8003'},
+                    {name:'History 6', students:'55', id:'clz8467'},
+                    {name:'Sinhala 7', students:'10', id:'clz4473'},
 
                     
                     
@@ -96,7 +88,7 @@
 
                 breadcrumbs: [
                     { text: 'Classes', disabled: false, href: '/Classes' },
-                    { text: 'ClassDetails', disabled: true, href: '/Classes/ClassDetails' }
+                    { text: 'Enroll Students', disabled: true, href: '/Classes/EnrollDetails' }
                 ],
 
                 successAlert:false,
