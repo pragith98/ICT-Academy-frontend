@@ -29,13 +29,10 @@
                                         <td>{{row.item.name}}</td>
                                         <td>{{row.item.students}}</td>
                                         <td >
-                                            <app-EditClass :classDetails='row.item'></app-EditClass>
+                                            <app-EnrollStudentsDetails :classDetails='row.item'></app-EnrollStudentsDetails>
                                         </td>
-                                        <td >
+                                        <td style="justify-content:start !important">
                                             <app-EnrollStudents :classDetails='row.item'></app-EnrollStudents>
-                                        </td>
-                                        <td>
-                                            <app-EditClass :classDetails='row.item'></app-EditClass>
                                         </td>
                                     </tr>
                                 </template>
@@ -52,15 +49,13 @@
 </template>
 
 <script>
-    import EditClass from './EditClass.vue'
-    import DeleteClass from './DeleteClass.vue'
     import EnrollStudents from './EnrollStudents.vue'
+    import EnrollStudentsDetails from './EnrollStudentsDetails.vue'
 
     export default {
         components:{
-            'app-EditClass':EditClass,
-            'app-DeleteClass':DeleteClass,
-            'app-EnrollStudents':EnrollStudents
+            'app-EnrollStudents':EnrollStudents,
+            'app-EnrollStudentsDetails':EnrollStudentsDetails
         },
         data () {
             return {
@@ -70,8 +65,7 @@
                 headers: [
                     { text: 'Class',align: 'start', sortable: false, value:'name'},
                     { text: 'Students Count', sortable: false, value: 'students' },
-                    { text: '', sortable: false, value: 'Action' },
-                    { text: '', sortable: false, value: 'Action' },
+                    { text: '', sortable: false, value: 'Action'},
                     { text: '', sortable: false, value: 'Action' },
                 ],
 
