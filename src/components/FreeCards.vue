@@ -23,14 +23,15 @@
                     <v-card-title><v-spacer></v-spacer><v-text-field v-model="search" append-icon="mdi-magnify" label="Search" single-line hide-details></v-text-field></v-card-title>
                     <template>
                         <div>
-                            <v-data-table :headers="headers" :items="students" :search="search">
-                                <template v-slot:item="row">
+                            <v-data-table :headers="headers" :items="students" :search="search" >
+                                <template v-slot:item="row" style="background:#e3f2fd">
                                     <tr>
                                         <td>{{row.item.fname}} {{row.item.lname}}</td>
                                         <td>{{row.item.id}}</td>
                                         <td >
-                                            <app-EnrollStudentsDetails :classDetails='row.item'></app-EnrollStudentsDetails>
+                                            <app-FreeCardClasses :studentDetails='row.item'></app-FreeCardClasses>
                                         </td>
+                                        
                                     </tr>
                                 </template>
                             </v-data-table>
@@ -46,13 +47,12 @@
 </template>
 
 <script>
-    import EnrollStudents from './EnrollStudents.vue'
-    import EnrollStudentsDetails from './EnrollStudentsDetails.vue'
+    
+    import FreeCardClasses from './FreeCardClasses.vue'
 
     export default {
         components:{
-            'app-EnrollStudents':EnrollStudents,
-            'app-EnrollStudentsDetails':EnrollStudentsDetails
+            'app-FreeCardClasses':FreeCardClasses
         },
         data () {
             return {
@@ -60,7 +60,7 @@
 
                 search: '',
                 headers: [
-                    { text: 'Student',align: 'start', sortable: false, value:'name'},
+                    { text: 'STUDENT',align: 'start', sortable: false, value:'name'},
                     { text: 'ID', sortable: false, value: 'students' },
                     { text: '', sortable: false, value: 'Action'}
                 ],
