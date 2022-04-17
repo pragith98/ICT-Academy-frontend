@@ -2,7 +2,7 @@
   <v-row justify="center">
     <v-dialog v-model="dialog" scrollable max-width="700px" persistent>
         <template v-slot:activator="{ on, attrs }">
-            <v-btn class="orange" small dark depressed  v-bind="attrs" v-on="on">Classes<v-icon dark right>mdi-google-classroom</v-icon></v-btn>
+            <v-btn class="orange" small dark depressed  v-bind="attrs" v-on="on">Free Cards</v-btn>
         </template>
         <v-card max-width="700" flat>
         <v-card-title class="heading-1 blue lighten-4 primary--text">Free Cards of - {{studentDetails.fname}}</v-card-title>

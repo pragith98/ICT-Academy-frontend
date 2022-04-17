@@ -19,7 +19,10 @@
 
             <template>
                 <v-card flat>
-                    <v-card-title class="heading-1 blue lighten-4 primary--text">Free Cards</v-card-title>
+                    <v-card-title class="heading-1 blue lighten-4 primary--text">Free Cards
+                        <v-spacer></v-spacer>
+                        <app-CreateFreeCardStudent class="mr-2"></app-CreateFreeCardStudent>
+                    </v-card-title>
                     <v-card-title><v-spacer></v-spacer><v-text-field v-model="search" append-icon="mdi-magnify" label="Search" single-line hide-details></v-text-field></v-card-title>
                     <template>
                         <div>
@@ -49,10 +52,12 @@
 <script>
     
     import FreeCardClasses from './FreeCardClasses.vue'
+    import CreateFreeCardStudent from './CreateFreeCardStudent.vue'
 
     export default {
         components:{
-            'app-FreeCardClasses':FreeCardClasses
+            'app-FreeCardClasses':FreeCardClasses,
+            'app-CreateFreeCardStudent':CreateFreeCardStudent
         },
         data () {
             return {
@@ -60,42 +65,34 @@
 
                 search: '',
                 headers: [
-                    { text: 'STUDENT',align: 'start', sortable: false, value:'name'},
-                    { text: 'ID', sortable: false, value: 'students' },
+                    { text: 'STUDENT',align: 'start', sortable: false, value:'fname'},
+                    { text: 'ID', sortable: false, value: 'id' },
                     { text: '', sortable: false, value: 'Action'}
                 ],
 
-                classes: [
-                    {name:'Sinhala 8', students:'30', id:'clz8773'},
-                    {name:'Maths 8', students:'15', id:'clz8343'},
-                    {name:'Science 9', students:'400', id:'clz8003'},
-                    {name:'History 6', students:'55', id:'clz8467'},
-                    {name:'Sinhala 7', students:'10', id:'clz4473'},
-                ],
-
                 students: [
-                {fname:'Saman', lname:'Herath', id:'2021'},
-                {fname:'Dasun', lname:'Rathnayake', id:'2028'},
-                {fname:'Kasun', lname:'Bandara', id:'2035'},
-                {fname:'Maheshi', lname:'Ranathunga', id:'2077'},
-                {fname:'Saman', lname:'Herath', id:'2021'},
-                {fname:'Dasun', lname:'Rathnayake', id:'2028'},
-                {fname:'Kasun', lname:'Bandara', id:'2035'},
-                {fname:'Maheshi', lname:'Ranathunga', id:'2077'},
-                {fname:'Saman', lname:'Herath', id:'2021'},
-                {fname:'Dasun', lname:'Rathnayake', id:'2028'},
-                {fname:'Kasun', lname:'Bandara', id:'2035'},
-                {fname:'Maheshi', lname:'Ranathunga', id:'2077'},
-                {fname:'Saman', lname:'Herath', id:'2021'},
-                {fname:'Dasun', lname:'Rathnayake', id:'2028'},
-                {fname:'Kasun', lname:'Bandara', id:'2035'},
-                {fname:'Maheshi', lname:'Ranathunga', id:'2077'},
-                {fname:'Saman', lname:'Herath', id:'2021'},
-                {fname:'Dasun', lname:'Rathnayake', id:'2028'},
-                {fname:'Kasun', lname:'Bandara', id:'2035'},
-                {fname:'Maheshi', lname:'Ranathunga', id:'2077'},
+                    {fname:'Saman', lname:'Herath', id:'2021'},
+                    {fname:'Dasun', lname:'Rathnayake', id:'2028'},
+                    {fname:'Kasun', lname:'Bandara', id:'2035'},
+                    {fname:'Maheshi', lname:'Ranathunga', id:'2077'},
+                    {fname:'Saman', lname:'Herath', id:'2021'},
+                    {fname:'Dasun', lname:'Rathnayake', id:'2028'},
+                    {fname:'Kasun', lname:'Bandara', id:'2035'},
+                    {fname:'Maheshi', lname:'Ranathunga', id:'2077'},
+                    {fname:'Saman', lname:'Herath', id:'2021'},
+                    {fname:'Dasun', lname:'Rathnayake', id:'2028'},
+                    {fname:'Kasun', lname:'Bandara', id:'2035'},
+                    {fname:'Maheshi', lname:'Ranathunga', id:'2077'},
+                    {fname:'Saman', lname:'Herath', id:'2021'},
+                    {fname:'Dasun', lname:'Rathnayake', id:'2028'},
+                    {fname:'Kasun', lname:'Bandara', id:'2035'},
+                    {fname:'Maheshi', lname:'Ranathunga', id:'2077'},
+                    {fname:'Saman', lname:'Herath', id:'2021'},
+                    {fname:'Dasun', lname:'Rathnayake', id:'2028'},
+                    {fname:'Kasun', lname:'Bandara', id:'2035'},
+                    {fname:'Maheshi', lname:'Ranathunga', id:'2077'},
                 
-            ],
+                ],
 
 
 
