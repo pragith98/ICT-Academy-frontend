@@ -9,10 +9,23 @@
 
         <v-container>
 
-            <!-- <v-snackbar :timeout="3000" v-model="unsuccessAlert" color="red"  bottom ><v-icon left>mdi-alert-outline</v-icon> Student delete <strong>failed</strong> </v-snackbar>
-            <v-snackbar :timeout="3000" v-model="successAlert" color="green"  bottom><v-icon left>mdi-check</v-icon>Student delete <strong>successful</strong> </v-snackbar> -->
+
+            <!----------------------------- Alerts ---------------------------------->
+
+            <v-snackbar :timeout="5000" v-model="unsuccessAlert" color="red"  bottom ><v-icon left>mdi-alert-outline</v-icon> Class cancel <strong>failed</strong> </v-snackbar>
+            <v-snackbar :timeout="5000" v-model="successAlert" color="green"  bottom><v-icon left>mdi-check</v-icon>Class cancel <strong>successful</strong> </v-snackbar>
             
+            <v-snackbar v-model="classStartAlert" :multi-line="multiLine">
+                Class start successfully. Now you can mark <strong>Attendance</strong> .
+                <template v-slot:action="{ attrs }">
+                    <v-btn color="red" text v-bind="attrs" @click="categoryCreated = false">Close</v-btn>
+                </template>
+            </v-snackbar>
             
+            <!----------------------------- Alerts ---------------------------------->
+
+
+
             <template>
                 <v-card flat color="#E3F2FD">
                     <v-card-title class="heading-1 blue lighten-4 primary--text">Started Classes</v-card-title>
@@ -24,29 +37,45 @@
                                     <div class="title white--text">{{ classes.name }}</div>
                                 </v-card-title>
                                 
-                                <!-- <v-card-title class=" mb-5">
-                                    <v-btn outlined>Start Class</v-btn><v-btn text>Cancel</v-btn>
-                                    
-                                </v-card-title> -->
-                                <!-- <v-card-text class="pa-0"><v-icon left>mdi-clock</v-icon> {{classes.time}} </v-card-text>
-                                <v-card-text class="pa-0"><v-icon left>mdi-home</v-icon><v-chip outlined>{{classes.location}}</v-chip> </v-card-text>
-                                <v-card-text class="pa-0"><v-icon left>mdi-account</v-icon> {{classes.teacher}} </v-card-text> -->
+                                <v-card-text><v-icon left>mdi-clock</v-icon> {{classes.time}} <br>
+                                <v-icon left>mdi-home</v-icon><v-chip small outlined>{{classes.location}}</v-chip> <br>
+                                <v-icon left>mdi-account</v-icon> {{classes.teacher}} </v-card-text>
+
+
+                                <v-card-actions  class="pb-5">
+                                    <app-MarkAttendanceDailyFee class="ml-1" :classDetails='classes'></app-MarkAttendanceDailyFee>
+                                    <v-spacer></v-spacer>
+                                    <app-CancelClass class="mr-1" :classDetails='classes'  @success="cancelAlert($event)" @failed="faileAlert($event)"></app-CancelClass>
+                                </v-card-actions>
+                                
+                            </v-card>
+                            
+                            
+                        </v-col>
+
+                    </v-row>
+                </v-card>
+            </template>
+
+            <template >
+                <v-card flat color="#E3F2FD" class="mt-6">
+                    <v-card-title class="heading-1 blue lighten-4 primary--text">New Classes</v-card-title>
+                    <v-row class="pa-5">
+                        <v-col lg="4" md="4" sm="6" cols="12" v-for="classes in classes" :key="classes.name">
+                            <v-card flat>
+        
+                                <v-card-title style="background: #FB8C00" class="mb-2">
+                                    <div class="title white--text">{{ classes.name }}</div>
+                                </v-card-title>
                                 
                                 <v-card-text><v-icon left>mdi-clock</v-icon> {{classes.time}} <br>
                                 <v-icon left>mdi-home</v-icon><v-chip small outlined>{{classes.location}}</v-chip> <br>
                                 <v-icon left>mdi-account</v-icon> {{classes.teacher}} </v-card-text>
 
 
-                                <v-card-actions>
-                                    <app-MarkAttendanceDailyFee :classDetails='classes'></app-MarkAttendanceDailyFee>
-                                    <!-- <v-btn outlined>Mark Attendance</v-btn> -->
-                                    <v-spacer></v-spacer>
-                                    <v-btn text>Cancel</v-btn>
+                                <v-card-actions  class="pb-5">
+                                    <v-btn depressed block dark color="#FB8C00" @click="startClass(classes.id)">Start Class</v-btn>
                                 </v-card-actions>
-
-                                <!-- <v-card-title class=" mb-5" style="justify-content:center">
-                                    <v-btn>Start Class</v-btn>
-                                </v-card-title> -->
                                 
                             </v-card>
                             
@@ -68,13 +97,16 @@
 
 <script>
     import MarkAttendanceDailyFee from './MarkAttendanceDailyFee.vue'
+    import CancelClass from './CancelClass.vue'
     export default{
         components:{
             'app-MarkAttendanceDailyFee':MarkAttendanceDailyFee,
+            'app-CancelClass':CancelClass
         },
         
         data(){
             return{
+
                 classes: [
                     {name:'Sinhala 8', id:'clz8773',time:'08:00 - 10:00', location:'Hall 1',teacher:'Rohana Herath'},
                     {name:'Maths 8', id:'clz8343', time:'08:00 - 10:00', location:'Hall 2',teacher:'Rohana Herath'},
@@ -88,7 +120,28 @@
                     { text: 'Attendance', disabled: false, href: '/Attendance' },
                     { text: 'Today Classes', disabled: true, href: '/Attendance/TodayClasses' }
                 ],
+
+                multiLine: true,
+                classStartAlert:false,
+
+                successAlert:false,
+                unsuccessAlert:false,
             }
+        },
+
+        methods:{
+
+            startClass(classID){
+                console.log(classID)
+                this.classStartAlert=true
+            },
+
+            cancelAlert(success){
+                this.successAlert = success;
+            },
+            faileAlert(failed){
+                this.unsuccessAlert = failed;
+            },
         }
         
     }
