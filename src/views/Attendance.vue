@@ -42,7 +42,7 @@
             return{
                 cardlist:[
                     {name:'Mark Attendance', icon:'mdi-checkbox-marked-outline', color:'pink lighten-2', link:'/Attendance/TodayClasses'},
-                    {name:'Attendance Details', icon:'mdi-view-list', color:'orange', link:'/Attendance'}
+                    {name:'Attendance Details', icon:'mdi-view-list', color:'orange', link:'/Attendance/AttendanceDetails'}
                 ],
 
 
