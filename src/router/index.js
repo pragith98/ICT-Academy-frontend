@@ -41,7 +41,8 @@ const routes = [
   { path:'/Classes/EnrollDetails', name:'EnrollDetails', component:()=> import('../components/EnrollDetails.vue')},
   { path:'/Classes/FreeCards', name:'FreeCards', component:()=> import('../components/FreeCards.vue')},
   { path:'/Attendance/TodayClasses', name:'TodayClasses', component:()=> import('../components/TodayClasses.vue')},
-  { path:'/Attendance/AttendanceDetails', name:'AttendanceDetails', component:()=> import('../components/AttendanceDetails.vue')}
+  { path:'/Attendance/AttendanceDetails', name:'AttendanceDetails', component:()=> import('../components/AttendanceDetails.vue')},
+  { path:'/Branches/CreateBranch', name:'CreateBranch', component:()=> import('../components/CreateBranch.vue')}
   
   // {
   //   path: '/about',
