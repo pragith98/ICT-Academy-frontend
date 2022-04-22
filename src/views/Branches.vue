@@ -42,7 +42,7 @@
             return{
                 cardlist:[
                     {name:'Creat Branch', icon:'mdi-home-plus', color:'green', link:'/Branches/CreateBranch'},
-                    {name:'Branch Details', icon:'mdi-view-list', color:'orange', link:'/Branches'}
+                    {name:'Branch Details', icon:'mdi-view-list', color:'orange', link:'/Branches/BranchDetails'}
                 ],
 
 

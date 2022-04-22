@@ -42,7 +42,8 @@ const routes = [
   { path:'/Classes/FreeCards', name:'FreeCards', component:()=> import('../components/FreeCards.vue')},
   { path:'/Attendance/TodayClasses', name:'TodayClasses', component:()=> import('../components/TodayClasses.vue')},
   { path:'/Attendance/AttendanceDetails', name:'AttendanceDetails', component:()=> import('../components/AttendanceDetails.vue')},
-  { path:'/Branches/CreateBranch', name:'CreateBranch', component:()=> import('../components/CreateBranch.vue')}
+  { path:'/Branches/CreateBranch', name:'CreateBranch', component:()=> import('../components/CreateBranch.vue')},
+  { path:'/Branches/BranchDetails', name:'BranchDetails', component:()=> import('../components/BranchDetails.vue')}
   
   // {
   //   path: '/about',
