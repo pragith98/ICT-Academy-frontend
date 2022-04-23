@@ -1,7 +1,7 @@
 <template>
   <v-app>
     <app-AdminNavigation ></app-AdminNavigation>
-    <v-main class="blue lighten-5">
+    <v-main class="blue-grey lighten-5">
       <!-- <v-container> -->
         <router-view></router-view>
       <!-- </v-container> -->

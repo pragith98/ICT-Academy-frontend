@@ -1,26 +1,39 @@
 <template>
+    
     <nav>
-        <v-app-bar color="white" app >
-            <v-app-bar-nav-icon @click="drawer= !drawer"></v-app-bar-nav-icon>
-            <v-toolbar-title class="font-weight-black text--secondary" >ICT Academy</v-toolbar-title>
-            <v-chip outlined class="ml-2" >Hakmana</v-chip>
-            <v-spacer></v-spacer>
-            <h1 class="subtitle-1">Hi! Daminda</h1>
-            <v-btn depressed color="grey" dark class="ml-5 lighten-1" small to="/Login">Login
-                <v-icon right>mdi-login</v-icon>
-            </v-btn>
-            <v-btn depressed color="grey" dark class="ml-5 lighten-1" small>Logout
-                <v-icon right>mdi-logout</v-icon>
-            </v-btn>
+        
+        <v-app-bar app flat class="pt-3 blue-grey lighten-5">
+            <v-app-bar rounded flat color="white">
+                <v-app-bar-nav-icon @click="drawer= !drawer"></v-app-bar-nav-icon>
+                <v-toolbar-title class="font-weight-black text--secondary" >ICT Academy</v-toolbar-title>
+                <!-- <v-chip outlined class="ml-2" >Hakmana</v-chip> -->
+                <v-spacer></v-spacer>
+                <h1 class="subtitle-1">Hi! Daminda</h1>
+                <v-btn depressed color="grey" dark class="ml-5 lighten-1" small to="/Login">Login
+                    <v-icon right>mdi-login</v-icon>
+                </v-btn>
+                <v-btn depressed color="grey" dark class="ml-5 lighten-1" small>Logout
+                    <v-icon right>mdi-logout</v-icon>
+                </v-btn>
+            </v-app-bar>
+            
         </v-app-bar>
         
-        <v-navigation-drawer v-model="drawer" app color="primary" dark>
-            <v-system-bar color="primary"></v-system-bar>
-            <v-list class="text-center">
-                <v-list-item-avatar size="100" >
+        <v-navigation-drawer v-model="drawer" app color="#263238" dark>
+            <!-- <v-system-bar color="primary"></v-system-bar> -->
+            <v-card color="#263238" class="pa-4 mt-3" flat>
+                <v-card flat class="text-center" color="#455A64" shaped>
+                    <v-card-title class="font-weight-bold">ICT Academy</v-card-title>
+                    <v-select :items="branch" v-model="getBranch" outlined dense class="px-3"></v-select>
+                    <!-- <h1 class="font-weight-black white--text">ICT Academy</h1> -->
+                </v-card>
+            </v-card>
+            
+            <!-- <v-list class="text-center">
+                <v-list-item-avatar size="100" > -->
                     <!-- <v-img src="../assets/Logo.png"></v-img> -->
-                </v-list-item-avatar>
-            </v-list>
+                <!-- </v-list-item-avatar>
+            </v-list> -->
             <v-divider></v-divider>
             <v-list nav dense shaped>
                 <v-list-item-group v-model="selectedItem" color="white">
@@ -62,6 +75,10 @@
                     { text: 'Accounting', icon: 'mdi-chart-donut', link:'/Accounting' },
                     { text: 'Branches', icon: 'mdi-sitemap', link:'/Branches' }
                 ],
+
+                getBranch:'Hakmana',
+                branch:['Hakmana','Walasmulla'],
+
             }
         },
 
