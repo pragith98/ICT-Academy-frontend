@@ -8,24 +8,32 @@
             </v-breadcrumbs>
         <v-container>
 
-            <v-snackbar :timeout="3000" v-model="unsuccessAlert" color="red"  bottom ><v-icon left>mdi-alert-outline</v-icon> Student delete <strong>failed</strong> </v-snackbar>
-            <v-snackbar :timeout="3000" v-model="successAlert" color="green"  bottom><v-icon left>mdi-check</v-icon>Student delete <strong>successful</strong> </v-snackbar>
+
+            <!----------------------------- Alerts ---------------------------------->
+            <v-snackbar :timeout="3000" v-model="unsuccessAlert" color="red"  bottom ><v-icon left>mdi-alert-outline</v-icon> Branch delete <strong>failed</strong> </v-snackbar>
+            <v-snackbar :timeout="3000" v-model="successAlert" color="green"  bottom><v-icon left>mdi-check</v-icon>Branch delete <strong>successful</strong> </v-snackbar>
             
+            <v-snackbar :timeout="3000" v-model="unsuccessAlertUpdate" color="red"  bottom ><v-icon left>mdi-alert-outline</v-icon>Branch update <strong>failed</strong> </v-snackbar>
+            <v-snackbar :timeout="3000" v-model="successAlertUpdate" color="green"  bottom><v-icon left>mdi-check</v-icon>Branch update <strong>successful</strong> </v-snackbar>
             
-            
-            
+            <!----------------------------- Alerts ---------------------------------->
 
             
 
             <template>
                 <v-card flat>
-                    <v-card-title class="heading-1 blue lighten-4 primary--text">Attendance Details</v-card-title>
+                    <v-card-title class="heading-1 blue lighten-4 primary--text">Branch Details</v-card-title>
                     <v-card-title><v-spacer></v-spacer><v-text-field v-model="search" append-icon="mdi-magnify" label="Search" single-line hide-details></v-text-field></v-card-title>
                     <template>
                         <div>
-                            <v-data-table :headers="headers" :items="classes" :search="search">
+                            <v-data-table :headers="headers" :items="branches" :search="search">
                                 <template v-slot:[`item.actions`]="{ item }">
-                                    <app-ClassConductedDates :classDetails="item.id" :className="item.name"></app-ClassConductedDates>
+                                    <v-card-actions>
+                                        <app-EditBranch  :branchDetails='item' @success="updateSuccessAlert($event)" @failed="updateFaileAlert($event)"></app-EditBranch> <v-spacer></v-spacer>
+                                        <app-DeleteBranch class="ml-5" :branchDetails='item' @success="deleteAlert($event)" @failed="faileAlert($event)"></app-DeleteBranch>
+                                    </v-card-actions>
+                                   
+                                    
                                 </template>
                             </v-data-table>
                         </div>
@@ -41,12 +49,14 @@
 
 <script>
     
-    import ClassConductedDates from './ClassConductedDates.vue'
+    import DeleteBranch from './DeleteBranch.vue'
+    import EditBranch from './EditBranch.vue'
 
     export default {
         
         components:{
-            'app-ClassConductedDates':ClassConductedDates
+            'app-DeleteBranch':DeleteBranch,
+            'app-EditBranch':EditBranch,
         },
 
         data () {
@@ -64,7 +74,7 @@
 
                 branches: [
                     {id:'001',name:'Hkmana', tp:'0873847384', halls:'8', address:'123, main road, hakmana'},
-                    {id:'002',name:'Walasmulla', tp:'3433234543', halls:'4', address:'123, main road, hakmana'},
+                    {id:'002',name:'Walasmulla', tp:'3433234543', halls:'4', address:'123, main road, Walasmulla'},
                     
 
                     
@@ -72,12 +82,15 @@
                 ],
 
                 breadcrumbs: [
-                    { text: 'Attendance', disabled: false, href: '/Attendance' },
-                    { text: 'Attendance Details', disabled: true, href: '/Attendance/AttendanceDetails' }
+                    { text: 'Branches', disabled: false, href: '/Branches' },
+                    { text: 'Branch Details', disabled: true, href: '/Attendance/BranchDetails' }
                 ],
 
                 successAlert:false,
                 unsuccessAlert:false,
+
+                unsuccessAlertUpdate:false,
+                successAlertUpdate:false,
             }
         },
 
@@ -87,6 +100,13 @@
             },
             faileAlert(failed){
                 this.unsuccessAlert = failed;
+            },
+
+            updateSuccessAlert(success){
+                this.successAlertUpdate = success;
+            },
+            updateFaileAlert(failed){
+                this.unsuccessAlertUpdate = failed;
             },
         }
     }
