@@ -2,10 +2,10 @@
   <v-row justify="end">
     <v-dialog v-model="dialog" scrollable max-width="700px" persistent>
         <template v-slot:activator="{ on, attrs }">
-            <v-btn class="primary" dark depressed  v-bind="attrs" v-on="on">Add new user<v-icon dark right>mdi-plus</v-icon></v-btn>
+            <v-btn class="blue-grey" dark depressed  v-bind="attrs" v-on="on">Add new user<v-icon dark right>mdi-plus</v-icon></v-btn>
         </template>
         <v-card max-width="700" flat>
-        <v-card-title class="heading-1 blue lighten-4 primary--text">Create new system user</v-card-title>
+        <v-card-title class="heading-1 blue-grey lighten-4  blue-grey--text text--darken-2">Create new system user</v-card-title>
         
         <v-divider></v-divider>
         <v-card-text >
@@ -201,7 +201,7 @@ export default {
     }
 
     .theme--light.v-btn.v-btn--disabled.v-btn--has-bg.toggle {
-        background-color: #0000FF !important;
+        background-color: teal !important;
         color:white !important;
     }
 

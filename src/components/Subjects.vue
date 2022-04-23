@@ -17,7 +17,7 @@
             <v-snackbar :timeout="3000" v-model="successAlertSubjectCreate" color="green"  bottom><v-icon left>mdi-check</v-icon>Subject Create <strong>successful</strong> </v-snackbar>
 
             <v-snackbar :timeout="3000" v-model="unsuccessAlertUpdate" color="red"  bottom ><v-icon left>mdi-alert-outline</v-icon>Item update <strong>failed</strong> </v-snackbar>
-            <v-snackbar :timeout="3000" v-model="successAlertUpdate" color="cyan"  bottom><v-icon left>mdi-check</v-icon>Item update <strong>successful</strong> </v-snackbar>
+            <v-snackbar :timeout="3000" v-model="successAlertUpdate" color="green"  bottom><v-icon left>mdi-check</v-icon>Item update <strong>successful</strong> </v-snackbar>
             
             
             <!----------------------------- Alerts ---------------------------------->
@@ -27,48 +27,38 @@
                 <v-row>
                     <v-col>
                         <v-card flat>
-                            <v-card-title class="heading-1 blue lighten-4 primary--text ">Subjects
+                            <v-card-title class="heading-1 blue-grey lighten-4  blue-grey--text text--darken-2">Subjects
                                 <v-spacer></v-spacer>
                                 <app-CreateSubject class="mr-2" @success="subjectCreateSuccessAlert($event)" @failed="subjectCreateFaileAlert($event)"></app-CreateSubject>
                             </v-card-title>
                             <v-card-title><v-spacer></v-spacer><v-text-field v-model="subjectSearch" append-icon="mdi-magnify" label="Search Subject" single-line hide-details></v-text-field></v-card-title>
                             
                             <v-data-table :headers="subjectHeaders" :items="subjects" :search="subjectSearch" :items-per-page="5">
-                                <template v-slot:item="row">
-                                    <tr>
-                                        <td>{{row.item.name}}</td>
-                                        <td>{{row.item.id}}</td>
-                                        <td>{{row.item.medium}}</td>
-                                        <td>{{row.item.category}}</td>
-                                        <td >
-                                            <app-editSubject :subjectDetails='row.item' @success="updateSuccessAlert($event)" @failed="updateFaileAlert($event)"></app-editSubject>
-                                        </td>
-                                        <td>
-                                            <app-deleteSubject :subject='row.item' @success="deleteAlert($event)" @failed="faileAlert($event)"></app-deleteSubject>
-                                        </td>
-                                        
-                                    </tr>
+                                <template v-slot:[`item.actions`]="{ item }">
+                                        <v-card-actions>
+                                            <app-editSubject :subjectDetails='item' @success="updateSuccessAlert($event)" @failed="updateFaileAlert($event)"></app-editSubject>
+                                            <v-spacer></v-spacer>
+                                            <app-deleteSubject class="ml-5" :subject='item' @success="deleteAlert($event)" @failed="faileAlert($event)"></app-deleteSubject>
+                                        </v-card-actions>
+                                            
                                 </template>
                             </v-data-table>
                         </v-card>
                     </v-col>
+                </v-row>
+                <v-row>
                     <v-col>
                         <v-card flat>
-                            <v-card-title class="heading-1 blue lighten-4 primary--text ">Category</v-card-title>
+                            <v-card-title class="heading-1 blue-grey lighten-4  blue-grey--text text--darken-2">Category</v-card-title>
                             <v-card-title><v-spacer></v-spacer><v-text-field v-model="categorySearch" append-icon="mdi-magnify" label="Search Category" single-line hide-details></v-text-field></v-card-title>
                             
                             <v-data-table :headers="categoryHeaders" :items="categories" :search="categorySearch" :items-per-page="5">
-                                <template v-slot:item="row">
-                                    <tr>
-                                        <td>{{row.item.name}}</td>
-                                        <td>{{row.item.id}}</td>
-                                        <td >
-                                            <app-editSubjectCategory :subjecCategory='row.item' @success="updateSuccessAlert($event)" @failed="updateFaileAlert($event)"></app-editSubjectCategory>
-                                        </td>
-                                        <td>
-                                            <app-deleteSubjectCategory :subjecCategory='row.item' @success="deleteAlert($event)" @failed="faileAlert($event)"></app-deleteSubjectCategory>
-                                        </td>
-                                    </tr>
+                                <template v-slot:[`item.actions`]="{ item }">
+                                    <v-card-actions>
+                                        <app-editSubjectCategory :subjecCategory='item' @success="updateSuccessAlert($event)" @failed="updateFaileAlert($event)"></app-editSubjectCategory>
+                                        <v-spacer></v-spacer>
+                                        <app-deleteSubjectCategory class="ml-5" :subjecCategory='item' @success="deleteAlert($event)" @failed="faileAlert($event)"></app-deleteSubjectCategory>
+                                    </v-card-actions>
                                 </template>
                             </v-data-table>
                         </v-card>
@@ -106,11 +96,9 @@
                 categorySearch: '',
                 subjectHeaders: [
                     {text: 'NAME',align: 'start', sortable: true, value:'name'},
-                    { text: 'ID', sortable: false, value: 'id' },
                     { text: 'MEDIUM',sortable: true, value: 'medium', filterable:false},
                     { text: 'CATEGORY', sortable: true, value: 'category' },
-                    { text: '', sortable: false, value: 'Action' },
-                    { text: '', sortable: false, value: 'Action' },
+                    { text: '', sortable: false, value: 'actions' },
                 ],
 
                 subjects: [
@@ -123,9 +111,7 @@
 
                 categoryHeaders: [
                     {text: 'NAME',align: 'start', sortable: true, value:'name'},
-                    { text: 'ID', sortable: false, value: 'id' },
-                    { text: '', sortable: false, value: 'Action' },
-                    { text: '', sortable: false, value: 'Action' },
+                    { text: '', sortable: false, value: 'actions' },
                 ],
 
                 categories: [

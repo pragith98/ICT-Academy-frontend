@@ -6,7 +6,7 @@
                 <v-btn color="primary" dark v-bind="attrs" v-on="on" outlined>Mark Attendance</v-btn> 
             </template>
             <v-card flat>
-                <v-toolbar  dark color="primary" >
+                <v-toolbar  dark class="blue-grey darken-4" >
             
                     <v-toolbar-title>Mark Attendance</v-toolbar-title>
                     <v-spacer></v-spacer>
@@ -17,7 +17,7 @@
                 </v-toolbar>
 
                 <v-card class="pa-10" flat>
-                    <v-card-title class="heading-1 blue lighten-4 primary--text">{{classDetails.name}}</v-card-title>
+                    <v-card-title class="heading-1 blue-grey lighten-4  blue-grey--text text--darken-2">{{classDetails.name}}</v-card-title>
                     <v-card-title><v-spacer></v-spacer><v-text-field v-model="search" append-icon="mdi-magnify" label="Search" single-line hide-details></v-text-field></v-card-title>
                     <template>
                         <v-card flat>

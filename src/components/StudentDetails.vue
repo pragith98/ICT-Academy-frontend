@@ -19,25 +19,16 @@
 
             <template>
                 <v-card flat>
-                    <v-card-title class="heading-1 blue lighten-4 primary--text">Student Details</v-card-title>
+                    <v-card-title class="heading-1 blue-grey lighten-4  blue-grey--text text--darken-2">Student Details</v-card-title>
                     <v-card-title><v-spacer></v-spacer><v-text-field v-model="search" append-icon="mdi-magnify" label="Search" single-line hide-details></v-text-field></v-card-title>
-                    <!-- <v-data-table :headers="headers" :items="desserts" :search="search" ></v-data-table> -->
+                    
                     <v-data-table :headers="headers" :items="students" :search="search">
-                        <template v-slot:item="row">
-                            <tr>
-                                <td>{{row.item.fname}} {{row.item.lname}}</td>
-                                <td>{{row.item.admissionNo}}</td>
-                                <td>{{row.item.getGrade}}</td>
-                                <td>{{row.item.tp}}</td>
-                                <td >
-                                    <!-- <app-ViewStudentDetails fname='' lname='' tp='' email='' address='' parentTp='' parentName='' parent=''></app-ViewStudentDetails> -->
-                                    <app-ViewStudentDetails :student='row.item'></app-ViewStudentDetails>
-                                </td>
-                                <td>
-                                    <app-DeleteStudent :student='row.item' @success="deleteAlert($event)" @failed="faileAlert($event)"></app-DeleteStudent>
-                                </td>
-                                <td></td>
-                            </tr>
+                        <template v-slot:[`item.actions`]="{ item }">
+                            <v-card-actions>
+                                <app-ViewStudentDetails :student='item'></app-ViewStudentDetails>
+                                <v-spacer></v-spacer>
+                                <app-DeleteStudent class="ml-5" :student='item' @success="deleteAlert($event)" @failed="faileAlert($event)"></app-DeleteStudent>
+                            </v-card-actions>
                         </template>
                     </v-data-table>
                 </v-card>
@@ -68,9 +59,7 @@
                     { text: 'ADMISSION NO.', sortable: false, value: 'admissionNo' },
                     { text: 'GRADE', value: 'getGrade' },
                     { text: 'TELEPHONE NO.', sortable: false, value: 'tp' },
-                    { text: '', sortable: false, value: 'Action' },
-                    { text: '', sortable: false, value: 'Action' },
-                    { text: '', sortable: false, value: 'lname'}
+                    { text: '', sortable: false, value: 'actions' },
                 ],
 
                 students: [

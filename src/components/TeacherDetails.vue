@@ -19,23 +19,16 @@
 
             <template>
                 <v-card flat>
-                    <v-card-title class="heading-1 blue lighten-4 primary--text">Teacher Details</v-card-title>
+                    <v-card-title class="heading-1 blue-grey lighten-4  blue-grey--text text--darken-2">Teacher Details</v-card-title>
                     <v-card-title><v-spacer></v-spacer><v-text-field v-model="search" append-icon="mdi-magnify" label="Search" single-line hide-details></v-text-field></v-card-title>
                     
                     <v-data-table :headers="headers" :items="teachers" :search="search">
-                        <template v-slot:item="row">
-                            <tr>
-                                <td>{{row.item.getTitle}}. {{row.item.fname}} {{row.item.lname}}</td>
-                                <td>{{row.item.tp}}</td>
-                                <td>{{row.item.email}}</td>
-                                <td >
-                                    <app-ViewTeacherDetails :teacher='row.item'></app-ViewTeacherDetails>
-                                </td>
-                                <td>
-                                    <app-DeleteTeacher :teacher='row.item' @success="deleteAlert($event)" @failed="faileAlert($event)"></app-DeleteTeacher>
-                                </td>
-                                <td></td>
-                            </tr>
+                        <template v-slot:[`item.actions`]="{ item }">
+                            <v-card-actions>
+                                <app-ViewTeacherDetails :teacher='item'></app-ViewTeacherDetails>
+                                <v-spacer></v-spacer>
+                                <app-DeleteTeacher class="ml-5" :teacher='item' @success="deleteAlert($event)" @failed="faileAlert($event)"></app-DeleteTeacher>
+                            </v-card-actions> 
                         </template>
                     </v-data-table>
                 </v-card>
@@ -65,10 +58,7 @@
                     {text: 'NAME',align: 'start', sortable: false, value:'fname'},
                     { text: 'TELEPHONE NO.', sortable: false, value: 'tp' },
                     { text: 'EMAIL', sortable: false, value: 'email' },
-                    
-                    { text: '', sortable: false, value: 'Action' },
-                    { text: '', sortable: false, value: 'Action' },
-                    { text: '', sortable: false, value: 'lname'}
+                    { text: '', sortable: false, value: 'actions' },
                 ],
 
                 teachers: [

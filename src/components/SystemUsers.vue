@@ -17,32 +17,21 @@
 
             <template>
                 <v-card flat>
-                    <v-card-title class="heading-1 blue lighten-4 primary--text">System Users
+                    <v-card-title class="heading-1 blue-grey lighten-4  blue-grey--text text--darken-2">System Users
                         <app-CreateSystemUser class="mr-2" @success="createSuccessAlert($event)" @failed="createFailAlert($event)"></app-CreateSystemUser>
                     </v-card-title>
                     <v-card-title><v-spacer></v-spacer><v-text-field v-model="search" append-icon="mdi-magnify" label="Search" single-line hide-details></v-text-field></v-card-title>
                     <v-data-table :headers="headers" :items="staff" :search="search">
-                        <template v-slot:item="row">
-                            <tr>
-                                <td>{{row.item.staffID}}</td>
-                                <td>{{row.item.fname}} {{row.item.lname}}</td>
-                                <td>
-                                    <v-chip small :class="row.item.role" text-color="white">
-                                        {{row.item.role}}
-                                    </v-chip>
-                                </td>
-                                <td>{{row.item.tp}}</td>
-                                <td>
-                                    <v-chip outlined small>{{row.item.getBrach}}</v-chip>
-                                </td>
-                                <td >
-                                    <app-EditSystemUser :staff='row.item'></app-EditSystemUser>
-                                </td>
-                                <td>
-                                    <app-RemoveSystemUser :staff='row.item' @success="deleteAlert($event)" @failed="faileAlert($event)"></app-RemoveSystemUser>
-                                </td>
-                                <td></td>
-                            </tr>
+                        <template v-slot:[`item.actions`]="{ item }">
+                                <!-- <v-chip small>{{item.role}}</v-chip>
+                                <v-chip outlined small>{{item.getBrach}}</v-chip> -->
+
+                                <v-card-actions>
+                                    <app-EditSystemUser :staff='item'></app-EditSystemUser>
+                                    <v-spacer></v-spacer>
+                                    <app-RemoveSystemUser class="ml-5" :staff='item' @success="deleteAlert($event)" @failed="faileAlert($event)"></app-RemoveSystemUser>
+                                </v-card-actions>
+                                
                         </template>
                     </v-data-table>
                 </v-card>
@@ -76,11 +65,7 @@
                     { text: 'ROLE', sortable: true, value: 'role' },
                     { text: 'TELEPHONE NO.', sortable: false, value: 'tp' },
                     { text: 'BRANCH', sortable: true, value: 'getBrach' },
-                    
-
-                    { text: '', sortable: false, value: 'Action' },
-                    { text: '', sortable: false, value: 'Action' },
-                    { text: '', sortable: false, value: 'lname'}
+                    { text: '', sortable: false, value: 'actions' }
                 ],
 
                 staff: [

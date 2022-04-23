@@ -19,10 +19,10 @@
 
         <v-dialog v-model="dialogMain" scrollable max-width="700px" persistent>
             <template v-slot:activator="{ on, attrs }">
-                <v-btn class="teal" dark depressed  v-bind="attrs" v-on="on">Edit<v-icon dark right>mdi-pencil</v-icon></v-btn>
+                <v-btn class="teal" small block dark depressed  v-bind="attrs" v-on="on">Edit<v-icon dark right>mdi-pencil</v-icon></v-btn>
             </template>
             <v-card max-width="700" flat>
-                <v-card-title class="heading-1 blue lighten-4 primary--text">Edit Class</v-card-title>
+                <v-card-title class="heading-1 blue-grey lighten-4  blue-grey--text text--darken-2">Edit Class</v-card-title>
                 
                 <v-divider></v-divider>
                 <v-card-text >

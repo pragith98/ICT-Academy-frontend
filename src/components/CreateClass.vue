@@ -27,7 +27,7 @@
 
             <template>
                 <v-card flat max-width="750px" style="margin: auto">
-                    <v-card-title class="heading-1 blue lighten-4 primary--text">Create Class</v-card-title>
+                    <v-card-title class="heading-1 blue-grey lighten-4  blue-grey--text text--darken-2">Create Class</v-card-title>
                     
                     <v-stepper v-model="e1" flat alt-labels>
                         <v-stepper-header style="box-shadow:0px 0px 0px 0px" class="px-15">

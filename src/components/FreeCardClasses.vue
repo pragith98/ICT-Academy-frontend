@@ -5,25 +5,20 @@
             <v-btn class="orange" small dark depressed  v-bind="attrs" v-on="on">Free Cards</v-btn>
         </template>
         <v-card max-width="700" flat>
-        <v-card-title class="heading-1 blue lighten-4 primary--text">Free Cards of - {{studentDetails.fname}}</v-card-title>
+        <v-card-title class="heading-1 blue-grey lighten-4  blue-grey--text text--darken-2">Free Cards</v-card-title>
         
         <v-divider></v-divider>
         <v-card-text>
             <v-form ref="form" v-model="valid" lazy-validation>
                 
                 <div>
-                    
-                    <v-card-title><v-spacer></v-spacer><v-text-field v-model="search" append-icon="mdi-magnify" label="Search Class" single-line hide-details ></v-text-field></v-card-title>
-                    <v-card-text>*Use Name OR ID to search for a class</v-card-text>
+                    <v-card-text>Free cards of <strong>{{studentDetails.fname}}</strong>. </v-card-text>
+                    <v-card-title><v-spacer></v-spacer><v-text-field persistent-hint hint="*Use Name OR ID to search for a class" v-model="search" append-icon="mdi-magnify" label="Search Class" single-line  ></v-text-field></v-card-title>
+                   
                     <v-data-table :headers="headers" :items="classes" :search="search">
-                        <template v-slot:item="row">
-                            <tr>
-                                <td>{{row.item.name}}</td>
-                                <td>{{row.item.id}}</td>
-                                <td>
-                                    <v-switch color="red" @change="giveFreeCard(row.item.id,row.item.freeCard)" inset v-model="row.item.freeCard" :label="switchLabel(row.item.freeCard)"></v-switch>
-                                </td>
-                            </tr>
+                        <template v-slot:[`item.actions`]="{ item }">
+                            <v-switch color="red" @change="giveFreeCard(item.id,item.freeCard)" inset v-model="item.freeCard" :label="switchLabel(item.freeCard)"></v-switch>
+                                
                         </template>
                     </v-data-table>
                 </div>
@@ -78,9 +73,9 @@ export default {
 
             search: '',
             headers: [
-                { text: 'CLASS',align: 'start', sortable: false, value:'fname'},
+                { text: 'CLASS',align: 'start', sortable: false, value:'name'},
                 { text: 'ID',align: 'start', sortable: false, value:'id'},
-                { text: 'FREE CARD', sortable: false, value: 'id',align:'start'},
+                { text: 'FREE CARD', sortable: false, value: 'actions',align:'start'},
             ],
 
             classes: [

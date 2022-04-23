@@ -19,22 +19,20 @@
 
             <template>
                 <v-card flat>
-                    <v-card-title class="heading-1 blue lighten-4 primary--text">Enroll Details</v-card-title>
+                    <v-card-title class="heading-1 blue-grey lighten-4  blue-grey--text text--darken-2">Enroll Details</v-card-title>
                     <v-card-title><v-spacer></v-spacer><v-text-field v-model="search" append-icon="mdi-magnify" label="Search" single-line hide-details></v-text-field></v-card-title>
                     <template>
                         <div>
                             <v-data-table :headers="headers" :items="classes" :search="search">
-                                <template v-slot:item="row">
-                                    <tr>
-                                        <td>{{row.item.name}}</td>
-                                        <td>{{row.item.students}}</td>
-                                        <td >
-                                            <app-EnrollStudentsDetails :classDetails='row.item'></app-EnrollStudentsDetails>
-                                        </td>
-                                        <td style="justify-content:start !important">
-                                            <app-EnrollStudents :classDetails='row.item'></app-EnrollStudents>
-                                        </td>
-                                    </tr>
+                                <template v-slot:[`item.actions`]="{ item }">
+                                    <v-card-actions>
+                                        <app-EnrollStudentsDetails :classDetails='item'></app-EnrollStudentsDetails>
+                                        <v-spacer></v-spacer>
+                                        <app-EnrollStudents class="ml-5" :classDetails='item'></app-EnrollStudents>
+                                    </v-card-actions>
+                                            
+                                       
+                                            
                                 </template>
                             </v-data-table>
                         </div>
@@ -65,8 +63,7 @@
                 headers: [
                     { text: 'Class',align: 'start', sortable: false, value:'name'},
                     { text: 'Students Count', sortable: false, value: 'students' },
-                    { text: '', sortable: false, value: 'Action'},
-                    { text: '', sortable: false, value: 'Action' },
+                    { text: '', sortable: false, value: 'actions'}
                 ],
 
                 classes: [

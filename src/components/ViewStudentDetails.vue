@@ -2,12 +2,12 @@
   <v-row justify="end">
     <v-dialog v-model="dialog" scrollable max-width="700px" persistent>
         <template v-slot:activator="{ on, attrs }">
-            <v-btn class="primary" dark  depressed  v-bind="attrs" v-on="on">view<v-icon dark right>mdi-account</v-icon></v-btn>
+            <v-btn class="primary" small block dark  depressed  v-bind="attrs" v-on="on">view<v-icon dark right>mdi-account</v-icon></v-btn>
         </template>
         <v-card max-width="700" flat>
-        <v-card-title class="heading-1 blue lighten-4 primary--text">Student ID - {{student.admissionNo}}
+        <v-card-title class="heading-1 blue-grey lighten-4  blue-grey--text text--darken-2">Student ID - {{student.admissionNo}}
             <v-spacer></v-spacer>
-            <v-btn depressed color="primary" dark @click="isEditing = !isEditing" v-if="!isEditing"> Edit
+            <v-btn depressed color="blue-grey" dark @click="isEditing = !isEditing" v-if="!isEditing"> Edit
                 <v-icon right>mdi-account-edit</v-icon>
             </v-btn>  
         </v-card-title>

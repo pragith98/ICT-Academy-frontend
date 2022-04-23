@@ -14,7 +14,7 @@
             <v-form ref="form" v-model="valid" lazy-validation>
                 
                 <v-card class="my-6" flat>
-                    <v-card-title class="heading-1 blue lighten-4 primary--text">Student Registration</v-card-title>    
+                    <v-card-title class="heading-1 blue-grey lighten-4  blue-grey--text text--darken-2">Student Registration</v-card-title>    
                     <v-row style="padding:12px">
                         
 
@@ -102,8 +102,8 @@
                                 <legend><v-card-text class="grey--text">Parent Details</v-card-text></legend>
                                 <v-row justify="center" dense >
                                     
-                                    <v-col cols="12" md="12" sm="12" >
-                                        <v-radio-group v-model="parent" row style="justify-content:center !important" :rules="guardianRules" required>
+                                    <v-col cols="12" md="12" sm="12">
+                                        <v-radio-group  v-model="parent" row style="justify-content:center !important" :rules="guardianRules" required>
                                             <v-radio label="Mother" value="mother"></v-radio>
                                             <v-radio label="Father" value="father"></v-radio>
                                             <v-radio label="Guardian" value="guardian"></v-radio>
@@ -188,6 +188,9 @@ export default {
             joingActivePicker: null,
             joingDate: (new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().substr(0, 10),
             joingMenu: false,
+
+
+            
             
 
             // -----------Validation rules-----------
@@ -229,7 +232,7 @@ export default {
 
 
             breadcrumbs: [
-                { text: 'Students', disabled: false, href: '/Students' },
+                { text: 'Students', disabled: false, href: '/Students'},
                 { text: 'StudentRegistration', disabled: true, href: '/StudentRegistration' }
             ],
 
@@ -288,7 +291,12 @@ export default {
         }
         
       
-    }
+    },
+
+    
+
+
+
 }
 </script>
 

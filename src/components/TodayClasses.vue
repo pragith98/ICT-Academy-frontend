@@ -18,7 +18,7 @@
             <v-snackbar v-model="classStartAlert" :multi-line="multiLine">
                 Class start successfully. Now you can mark <strong>Attendance</strong> .
                 <template v-slot:action="{ attrs }">
-                    <v-btn color="red" text v-bind="attrs" @click="categoryCreated = false">Close</v-btn>
+                    <v-btn color="red" text v-bind="attrs" @click="classStartAlert = false">Close</v-btn>
                 </template>
             </v-snackbar>
             
@@ -27,8 +27,8 @@
 
 
             <template>
-                <v-card flat color="#E3F2FD">
-                    <v-card-title class="heading-1 blue lighten-4 primary--text">Started Classes</v-card-title>
+                <v-card flat class="blue-grey lighten-5" outlined color="red">
+                    <v-card-title class="heading-1 blue-grey lighten-4  blue-grey--text text--darken-2">Started Classes</v-card-title>
                     <v-row class="pa-5">
                         <v-col lg="4" md="4" sm="6" cols="12" v-for="classes in classes" :key="classes.name">
                             <v-card flat>
@@ -58,13 +58,13 @@
             </template>
 
             <template >
-                <v-card flat color="#E3F2FD" class="mt-6">
-                    <v-card-title class="heading-1 blue lighten-4 primary--text">New Classes</v-card-title>
+                <v-card flat  class="mt-6 blue-grey lighten-5">
+                    <v-card-title class="heading-1 blue-grey lighten-4  blue-grey--text text--darken-2">New Classes</v-card-title>
                     <v-row class="pa-5">
                         <v-col lg="4" md="4" sm="6" cols="12" v-for="classes in classes" :key="classes.name">
                             <v-card flat>
         
-                                <v-card-title style="background: #FB8C00" class="mb-2">
+                                <v-card-title style="background: #43A047" class="mb-2">
                                     <div class="title white--text">{{ classes.name }}</div>
                                 </v-card-title>
                                 
@@ -74,7 +74,7 @@
 
 
                                 <v-card-actions  class="pb-5">
-                                    <v-btn depressed block dark color="#FB8C00" @click="startClass(classes.id)">Start Class</v-btn>
+                                    <v-btn depressed block dark color="#43A047" @click="startClass(classes.id)">Start Class</v-btn>
                                 </v-card-actions>
                                 
                             </v-card>

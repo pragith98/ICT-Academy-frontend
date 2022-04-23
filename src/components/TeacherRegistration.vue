@@ -14,7 +14,7 @@
             <v-form ref="form" v-model="valid" lazy-validation>
                 
                 <v-card class="my-6" flat>
-                    <v-card-title class="heading-1 blue lighten-4 primary--text">Teachers Registration</v-card-title>    
+                    <v-card-title class="heading-1 blue-grey lighten-4  blue-grey--text text--darken-2">Teachers Registration</v-card-title>    
                     <v-row style="padding:12px">
                         
 

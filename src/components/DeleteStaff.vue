@@ -2,7 +2,7 @@
     <v-row justify="start">
         <v-dialog v-model="dialog" persistent max-width="400px">
             <template v-slot:activator="{ on, attrs }">
-                <v-btn class="error" fab dark small depressed v-bind="attrs" v-on="on"><v-icon dark>mdi-delete</v-icon></v-btn>
+                <v-btn class="error" fab dark x-small depressed v-bind="attrs" v-on="on"><v-icon dark>mdi-delete</v-icon></v-btn>
             </template>
             <v-card>
                 <v-container class="text-center">

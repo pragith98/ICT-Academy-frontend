@@ -5,25 +5,20 @@
             <v-btn class="primary" small dark depressed  v-bind="attrs" v-on="on">Enroll Students<v-icon dark right>mdi-link-variant</v-icon></v-btn>
         </template>
         <v-card max-width="700" flat>
-        <v-card-title class="heading-1 blue lighten-4 primary--text">Class - {{classDetails.name}}</v-card-title>
+        <v-card-title class="heading-1 blue-grey lighten-4  blue-grey--text text--darken-2">Class</v-card-title>
         
         <v-divider></v-divider>
         <v-card-text style="height: 800px;">
             <v-form ref="form" v-model="valid" lazy-validation>
                 
                 <div>
+                    <v-card-text>You can add students to <strong>{{classDetails.name}}</strong> class.</v-card-text>
+                    <v-card-title><v-spacer></v-spacer><v-text-field persistent-hint hint="*Use Name OR ID to search for a student" v-model="search" append-icon="mdi-magnify" label="Search" single-line ></v-text-field></v-card-title>
                     
-                    <v-card-title><v-spacer></v-spacer><v-text-field v-model="search" append-icon="mdi-magnify" label="Search Students" single-line hide-details ></v-text-field></v-card-title>
-                    <v-card-text>*Use Name OR ID to search for a student</v-card-text>
                     <v-data-table :headers="headers" :items="students" :search="search">
-                        <template v-slot:item="row">
-                            <tr>
-                                <td>{{row.item.fname}} {{row.item.lname}}</td>
-                                <td>{{row.item.id}}</td>
-                                <td>
-                                    <v-btn @click="addStudent(row.item.id,classDetails.id)"  depressed color="primary" outlined>Add to Class</v-btn>
-                                </td>
-                            </tr>
+                        <template v-slot:[`item.actions`]="{ item }">
+                            <v-btn @click="addStudent(item.id,classDetails.id)"  depressed color="primary" outlined>Add to Class</v-btn>
+                                
                         </template>
                     </v-data-table>
                 </div>
@@ -77,26 +72,10 @@ export default {
             headers: [
                 { text: 'Student',align: 'start', sortable: false, value:'fname'},
                 { text: 'ID',align: 'start', sortable: false, value:'id'},
-                { text: '', sortable: false, value: 'id',align:'end'},
+                { text: '', sortable: false, value: 'actions',align:'end'},
             ],
 
             students: [
-                {fname:'Saman', lname:'Herath', id:'2021'},
-                {fname:'Dasun', lname:'Rathnayake', id:'2028'},
-                {fname:'Kasun', lname:'Bandara', id:'2035'},
-                {fname:'Maheshi', lname:'Ranathunga', id:'2077'},
-                {fname:'Saman', lname:'Herath', id:'2021'},
-                {fname:'Dasun', lname:'Rathnayake', id:'2028'},
-                {fname:'Kasun', lname:'Bandara', id:'2035'},
-                {fname:'Maheshi', lname:'Ranathunga', id:'2077'},
-                {fname:'Saman', lname:'Herath', id:'2021'},
-                {fname:'Dasun', lname:'Rathnayake', id:'2028'},
-                {fname:'Kasun', lname:'Bandara', id:'2035'},
-                {fname:'Maheshi', lname:'Ranathunga', id:'2077'},
-                {fname:'Saman', lname:'Herath', id:'2021'},
-                {fname:'Dasun', lname:'Rathnayake', id:'2028'},
-                {fname:'Kasun', lname:'Bandara', id:'2035'},
-                {fname:'Maheshi', lname:'Ranathunga', id:'2077'},
                 {fname:'Saman', lname:'Herath', id:'2021'},
                 {fname:'Dasun', lname:'Rathnayake', id:'2028'},
                 {fname:'Kasun', lname:'Bandara', id:'2035'},

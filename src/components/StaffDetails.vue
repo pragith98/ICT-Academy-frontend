@@ -16,24 +16,16 @@
 
             <template>
                 <v-card flat>
-                    <v-card-title class="heading-1 blue lighten-4 primary--text">Staff Details</v-card-title>
+                    <v-card-title class="heading-1 blue-grey lighten-4  blue-grey--text text--darken-2">Staff Details</v-card-title>
                     <v-card-title><v-spacer></v-spacer><v-text-field v-model="search" append-icon="mdi-magnify" label="Search" single-line hide-details></v-text-field></v-card-title>
                     
                     <v-data-table :headers="headers" :items="staff" :search="search">
-                        <template v-slot:item="row">
-                            <tr>
-                                <td>{{row.item.getTitle}}. {{row.item.fname}} {{row.item.lname}}</td>
-                                <td>{{row.item.tp}}</td>
-                                <td>{{row.item.email}}</td>
-                                <td>{{row.item.getBrach}}</td>
-                                <td >
-                                    <app-ViewStaffDetails :staff='row.item'></app-ViewStaffDetails>
-                                </td>
-                                <td>
-                                    <app-DeleteStaff :staff='row.item' @success="deleteAlert($event)" @failed="faileAlert($event)"></app-DeleteStaff>
-                                </td>
-                                <td></td>
-                            </tr>
+                        <template v-slot:[`item.actions`]="{ item }">
+                            <v-card-actions>
+                                <app-ViewStaffDetails :staff='item'></app-ViewStaffDetails>
+                                <v-spacer></v-spacer>
+                                <app-DeleteStaff class="ml-5" :staff='item' @success="deleteAlert($event)" @failed="faileAlert($event)"></app-DeleteStaff>
+                            </v-card-actions>
                         </template>
                     </v-data-table>
                 </v-card>
@@ -64,10 +56,7 @@
                     { text: 'TELEPHONE NO.', sortable: false, value: 'tp' },
                     { text: 'EMAIL', sortable: false, value: 'email' },
                     { text: 'BRANCH', sortable: true, value: 'getBrach' },
-
-                    { text: '', sortable: false, value: 'Action' },
-                    { text: '', sortable: false, value: 'Action' },
-                    { text: '', sortable: false, value: 'lname'}
+                    { text: '', sortable: false, value: 'actions' },
                 ],
 
                 staff: [

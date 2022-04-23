@@ -31,7 +31,7 @@
                         <div :hidden="resetAlert">
                             <v-card max-width="500" flat style="margin: auto">
                                 <v-progress-linear :active="loading" :indeterminate="loading" absolute color="blue accent-4"></v-progress-linear>
-                                <v-card-title class="heading-1 blue lighten-4 primary--text">Forgot Password</v-card-title>
+                                <v-card-title class="heading-1 blue-grey lighten-4  blue-grey--text text--darken-2">Forgot Password</v-card-title>
                                 
                                 <v-col cols="12" >
                                     <v-row dense style="padding:12px">

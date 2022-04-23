@@ -2,28 +2,23 @@
   <v-row justify="end">
     <v-dialog v-model="dialog" scrollable max-width="700px" persistent>
         <template v-slot:activator="{ on, attrs }">
-            <v-btn class="primary" dark depressed  v-bind="attrs" v-on="on">Add new Free Card<v-icon dark right>mdi-plus</v-icon></v-btn>
+            <v-btn class="blue-grey" dark depressed  v-bind="attrs" v-on="on">new Free Card<v-icon dark right>mdi-plus</v-icon></v-btn>
         </template>
         <v-card max-width="700" flat>
-        <v-card-title class="heading-1 blue lighten-4 primary--text">Create Free Card Student</v-card-title>
+        <v-card-title class="heading-1 blue-grey lighten-4  blue-grey--text text--darken-2">Create Free Card Student</v-card-title>
         
         <v-divider></v-divider>
         <v-card-text>
             <v-form ref="form" v-model="valid" lazy-validation>
                 
                 <div>
+                    <v-card-text>You can add free card for student</v-card-text>
+                    <v-card-title><v-spacer></v-spacer><v-text-field persistent-hint hint="*Use Name OR ID to search for a student" v-model="search" append-icon="mdi-magnify" label="Search Class" single-line ></v-text-field></v-card-title>
                     
-                    <v-card-title><v-spacer></v-spacer><v-text-field v-model="search" append-icon="mdi-magnify" label="Search Class" single-line hide-details ></v-text-field></v-card-title>
-                    <v-card-text>*Use Name OR ID to search for a student</v-card-text>
                     <v-data-table :headers="headers" :items="students" :search="search">
-                        <template v-slot:item="row">
-                            <tr>
-                                <td>{{row.item.fname}}</td>
-                                <td>{{row.item.id}}</td>
-                                <td>
-                                    <app-FreeCardClasses :studentDetails='row.item'></app-FreeCardClasses>
-                                </td>
-                            </tr>
+                        <template v-slot:[`item.actions`]="{ item }">
+                            <app-FreeCardClasses :studentDetails='item'></app-FreeCardClasses>
+                        
                         </template>
                     </v-data-table>
                 </div>
@@ -84,26 +79,10 @@
                 headers: [
                     { text: 'STUDENT',align: 'start', sortable: false, value:'fname'},
                     { text: 'ID',align: 'start', sortable: false, value:'id'},
-                    { text: '', sortable: false, value: 'id',align:'start'},
+                    { text: '', sortable: false, value: 'actions',align:'start'},
                 ],
 
                 students: [
-                    {fname:'Saman', lname:'Herath', id:'2021'},
-                    {fname:'Dasun', lname:'Rathnayake', id:'2028'},
-                    {fname:'Kasun', lname:'Bandara', id:'2035'},
-                    {fname:'Maheshi', lname:'Ranathunga', id:'2077'},
-                    {fname:'Saman', lname:'Herath', id:'2021'},
-                    {fname:'Dasun', lname:'Rathnayake', id:'2028'},
-                    {fname:'Kasun', lname:'Bandara', id:'2035'},
-                    {fname:'Maheshi', lname:'Ranathunga', id:'2077'},
-                    {fname:'Saman', lname:'Herath', id:'2021'},
-                    {fname:'Dasun', lname:'Rathnayake', id:'2028'},
-                    {fname:'Kasun', lname:'Bandara', id:'2035'},
-                    {fname:'Maheshi', lname:'Ranathunga', id:'2077'},
-                    {fname:'Saman', lname:'Herath', id:'2021'},
-                    {fname:'Dasun', lname:'Rathnayake', id:'2028'},
-                    {fname:'Kasun', lname:'Bandara', id:'2035'},
-                    {fname:'Maheshi', lname:'Ranathunga', id:'2077'},
                     {fname:'Saman', lname:'Herath', id:'2021'},
                     {fname:'Dasun', lname:'Rathnayake', id:'2028'},
                     {fname:'Kasun', lname:'Bandara', id:'2035'},

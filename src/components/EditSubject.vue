@@ -2,10 +2,10 @@
   <v-row justify="end">
     <v-dialog v-model="dialog" scrollable max-width="700px" persistent>
         <template v-slot:activator="{ on, attrs }">
-            <v-btn class="teal" dark depressed  v-bind="attrs" v-on="on">Edit<v-icon dark right>mdi-pencil</v-icon></v-btn>
+            <v-btn class="teal" block small dark depressed  v-bind="attrs" v-on="on">Edit<v-icon dark right>mdi-pencil</v-icon></v-btn>
         </template>
         <v-card max-width="700" flat>
-        <v-card-title class="heading-1 blue lighten-4 primary--text">Edit Subject</v-card-title>
+        <v-card-title class="heading-1 blue-grey lighten-4  blue-grey--text text--darken-2">Edit Subject</v-card-title>
         
         <v-divider></v-divider>
         <v-card-text style="height: 800px;">
@@ -28,23 +28,17 @@
 
                     
                     <div :hidden="hideTable">
-                        <v-col cols="12" md="12" sm="12">
-                            <v-text-field :rules="categoryRules" label="Category" prepend-icon="mdi-candy-outline" v-model="categoryName" readonly hint="Add category from below table"></v-text-field>
-                            <v-card-text class="grey--text">
-                                * Add category from below table
-                            </v-card-text>
-                        </v-col>
+                        <v-card-text class="grey--text">Select a category from below table</v-card-text>
+                        
                         <v-card-title><v-spacer></v-spacer><v-text-field v-model="search" append-icon="mdi-magnify" label="Search Category" single-line hide-details></v-text-field></v-card-title>
                         <v-data-table :headers="headers" :items="categories" :search="search" :items-per-page="5">
-                            <template v-slot:item="row">
-                                <tr>
-                                    <td>{{row.item.name}}</td>
-                                    <td>
-                                        <v-btn @click="category=row.item.id, categoryName=row.item.name" depressed color="primary" outlined>Add</v-btn>
-                                    </td>
-                                </tr>
+                            <template v-slot:[`item.actions`]="{ item }">
+                                <v-btn @click="category=item.id, categoryName=item.name" depressed color="primary" outlined>Select</v-btn>
                             </template>
                         </v-data-table>
+                        <v-col cols="12" md="12" sm="12">
+                            <v-text-field :rules="categoryRules" label="Category" prepend-icon="mdi-candy-outline" v-model="categoryName" readonly hint="Select category from above table"></v-text-field>
+                        </v-col>
                         <v-divider></v-divider>
                         <v-row>
                             <v-card-text class="grey--text">
@@ -128,8 +122,8 @@ export default {
 
             search: '',
             headers: [
-                { text: 'Category',align: 'start', sortable: false, value:'name'},
-                { text: '', sortable: false, value: 'id',align:'right'},
+                { text: 'CATEGORY',align: 'start', sortable: false, value:'name'},
+                { text: '', sortable: false, value: 'actions',align:'right'},
             ],
 
             categories: [

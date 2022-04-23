@@ -19,7 +19,7 @@
 
             <template>
                 <v-card flat>
-                    <v-card-title class="heading-1 blue lighten-4 primary--text">Free Cards
+                    <v-card-title class="heading-1 blue-grey lighten-4  blue-grey--text text--darken-2">Free Cards
                         <v-spacer></v-spacer>
                         <app-CreateFreeCardStudent class="mr-2"></app-CreateFreeCardStudent>
                     </v-card-title>
@@ -27,15 +27,8 @@
                     <template>
                         <div>
                             <v-data-table :headers="headers" :items="students" :search="search" >
-                                <template v-slot:item="row" style="background:#e3f2fd">
-                                    <tr>
-                                        <td>{{row.item.fname}} {{row.item.lname}}</td>
-                                        <td>{{row.item.id}}</td>
-                                        <td >
-                                            <app-FreeCardClasses :studentDetails='row.item'></app-FreeCardClasses>
-                                        </td>
-                                        
-                                    </tr>
+                                <template v-slot:[`item.actions`]="{ item }">
+                                    <app-FreeCardClasses :studentDetails='item'></app-FreeCardClasses>
                                 </template>
                             </v-data-table>
                         </div>
@@ -67,26 +60,10 @@
                 headers: [
                     { text: 'STUDENT',align: 'start', sortable: false, value:'fname'},
                     { text: 'ID', sortable: false, value: 'id' },
-                    { text: '', sortable: false, value: 'Action'}
+                    { text: '', sortable: false, value: 'actions'}
                 ],
 
                 students: [
-                    {fname:'Saman', lname:'Herath', id:'2021'},
-                    {fname:'Dasun', lname:'Rathnayake', id:'2028'},
-                    {fname:'Kasun', lname:'Bandara', id:'2035'},
-                    {fname:'Maheshi', lname:'Ranathunga', id:'2077'},
-                    {fname:'Saman', lname:'Herath', id:'2021'},
-                    {fname:'Dasun', lname:'Rathnayake', id:'2028'},
-                    {fname:'Kasun', lname:'Bandara', id:'2035'},
-                    {fname:'Maheshi', lname:'Ranathunga', id:'2077'},
-                    {fname:'Saman', lname:'Herath', id:'2021'},
-                    {fname:'Dasun', lname:'Rathnayake', id:'2028'},
-                    {fname:'Kasun', lname:'Bandara', id:'2035'},
-                    {fname:'Maheshi', lname:'Ranathunga', id:'2077'},
-                    {fname:'Saman', lname:'Herath', id:'2021'},
-                    {fname:'Dasun', lname:'Rathnayake', id:'2028'},
-                    {fname:'Kasun', lname:'Bandara', id:'2035'},
-                    {fname:'Maheshi', lname:'Ranathunga', id:'2077'},
                     {fname:'Saman', lname:'Herath', id:'2021'},
                     {fname:'Dasun', lname:'Rathnayake', id:'2028'},
                     {fname:'Kasun', lname:'Bandara', id:'2035'},
