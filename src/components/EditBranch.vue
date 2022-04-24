@@ -5,7 +5,7 @@
             <v-btn small class="teal" dark depressed  v-bind="attrs" v-on="on">Edit<v-icon dark right>mdi-pencil</v-icon></v-btn>
         </template>
         <v-card max-width="700" flat>
-        <v-card-title class="heading-1 blue lighten-4 primary--text">Edit Branch</v-card-title>
+        <v-card-title class="heading-1 blue-grey lighten-4  blue-grey--text text--darken-2">Edit Branch</v-card-title>
         
         <v-divider></v-divider>
         <v-card-text style="height: 200px;">
