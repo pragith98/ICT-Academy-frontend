@@ -6,34 +6,70 @@
             <v-app-bar rounded flat color="white">
                 <v-app-bar-nav-icon @click="drawer= !drawer"></v-app-bar-nav-icon>
                 <v-toolbar-title class="font-weight-black text--secondary" >ICT Academy</v-toolbar-title>
-                <!-- <v-chip outlined class="ml-2" >Hakmana</v-chip> -->
                 <v-spacer></v-spacer>
-                <h1 class="subtitle-1">Hi! Daminda</h1>
+                <v-menu left bottom :close-on-content-click="closeOnContentClick">
+                    <template v-slot:activator="{ on, attrs }">
+                        <v-btn icon v-bind="attrs" v-on="on">
+                            <v-list-item-avatar size="40">
+                                <v-img src="../assets/propic.png"></v-img>
+                            </v-list-item-avatar>
+                            <!-- <v-icon>mdi-dots-vertical</v-icon> -->
+                        </v-btn>
+                    </template>
+                    <v-card  width="300" height="370">
+                        <v-list>
+                            <v-row justify="center" class="mt-3">
+                                <v-list-item-avatar size="100">
+                                    <v-img src="../assets/propic.png"></v-img>
+                                </v-list-item-avatar>
+                            </v-row>
+                            
+                            <v-row justify="center">
+                                <v-card-title class="pb-0">Kamal Rathnayaka</v-card-title>
+                            </v-row>
+                            <v-row justify="center">
+                                <v-chip small outlined>Admin</v-chip>
+                            </v-row>
+                            <v-row>
+                                <v-divider class="mt-2"></v-divider>
+                            </v-row>
+                            <v-row justify="center" class="pa-5">
+                                <v-btn block depressed color="blue-grey" dark >Manage Profile</v-btn>
+                            </v-row>
+                            <v-row>
+                                <v-divider></v-divider>
+                            </v-row>
+                            <v-row justify="center" class="pa-5">
+                                <v-btn  depressed color="grey" dark class=" lighten-1" outlined>Logout
+                                    <v-icon right>mdi-logout</v-icon>
+                                </v-btn>
+                            </v-row>
+                            
+                        </v-list>
+                    </v-card>
+                    
+                </v-menu>
+
+                
                 <v-btn depressed color="grey" dark class="ml-5 lighten-1" small to="/Login">Login
                     <v-icon right>mdi-login</v-icon>
                 </v-btn>
-                <v-btn depressed color="grey" dark class="ml-5 lighten-1" small>Logout
-                    <v-icon right>mdi-logout</v-icon>
-                </v-btn>
+                
             </v-app-bar>
             
         </v-app-bar>
         
         <v-navigation-drawer v-model="drawer" app color="#263238" dark>
-            <!-- <v-system-bar color="primary"></v-system-bar> -->
+            
             <v-card color="#263238" class="pa-4 mt-3" flat>
                 <v-card flat class="text-center" color="#455A64" shaped>
                     <v-card-title class="font-weight-bold">ICT Academy</v-card-title>
                     <v-select :items="branch" v-model="getBranch" outlined dense class="px-3"></v-select>
-                    <!-- <h1 class="font-weight-black white--text">ICT Academy</h1> -->
+                    
                 </v-card>
             </v-card>
             
-            <!-- <v-list class="text-center">
-                <v-list-item-avatar size="100" > -->
-                    <!-- <v-img src="../assets/Logo.png"></v-img> -->
-                <!-- </v-list-item-avatar>
-            </v-list> -->
+ 
             <v-divider></v-divider>
             <v-list nav dense shaped>
                 <v-list-item-group v-model="selectedItem" color="white">
@@ -62,6 +98,7 @@
 
         data(){
             return{
+                closeOnContentClick: false,
                 drawer:false,
                 selectedItem: 0,
                 items: [
@@ -84,3 +121,11 @@
 
     }
 </script>
+
+
+
+<style scoped>
+    .v-application--is-ltr .v-list-item__avatar:first-child {
+        margin-right: 0px;
+    }
+</style>
