@@ -9,11 +9,10 @@
                 <v-spacer></v-spacer>
                 <v-menu left bottom :close-on-content-click="closeOnContentClick">
                     <template v-slot:activator="{ on, attrs }">
-                        <v-btn icon v-bind="attrs" v-on="on">
+                        <v-btn icon v-bind="attrs" v-on="on" class="mr-5">
                             <v-list-item-avatar size="40">
                                 <v-img src="../assets/propic.png"></v-img>
                             </v-list-item-avatar>
-                            <!-- <v-icon>mdi-dots-vertical</v-icon> -->
                         </v-btn>
                     </template>
                     <v-card  width="300" height="370">
@@ -33,8 +32,8 @@
                             <v-row>
                                 <v-divider class="mt-2"></v-divider>
                             </v-row>
-                            <v-row justify="center" class="pa-5">
-                                <v-btn block depressed color="blue-grey" dark >Manage Profile</v-btn>
+                            <v-row justify="center" class="pa-8">
+                                <app-UserProfile></app-UserProfile>
                             </v-row>
                             <v-row>
                                 <v-divider></v-divider>
@@ -51,9 +50,9 @@
                 </v-menu>
 
                 
-                <v-btn depressed color="grey" dark class="ml-5 lighten-1" small to="/Login">Login
+                <!-- <v-btn depressed color="grey" dark class="ml-5 lighten-1" small to="/Login">Login
                     <v-icon right>mdi-login</v-icon>
-                </v-btn>
+                </v-btn> -->
                 
             </v-app-bar>
             
@@ -92,9 +91,11 @@
 
 
 <script>
-
+    import UserProfile from './UserProfile.vue'
     export default{
-        
+        components:{
+            'app-UserProfile':UserProfile
+        },
 
         data(){
             return{
