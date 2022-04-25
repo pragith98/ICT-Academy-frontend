@@ -3,11 +3,10 @@ import VueRouter from 'vue-router'
 
 import Home from '../views/Home.vue'
 import Students from '../views/Students.vue'
-import Accounting from '../views/Accounting.vue'
 import Attendance from '../views/Attendance.vue'
 import Branches from '../views/Branches.vue'
 import Classes from '../views/Classes.vue'
-import Payments from '../views/Payments.vue'
+import Financial from '../views/Financial.vue'
 import Staff from '../views/Staff.vue'
 import Teachers from '../views/Teachers.vue'
 import Login from '../views/Login.vue'
@@ -18,11 +17,10 @@ Vue.use(VueRouter)
 const routes = [
   { path: '/', name: 'Home', component: Home },
   { path:'/Students', name:'Students', component:Students},
-  { path:'/Accounting', name:'Accounting', component:Accounting},
   { path:'/Attendance', name:'Attendance', component:Attendance},
   { path:'/Branches', name:'Branches', component:Branches},
   { path:'/Classes', name:'Classes', component:Classes},
-  { path:'/Payments', name:'Payments', component:Payments},
+  { path:'/Financial', name:'Financial', component:Financial },
   { path:'/Staff', name:'Staff', component:Staff},
   { path:'/Teachers', name:'Teachers', component:Teachers},
   { path:'/Login', name:'Login', component:Login},

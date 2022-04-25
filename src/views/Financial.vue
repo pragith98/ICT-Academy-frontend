@@ -8,7 +8,7 @@
 
 
         <v-container>
-            <h1 class="title font-weight-black grey--text">ACCOUNTING</h1>
+            <h1 class="title font-weight-black grey--text">Financial</h1>
             <v-row>
                 <v-col lg="3" md="4" sm="6" cols="12" v-for="cardlist in cardlist" :key="cardlist.name">
                     <v-hover close-delay="100" v-slot="{hover}">
@@ -41,14 +41,16 @@
         data(){
             return{
                 cardlist:[
-                    {name:'Teacher Salary', icon:'mdi-account-cash', color:'cyan', link:'/Accounting'},
-                    {name:'Staff Salary', icon:'mdi-account-cash', color:'lime', link:'/Accounting'},
-                    {name:'Expences Details', icon:'mdi-view-list', color:'orange', link:'/Accounting'}
+                    {name:'Mark Class fees', icon:'mdi-cash-check', color:'pink lighten-2', link:'/Financial'},
+                    {name:'Payment Details', icon:'mdi-view-list', color:'orange', link:'/Financial'},
+                    {name:'Teacher Salary', icon:'mdi-account-cash', color:'cyan', link:'/Financial'},
+                    {name:'Staff Salary', icon:'mdi-account-cash', color:'lime', link:'/Financial'},
+                    {name:'Expences', icon:'mdi-chart-donut', color:'green', link:'/Financial'}
                 ],
 
 
                 breadcrumbs: [
-                    { text: 'Accounting', disabled: true, href: '/Accounting' }
+                    { text: 'Financial', disabled: true, href: '/Financial' }
                 ],
             }
         }
