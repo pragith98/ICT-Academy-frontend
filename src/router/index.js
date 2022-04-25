@@ -41,7 +41,8 @@ const routes = [
   { path:'/Attendance/TodayClasses', name:'TodayClasses', component:()=> import('../components/TodayClasses.vue')},
   { path:'/Attendance/AttendanceDetails', name:'AttendanceDetails', component:()=> import('../components/AttendanceDetails.vue')},
   { path:'/Branches/CreateBranch', name:'CreateBranch', component:()=> import('../components/CreateBranch.vue')},
-  { path:'/Branches/BranchDetails', name:'BranchDetails', component:()=> import('../components/BranchDetails.vue')}
+  { path:'/Branches/BranchDetails', name:'BranchDetails', component:()=> import('../components/BranchDetails.vue')},
+  { path:'/Financial/PayFee', name:'PayFee', component:()=> import('../components/PayFee.vue')}
   
   // {
   //   path: '/about',
