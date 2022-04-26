@@ -19,7 +19,7 @@
                          
                         <v-menu ref="menu" v-model="menu" :close-on-content-click="false" transition="scale-transition" offset-y min-width="auto">
                             <template v-slot:activator="{ on, attrs }">
-                                <v-text-field v-model="search" label="Search"  readonly v-bind="attrs" v-on="on" hint="* Use date to search for a session" persistent-hint single-line></v-text-field>
+                                <v-text-field clearable v-model="search" label="Search"  readonly v-bind="attrs" v-on="on" hint="* Use date to search for a session" persistent-hint single-line></v-text-field>
                             </template>
                             <v-date-picker v-model="search" @input="menu = false" ></v-date-picker>
                         </v-menu>
