@@ -2,26 +2,26 @@
   <v-row justify="end">
     <v-dialog v-model="dialog" scrollable max-width="700px" persistent>
         <template v-slot:activator="{ on, attrs }">
-            <v-btn class="primary" small dark depressed  v-bind="attrs" v-on="on">Conducted Dates<v-icon dark right>mdi-calendar-range</v-icon></v-btn>
+            <v-btn class="primary" small dark depressed  v-bind="attrs" v-on="on">Conducted Months<v-icon dark right>mdi-calendar-range</v-icon></v-btn>
         </template>
         <v-card max-width="700" flat>
-        <v-card-title class="heading-1 blue-grey lighten-4  blue-grey--text text--darken-2">Conducted Dates</v-card-title>
+        <v-card-title class="heading-1 blue-grey lighten-4  blue-grey--text text--darken-2">Conducted Months</v-card-title>
         
         <v-divider></v-divider>
         <v-card-text style="height: 800px;">
             <v-form ref="form" v-model="valid" lazy-validation>
                 
                 <div>
-                    <v-card-text>Class conducted dates of <strong>{{className}}</strong> </v-card-text>
+                    <v-card-text>Class conducted dates of <strong>{{classDetails.name}}</strong> </v-card-text>
                     
                      <v-card-title>
                         <v-spacer></v-spacer>
                          
                         <v-menu ref="menu" v-model="menu" :close-on-content-click="false" transition="scale-transition" offset-y min-width="auto">
                             <template v-slot:activator="{ on, attrs }">
-                                <v-text-field v-model="search" label="Search"  readonly v-bind="attrs" v-on="on" hint="* Use date to search for a session" persistent-hint single-line></v-text-field>
+                                <v-text-field clearable v-model="search" label="Search"  readonly v-bind="attrs" v-on="on" hint="* Use date to search for a session" persistent-hint single-line></v-text-field>
                             </template>
-                            <v-date-picker v-model="search" @input="menu = false" ></v-date-picker>
+                            <v-date-picker v-model="search" type="month" @input="menu = false" ></v-date-picker>
                         </v-menu>
                             
                         
@@ -32,7 +32,7 @@
 
                     <v-data-table :headers="headers" :items="classes" :search="search">
                         <template v-slot:[`item.actions`]="{ item }">
-                            <app-ViewAttendaceDetails :classDetails="classDetails" :className="className" :conductedDate="item.date"></app-ViewAttendaceDetails>
+                            <app-PayFeesStudents :classDetails="classDetails" :conductedDate="item.date"></app-PayFeesStudents>
                         </template>
                     </v-data-table>
                 </div>
@@ -66,12 +66,13 @@
 
 
 <script>
-    import ViewAttendaceDetails from './ViewAttendanceDetails.vue'
+    
+    import PayFeesStudents from './PayFeesStudents.vue'
 
     export default {
-        props:['classDetails','className'],
+        props:['classDetails'],
         components:{
-            'app-ViewAttendaceDetails':ViewAttendaceDetails
+            'app-PayFeesStudents':PayFeesStudents,
         },
 
         data(){
@@ -96,15 +97,15 @@
                 ],
 
                 classes: [
-                    {date:'2022-01-04', count:20},
-                    {date:'2022-05-04', count:5},
-                    {date:'2022-07-04', count:14},
-                    {date:'2022-03-05', count:10},
-                    {date:'2022-09-05', count:20},
-                    {date:'2022-06-06', count:12},
-                    {date:'2022-04-06', count:20},
-                    {date:'2022-06-06', count:20},
-                    {date:'2022-23-06', count:20},
+                    {date:'2022-01', count:20},
+                    {date:'2022-02', count:5},
+                    {date:'2022-03', count:14},
+                    {date:'2022-04', count:10},
+                    {date:'2022-05', count:20},
+                    {date:'2022-06', count:12},
+                    {date:'2022-07', count:20},
+                    {date:'2022-08', count:20},
+                    {date:'2022-09', count:20},
                     
                 ],
                 

@@ -41,7 +41,7 @@
         data(){
             return{
                 cardlist:[
-                    {name:'Mark Class fees', icon:'mdi-cash-check', color:'pink lighten-2', link:'/Financial/PayFee'},
+                    {name:'Fees Payment', icon:'mdi-cash-check', color:'pink lighten-2', link:'/Financial/FeesPayment'},
                     {name:'Payment Details', icon:'mdi-view-list', color:'orange', link:'/Financial'},
                     {name:'Teacher Salary', icon:'mdi-account-cash', color:'cyan', link:'/Financial'},
                     {name:'Staff Salary', icon:'mdi-account-cash', color:'lime', link:'/Financial'},
