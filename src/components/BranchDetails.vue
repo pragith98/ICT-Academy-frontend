@@ -65,21 +65,19 @@
 
                 search: '',
                 headers: [
-                    { text: 'BRANCH',align: 'start', sortable: false, value:'name'},
-                    { text: 'TP', sortable: false, value: 'tp' },
+                    { text: 'BRANCH',align: 'start', sortable: false, value:'branchName'},
+                    { text: 'TP', sortable: false, value: 'telNo' },
                     { text: 'ADDRESS',sortable: true, value: 'address' },
-                    { text: 'HALLS', sortable: false, value: 'halls' },
+                    { text: 'HALLS', sortable: false, value: 'noOfRooms' },
                     { value: 'actions', sortable: false,align:'start' },
                 ],
 
-                branches: [
-                    {id:'001',name:'Hkmana', tp:'0873847384', halls:'8', address:'123, main road, hakmana'},
-                    {id:'002',name:'Walasmulla', tp:'3433234543', halls:'4', address:'123, main road, Walasmulla'},
-                    
+                // branches: [
+                //     {id:'001',name:'Hkmana', tp:'0873847384', halls:'8', address:'123, main road, hakmana'},
+                //     {id:'002',name:'Walasmulla', tp:'3433234543', halls:'4', address:'123, main road, Walasmulla'},    
+                // ],
 
-                    
-                    
-                ],
+                branches:[],
 
                 breadcrumbs: [
                     { text: 'Branches', disabled: false, href: '/Branches' },
@@ -92,6 +90,10 @@
                 unsuccessAlertUpdate:false,
                 successAlertUpdate:false,
             }
+        },
+
+        created(){
+            this.axios.get("http://127.0.0.1:8000/api/v1.0/BranchManagement/branches").then(Response=>(this.branches= Response.data.branch.data) )
         },
 
         methods: {
