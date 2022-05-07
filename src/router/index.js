@@ -1,6 +1,11 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 
+import axios from 'axios'
+import VueAxios from 'vue-axios'
+Vue.use(VueAxios, axios)
+
+
 import Home from '../views/Home.vue'
 import Students from '../views/Students.vue'
 import Attendance from '../views/Attendance.vue'

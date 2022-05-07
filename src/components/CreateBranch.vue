@@ -126,9 +126,24 @@
 
             createBranch(){
                 if(this.$refs.form.validate()){
-                    this.successAlert=true
-                    console.log(this.halls)
-                    this.Reset()
+
+                    this.axios.post("http://127.0.0.1:8000/api/v1.0/BranchManagement/branches",{
+                        branchName:this.branchName,
+                        telNo:this.tp,
+                        address:this.address,
+                        noOfRooms:this.halls
+
+                    })
+                    .then(Response=>{
+                        this.Reset();
+
+                        if(Response.data.success == true){
+                            this.successAlert=true;
+                        }
+                    })
+                     
+
+
                 }
 
             },
