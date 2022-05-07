@@ -1,0 +1,265 @@
+<template>
+    <div>
+
+        <v-breadcrumbs :items="breadcrumbs">
+                <template v-slot:divider>
+                    <v-icon>mdi-chevron-right</v-icon>
+                </template>
+            </v-breadcrumbs>
+        <v-container>
+
+            <!----------------------------- Alerts ---------------------------------->
+
+            <v-snackbar :timeout="3000" v-model="unsuccessAlert" color="red"  bottom ><v-icon left>mdi-alert-outline</v-icon>Item delete <strong>failed</strong> </v-snackbar>
+            <v-snackbar :timeout="3000" v-model="successAlert" color="green"  bottom><v-icon left>mdi-check</v-icon>Item delete <strong>successful</strong> </v-snackbar>
+            
+            <v-snackbar :timeout="3000" v-model="unsuccessAlertSubjectCreate" color="red"  bottom ><v-icon left>mdi-alert-outline</v-icon>Subject Create <strong>failed</strong> </v-snackbar>
+            <v-snackbar :timeout="3000" v-model="successAlertSubjectCreate" color="green"  bottom><v-icon left>mdi-check</v-icon>Subject Create <strong>successful</strong> </v-snackbar>
+
+            <v-snackbar :timeout="3000" v-model="unsuccessAlertPayment" color="red"  bottom ><v-icon left>mdi-alert-outline</v-icon>Payment <strong>failed</strong> </v-snackbar>
+            <v-snackbar :timeout="3000" v-model="successAlertPayment" color="green"  bottom><v-icon left>mdi-check</v-icon>Payment <strong>successful</strong> </v-snackbar>
+            
+            
+            <!----------------------------- Alerts ---------------------------------->
+            
+
+            <template>
+                <v-row style="padding:12px">
+                    <v-col lg="4" md="6" sm="6" cols="12" max-width="700">
+                        <v-form ref="form" v-model="valid" lazy-validation>
+                            <v-card class="pb-5">
+                                
+                                <v-row justify="center" class="px-5 pb-1" dense>
+                                    
+                                    <v-card-title class="blue-grey--text text--darken-2">Pay Advance</v-card-title>
+
+                                    <v-col cols="12" md="12" sm="12">
+                                        <v-autocomplete :items="teachers" :rules="teacherRules" :value="teachers" v-model="teacher" :filter="teacherFilter" item-text="fname" item-value="teacherID" label="Teacher" ></v-autocomplete>
+                                    </v-col>
+                                    
+                                    <v-col cols="12" md="12" sm="12">
+                                        <v-text-field v-model="amount" :rules="amountRules" clearable  label="Amount" prefix="RS."></v-text-field>
+                                    </v-col>
+
+                                    <v-col cols="12" md="12" sm="12">
+                                        <v-textarea v-model="description" :rules="descriptionRules" rows="2"  label="Description"></v-textarea>
+                                    </v-col>
+
+                                    <v-col cols="12" md="12" sm="12">
+                                        <template>
+                                            <div >
+                                                <v-menu ref="menud" v-model="dateMenu" :close-on-content-click="true" transition="scale-transition" offset-y min-width="auto">
+                                                    <template v-slot:activator="{ on, attrs }">
+                                                        <v-text-field v-model="date" label="Date" readonly v-bind="attrs" v-on="on" :rules="dateRules"></v-text-field>
+                                                    </template>
+                                                    <v-date-picker v-model="date" :active-picker.sync="dateActivePicker" :max="(new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().substr(0, 10)" min="1950-01-01"></v-date-picker>
+                                                </v-menu>
+                                            </div>
+                                        </template>
+                                    </v-col>
+                                
+                                    
+                                
+                                </v-row>
+
+                                <v-card-actions class="px-6">
+                                    <v-btn depressed color="primary" block :disabled="!valid || !description || !amount || !teacher || !date" @click="dialog=true">Pay</v-btn>
+                                </v-card-actions>
+                                
+                            </v-card>
+                        </v-form>
+                    </v-col>
+
+                    <v-col>
+                        <v-card  flat>
+                            <v-card-title class="heading-1 blue-grey lighten-4  blue-grey--text text--darken-2">Teacher Advance</v-card-title>
+                            <v-card-title><v-spacer></v-spacer><v-text-field v-model="Search" append-icon="mdi-magnify" label="Search" single-line hide-details></v-text-field></v-card-title>
+                            
+                            <v-data-table :headers="headers" :items="teachersAdvance" :search="Search" >
+                                
+                            </v-data-table>
+                        </v-card>
+                    </v-col>
+                </v-row>
+                
+            </template>
+
+
+
+            <!----------------------------------- dialog box ------------------------------------------>
+
+            <v-dialog v-model="dialog" persistent max-width="500px">
+                <v-card>
+                    <v-container class="text-center">
+                        <v-card-title>
+                            <v-row justify="center">
+                                <v-icon size="100" color="orange">mdi-alert-circle-outline</v-icon>
+                            </v-row>
+                        </v-card-title>
+                        <span class="text-h6 text-center"> Confirm Payment</span>
+                        <v-card-text>Amount: Rs. {{amount}} <br>Description: {{description}} <br>Date: {{date}} </v-card-text>
+                        
+                    </v-container>
+                    
+                    
+                    <v-card-actions>
+                        <v-spacer></v-spacer>
+                        <v-btn color="grey"  outlined @click="dialog = false" >Cancel</v-btn>
+                        <v-btn @click="payAdvance(), Reset()" color="orange" dark depressed>Confirm</v-btn>
+                    </v-card-actions>
+                </v-card>
+            </v-dialog>
+
+            <!----------------------------------- dialog box ------------------------------------------>
+
+            
+            
+        </v-container>
+    </div>
+ 
+    
+</template>
+
+<script>
+
+    export default {
+        components:{
+        },
+        data () {
+            return {
+                dialog:false,
+
+                valid:true,
+                Search: '',
+                teacher:null,
+
+                dateActivePicker: null,
+                date: (new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().substr(0, 10),
+                dateMenu: false,
+
+                amount:'0.00',
+                description:'',
+
+                
+
+                
+
+                headers: [
+                    {text: 'ID',align: 'start', sortable: false, value:'id'},
+                    {text: 'NAME',align: 'start', sortable: false, value:'fname'},
+                    { text: 'DATE', sortable: false, value: 'date' },
+                    { text: 'ADVANCE', sortable: false, value: 'advance' },
+                    { text: 'DESCRIPTION', sortable: false, value: 'description' },
+                    { text: 'STAFF', sortable: false, value: 'staff'},
+                    { text: '', sortable: false, value: 'actions' },
+                ],
+
+                teachers: [
+                    {fname:'Saman', teacherID:'123', lname:'Herath', date:'2022-04-28', advance:3400, description:'Class fees payments'},
+                    {fname:'Dasun', teacherID:'345', lname:'Herath', date:'2022-04-28', advance:3400, description:'Class fees payments'},  
+                ],
+
+                teachersAdvance: [
+                    {id:1, fname:'Saman', teacherID:'123', lname:'Herath', date:'2022-04-28', advance:3400, description:'Class fees payments', staff:'nirosh'},
+                    {id:2, fname:'Dasun', teacherID:'345', lname:'Herath', date:'2022-04-30', advance:6300, description:'Class fees payments', staff:'Rathnayake'},  
+                ],
+
+                breadcrumbs: [
+                    { text: 'Financial', disabled: false, href: '/Financial' },
+                    { text: 'Teacher Advance', disabled: true, href: '/Financial/TeacherAdvance' }
+                ],
+
+
+
+
+                // -----------Validation rules-----------
+                descriptionRules: [v=> !!v || 'Description is required', v=> (v && v.length >5)|| 'Description must be greater than 5'],
+            
+                amountRules: [v=> !!v || 'Amount is required', v => /^\d+$/.test(v) || 'Must be a number'],
+
+                teacherRules: [v=> !!v || 'Teacher is required'],
+
+                dateRules: [v=> !!v || 'Join Date is required'],
+
+
+
+
+                successAlert:false,
+                unsuccessAlert:false,
+
+                unsuccessAlertSubjectCreate:false,
+                successAlertSubjectCreate:false,
+
+                unsuccessAlertPayment:false,
+                successAlertPayment:false,
+
+            }
+        },
+
+        methods: {
+
+            teacherFilter (item, queryText) {
+                const textOne = item.fname.toLowerCase()
+                const textTwo = item.teacherID.toLowerCase()
+                const searchText = queryText.toLowerCase()
+
+                return textOne.indexOf(searchText) > -1 || textTwo.indexOf(searchText) > -1
+
+            },
+
+            payAdvance(){
+                if(this.$refs.form.validate()){
+                    console.log(this.teacher+", "+this.amount+", "+this.description+", "+this.date)
+                    this.dialog=false
+                    this.successAlertPayment=true
+                }
+            },
+
+            Reset() {
+                this.$refs.form.reset()
+            },
+
+
+
+            // -------------------- alerts --------------------------------
+            deleteAlert(success){
+                this.successAlert = success;
+            },
+            faileAlert(failed){
+                this.unsuccessAlert = failed;
+            },
+
+            subjectCreateSuccessAlert(success){
+                this.successAlertSubjectCreate = success;
+            },
+            subjectCreateFaileAlert(failed){
+                this.unsuccessAlertSubjectCreate = failed;
+            },
+
+            updateSuccessAlert(success){
+                this.successAlertUpdate = success;
+            },
+            updateFaileAlert(failed){
+                this.unsuccessAlertUpdate = failed;
+            },
+        }
+    }
+</script>
+            
+
+
+<style scoped>
+ fieldset{
+    border-color: rgb(225, 225, 225);
+    border-style: solid;
+    border:0.1;
+    border-style: solid;
+ }
+
+</style>
+
+
+            
+        
+        
+
