@@ -11,14 +11,14 @@
                             <v-icon size="100" color="error">mdi-help-circle-outline</v-icon>
                         </v-row>
                     </v-card-title>
-                    <span class="text-h6 text-center">Do you really want to delete <br> <strong>"{{branchDetails.name}}"</strong></span>
+                    <span class="text-h6 text-center">Do you really want to delete <br> <strong>"{{branchDetails.branchName}}"</strong></span>
                 </v-container>
                 
                 
                 <v-card-actions>
                     <v-spacer></v-spacer>
-                    <v-btn color="grey" @click="dialog = false, failedAlert()" outlined>Cancel</v-btn>
-                    <v-btn color="error" @click="dialog = false, successAlert()" depressed>Delete
+                    <v-btn color="grey" @click="dialog = false" outlined>Cancel</v-btn>
+                    <v-btn color="error" @click="dialog = false, deleteBranch()" depressed>Delete
                         <v-icon right>mdi-delete</v-icon>
                     </v-btn>
                 </v-card-actions>
@@ -38,9 +38,22 @@
         }),
 
         methods:{
+            deleteBranch(){
+                this.axios.delete('http://127.0.0.1:8000/api/v1.0/BranchManagement/branches/'+this.branchDetails.branchID)
+                    .then(Response=>{
+                        if(Response.data.success == true){
+                            this.successAlert();
+                        }else{
+                            this.failedAlert();
+                        }
+                    })
+            },
+
+
             successAlert(){
                 this.$emit('success',true)
             },
+
             failedAlert(){
                 this.$emit('failed',true)
             }

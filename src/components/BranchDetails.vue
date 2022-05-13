@@ -32,8 +32,6 @@
                                         <app-EditBranch  :branchDetails='item' @success="updateSuccessAlert($event)" @failed="updateFaileAlert($event)"></app-EditBranch> <v-spacer></v-spacer>
                                         <app-DeleteBranch class="ml-5" :branchDetails='item' @success="deleteAlert($event)" @failed="faileAlert($event)"></app-DeleteBranch>
                                     </v-card-actions>
-                                   
-                                    
                                 </template>
                             </v-data-table>
                         </div>
@@ -72,11 +70,6 @@
                     { value: 'actions', sortable: false,align:'start' },
                 ],
 
-                // branches: [
-                //     {id:'001',name:'Hkmana', tp:'0873847384', halls:'8', address:'123, main road, hakmana'},
-                //     {id:'002',name:'Walasmulla', tp:'3433234543', halls:'4', address:'123, main road, Walasmulla'},    
-                // ],
-
                 branches:[],
 
                 breadcrumbs: [
@@ -97,15 +90,23 @@
         },
 
         methods: {
+            recreate(){
+                this.axios.get("http://127.0.0.1:8000/api/v1.0/BranchManagement/branches").then(Response=>(this.branches= Response.data.branch.data) )
+            },
+
             deleteAlert(success){
+                this.recreate();
                 this.successAlert = success;
             },
+            
             faileAlert(failed){
                 this.unsuccessAlert = failed;
             },
 
             updateSuccessAlert(success){
+                this.recreate();
                 this.successAlertUpdate = success;
+
             },
             updateFaileAlert(failed){
                 this.unsuccessAlertUpdate = failed;

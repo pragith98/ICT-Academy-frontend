@@ -2,7 +2,7 @@
   <v-row justify="end">
     <v-dialog v-model="dialog" scrollable max-width="700px" persistent>
         <template v-slot:activator="{ on, attrs }">
-            <v-btn small class="teal" dark depressed  v-bind="attrs" v-on="on">Edit<v-icon dark right>mdi-pencil</v-icon></v-btn>
+            <v-btn small @click="getBranch()" class="teal" dark depressed  v-bind="attrs" v-on="on">Edit<v-icon dark right>mdi-pencil</v-icon></v-btn>
         </template>
         <v-card max-width="700" flat>
         <v-card-title class="heading-1 blue-grey lighten-4  blue-grey--text text--darken-2">Edit Branch</v-card-title>
@@ -41,8 +41,8 @@
 
         <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn   @click="dialog = false, failedAlert()" outlined color="grey">Cancel</v-btn>
-            <v-btn :disabled="!valid || !tp || !address || !halls" color="primary" @click="updateBranch(), successAlert(), dialog = false" depressed>Save
+            <v-btn   @click="dialog = false" outlined color="grey">Cancel</v-btn>
+            <v-btn :disabled="!valid || !tp || !address || !halls" color="primary" @click="updateBranch(), dialog = false" depressed>Save
                 <v-icon left>mdi-content-save</v-icon>
             </v-btn>
         </v-card-actions>
@@ -57,6 +57,7 @@
 
 <script>
     export default {
+        props:['branchDetails'],
         components:{
             
         },
@@ -72,6 +73,7 @@
                 address:'',
                 halls:'',
                 multiLine:true,
+
 
 
 
@@ -92,6 +94,17 @@
 
         methods: {
             
+            getBranch(){
+                this.axios.get("http://127.0.0.1:8000/api/v1.0/BranchManagement/branches/"+this.branchDetails.branchID)
+                .then(Response=>{
+                    this.branchName=Response.data.branch.data[0].branchName;
+                    this.tp=Response.data.branch.data[0].telNo;
+                    this.address=Response.data.branch.data[0].address;
+                    this.halls=Response.data.branch.data[0].noOfRooms;
+                    
+                })
+            },
+
 
             Reset() {
                 this.$refs.form.reset()
@@ -105,8 +118,23 @@
             updateBranch(){
                 if(this.$refs.form.validate()){
                     
-                    console.log(this.halls)
-                    this.Reset()
+
+                    this.axios.patch('http://127.0.0.1:8000/api/v1.0/BranchManagement/branches/'+this.branchDetails.branchID,{
+                        branchName:this.branchName,
+                        telNo:this.tp,
+                        address:this.address,
+                        noOfRooms:this.halls
+                    })
+                    .then(Response=>{
+                        this.Reset();
+
+                        if(Response.data.success == true){
+                            this.successAlert();
+                        }else{
+                            this.failedAlert();
+                        }
+                    })
+
                 }
 
             },
