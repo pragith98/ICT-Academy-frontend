@@ -73,7 +73,7 @@
                                                     <template v-slot:activator="{ on, attrs }">
                                                         <v-text-field v-model="date" label="Birthday date" prepend-icon="mdi-calendar" readonly v-bind="attrs" v-on="on" :rules="birthdayRules"></v-text-field>
                                                     </template>
-                                                    <v-date-picker v-model="date" :active-picker.sync="activePicker" :max="(new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().substr(0, 10)" min="1950-01-01" ></v-date-picker>
+                                                    <v-date-picker @input="menu = false" v-model="date" :active-picker.sync="activePicker" :max="(new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().substr(0, 10)" min="1950-01-01" ></v-date-picker>
                                                 </v-menu>
                                             </div>
                                         </template>
@@ -113,7 +113,7 @@
                                                     <template v-slot:activator="{ on, attrs }">
                                                         <v-text-field v-model="joingDate" label="Join date" prepend-icon="mdi-calendar" readonly v-bind="attrs" v-on="on" :rules="joinDateRules"></v-text-field>
                                                     </template>
-                                                    <v-date-picker v-model="joingDate" :active-picker.sync="joingActivePicker" :max="(new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().substr(0, 10)" min="1950-01-01"></v-date-picker>
+                                                    <v-date-picker @input="joingMenu = false" v-model="joingDate" :active-picker.sync="joingActivePicker" :max="(new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().substr(0, 10)" min="1950-01-01"></v-date-picker>
                                                 </v-menu>
                                             </div>
                                         </template>
@@ -135,7 +135,7 @@
                             </fieldset>
                             <v-card-actions class="justify-end mt-2">
                                 <v-btn   @click="Reset" outlined color="grey">Reset</v-btn>
-                                <v-btn :disabled="!valid" color="primary" @click="Register(),scrollToTop(),successAlert()" depressed>Register</v-btn>
+                                <v-btn :disabled="!valid || !getTitle || !fname || !lname || !tp || !email || !address || !getGender || !nicNo || !nicType || !date || !joingDate" color="primary" @click="Register(),scrollToTop(),successAlert()" depressed>Register</v-btn>
                             </v-card-actions>
                             
                         </v-col>
@@ -180,7 +180,7 @@ export default {
             
 
             // -----------Validation rules-----------
-            nameRules: [v=> !!v || 'Name is required', v => /^[a-zA-Z_ ]*$/.test(v) || 'Must be text only', v=> (v && v.length >3)|| 'Name must be greater than 3'],
+            nameRules: [v=> !!v || 'Name is required', v => /^[a-zA-Z\s.]+$/.test(v) || 'Must be text only', v=> (v && v.length >3)|| 'Name must be greater than 3'],
             
             tpRules: [v=> !!v || 'Telephone no. is required', v => /^\d+$/.test(v) || 'Must be a number', v=> (v && v.length ==10)|| 'Telephone no. must be 10'],
             
