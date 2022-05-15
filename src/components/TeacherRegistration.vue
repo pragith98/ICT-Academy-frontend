@@ -135,7 +135,7 @@
                             </fieldset>
                             <v-card-actions class="justify-end mt-2">
                                 <v-btn   @click="Reset" outlined color="grey">Reset</v-btn>
-                                <v-btn :disabled="!valid || !getTitle || !fname || !lname || !tp || !email || !address || !getGender || !nicNo || !nicType || !date || !joingDate" color="primary" @click="Register(),scrollToTop(),successAlert()" depressed>Register</v-btn>
+                                <v-btn :disabled="!valid || !getTitle || !fname || !lname || !tp || !email || !address || !getGender || !nicNo || !nicType || !date || !joingDate" color="primary" @click="Register(),scrollToTop()" depressed>Register</v-btn>
                             </v-card-actions>
                             
                         </v-col>
@@ -208,7 +208,7 @@ export default {
             // -----------dropdown list-----------
             gender:['Male','Female','Other'],
 
-            title:['Mr', 'Ms', 'Mrs', 'Miss', 'Rav'],
+            title:['Mr.', 'Ms.', 'Mrs.', 'Miss.', 'Rav.'],
             
 
 
@@ -237,8 +237,32 @@ export default {
     methods:{
         Register(){
             if(this.$refs.form.validate()){
-                console.log('fname:'+this.fname+' lname:'+this.lname+' tp:'+this.tp+' email:'+this.email+' address:'+this.address+' bday:'+this.date+' gender:'+this.getGender);
-                console.log('parent type:'+this.parent+' parent name:'+this.parentName+' parent tp:'+this.parentTp)
+                this.axios.post("http://127.0.0.1:8000/api/v1.0/TeacherManagement/teachers",{
+                    title:this.getTitle,
+                    firstName:this.fname,
+                    lastName:this.lname,
+                    nic:this.nicNo,
+                    dob:this.date,
+                    sex:this.getGender,
+                    telNo:this.tp,
+                    address:this.address,
+                    email:this.email,
+                    joinedDate:this.joingDate,
+                    status:"Active",
+                    qualification: "MSc. BSc.ICT",
+
+                })
+                .then(Response=>{
+                    this.Reset();
+
+                    if(Response.data.success == true){
+                        this.success=true;
+                    }else{
+                        this.unsuccess=true;
+                    }
+                })
+            
+            
             }
             
             
@@ -267,12 +291,8 @@ export default {
             window.scrollTo(0, 0);
         },
 
-        successAlert(){
-            this.success=true
-        },
-        failedAlert(){
-            this.unsuccess=true
-        }
+        
+        
         
       
     }
