@@ -86,12 +86,12 @@
         },
 
         created(){
-            this.axios.get("http://127.0.0.1:8000/api/v1.0/BranchManagement/branches").then(Response=>(this.branches= Response.data.branch.data) )
+            this.axios.get(this.$apiUrl+"/api/v1.0/BranchManagement/branches").then(Response=>(this.branches= Response.data.branch.data) )
         },
 
         methods: {
             recreate(){
-                this.axios.get("http://127.0.0.1:8000/api/v1.0/BranchManagement/branches").then(Response=>(this.branches= Response.data.branch.data) )
+                this.axios.get(this.$apiUrl+"/api/v1.0/BranchManagement/branches").then(Response=>(this.branches= Response.data.branch.data) )
             },
 
             deleteAlert(success){

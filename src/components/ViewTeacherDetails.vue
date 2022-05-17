@@ -2,7 +2,7 @@
   <v-row justify="end">
     <v-dialog v-model="dialog" scrollable max-width="700px" persistent>
         <template v-slot:activator="{ on, attrs }">
-            <v-btn class="primary" dark small block  depressed  v-bind="attrs" v-on="on">view<v-icon dark right>mdi-account</v-icon></v-btn>
+            <v-btn @click="getTeacher()" class="primary" dark small block  depressed  v-bind="attrs" v-on="on">view<v-icon dark right>mdi-account</v-icon></v-btn>
         </template>
         <v-card max-width="700" flat>
         <v-card-title class="heading-1 blue-grey lighten-4  blue-grey--text text--darken-2">Teacher ID - {{teacher.teacherID}}
@@ -118,7 +118,7 @@
             <v-spacer></v-spacer>
             <v-btn   @click="dialog = false" color="primary" v-if="!isEditing" depressed>OK</v-btn>
             <v-btn   @click="cancelEdit()" outlined color="grey" v-if="isEditing">Cancel</v-btn>
-            <v-btn :disabled="!valid" color="primary" @click="Save()" depressed v-if="isEditing">Save
+            <v-btn :disabled="!valid || !getTitle || !fname || !lname || !tp || !email || !address || !getGender || !nicNo || !nicType || !date || !joingDate" color="primary" @click="updateTeacher()" depressed v-if="isEditing">Save
                 <v-icon left>mdi-content-save</v-icon>
             </v-btn>
         </v-card-actions>
@@ -133,6 +133,7 @@
 
 
 <script>
+
 export default {
     props:['teacher'],
     data(){
@@ -141,18 +142,18 @@ export default {
             image:null,
 
             valid:true,
-            fname: this.teacher.fname,
-            lname: this.teacher.lname,
-            tp: this.teacher.tp,
-            email: this.teacher.email,
-            address: this.teacher.address,
-            getGender:this.teacher.getGender,
-            nicNo:this.teacher.nicNo,
-            nicType:this.teacher.nicType,
-            getTitle:this.teacher.getTitle,
+            fname: '',
+            lname: '',
+            tp: '',
+            email: '',
+            address: '',
+            getGender:'',
+            nicNo:'',
+            nicType:'',
+            getTitle:'',
 
             activePicker: null,
-            date: this.teacher.date,
+            date: '',
             menu: false,
 
             joingActivePicker: null,
@@ -166,7 +167,7 @@ export default {
             hasSaved: false,
             
             // -----------Validation rules-----------
-            nameRules: [v=> !!v || 'Name is required', v => /^[a-zA-Z_ ]*$/.test(v) || 'Must be text only', v=> (v && v.length >3)|| 'Name must be greater than 3'],
+            nameRules: [v=> !!v || 'Name is required', v => /^[a-zA-Z\s.]+$/.test(v) || 'Must be text only', v=> (v && v.length >3)|| 'Name must be greater than 3'],
             
             tpRules: [v=> !!v || 'Telephone no. is required', v => /^\d+$/.test(v) || 'Must be a number', v=> (v && v.length ==10)|| 'Telephone no. must be 10'],
             
@@ -192,7 +193,7 @@ export default {
             // -----------dropdown list-----------
             gender:['Male','Female','Other'],
 
-            title:['Mr', 'Ms', 'Mrs', 'Miss', 'Rav'],
+            title:['Mr.', 'Ms.', 'Mrs.', 'Miss.', 'Rev.'],
 
         
         }
@@ -206,12 +207,58 @@ export default {
     },
 
     methods:{
-        Save(){
-            if(this.$refs.form.validate()){
-                console.log('fname:'+this.fname+' lname:'+this.lname+' tp:'+this.tp+' email:'+this.email+' address:'+this.address+' bday:'+this.date+' gender:'+this.getGender);
+
+        getTeacher(){
+            this.axios.get(this.$apiUrl+"/api/v1.0/TeacherManagement/teachers/"+this.teacher.teacherID)
+            .then(Response=>{
+                this.fname=Response.data.teacher.data[0].firstName;
+                this.lname=Response.data.teacher.data[0].lastName;
+                this.tp=Response.data.teacher.data[0].telNo;
+                this.email=Response.data.teacher.data[0].email;
+                this.address=Response.data.teacher.data[0].address;
+                this.getGender=Response.data.teacher.data[0].sex;
+                this.nicNo=Response.data.teacher.data[0].nic;
+                this.getTitle=Response.data.teacher.data[0].title;
+                this.date=Response.data.teacher.data[0].dob;
+                this.joingDate=Response.data.teacher.data[0].joinedDate;
                 
-                this.isEditing = !this.isEditing;
-                this.hasSaved = true;
+                if((Response.data.teacher.data[0].nic).length>10){
+                    this.nicType="new"
+                }else{
+                    this.nicType="old"
+                }
+                
+            })
+        },
+
+
+        updateTeacher(){
+            if(this.$refs.form.validate()){
+                this.axios.patch(this.$apiUrl+'/api/v1.0/TeacherManagement/teachers/'+this.teacher.teacherID,{
+                    firstName:this.fname,
+                    lastName:this.lname,
+                    telNo:this.tp,
+                    email:this.email,
+                    address:this.address,
+                    sex:this.getGender,
+                    nic:this.nicNo,
+                    title:this.getTitle,
+                    dob:this.date,
+                    joinedDate:this.joingDate,
+                    qualification: "Hons bbbba in ICT",
+                    status: "Active",
+                })
+                .then(Response=>{
+
+                    if(Response.data.success == true){
+                        this.hasSaved = true;
+                        this.isEditing = !this.isEditing;
+                        this.reCreate()
+                    }else{
+                        this.hasSaved = false;
+                    }
+                })
+                
             }  
         },
 
@@ -234,8 +281,12 @@ export default {
         
         cancelEdit(){
             this.isEditing = !this.isEditing;
-            this.hasSaved = false;
-        }
+            
+        },
+
+        reCreate(){
+            this.$emit('success',true)
+        },
         
       
     }

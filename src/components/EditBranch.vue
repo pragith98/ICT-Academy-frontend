@@ -95,7 +95,7 @@
         methods: {
             
             getBranch(){
-                this.axios.get("http://127.0.0.1:8000/api/v1.0/BranchManagement/branches/"+this.branchDetails.branchID)
+                this.axios.get(this.$apiUrl+"/api/v1.0/BranchManagement/branches/"+this.branchDetails.branchID)
                 .then(Response=>{
                     this.branchName=Response.data.branch.data[0].branchName;
                     this.tp=Response.data.branch.data[0].telNo;
@@ -119,7 +119,7 @@
                 if(this.$refs.form.validate()){
                     
 
-                    this.axios.patch('http://127.0.0.1:8000/api/v1.0/BranchManagement/branches/'+this.branchDetails.branchID,{
+                    this.axios.patch(this.$apiUrl+'/api/v1.0/BranchManagement/branches/'+this.branchDetails.branchID,{
                         branchName:this.branchName,
                         telNo:this.tp,
                         address:this.address,

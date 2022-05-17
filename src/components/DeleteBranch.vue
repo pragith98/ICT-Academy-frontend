@@ -39,7 +39,7 @@
 
         methods:{
             deleteBranch(){
-                this.axios.delete('http://127.0.0.1:8000/api/v1.0/BranchManagement/branches/'+this.branchDetails.branchID)
+                this.axios.delete(this.$apiUrl+'/api/v1.0/BranchManagement/branches/'+this.branchDetails.branchID)
                     .then(Response=>{
                         if(Response.data.success == true){
                             this.successAlert();

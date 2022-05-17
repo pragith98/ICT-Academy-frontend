@@ -25,7 +25,7 @@
                     <v-data-table :headers="headers" :items="teachers" :search="search">
                         <template v-slot:[`item.actions`]="{ item }">
                             <v-card-actions>
-                                <app-ViewTeacherDetails :teacher='item'></app-ViewTeacherDetails>
+                                <app-ViewTeacherDetails @success="reCreate($event)" :teacher='item'></app-ViewTeacherDetails>
                                 <v-spacer></v-spacer>
                                 <app-DeleteTeacher class="ml-5" :teacher='item' @success="deleteAlert($event)" @failed="faileAlert($event)"></app-DeleteTeacher>
                             </v-card-actions> 
@@ -61,7 +61,7 @@
                     { text: '', sortable: false, value: 'actions' },
                 ],
 
-                teachers: [{name:'firstName'+'lastName'}],
+                teachers: [],
 
                 breadcrumbs: [
                     { text: 'Teachers', disabled: false, href: '/Teachers' },
@@ -81,16 +81,34 @@
                 
             }).then(Response=>(
                 this.teachers=Response.data.teacher.data
-                
             ) )
         },
 
         methods: {
             deleteAlert(success){
+                this.getTeachers();
                 this.successAlert = success;
             },
+
             faileAlert(failed){
                 this.unsuccessAlert = failed;
+            },
+
+            getTeachers(){
+                this.axios.get(this.$apiUrl+"/api/v1.0/TeacherManagement/teachers",{
+                params:{
+                    status: "Active"
+                }
+                
+                }).then(Response=>(
+                    this.teachers=Response.data.teacher.data
+                ))
+            },
+
+            reCreate(success){
+                this.getTeachers();
+                this.successAlertUpdate = success;
+
             },
         }
     }
