@@ -55,19 +55,13 @@
             return {
                 search: '',
                 headers: [
-                    {text: 'NAME',align: 'start', sortable: false, value:'fname'},
-                    { text: 'TELEPHONE NO.', sortable: false, value: 'tp' },
+                    { text: 'NAME',align: 'start', sortable: false, value:'firstName'},
+                    { text: 'TELEPHONE NO.', sortable: false, value: 'telNo' },
                     { text: 'EMAIL', sortable: false, value: 'email' },
                     { text: '', sortable: false, value: 'actions' },
                 ],
 
-                teachers: [
-                    {fname:'Saman', lname:'Herath', nicType:'old', nicNo:'871982289v', tp:'1231235323', email:'Saman@Saman.com', address:'no1, rathnapura', getGender:'Male', teacherID:'2621', date:'2021-02-17', getTitle:'Mr'},
-                    {fname:'Dasun', lname:'Rathnayake', nicType:'old', nicNo:'871982289v', tp:'4321235323', email:'Dasun@Dasun.com', address:'no1, Matale', getGender:'Male', teacherID:'2065', date:'2021-07-19', getTitle:'Mr'},
-                    {fname:'Kasun', lname:'Bandara', nicType:'old', nicNo:'871982289v', tp:'7831235323', email:'Kasun@Kasun.com', address:'no1, Kandy', getGender:'Male', date:'2021-02-19', teacherID:'2071', getTitle:'Mr'},
-                    {fname:'Maheshi', lname:'Ranathunga', nicType:'old', nicNo:'871982289v',tp:'9931235323', email:'Maheshi@Maheshi.com', address:'no1, Jafna', getGender:'Female', date:'2021-09-12', teacherID:'2024', getTitle:'Ms'},
-                    
-                ],
+                teachers: [{name:'firstName'+'lastName'}],
 
                 breadcrumbs: [
                     { text: 'Teachers', disabled: false, href: '/Teachers' },
@@ -77,6 +71,18 @@
                 successAlert:false,
                 unsuccessAlert:false,
             }
+        },
+
+        created(){
+            this.axios.get(this.$apiUrl+"/api/v1.0/TeacherManagement/teachers",{
+                params:{
+                    status: "Active"
+                }
+                
+            }).then(Response=>(
+                this.teachers=Response.data.teacher.data
+                
+            ) )
         },
 
         methods: {

@@ -374,8 +374,9 @@
             },
 
             submit(){
-                console.log(this.teacher);
-                this.dialog= !this.dialog
+                console.log(this.startTime)
+                // console.log(this.teacher);
+                // this.dialog= !this.dialog
             },
 
 

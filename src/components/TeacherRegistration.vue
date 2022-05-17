@@ -8,8 +8,8 @@
             </v-breadcrumbs>
         <v-container>
 
-            <v-snackbar :timeout="3000" v-model="unsuccess" color="red"  bottom ><v-icon left>mdi-alert-outline</v-icon> Student Registration has been<strong>failed</strong> </v-snackbar>
-            <v-snackbar :timeout="3000" v-model="success" color="green"  bottom><v-icon left>mdi-check</v-icon>Student Registration has been <strong>successful</strong> </v-snackbar>
+            <v-snackbar :timeout="3000" v-model="unsuccess" color="red"  bottom ><v-icon left>mdi-alert-outline</v-icon> Teacher Registration has been<strong>failed</strong> </v-snackbar>
+            <v-snackbar :timeout="3000" v-model="success" color="green"  bottom><v-icon left>mdi-check</v-icon>Teacher Registration has been <strong>successful</strong> </v-snackbar>
             
             <v-form ref="form" v-model="valid" lazy-validation>
                 
@@ -208,7 +208,7 @@ export default {
             // -----------dropdown list-----------
             gender:['Male','Female','Other'],
 
-            title:['Mr.', 'Ms.', 'Mrs.', 'Miss.', 'Rav.'],
+            title:['Mr.', 'Ms.', 'Mrs.', 'Miss.', 'Rev.'],
             
 
 
@@ -237,7 +237,7 @@ export default {
     methods:{
         Register(){
             if(this.$refs.form.validate()){
-                this.axios.post("http://127.0.0.1:8000/api/v1.0/TeacherManagement/teachers",{
+                this.axios.post(this.$apiUrl+"/api/v1.0/TeacherManagement/teachers",{
                     title:this.getTitle,
                     firstName:this.fname,
                     lastName:this.lname,
