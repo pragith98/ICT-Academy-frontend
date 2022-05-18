@@ -2,7 +2,7 @@
   <v-row justify="end">
     <v-dialog v-model="dialog" scrollable max-width="700px" persistent>
         <template v-slot:activator="{ on, attrs }">
-            <v-btn small block class="primary" dark  depressed  v-bind="attrs" v-on="on">view<v-icon dark right>mdi-account</v-icon></v-btn>
+            <v-btn @click="getStaff()" small block class="primary" dark  depressed  v-bind="attrs" v-on="on">view<v-icon dark right>mdi-account</v-icon></v-btn>
         </template>
         <v-card max-width="700" flat>
         <v-card-title class="heading-1 blue-grey lighten-4  blue-grey--text text--darken-2">Staff ID - {{staff.staffID}}
@@ -141,22 +141,22 @@ export default {
             image:null,
 
             valid:true,
-            fname: this.staff.fname,
-            lname: this.staff.lname,
-            tp: this.staff.tp,
-            email: this.staff.email,
-            address: this.staff.address,
-            getGender:this.staff.getGender,
-            nicNo:this.staff.nicNo,
-            nicType:this.staff.nicType,
-            getTitle:this.staff.getTitle,
+            fname: '',
+            lname: '',
+            tp: '',
+            email: '',
+            address:'',
+            getGender:'',
+            nicNo:'',
+            nicType:'',
+            getTitle:'',
 
             activePicker: null,
-            date: this.staff.date,
-            getBrach:this.staff.getBrach,
+            date: '',
+            getBrach:'',
 
             joingActivePicker: null,
-            joingDate: (new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().substr(0, 10),
+            joingDate: '',
             joingMenu: false,
 
             menu: false,
@@ -196,7 +196,7 @@ export default {
 
             brach:['Hakmana','Walasmulla'],
 
-            title:['Mr', 'Ms', 'Mrs', 'Miss']
+            title:['Mr.', 'Ms.', 'Mrs.', 'Miss.']
 
         
         }
@@ -210,6 +210,30 @@ export default {
     },
 
     methods:{
+        getStaff(){
+            this.axios.get(this.$apiUrl+"/api/v1.0/StaffManagement/staffs/"+this.staff.staffID)
+            .then(Response=>{
+                this.fname=Response.data.staff.data[0].firstName;
+                this.lname=Response.data.staff.data[0].lastName;
+                this.tp=Response.data.staff.data[0].telNo;
+                this.email=Response.data.staff.data[0].email;
+                this.address=Response.data.staff.data[0].address;
+                this.getGender=Response.data.staff.data[0].sex;
+                this.nicNo=Response.data.staff.data[0].nic;
+                this.getTitle=Response.data.staff.data[0].title;
+                this.date=Response.data.staff.data[0].dob;
+                this.joingDate=Response.data.staff.data[0].joinedDate;
+                
+                if((Response.data.staff.data[0].nic).length>10){
+                    this.nicType="new"
+                }else{
+                    this.nicType="old"
+                }
+                
+            })
+        },
+
+
         Save(){
             if(this.$refs.form.validate()){
                 console.log('fname:'+this.fname+' lname:'+this.lname+' tp:'+this.tp+' email:'+this.email+' address:'+this.address+' bday:'+this.date+' gender:'+this.getGender);

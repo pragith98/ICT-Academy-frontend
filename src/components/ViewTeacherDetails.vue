@@ -157,7 +157,7 @@ export default {
             menu: false,
 
             joingActivePicker: null,
-            joingDate: (new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().substr(0, 10),
+            joingDate: '',
             joingMenu: false,
 
             dialogm1: '',

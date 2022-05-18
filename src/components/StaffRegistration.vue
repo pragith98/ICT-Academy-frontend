@@ -8,8 +8,8 @@
             </v-breadcrumbs>
         <v-container>
 
-            <v-snackbar :timeout="3000" v-model="unsuccess" color="red"  bottom ><v-icon left>mdi-alert-outline</v-icon> Student Registration has been<strong>failed</strong> </v-snackbar>
-            <v-snackbar :timeout="3000" v-model="success" color="green"  bottom><v-icon left>mdi-check</v-icon>Student Registration has been <strong>successful</strong> </v-snackbar>
+            <v-snackbar :timeout="3000" v-model="unsuccess" color="red"  bottom ><v-icon left>mdi-alert-outline</v-icon> Staff Registration has been<strong>failed</strong> </v-snackbar>
+            <v-snackbar :timeout="3000" v-model="success" color="green"  bottom><v-icon left>mdi-check</v-icon>Staff Registration has been <strong>successful</strong> </v-snackbar>
             
             <v-form ref="form" v-model="valid" lazy-validation>
                 
@@ -107,7 +107,7 @@
                                 <v-row justify="center" dense >
 
                                     <v-col cols="12" md="6" sm="6">
-                                        <v-select :items="brach" :rules="branchRules" label="Branch" prepend-icon="mdi-sitemap" v-model="getBrach"></v-select>
+                                        <v-select :items="branch" item-text='branchName' item-value="branchID" :rules="branchRules" label="Branch" prepend-icon="mdi-sitemap" v-model="getBranch"></v-select>
                                     </v-col>
 
                                     <v-col cols="12" md="6" sm="6">
@@ -139,7 +139,7 @@
                             </fieldset>
                             <v-card-actions class="justify-end mt-2">
                                 <v-btn   @click="Reset" outlined color="grey">Reset</v-btn>
-                                <v-btn :disabled="!valid || !getTitle || !fname || !lname || !tp || !email || !address || !getGender || !nicNo || !nicType || !date || !joingDate" color="primary" @click="Register(),scrollToTop(),successAlert()" depressed>Register</v-btn>
+                                <v-btn :disabled="!valid || !getTitle || !fname || !lname || !tp || !email || !address || !getGender || !nicNo || !nicType || !date || !joingDate" color="primary" @click="Register(),scrollToTop()" depressed>Register</v-btn>
                             </v-card-actions>
                             
                         </v-col>
@@ -174,7 +174,7 @@ export default {
             nicNo:'',
             nicType:'old',
 
-            getBrach:'Hakmana',
+            getBranch:'',
 
             activePicker: null,
             date: null,
@@ -216,9 +216,9 @@ export default {
             // -----------dropdown list-----------
             gender:['Male','Female','Other'],
 
-            title:['Mr', 'Ms', 'Mrs', 'Miss'],
+            title:['Mr.', 'Ms.', 'Mrs.', 'Miss.'],
 
-            brach:['Hakmana','Walasmulla'],
+            branch:[],
             
 
 
@@ -247,8 +247,30 @@ export default {
     methods:{
         Register(){
             if(this.$refs.form.validate()){
-                console.log('fname:'+this.fname+' lname:'+this.lname+' tp:'+this.tp+' email:'+this.email+' address:'+this.address+' bday:'+this.date+' gender:'+this.getGender);
-                console.log('parent type:'+this.parent+' parent name:'+this.parentName+' parent tp:'+this.parentTp)
+                this.axios.post(this.$apiUrl+"/api/v1.0/StaffManagement/staffs",{
+                    title:this.getTitle,
+                    firstName:this.fname,
+                    lastName:this.lname,
+                    nic:this.nicNo,
+                    dob:this.date,
+                    sex:this.getGender,
+                    telNo:this.tp,
+                    address:this.address,
+                    email:this.email,
+                    joinedDate:this.joingDate,
+                    branchID: this.getBranch,
+                    status:"Active",
+                    
+
+                })
+                .then(Response=>{
+                    if(Response.data.success == true){
+                        this.Reset();
+                        this.success=true;
+                    }else{
+                        this.unsuccess=true;
+                    }
+                })
             }
             
             
@@ -280,12 +302,22 @@ export default {
         successAlert(){
             this.success=true
         },
+
         failedAlert(){
             this.unsuccess=true
-        }
+        },
+
         
       
+    },
+
+    created(){
+        this.axios.get(this.$apiUrl+"/api/v1.0/BranchManagement/branches").then(Response=>(
+            this.branch= Response.data.branch.data
+        ) )
     }
+
+    
 }
 </script>
 

@@ -74,14 +74,7 @@
         },
 
         created(){
-            this.axios.get(this.$apiUrl+"/api/v1.0/TeacherManagement/teachers",{
-                params:{
-                    status: "Active"
-                }
-                
-            }).then(Response=>(
-                this.teachers=Response.data.teacher.data
-            ) )
+            this.getTeachers()
         },
 
         methods: {

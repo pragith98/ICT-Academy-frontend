@@ -253,9 +253,8 @@ export default {
 
                 })
                 .then(Response=>{
-                    this.Reset();
-
                     if(Response.data.success == true){
+                        this.Reset();
                         this.success=true;
                     }else{
                         this.unsuccess=true;
