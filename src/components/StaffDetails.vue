@@ -77,6 +77,7 @@
 
         methods: {
             deleteAlert(success){
+                this.getStaff()
                 this.successAlert = success;
             },
 

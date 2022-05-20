@@ -87,7 +87,7 @@
                     <v-card-text class="grey--text">Class Details</v-card-text>
 
                     <v-col cols="12" md="6" sm="6">
-                        <v-select :items="brach" :rules="branchRules" label="Branch" prepend-icon="mdi-sitemap" v-model="getBrach"></v-select>
+                        <v-select :items="branch" item-text='branchName' item-value="branchID" :rules="branchRules" label="Branch" prepend-icon="mdi-sitemap" v-model="getBranch"></v-select>
                     </v-col>
 
                     <v-col cols="12" md="6" sm="6">
@@ -118,7 +118,7 @@
             <v-spacer></v-spacer>
             <v-btn   @click="dialog = false" color="primary" v-if="!isEditing" depressed>OK</v-btn>
             <v-btn   @click="cancelEdit()" outlined color="grey" v-if="isEditing">Cancel</v-btn>
-            <v-btn :disabled="!valid" color="primary" @click="Save()" depressed v-if="isEditing">Save
+            <v-btn :disabled="!valid" color="primary" @click="updateStaff()" depressed v-if="isEditing">Save
                 <v-icon left>mdi-content-save</v-icon>
             </v-btn>
         </v-card-actions>
@@ -153,7 +153,8 @@ export default {
 
             activePicker: null,
             date: '',
-            getBrach:'',
+            getBranch:'',
+            oldBranch:'',
 
             joingActivePicker: null,
             joingDate: '',
@@ -168,7 +169,7 @@ export default {
             hasSaved: false,
             
             // -----------Validation rules-----------
-            nameRules: [v=> !!v || 'Name is required', v => /^[a-zA-Z_ ]*$/.test(v) || 'Must be text only', v=> (v && v.length >3)|| 'Name must be greater than 3'],
+            nameRules: [v=> !!v || 'Name is required', v => /^[a-zA-Z\s.]+$/.test(v) || 'Must be text only', v=> (v && v.length >3)|| 'Name must be greater than 3'],
             
             tpRules: [v=> !!v || 'Telephone no. is required', v => /^\d+$/.test(v) || 'Must be a number', v=> (v && v.length ==10)|| 'Telephone no. must be 10'],
             
@@ -194,7 +195,7 @@ export default {
             // -----------dropdown list-----------
             gender:['Male','Female','Other'],
 
-            brach:['Hakmana','Walasmulla'],
+            branch:[],
 
             title:['Mr.', 'Ms.', 'Mrs.', 'Miss.']
 
@@ -207,6 +208,12 @@ export default {
       menu (val) {
         val && setTimeout(() => (this.activePicker = 'YEAR'))
       }
+    },
+
+    created(){
+        this.axios.get(this.$apiUrl+"/api/v1.0/BranchManagement/branches").then(Response=>(
+            this.branch= Response.data.branch.data
+        ) )
     },
 
     methods:{
@@ -229,19 +236,66 @@ export default {
                 }else{
                     this.nicType="old"
                 }
+
+
+                
+                this.getBranchDetails(Response.data.staff.data[0].branchID)
+                
+                this.oldBranch=Response.data.staff.data[0].branchID
+                //console.log(this.oldBranch)
                 
             })
         },
 
+        getBranchDetails(branchID){
+            this.axios.get(this.$apiUrl+"/api/v1.0/BranchManagement/branches/"+branchID)
+            .then(Response=>{
+                this.getBranch=Response.data.branch.data[0];
+            })
+        },
 
-        Save(){
+        updateStaff(){
             if(this.$refs.form.validate()){
-                console.log('fname:'+this.fname+' lname:'+this.lname+' tp:'+this.tp+' email:'+this.email+' address:'+this.address+' bday:'+this.date+' gender:'+this.getGender);
+                this.axios.patch(this.$apiUrl+'/api/v1.0/StaffManagement/staffs/'+this.staff.staffID,{
+                    firstName:this.fname,
+                    lastName:this.lname,
+                    telNo:this.tp,
+                    email:this.email,
+                    address:this.address,
+                    sex:this.getGender,
+                    nic:this.nicNo,
+                    title:this.getTitle,
+                    dob:this.date,
+                    joinedDate:this.joingDate,
+                    //branchID:this.getBranch,
+                    status: "Active",
+
+
+                    
+                })
+                .then(Response=>{
+
+                    if(Response.data.success == true){
+                        this.hasSaved = true;
+                        this.isEditing = !this.isEditing;
+                        //this.reCreate()
+                    }else{
+                        this.hasSaved = false;
+                    }
+                })
                 
-                this.isEditing = !this.isEditing;
-                this.hasSaved = true;
             }  
         },
+
+
+        // Save(){
+        //     if(this.$refs.form.validate()){
+        //         console.log('fname:'+this.fname+' lname:'+this.lname+' tp:'+this.tp+' email:'+this.email+' address:'+this.address+' bday:'+this.date+' gender:'+this.getGender);
+                
+        //         this.isEditing = !this.isEditing;
+        //         this.hasSaved = true;
+        //     }  
+        // },
 
         onPickFile(){
             this.$refs.fileInput.click();
