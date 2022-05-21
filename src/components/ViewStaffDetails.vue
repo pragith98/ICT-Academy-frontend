@@ -154,7 +154,7 @@ export default {
             activePicker: null,
             date: '',
             getBranch:'',
-            oldBranch:'',
+            
 
             joingActivePicker: null,
             joingDate: '',
@@ -241,8 +241,8 @@ export default {
                 
                 this.getBranchDetails(Response.data.staff.data[0].branchID)
                 
-                this.oldBranch=Response.data.staff.data[0].branchID
-                //console.log(this.oldBranch)
+                
+                
                 
             })
         },
@@ -250,7 +250,7 @@ export default {
         getBranchDetails(branchID){
             this.axios.get(this.$apiUrl+"/api/v1.0/BranchManagement/branches/"+branchID)
             .then(Response=>{
-                this.getBranch=Response.data.branch.data[0];
+                this.getBranch=Response.data.branch.data[0].branchID;
             })
         },
 
@@ -267,7 +267,7 @@ export default {
                     title:this.getTitle,
                     dob:this.date,
                     joinedDate:this.joingDate,
-                    //branchID:this.getBranch,
+                    branchID:this.getBranch,
                     status: "Active",
 
 
@@ -278,7 +278,7 @@ export default {
                     if(Response.data.success == true){
                         this.hasSaved = true;
                         this.isEditing = !this.isEditing;
-                        //this.reCreate()
+                        this.reCreate()
                     }else{
                         this.hasSaved = false;
                     }
@@ -288,14 +288,7 @@ export default {
         },
 
 
-        // Save(){
-        //     if(this.$refs.form.validate()){
-        //         console.log('fname:'+this.fname+' lname:'+this.lname+' tp:'+this.tp+' email:'+this.email+' address:'+this.address+' bday:'+this.date+' gender:'+this.getGender);
-                
-        //         this.isEditing = !this.isEditing;
-        //         this.hasSaved = true;
-        //     }  
-        // },
+        
 
         onPickFile(){
             this.$refs.fileInput.click();
@@ -317,7 +310,11 @@ export default {
         cancelEdit(){
             this.isEditing = !this.isEditing;
             this.hasSaved = false;
-        }
+        },
+
+        reCreate(){
+            this.$emit('success',true)
+        },
         
       
     }

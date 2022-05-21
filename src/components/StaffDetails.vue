@@ -22,7 +22,7 @@
                     <v-data-table :headers="headers" :items="staff" :search="search">
                         <template v-slot:[`item.actions`]="{ item }">
                             <v-card-actions>
-                                <app-ViewStaffDetails :staff='item'></app-ViewStaffDetails>
+                                <app-ViewStaffDetails @success="reCreate($event)" :staff='item'></app-ViewStaffDetails>
                                 <v-spacer></v-spacer>
                                 <app-DeleteStaff class="ml-5" :staff='item' @success="deleteAlert($event)" @failed="faileAlert($event)"></app-DeleteStaff>
                             </v-card-actions>
@@ -98,6 +98,13 @@
                         element.firstName=element.title+" "+element.firstName+" "+element.lastName
                     })
                 ))
+            },
+
+
+            reCreate(success){
+                this.getStaff();
+                console.log(success)
+
             },
 
         }

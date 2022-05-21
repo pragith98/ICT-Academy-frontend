@@ -101,7 +101,7 @@
 
             reCreate(success){
                 this.getTeachers();
-                this.successAlertUpdate = success;
+                console.log(success)
 
             },
         }
