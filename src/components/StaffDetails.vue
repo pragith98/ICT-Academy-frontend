@@ -92,7 +92,11 @@
                 }
                 
                 }).then(Response=>(
-                    this.staff=Response.data.staff.data
+                    this.staff=Response.data.staff.data,
+
+                    this.staff.forEach(element => {
+                        element.firstName=element.title+" "+element.firstName+" "+element.lastName
+                    })
                 ))
             },
 

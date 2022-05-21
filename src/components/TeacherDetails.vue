@@ -11,11 +11,7 @@
             <v-snackbar :timeout="3000" v-model="unsuccessAlert" color="red"  bottom ><v-icon left>mdi-alert-outline</v-icon> Teacher delete <strong>failed</strong> </v-snackbar>
             <v-snackbar :timeout="3000" v-model="successAlert" color="green"  bottom><v-icon left>mdi-check</v-icon>Teacher delete <strong>successful</strong> </v-snackbar>
             
-            
-            
-            
-
-            
+          
 
             <template>
                 <v-card flat>
@@ -61,7 +57,7 @@
                     { text: '', sortable: false, value: 'actions' },
                 ],
 
-                teachers: [],
+                teachers:[],
 
                 breadcrumbs: [
                     { text: 'Teachers', disabled: false, href: '/Teachers' },
@@ -94,7 +90,12 @@
                 }
                 
                 }).then(Response=>(
-                    this.teachers=Response.data.teacher.data
+                    this.teachers=Response.data.teacher.data,
+                    
+                    this.teachers.forEach(element => {
+                        element.firstName=element.title+" "+element.firstName+" "+element.lastName
+                    })
+                    
                 ))
             },
 
