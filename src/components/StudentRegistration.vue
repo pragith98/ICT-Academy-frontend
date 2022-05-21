@@ -144,7 +144,7 @@
                             </fieldset>
                             <v-card-actions class="justify-end mt-2">
                                 <v-btn   @click="Reset" outlined color="grey">Reset</v-btn>
-                                <v-btn :disabled="!valid || !fname || !lname || !tp || !email || !address || !parentTP || !parentName || !parent || !getGender || !getGrade || !getBrach || !date || !joingDate" color="primary" @click="Register(),scrollToTop(),successAlert()" depressed>Register</v-btn>
+                                <v-btn :disabled="!valid || !fname || !lname || !tp || !email || !address || !parentTP || !parentName || !parent || !getGender || !getGrade || !getBrach || !date || !joingDate" color="primary" @click="Register(),scrollToTop()" depressed>Register</v-btn>
                             </v-card-actions>
                             
                         </v-col>
@@ -252,13 +252,33 @@ export default {
 
     methods:{
         Register(){
-            if(this.$refs.form.validate()){
-                console.log('fname:'+this.fname+' lname:'+this.lname+' tp:'+this.tp+' email:'+this.email+' address:'+this.address+' bday:'+this.date+' gender:'+this.getGender);
-                console.log('parent type:'+this.parent+' parent name:'+this.parentName+' parent tp:'+this.parentTp)
-            }
+            // if(this.$refs.form.validate()){
+            //     this.axios.post(this.$apiUrl+"/api/v1.0/TeacherManagement/teachers",{
+                    
+            //         firstName:this.fname,
+            //         lastName:this.lname,
+                    
+            //         dob:this.date,
+            //         sex:this.getGender,
+            //         telNo:this.tp,
+            //         address:this.address,
+            //         email:this.email,
+            //         joinedDate:this.joingDate,
+            //         status:"Active",
+            //         qualification: "MSc. BSc.ICT",
+
+            //     })
+            //     .then(Response=>{
+            //         if(Response.data.success == true){
+            //             this.Reset();
+            //             this.success=true;
+            //         }else{
+            //             this.unsuccess=true;
+            //         }
+            //     })
             
             
-        },
+             },
 
         onPickFile(){
             this.$refs.fileInput.click();

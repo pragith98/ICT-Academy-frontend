@@ -27,8 +27,8 @@
 
         <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn   @click="dialog = false, failedAlert()" outlined color="grey">Cancel</v-btn>
-            <v-btn :disabled="!valid || !category" color="primary" @click="Save(), successAlert(), dialog = false" depressed>Save
+            <v-btn   @click="dialog = false" outlined color="grey">Cancel</v-btn>
+            <v-btn :disabled="!valid || !category" color="primary" @click="updateSubjectCategory()" depressed>Save
                 <v-icon left>mdi-content-save</v-icon>
             </v-btn>
         </v-card-actions>
@@ -43,7 +43,7 @@
 
 <script>
 export default {
-    props:['subjecCategory'],
+    props:['subjectCategory'],
     data(){
         return{
             dialogm1: '',
@@ -51,12 +51,12 @@ export default {
 
             valid:true,
 
-            category:this.subjecCategory.name,
+            category:this.subjectCategory.categoryName,
             
 
             
             // -----------Validation rules-----------
-            categoryRules: [v=> !!v || 'Category is required', v => /^[a-zA-Z_ ]*$/.test(v) || 'Must be text only', v=> (v && v.length >2)|| 'Name must be greater than 2'],
+            categoryRules: [v=> !!v || 'Category is required', v => /^[a-zA-Z\s.]+$/.test(v) || 'Must be text only', v=> (v && v.length >2)|| 'Name must be greater than 2'],
 
 
         
@@ -71,11 +71,24 @@ export default {
     },
 
     methods:{
-        Save(){
+        updateSubjectCategory(){
             if(this.$refs.form.validate()){
-                console.log(this.category);
-                
-            }  
+                    
+
+                this.axios.patch(this.$apiUrl+'/api/v1.0/CategoryManagement/categories/'+this.subjectCategory.categoryID,{
+                    categoryName:this.category
+                })
+                .then(Response=>{
+                    this.dialog=false
+                    if(Response.data.success == true){
+                        this.successAlert();
+                    }else{
+                        this.failedAlert();
+                    }
+                })
+
+            }
+
         },
 
         

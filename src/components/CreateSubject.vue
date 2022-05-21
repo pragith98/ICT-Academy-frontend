@@ -170,16 +170,38 @@ export default {
         },
 
         createCategory(){
-            var rule=/^[a-zA-Z_ ]*$/;
+            var rule=/^[a-zA-Z\s.]+$/;
             if(!rule.test(this.newCategory)){
                 this.errormsg="Must be text only"
             }else if(this.newCategory.length<3){
                 this.errormsg="Name must be greater than 2"
             }else{
                 this.errormsg=null
-                console.log(this.newCategory)
-                this.categoryCreated=true
-                this.hideTable=false
+                
+
+
+                this.axios.post(this.$apiUrl+"/api/v1.0/CategoryManagement/categories",{
+                    categoryName: this.newCategory
+                })
+                .then(Response=>{
+                    if(Response.data.success == true){
+                        this.newCategory=null
+                        this.categoryCreated=true
+                        this.hideTable=false
+                    }else{
+                        console.log('error in category creation');
+                    }
+                })
+                     
+
+
+                
+
+
+
+
+                
+                
             }
         },
 

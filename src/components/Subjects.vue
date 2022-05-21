@@ -55,9 +55,9 @@
                             <v-data-table :headers="categoryHeaders" :items="categories" :search="categorySearch" :items-per-page="5">
                                 <template v-slot:[`item.actions`]="{ item }">
                                     <v-card-actions>
-                                        <app-editSubjectCategory :subjecCategory='item' @success="updateSuccessAlert($event)" @failed="updateFaileAlert($event)"></app-editSubjectCategory>
+                                        <app-editSubjectCategory :subjectCategory='item' @success="updateSuccessAlert($event)" @failed="updateFaileAlert($event)"></app-editSubjectCategory>
                                         <v-spacer></v-spacer>
-                                        <app-deleteSubjectCategory class="ml-5" :subjecCategory='item' @success="deleteAlert($event)" @failed="faileAlert($event)"></app-deleteSubjectCategory>
+                                        <app-deleteSubjectCategory class="ml-5" :subjectCategory='item' @success="deleteAlert($event)" @failed="faileAlert($event)"></app-deleteSubjectCategory>
                                     </v-card-actions>
                                 </template>
                             </v-data-table>
@@ -95,7 +95,7 @@
                 subjectSearch: '',
                 categorySearch: '',
                 subjectHeaders: [
-                    {text: 'NAME',align: 'start', sortable: true, value:'name'},
+                    { text: 'NAME',align: 'start', sortable: true, value:'name'},
                     { text: 'MEDIUM',sortable: true, value: 'medium', filterable:false},
                     { text: 'CATEGORY', sortable: true, value: 'category' },
                     { text: '', sortable: false, value: 'actions' },
@@ -110,16 +110,11 @@
                 ],
 
                 categoryHeaders: [
-                    {text: 'NAME',align: 'start', sortable: true, value:'name'},
+                    { text: 'NAME',align: 'start', sortable: true, value:'categoryName'},
                     { text: '', sortable: false, value: 'actions' },
                 ],
 
-                categories: [
-                    {name:'Ordinary Level',id:'cat001'},
-                    {name:'Advanced Level',id:'cat002'},
-                    {name:'Scholarship',id:'cat003'},
-                    {name:'Professional',id:'cat004'}
-                ],
+                categories: [],
 
                 breadcrumbs: [
                     { text: 'Classes', disabled: false, href: '/Classes' },
@@ -138,13 +133,20 @@
             }
         },
 
+        created(){
+            this.getAllCategories()
+        },
+
         methods: {
 
-
+            getAllCategories(){
+                this.axios.get(this.$apiUrl+"/api/v1.0/CategoryManagement/categories").then(Response=>(this.categories= Response.data.category.data) )
+            },
 
 
             // -------------------- alerts --------------------------------
             deleteAlert(success){
+                this.getAllCategories();
                 this.successAlert = success;
             },
             faileAlert(failed){
@@ -159,6 +161,7 @@
             },
 
             updateSuccessAlert(success){
+                this.getAllCategories();
                 this.successAlertUpdate = success;
             },
             updateFaileAlert(failed){

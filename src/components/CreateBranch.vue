@@ -127,7 +127,7 @@
             createBranch(){
                 if(this.$refs.form.validate()){
 
-                    this.axios.post("http://127.0.0.1:8000/api/v1.0/BranchManagement/branches",{
+                    this.axios.post(this.$apiUrl+"/api/v1.0/BranchManagement/branches",{
                         branchName:this.branchName,
                         telNo:this.tp,
                         address:this.address,
