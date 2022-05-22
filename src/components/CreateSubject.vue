@@ -2,7 +2,7 @@
   <v-row justify="end">
     <v-dialog v-model="dialog" scrollable max-width="700px" persistent>
         <template v-slot:activator="{ on, attrs }">
-            <v-btn class="blue-grey" dark  depressed  v-bind="attrs" v-on="on">Add New Subject<v-icon dark right>mdi-plus</v-icon></v-btn>
+            <v-btn @click="getAllCategories()" class="blue-grey" dark  depressed  v-bind="attrs" v-on="on">Add New Subject<v-icon dark right>mdi-plus</v-icon></v-btn>
         </template>
         <v-card max-width="700" flat>
         <v-card-title class="heading-1 blue-grey lighten-4  blue-grey--text text--darken-2">Create Subject</v-card-title>
@@ -31,9 +31,9 @@
                         <v-card-text class="grey--text">Select category from below table</v-card-text>
                         
                         <v-card-title><v-spacer></v-spacer><v-text-field v-model="search" append-icon="mdi-magnify" label="Search Category" single-line hide-details></v-text-field></v-card-title>
-                        <v-data-table :headers="headers" :items="categories" :search="search" :items-per-page="5">
+                        <v-data-table :sort-by.sync="sortBy" :sort-desc.sync="sortDesc" :headers="headers" :items="categories" :search="search" :items-per-page="5">
                             <template v-slot:[`item.actions`]="{ item }">
-                                <v-btn @click="category=item.id, categoryName=item.name" depressed color="primary" outlined>Select</v-btn>
+                                <v-btn @click="category=item.categoryID, categoryName=item.categoryName" depressed color="primary" outlined>Select</v-btn>
                                     
                             </template>
                         </v-data-table>
@@ -83,8 +83,8 @@
 
         <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn   @click="dialog = false, failedAlert()" outlined color="grey">Cancel</v-btn>
-            <v-btn :disabled="!valid || !subject || !getMedium || !categoryName" color="primary" @click="Save(), successAlert(), dialog = false" depressed>Create</v-btn>
+            <v-btn   @click="dialog = false" outlined color="grey">Cancel</v-btn>
+            <v-btn :disabled="!valid || !subject || !getMedium || !categoryName" color="primary" @click="createSubject()" depressed>Create</v-btn>
         </v-card-actions>
 
         <v-snackbar v-model="categoryCreated" :multi-line="multiLine">
@@ -107,6 +107,10 @@ export default {
     
     data(){
         return{
+
+            sortBy: 'categoryID',
+            sortDesc: true,
+
             dialogm1: '',
             dialog: false,
 
@@ -128,16 +132,11 @@ export default {
 
             search: '',
             headers: [
-                { text: 'Category',align: 'start', sortable: false, value:'name'},
+                { text: 'Category',align: 'start', sortable: false, value:'categoryName'},
                 { text: '', sortable: false, value: 'actions',align:'right'},
             ],
 
-            categories: [
-                {name:'Ordinary Level',id:'cat001'},
-                {name:'Advanced Level',id:'cat002'},
-                {name:'Scholarship',id:'cat003'},
-                {name:'Professional',id:'cat004'}
-            ],
+            categories: [],
             
             // -----------Validation rules-----------
             subjectRules: [v=> !!v || 'Subject is required', v => /^[a-zA-Z_ ]*$/.test(v) || 'Must be text only', v=> (v && v.length >2)|| 'Name must be greater than 2'],
@@ -162,24 +161,40 @@ export default {
     },
 
     methods:{
-        Save(){
+        createSubject(){
             if(this.$refs.form.validate()){
-                console.log('fname:'+this.fname+' lname:'+this.lname+' tp:'+this.tp+' email:'+this.email+' address:'+this.address+' bday:'+this.date+' gender:'+this.getGender);
-                
-            }  
+                this.axios.post(this.$apiUrl+"/api/v1.0/SubjectManagement/subjects",{
+                    subjectName:this.subject+" ("+this.getMedium+")",
+                    medium:this.getMedium,
+                    categoryID:this.category,
+                })
+                .then(Response=>{
+                    
+                    if(Response.data.success == true){
+                        this.dialog = false
+                        this.successAlert()
+                    }else{
+                        this.failedAlert()
+                    }
+                })
+            }
+        },
+
+        getAllCategories(){
+            this.axios.get(this.$apiUrl+"/api/v1.0/CategoryManagement/categories").then(Response=>(this.categories= Response.data.category.data) )
         },
 
         createCategory(){
             var rule=/^[a-zA-Z\s.]+$/;
             if(!rule.test(this.newCategory)){
                 this.errormsg="Must be text only"
-            }else if(this.newCategory.length<3){
-                this.errormsg="Name must be greater than 2"
+            }else if(this.newCategory.length<4){
+                this.errormsg="Name must be greater than 3"
             }else{
                 this.errormsg=null
                 
 
-
+                
                 this.axios.post(this.$apiUrl+"/api/v1.0/CategoryManagement/categories",{
                     categoryName: this.newCategory
                 })
@@ -188,19 +203,12 @@ export default {
                         this.newCategory=null
                         this.categoryCreated=true
                         this.hideTable=false
+
+                        this.getAllCategories()
                     }else{
                         console.log('error in category creation');
                     }
-                })
-                     
-
-
-                
-
-
-
-
-                
+                }) 
                 
             }
         },

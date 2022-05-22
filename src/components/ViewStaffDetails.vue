@@ -239,7 +239,7 @@ export default {
 
 
                 
-                this.getBranchDetails(Response.data.staff.data[0].branchID)
+                this.getBranchDetails(Response.data.staff.data[0].branch.branchID)
                 
                 
                 

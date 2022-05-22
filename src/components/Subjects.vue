@@ -33,7 +33,7 @@
                             </v-card-title>
                             <v-card-title><v-spacer></v-spacer><v-text-field v-model="subjectSearch" append-icon="mdi-magnify" label="Search Subject" single-line hide-details></v-text-field></v-card-title>
                             
-                            <v-data-table :headers="subjectHeaders" :items="subjects" :search="subjectSearch" :items-per-page="5">
+                            <v-data-table :sort-by.sync="sortBy" :sort-desc.sync="sortDesc" :headers="subjectHeaders" :items="subjects" :search="subjectSearch" :items-per-page="5">
                                 <template v-slot:[`item.actions`]="{ item }">
                                         <v-card-actions>
                                             <app-editSubject :subjectDetails='item' @success="updateSuccessAlert($event)" @failed="updateFaileAlert($event)"></app-editSubject>
@@ -92,22 +92,20 @@
         },
         data () {
             return {
+
+                sortBy: 'subjectID',
+                sortDesc: true,
+
                 subjectSearch: '',
                 categorySearch: '',
                 subjectHeaders: [
-                    { text: 'NAME',align: 'start', sortable: true, value:'name'},
+                    { text: 'SUBJECT',align: 'start', sortable: true, value:'subjectName'},
                     { text: 'MEDIUM',sortable: true, value: 'medium', filterable:false},
-                    { text: 'CATEGORY', sortable: true, value: 'category' },
+                    { text: 'CATEGORY', sortable: true, value: 'category.categoryName' },
                     { text: '', sortable: false, value: 'actions' },
                 ],
 
-                subjects: [
-                    {name:'Science',id:'sub001',medium:'Sinhala',category:'Ordinary Level'},
-                    {name:'Maths',id:'sub002',medium:'Sinhala',category:'Ordinary Level'},
-                    {name:'Scholarship',id:'sub003',medium:'Sinhala',category:'Scholarship'},
-                    {name:'BS',id:'sub004',medium:'Sinhala',category:'Advanced Level'},
-                    {name:'Maths',id:'sub005',medium:'English',category:'Ordinary Level'}
-                ],
+                subjects: [],
 
                 categoryHeaders: [
                     { text: 'NAME',align: 'start', sortable: true, value:'categoryName'},
@@ -135,12 +133,17 @@
 
         created(){
             this.getAllCategories()
+            this.getAllSubjects()
         },
 
         methods: {
 
             getAllCategories(){
                 this.axios.get(this.$apiUrl+"/api/v1.0/CategoryManagement/categories").then(Response=>(this.categories= Response.data.category.data) )
+            },
+
+            getAllSubjects(){
+                this.axios.get(this.$apiUrl+"/api/v1.0/SubjectManagement/subjects").then(Response=>(this.subjects= Response.data.subject.data) )
             },
 
 
@@ -162,6 +165,7 @@
 
             updateSuccessAlert(success){
                 this.getAllCategories();
+                this.getAllSubjects()
                 this.successAlertUpdate = success;
             },
             updateFaileAlert(failed){

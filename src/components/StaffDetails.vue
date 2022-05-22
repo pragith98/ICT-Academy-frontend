@@ -55,7 +55,7 @@
                     { text: 'NAME',align: 'start', sortable: false, value:'firstName'},
                     { text: 'TELEPHONE NO.', sortable: false, value: 'telNo' },
                     { text: 'EMAIL', sortable: false, value: 'email' },
-                    { text: 'BRANCH', sortable: true, value: 'branchID' },
+                    { text: 'BRANCH', sortable: true, value: 'branch.branchName' },
                     { text: '', sortable: false, value: 'actions' },
                 ],
 
