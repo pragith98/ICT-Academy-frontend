@@ -11,14 +11,14 @@
                             <v-icon size="100" color="error">mdi-help-circle-outline</v-icon>
                         </v-row>
                     </v-card-title>
-                    <span class="text-h6 text-center">Do you really want to delete <br> <strong>"{{student.fname}} {{student.lname}}"</strong></span>
+                    <span class="text-h6 text-center">Do you really want to delete <br> <strong>"{{student.firstName}} {{student.lastName}}"</strong></span>
                 </v-container>
                 
                 
                 <v-card-actions>
                     <v-spacer></v-spacer>
-                    <v-btn color="grey" @click="dialog = false, failedAlert()" outlined>Cancel</v-btn>
-                    <v-btn color="error" @click="dialog = false, successAlert()" depressed>Delete
+                    <v-btn color="grey" @click="dialog = false" outlined>Cancel</v-btn>
+                    <v-btn color="error" @click="deleteStudent()" depressed>Delete
                         <v-icon right>mdi-delete</v-icon>
                     </v-btn>
                 </v-card-actions>
@@ -38,6 +38,25 @@
         }),
 
         methods:{
+
+            deleteStudent(){
+                this.axios.delete(this.$apiUrl+'/api/v1.0/StudentManagement/students/'+this.student.studentID)
+                    .then(Response=>{
+                        if(Response.data.success == true){
+                            this.dialog = false
+                            this.successAlert();
+                        }else{
+                            this.failedAlert();
+                        }
+                    })
+                    .catch(error => {
+                        this.failedAlert()
+                        console.log(error.data)
+                        
+                    });
+            },
+
+
             successAlert(){
                 this.$emit('success',true)
             },

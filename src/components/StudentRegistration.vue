@@ -104,9 +104,9 @@
                                     
                                     <v-col cols="12" md="12" sm="12">
                                         <v-radio-group  v-model="parent" row style="justify-content:center !important" :rules="guardianRules" required>
-                                            <v-radio label="Mother" value="mother"></v-radio>
-                                            <v-radio label="Father" value="father"></v-radio>
-                                            <v-radio label="Guardian" value="guardian"></v-radio>
+                                            <v-radio label="Mother" value="Mother"></v-radio>
+                                            <v-radio label="Father" value="Father"></v-radio>
+                                            <v-radio label="Guardian" value="Guardian"></v-radio>
                                         </v-radio-group>
                                     </v-col>
 
@@ -125,7 +125,7 @@
                                 <v-row justify="center" dense >
 
                                     <v-col cols="12" md="6" sm="6">
-                                        <v-select :items="brach" :rules="branchRules" label="Branch" prepend-icon="mdi-sitemap" v-model="getBrach"></v-select>
+                                       <v-select :items="branch" item-text='branchName' item-value="branchID" :rules="branchRules" label="Branch" prepend-icon="mdi-sitemap" v-model="getBranch"></v-select>
                                     </v-col>
 
                                     <v-col cols="12" md="6" sm="6">
@@ -144,7 +144,7 @@
                             </fieldset>
                             <v-card-actions class="justify-end mt-2">
                                 <v-btn   @click="Reset" outlined color="grey">Reset</v-btn>
-                                <v-btn :disabled="!valid || !fname || !lname || !tp || !email || !address || !parentTP || !parentName || !parent || !getGender || !getGrade || !getBrach || !date || !joingDate" color="primary" @click="Register(),scrollToTop()" depressed>Register</v-btn>
+                                <v-btn :disabled="!valid || !fname || !lname || !tp || !email || !address || !parentTp || !parentName || !parent || !getGender || !getGrade || !getBranch || !date || !joingDate" color="primary" @click="Register(),scrollToTop()" depressed>Register</v-btn>
                             </v-card-actions>
                             
                         </v-col>
@@ -174,12 +174,13 @@ export default {
             tp: '',
             email: '',
             address: '',
-            parentTp: '',
+            parentTp:'',
             parentName: '',
-            parent:'mother',
+            parent:'Mother',
             getGender:'',
             getGrade:'',
-            getBrach:'Hakmana',
+            getBranch:'',
+            title:'',
 
             activePicker: null,
             date: null,
@@ -224,7 +225,7 @@ export default {
 
             grade:['1','2','3','4','5','6','7','8','9','10','11','12','13','Other'],
 
-            brach:['Hakmana','Walasmulla'],
+            branch:[],
             
 
 
@@ -252,33 +253,51 @@ export default {
 
     methods:{
         Register(){
-            // if(this.$refs.form.validate()){
-            //     this.axios.post(this.$apiUrl+"/api/v1.0/TeacherManagement/teachers",{
-                    
-            //         firstName:this.fname,
-            //         lastName:this.lname,
-                    
-            //         dob:this.date,
-            //         sex:this.getGender,
-            //         telNo:this.tp,
-            //         address:this.address,
-            //         email:this.email,
-            //         joinedDate:this.joingDate,
-            //         status:"Active",
-            //         qualification: "MSc. BSc.ICT",
+            if(this.$refs.form.validate()){
+                
+                if(this.parent=="Father"){
+                    this.title="Mr."
+                }else if(this.parent=="Mother"){
+                    this.title="Mrs."
+                }else{
+                    this.title="Mr."
+                }
 
-            //     })
-            //     .then(Response=>{
-            //         if(Response.data.success == true){
-            //             this.Reset();
-            //             this.success=true;
-            //         }else{
-            //             this.unsuccess=true;
-            //         }
-            //     })
-            
-            
-             },
+                this.axios.post(this.$apiUrl+"/api/v1.0/StudentManagement/students",{
+                    
+                    firstName:this.fname,
+                    lastName:this.lname,
+                    dob:this.date,
+                    sex:this.getGender,
+                    grade:this.getGrade,
+                    telNo:this.tp,
+                    address:this.address,
+                    email:this.email,
+                    status:"Active",
+                    joinedDate:this.joingDate,
+                    branchID:this.getBranch,
+                    title:this.title,
+                    parentName:this.parentName,
+                    parentType:this.parent,
+                    parentTelNo:this.parentTp
+   
+
+                })
+                .then(Response=>{
+                    if(Response.data.success == true){
+                        this.Reset();
+                        this.successAlert()
+                    }else{
+                        this.failedAlert()
+                    }
+                })
+                .catch(error => {
+                    this.failedAlert()
+                    console.log(error)
+                    
+                });
+            }
+        },
 
         onPickFile(){
             this.$refs.fileInput.click();
@@ -308,13 +327,20 @@ export default {
         },
         failedAlert(){
             this.unsuccess=true
-        }
+        },
+
+        
         
       
     },
 
     
-
+    created(){
+        this.axios.get(this.$apiUrl+"/api/v1.0/BranchManagement/branches").then(Response=>(
+            this.branch= Response.data.branch.data
+            
+        ))
+    }
 
 
 }

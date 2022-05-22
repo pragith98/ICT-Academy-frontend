@@ -25,7 +25,7 @@
                     <v-data-table :headers="headers" :items="students" :search="search">
                         <template v-slot:[`item.actions`]="{ item }">
                             <v-card-actions>
-                                <app-ViewStudentDetails :student='item'></app-ViewStudentDetails>
+                                <app-ViewStudentDetails @success="reCreate($event)" :student='item'></app-ViewStudentDetails>
                                 <v-spacer></v-spacer>
                                 <app-DeleteStudent class="ml-5" :student='item' @success="deleteAlert($event)" @failed="faileAlert($event)"></app-DeleteStudent>
                             </v-card-actions>
@@ -55,20 +55,15 @@
             return {
                 search: '',
                 headers: [
-                    {text: 'NAME',align: 'start', sortable: false, value:'fname'},
-                    { text: 'ADMISSION NO.', sortable: false, value: 'admissionNo' },
-                    { text: 'GRADE', value: 'getGrade' },
-                    { text: 'TELEPHONE NO.', sortable: false, value: 'tp' },
+                    { text: 'NAME',align: 'start', sortable: false, value:'firstName'},
+                    { text: 'GENDER', value:'sex'},
+                    { text: 'ADMISSION NO.', sortable: false, value: 'studentID' },
+                    { text: 'GRADE', value: 'grade' },
+                    { text: 'TELEPHONE NO.', sortable: false, value: 'telNo' },
                     { text: '', sortable: false, value: 'actions' },
                 ],
 
-                students: [
-                    {fname:'Saman', lname:'Herath', tp:'1231235323', email:'Saman@Saman.com', address:'no1, rathnapura', parentTp:'4532346534', parentName:'Rohana Herath', parent:'father', getGender:'Male', getGrade:'4', getBrach:'Hakmana', date:'2021-05-12', admissionNo:'2021'},
-                    {fname:'Dasun', lname:'Rathnayake', tp:'4321235323', email:'Dasun@Dasun.com', address:'no1, Matale', parentTp:'9872346534', parentName:'Mohan Rathnayake', parent:'father', getGender:'Male', getGrade:'8', getBrach:'Hakmana', date:'2021-06-10', admissionNo:'2028'},
-                    {fname:'Kasun', lname:'Bandara', tp:'7831235323', email:'Kasun@Kasun.com', address:'no1, Kandy', parentTp:'4332346534', parentName:'Kumari', parent:'mother', getGender:'Male', getGrade:'10', getBrach:'Hakmana', date:'2021-02-17', admissionNo:'2035'},
-                    {fname:'Maheshi', lname:'Ranathunga', tp:'9931235323', email:'Maheshi@Maheshi.com', address:'no1, Jafna', parentTp:'8832346534', parentName:'Ranathunga Bandara', parent:'father', getGender:'Female', getGrade:'6', getBrach:'Hakmana', date:'2021-09-12', admissionNo:'2077'},
-                    
-                ],
+                students: [],
 
                 breadcrumbs: [
                     { text: 'Students', disabled: false, href: '/Students' },
@@ -79,13 +74,40 @@
                 unsuccessAlert:false,
             }
         },
+        
+        created(){
+            this.getAllStudents();
+        },
 
         methods: {
+
+            getAllStudents(){
+                this.axios.get(this.$apiUrl+"/api/v1.0/StudentManagement/students",{
+                params:{
+                    status: "Active"
+                }
+                
+                }).then(Response=>(
+                    this.students=Response.data.student.data,
+
+                    this.students.forEach(element => {
+                        element.firstName=element.firstName+" "+element.lastName
+                    })
+                ))
+            },
+
             deleteAlert(success){
+                this.getAllStudents();
                 this.successAlert = success;
             },
             faileAlert(failed){
                 this.unsuccessAlert = failed;
+            },
+
+            reCreate(success){
+                this.getAllStudents();
+                console.log(success)
+
             },
         }
     }

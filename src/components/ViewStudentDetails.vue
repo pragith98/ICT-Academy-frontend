@@ -2,7 +2,7 @@
   <v-row justify="end">
     <v-dialog v-model="dialog" scrollable max-width="700px" persistent>
         <template v-slot:activator="{ on, attrs }">
-            <v-btn class="primary" small block dark  depressed  v-bind="attrs" v-on="on">view<v-icon dark right>mdi-account</v-icon></v-btn>
+            <v-btn @click="getStudent()" class="primary" small block dark  depressed  v-bind="attrs" v-on="on">view<v-icon dark right>mdi-account</v-icon></v-btn>
         </template>
         <v-card max-width="700" flat>
         <v-card-title class="heading-1 blue-grey lighten-4  blue-grey--text text--darken-2">Student ID - {{student.admissionNo}}
@@ -80,9 +80,9 @@
                     
                     <v-col cols="12" md="12" sm="12" >
                         <v-radio-group v-model="parent" row style="justify-content:center !important">
-                            <v-radio label="Mother" value="mother"></v-radio>
-                            <v-radio label="Father" value="father"></v-radio>
-                            <v-radio label="Guardian" value="guardian"></v-radio>
+                            <v-radio label="Mother" value="Mother"></v-radio>
+                            <v-radio label="Father" value="Father"></v-radio>
+                            <v-radio label="Guardian" value="Guardian"></v-radio>
                         </v-radio-group>
                     </v-col>
 
@@ -97,7 +97,7 @@
                     <v-card-text class="grey--text">Class Details</v-card-text>
 
                     <v-col cols="12" md="6" sm="6">
-                        <v-select :items="brach" :rules="branchRules" label="Branch" prepend-icon="mdi-sitemap" v-model="getBrach"></v-select>
+                        <v-select :items="branch" item-text='branchName' item-value="branchID" :rules="branchRules" label="Branch" prepend-icon="mdi-sitemap" v-model="getBranch"></v-select>
                     </v-col>
 
                     <v-col cols="12" md="6" sm="6">
@@ -128,7 +128,7 @@
             <v-spacer></v-spacer>
             <v-btn   @click="dialog = false" color="primary" v-if="!isEditing" depressed>OK</v-btn>
             <v-btn   @click="cancelEdit()" outlined color="grey" v-if="isEditing">Cancel</v-btn>
-            <v-btn :disabled="!valid" color="primary" @click="Save()" depressed v-if="isEditing">Save
+            <v-btn :disabled="!valid" color="primary" @click="updateStudent()" depressed v-if="isEditing">Save
                 <v-icon left>mdi-content-save</v-icon>
             </v-btn>
         </v-card-actions>
@@ -151,25 +151,27 @@ export default {
             image:null,
 
             valid:true,
-            fname: this.student.fname,
-            lname: this.student.lname,
-            tp: this.student.tp,
-            email: this.student.email,
-            address: this.student.address,
-            parentTp: this.student.parentTp,
-            parentName: this.student.parentName,
-            parent:this.student.parent,
-            getGender:this.student.getGender,
-            getGrade:this.student.getGrade,
-            getBrach:this.student.getBrach,
-            getStatus:this.student.status,
+            fname: '',
+            lname: '',
+            tp: '',
+            email: '',
+            address: '',
+            parentTp: '',
+            parentName: '',
+            parent:'',
+            getGender:'',
+            getGrade:'',
+            getBranch:'',
+            status:'',
+            title:'',
+            
 
             activePicker: null,
-            date: this.student.date,
+            date: '',
             menu: false,
 
             joingActivePicker: null,
-            joingDate: (new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().substr(0, 10),
+            joingDate: '',
             joingMenu: false,
 
             dialogm1: '',
@@ -179,7 +181,7 @@ export default {
             hasSaved: false,
             
             // -----------Validation rules-----------
-            nameRules: [v=> !!v || 'Name is required', v => /^[a-zA-Z_ ]*$/.test(v) || 'Must be text only', v=> (v && v.length >3)|| 'Name must be greater than 3'],
+            nameRules: [v=> !!v || 'Name is required', v => /^[a-zA-Z\s.]+$/.test(v) || 'Must be text only', v=> (v && v.length >3)|| 'Name must be greater than 3'],
             
             tpRules: [v=> !!v || 'Telephone no. is required', v => /^\d+$/.test(v) || 'Must be a number', v=> (v && v.length ==10)|| 'Telephone no. must be 10'],
             
@@ -209,9 +211,9 @@ export default {
 
             grade:['1','2','3','4','5','6','7','8','9','10','11','12','13','NVQ'],
 
-            brach:['Hakmana','Walasmulla'],
+            branch:[],
 
-            status:['Active','Suspend'],
+            
             
 
 
@@ -233,13 +235,97 @@ export default {
       }
     },
 
+    created(){
+        this.axios.get(this.$apiUrl+"/api/v1.0/BranchManagement/branches").then(Response=>(
+            this.branch= Response.data.branch.data
+        ) )
+    },
+
     methods:{
-        Save(){
+
+        getStudent(){
+            this.axios.get(this.$apiUrl+"/api/v1.0/StudentManagement/students/"+this.student.studentID)
+            .then(Response=>{
+                this.fname=Response.data.student.data[0].firstName;
+                this.lname=Response.data.student.data[0].lastName;
+                this.tp=Response.data.student.data[0].telNo;
+                this.email=Response.data.student.data[0].email;
+                this.address=Response.data.student.data[0].address;
+                this.getGender=Response.data.student.data[0].sex;
+                this.date=Response.data.student.data[0].dob;
+                this.joingDate=Response.data.student.data[0].joinedDate;
+                this.parentTp=Response.data.student.data[0].parent.parentTelNo;
+                this.parentName=Response.data.student.data[0].parent.parentName;
+                this.parent=Response.data.student.data[0].parent.parentType;
+                this.status=Response.data.student.data[0].status;
+                this.getGrade=Response.data.student.data[0].grade;
+
+                
+                this.getBranchDetails(Response.data.student.data[0].branch.branchID)
+
+                if(Response.data.student.data[0].parent.title=="Father"){
+                    this.title="Mr."
+                }else if(Response.data.student.data[0].parent.title=="Mother"){
+                    this.title="Mrs."
+                }else{
+                    this.title="Mr."
+                }
+                
+                
+            })
+        },
+
+        getBranchDetails(branchID){
+            this.axios.get(this.$apiUrl+"/api/v1.0/BranchManagement/branches/"+branchID)
+            .then(Response=>{
+                this.getBranch=Response.data.branch.data[0].branchID;
+            })
+        },
+
+        updateStudent(){
             if(this.$refs.form.validate()){
-                console.log('fname:'+this.fname+' lname:'+this.lname+' tp:'+this.tp+' email:'+this.email+' address:'+this.address+' bday:'+this.date+' gender:'+this.getGender);
-                console.log('parent type:'+this.parent+' parent name:'+this.parentName+' parent tp:'+this.parentTp);
-                this.isEditing = !this.isEditing;
-                this.hasSaved = true;
+
+                if(this.parent=="Father"){
+                    this.title="Mr."
+                }else if(this.parent=="Mother"){
+                    this.title="Mrs."
+                }else{
+                    this.title="Mr."
+                }
+
+                this.axios.patch(this.$apiUrl+'/api/v1.0/StudentManagement/students/'+this.student.studentID,{
+                    firstName:this.fname,
+                    lastName:this.lname,
+                    telNo:this.tp,
+                    email:this.email,
+                    address:this.address,
+                    sex:this.getGender,
+                    nic:this.nicNo,
+                    title:this.getTitle,
+                    dob:this.date,
+                    joinedDate:this.joingDate,
+                    branchID:this.getBranch,
+                    status: "Active",
+                    parentTelNo:this.parentTp,
+                    parentName:this.parentName,
+                    parentType:this.parent,
+                    grade:this.getGrade,
+                    title:this.title,
+
+
+                    
+                })
+                .then(Response=>{
+
+                    if(Response.data.success == true){
+                        this.hasSaved = true;
+                        this.isEditing = !this.isEditing;
+                        this.reCreate()
+                    }else{
+                        this.hasSaved = false;
+                    }
+                })
+                
             }  
         },
 
@@ -263,7 +349,11 @@ export default {
         cancelEdit(){
             this.isEditing = !this.isEditing;
             this.hasSaved = false;
-        }
+        },
+
+        reCreate(){
+            this.$emit('success',true)
+        },
         
       
     }

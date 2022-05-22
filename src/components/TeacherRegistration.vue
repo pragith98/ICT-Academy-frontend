@@ -260,6 +260,11 @@ export default {
                         this.unsuccess=true;
                     }
                 })
+                .catch(error => {
+                    this.unsuccess=true;
+                    console.log(error)
+                    
+                });
             
             
             }

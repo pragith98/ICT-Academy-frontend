@@ -266,11 +266,16 @@ export default {
                 .then(Response=>{
                     if(Response.data.success == true){
                         this.Reset();
-                        this.success=true;
+                        this.successAlert();
                     }else{
-                        this.unsuccess=true;
+                        this.failedAlert();
                     }
                 })
+                .catch(error => {
+                    this.failedAlert()
+                    console.log(error)
+                    
+                });
             }
             
             
