@@ -177,6 +177,11 @@ export default {
                         this.failedAlert()
                     }
                 })
+                .catch(error => {
+                    this.failedAlert()
+                    console.log(error.data)
+                    
+                });
             }
         },
 

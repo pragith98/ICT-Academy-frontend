@@ -38,7 +38,7 @@
                                         <v-card-actions>
                                             <app-editSubject :subjectDetails='item' @success="updateSuccessAlert($event)" @failed="updateFaileAlert($event)"></app-editSubject>
                                             <v-spacer></v-spacer>
-                                            <app-deleteSubject class="ml-5" :subject='item' @success="deleteAlert($event)" @failed="faileAlert($event)"></app-deleteSubject>
+                                            <app-deleteSubject class="ml-5" :subjectDetails='item' @success="deleteAlert($event)" @failed="faileAlert($event)"></app-deleteSubject>
                                         </v-card-actions>
                                             
                                 </template>
@@ -150,6 +150,7 @@
             // -------------------- alerts --------------------------------
             deleteAlert(success){
                 this.getAllCategories();
+                this.getAllSubjects()
                 this.successAlert = success;
             },
             faileAlert(failed){
@@ -157,6 +158,7 @@
             },
 
             subjectCreateSuccessAlert(success){
+                this.getAllSubjects()
                 this.successAlertSubjectCreate = success;
             },
             subjectCreateFaileAlert(failed){
