@@ -26,7 +26,7 @@
 
             
                 <v-card flat max-width="750px" style="margin: auto">
-                    <v-card-title class="heading-1 blue lighten-4 primary--text">Create Branch</v-card-title>
+                    <v-card-title class="heading-1 blue-grey lighten-4  blue-grey--text text--darken-2">Create Branch</v-card-title>
                     
                     <v-row style="padding:12px">
                         <v-col>

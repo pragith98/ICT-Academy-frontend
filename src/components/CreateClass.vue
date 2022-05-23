@@ -56,11 +56,9 @@
                                 <v-stepper-content step="1">
                                     <v-card class="mb-12" flat min-height="250px">
                                         <v-row dense>
-                                            <v-col cols="12" md="6" sm="6">
-                                                <v-text-field v-model="className" label="Class Name" prepend-icon="mdi-home-variant" :rules="nameRules" required ></v-text-field>
-                                            </v-col>
+                                            
 
-                                            <v-col cols="12" md="6" sm="6">
+                                            <v-col cols="12" md="12" sm="12">
                                                 <v-select :items="grade" :rules="gradeRules" label="Grade" prepend-icon="mdi-card-bulleted" v-model="getGrade"></v-select>
                                             </v-col>
 
@@ -73,11 +71,11 @@
                                             </v-col>
 
                                             <v-col cols="12" md="6" sm="6">
-                                                <v-select :items="location"  label="Location" prepend-icon="mdi-map-marker" v-model="getLocation" :rules="locationRules" Required></v-select>
+                                                <v-select :items="day" label="Day" prepend-icon="mdi-calendar" v-model="getDay" :rules="dayRules" Required ></v-select>
                                             </v-col>
 
                                             <v-col cols="12" md="6" sm="6">
-                                                <v-select :items="day" label="Day" prepend-icon="mdi-calendar" v-model="getDay" :rules="dayRules" Required :disabled="!getLocation"></v-select>
+                                                <v-select :items="location"  label="Location" prepend-icon="mdi-map-marker" v-model="getLocation" :rules="locationRules" Required :disabled="!getDay"></v-select>
                                             </v-col>
 
                                             <v-col cols="12" md="6" sm="6">
@@ -108,7 +106,7 @@
                                     <v-card-actions>
                                         <v-spacer></v-spacer>
                                         <v-btn outlined color="grey" @click="Reset(),scrollToTop()">Cancel</v-btn>
-                                        <v-btn color="primary" @click="e1=2" depressed :disabled="!valid || !className || !getFeeType || !fee || !getLocation || !getDay || !startTime || !endTime || !getGrade">Next
+                                        <v-btn color="primary" @click="e1=2" depressed :disabled="!valid || !getFeeType || !fee || !getLocation || !getDay || !startTime || !endTime || !getGrade">Next
                                             <v-icon>mdi-chevron-right</v-icon>
                                         </v-btn>
                                     </v-card-actions>
@@ -119,7 +117,7 @@
                                         <v-row dense>
                                             <v-col cols="12" md="6" sm="6">
                                                 <v-card-text>
-                                                    <v-autocomplete :items="teachers" v-model="teacher" :filter="teacherFilter" item-text="name" item-value="teacherID" label="Teacher" prepend-icon="mdi-account" :rules="teacherRules"></v-autocomplete>
+                                                    <v-autocomplete :items="teachers" v-model="teacher" :filter="teacherFilter" item-text="firstName" item-value="teacherID" label="Teacher" prepend-icon="mdi-account" :rules="teacherRules"></v-autocomplete>
                                                 </v-card-text>
                                             </v-col>
                                             <v-col cols="12" md="6" sm="6" align-self="center">
@@ -146,32 +144,26 @@
                                 <v-stepper-content step="3">
                                     <v-card class="mb-12" flat min-height="200px">
                                         <v-row dense>
-                                            <v-col cols="12" md="12" sm="12">
-                                                <v-text-field v-model="subjectName" label="Subject" prepend-icon="mdi-format-align-center" :rules="subjectRules" required  readonly hint="Add subject from below table"></v-text-field>
-                                            </v-col>
+                                            
                                             <v-card-text class="grey--text">
-                                                * Add subject from below table
+                                                Add subject from below table
                                             </v-card-text>
                                             
                                            
                                             <v-col cols="12" md="12" sm="12">
                                                 <v-card-title><v-spacer></v-spacer><v-text-field v-model="subjectSearch" append-icon="mdi-magnify" label="Search Subject" single-line hide-details></v-text-field></v-card-title>
                                                 <v-data-table :headers="subjectHeaders" :items="subjects" :search="subjectSearch" :items-per-page="5">
-                                                    <template v-slot:item="row">
-                                                        <tr>
-                                                            <td>{{row.item.name}}</td>
-                                                            <td>{{row.item.medium}}</td>
-                                                            <td>{{row.item.category}}</td>
-                                                            <td>
-                                                                <v-btn color="primary" outlined @click="subjectName=row.item.name, subject=row.item.id">Add</v-btn>
-                                                            </td>
-                                                        </tr>
+                                                    <template v-slot:[`item.actions`]="{ item }">
+                                                        <v-btn color="primary" outlined @click="subjectName=item.subjectName, subject=item.subjectID">Add</v-btn>
                                                     </template>
                                                 </v-data-table>
                                             </v-col>
                                             
                                         </v-row>
                                         <v-divider></v-divider>
+                                        <v-col cols="12" md="12" sm="12">
+                                            <v-text-field v-model="subjectName" label="Subject" prepend-icon="mdi-format-align-center" :rules="subjectRules" required  readonly hint="Add subject from below table"></v-text-field>
+                                        </v-col>
                                         <v-card-text>
                                             * If you won't find the Subject from the table,
                                         </v-card-text>
@@ -195,6 +187,11 @@
 
                                 <v-stepper-content step="4">
                                     <v-card  class="mb-12 text-center" height="100px" flat>
+                                        <v-col cols="12" md="12" sm="12">
+                                            <v-text-field v-model="className" label="Class Name" prepend-icon="mdi-home-variant" :rules="nameRules" required ></v-text-field>
+                                        </v-col>
+
+
                                         <v-btn x-large color="primary" depressed @click="submit()">Create Class
                                             <v-icon right>mdi-home-plus</v-icon>
                                         </v-btn>
@@ -261,6 +258,8 @@
                 valid:true,
                 e1: 1,
 
+                
+
                 getLocation:'',
                 getDay:'',
                 getFeeType:'Daily Pay',
@@ -283,25 +282,14 @@
 
                 subjectSearch: '',
                 subjectHeaders: [
-                    {text: 'NAME',align: 'start', sortable: true, value:'name'},
+                    {text: 'NAME',align: 'start', sortable: true, value:'subjectName'},
                     { text: 'MEDIUM',sortable: true, value: 'medium', filterable:false},
-                    { text: 'CATEGORY', sortable: true, value: 'category' },
-                    { text: '', sortable: false, value: 'Action' },
+                    { text: 'CATEGORY', sortable: true, value: 'category.categoryName' },
+                    { text: '', sortable: false, value: 'actions' },
                 ],
-                subjects: [
-                    {name:'Science',id:'sub001',medium:'Sinhala',category:'Ordinary Level'},
-                    {name:'Maths',id:'sub002',medium:'Sinhala',category:'Ordinary Level'},
-                    {name:'Scholarship',id:'sub003',medium:'Sinhala',category:'Scholarship'},
-                    {name:'BS',id:'sub004',medium:'Sinhala',category:'Advanced Level'},
-                    {name:'Maths',id:'sub005',medium:'English',category:'Ordinary Level'}
-                ],
+                subjects: [],
 
-                teachers:[
-                    {name:'Samansfsdf Herathsfddf 2121', teacherID:'2121'},
-                    {name:'Dasun Rathnayake', teacherID:'2133'},
-                    {name:'Kasun Bandara', teacherID:'24121'},
-                    {name:'Maheshi Ranathunga', teacherID:'3167'},
-                ],
+                teachers:[],
 
                 
 
@@ -333,11 +321,11 @@
 
 
                 // -----------dropdown list-----------
-                location:['Hall 1','Hall 2','Hall 3','Online'],
+                location:[],
 
                 day:['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'],
 
-                feeType:['Monthly Pay','Daily Pay'],
+                feeType:['Monthly','Daily'],
 
                 grade:['1','2','3','4','5','6','7','8','9','10','11','12','13','Other'],
 
@@ -353,8 +341,44 @@
             }
         },
 
+        created(){
+            this.getClassHall()
+            this.getTeachers()
+            this.getAllSubjects()
+        },
+
         methods: {
-            
+            getAllSubjects(){
+                this.axios.get(this.$apiUrl+"/api/v1.0/SubjectManagement/subjects").then(Response=>(this.subjects= Response.data.subject.data) )
+            },
+
+            getClassHall(){
+                this.axios.get(this.$apiUrl+"/api/v1.0/BranchManagement/branches/"+'BRNCH001')
+                .then(Response=>{
+                    var halls=Response.data.branch.data[0].noOfRooms;
+
+                    for(var i=1; i<=halls; i++){
+                        this.location.push("Hall "+i);
+                    }
+                    this.location.push("Online");
+                })
+            },
+
+            getTeachers(){
+                this.axios.get(this.$apiUrl+"/api/v1.0/TeacherManagement/teachers",{
+                params:{
+                    status: "Active"
+                }
+                
+                }).then(Response=>(
+                    this.teachers=Response.data.teacher.data,
+                    
+                    this.teachers.forEach(element => {
+                        element.firstName=element.title+" "+element.firstName+" "+element.lastName
+                    })
+                    
+                ))
+            },
 
             Reset() {
                 this.$refs.form.reset()
@@ -365,7 +389,7 @@
             },
 
             teacherFilter (item, queryText) {
-                const textOne = item.name.toLowerCase()
+                const textOne = item.firstName.toLowerCase()
                 const textTwo = item.teacherID.toLowerCase()
                 const searchText = queryText.toLowerCase()
 
