@@ -22,12 +22,28 @@
                     </v-card>
                 </v-col>
 
+                
+
+            </v-row>
+            <v-row>
                 <v-col>
-                    <v-card width="500" height="100">
-                        
+                    
+                    <v-card flat width="570" height="400">
+                        <v-card-title>TODAY CLASSES</v-card-title>
+                        <v-data-table :headers="headers" :items="classes" :items-per-page="5">
+                            <template v-slot:[`item.actions`]="{ item }">
+                                <v-chip>{{item.day}}</v-chip>
+                            </template>
+                        </v-data-table>
                     </v-card>
                 </v-col>
-
+                <v-col>
+                    <v-card flat width="566" height="200">
+                        <v-progress-circular class="ma-6" :rotate="-90" :size="150" :width="20" :value="expencesValue" color="primary">
+                            <h2>{{ expencesValue }}%</h2>
+                        </v-progress-circular>
+                    </v-card>
+                </v-col>
             </v-row>
 
         </v-container>
@@ -42,18 +58,135 @@
 
         data(){
             return{
+
+                
+                studentCount:'',
+                teacherCount:'',
+                staffCount:'',
+                classCount:'',
+                expencesValue:'',
+
                 cardlist:[
-                    {name:'STUDENTS', count:"2500", icon:'mdi-account-group', color:'purple lighten-2'},
-                    {name:'TEACHERS', count:"15", icon:'mdi-human-male-board', color:'pink lighten-2'},
-                    {name:'STAFF', count:"5", icon:'mdi-account-multiple', color:'brown'},
-                    {name:'CLASSES', count:"30", icon:'mdi-google-classroom', color:'blue'},
+                    {name:'STUDENTS', count:"", icon:'mdi-account-group', color:'purple lighten-2'},
+                    {name:'TEACHERS', count:"", icon:'mdi-human-male-board', color:'pink lighten-2'},
+                    {name:'STAFF', count:"", icon:'mdi-account-multiple', color:'brown'},
+                    {name:'CLASSES', count:"", icon:'mdi-google-classroom', color:'blue'},
                     
                 ],
 
 
+                headers: [
+                    { text: 'NAME',align: 'start', sortable: false, value:'className'},
+                    //{ text: 'TEACHER', sortable: false, value: 'teacher.teacherName' },
+                    //{ text: 'GRADE',sortable: false, value: 'grade' },
+                    //{ text: 'SUBJECT', sortable: false, value: 'subject.subjectName' },
+                    { text: 'TIME', sortable: false, value: 'startTime',align: 'center' },
+                    { text: 'LOCATION', sortable: false, value: 'room', align: 'end'},
+                ],
+
+                classes: [],
                 
+
+            }
+        },
+
+        created(){
+            this.getClassDetails();
+            this.getStudentCount();
+            this.getTeacherCount();
+            this.getStaffCount();
+            this.getClassCount();
+            this.getExpences();
+        },
+
+        methods:{
+
+            getClassDetails(){
+                this.axios.get(this.$apiUrl+"/api/v1.0/ClassManagement/classes",{
+                    params:{
+                        status: "Active",
+                        day:"Sunday"
+                    }
+                }).then(Response=>(this.classes= Response.data.class.data))
+            },
+
+            getStudentCount(){
+                this.axios.get(this.$apiUrl+"/api/v1.0/StudentManagement/students",{
+                params:{
+                    status: "Active"
+                }
+                
+                }).then(Response=>(
+                    this.studentCount=Response.data.student.meta.student_count,
+                   
+
+                    this.cardlist.forEach(element => {
+                        if(element.name=="STUDENTS"){
+                            element.count=this.studentCount
+                        }
+                    })
+                ))
+            },
+
+            getTeacherCount(){
+                this.axios.get(this.$apiUrl+"/api/v1.0/TeacherManagement/teachers",{
+                params:{
+                    status: "Active"
+                }
+                
+                }).then(Response=>(
+                    this.teacherCount=Response.data.teacher.meta.teacher_count,
+
+                    this.cardlist.forEach(element => {
+                        if(element.name=="TEACHERS"){
+                            element.count=this.teacherCount
+                            
+                        }
+                    })
+                ))
+            },
+
+            getStaffCount(){
+                this.axios.get(this.$apiUrl+"/api/v1.0/StaffManagement/staffs",{
+                params:{
+                    status: "Active"
+                }
+                
+                }).then(Response=>(
+                    this.staffCount=Response.data.staff.meta.staff_count,
+
+                    this.cardlist.forEach(element => {
+                        if(element.name=="STAFF"){
+                            element.count=this.staffCount
+                        }
+                    })
+                ))
+            },
+
+            getClassCount(){
+                this.axios.get(this.$apiUrl+"/api/v1.0/ClassManagement/classes",{
+                params:{
+                    status: "Active"
+                }
+                
+                }).then(Response=>(
+                    this.classCount=Response.data.class.meta.class_count,
+
+                    this.cardlist.forEach(element => {
+                        if(element.name=="CLASSES"){
+                            element.count=this.classCount
+                        }
+                    })
+                ))
+            },
+
+            getExpences(){
+                this.expencesValue=66;
             }
         }
         
     }
 </script>
+
+
+

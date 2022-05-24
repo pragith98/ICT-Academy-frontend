@@ -28,27 +28,22 @@
 
                     
                     <div :hidden="hideTable">
-                        <v-card-text class="grey--text">Select category from below table</v-card-text>
-                        
-                        <v-card-title><v-spacer></v-spacer><v-text-field v-model="search" append-icon="mdi-magnify" label="Search Category" single-line hide-details></v-text-field></v-card-title>
-                        <v-data-table :sort-by.sync="sortBy" :sort-desc.sync="sortDesc" :headers="headers" :items="categories" :search="search" :items-per-page="5">
-                            <template v-slot:[`item.actions`]="{ item }">
-                                <v-btn @click="category=item.categoryID, categoryName=item.categoryName" depressed color="primary" outlined>Select</v-btn>
-                                    
-                            </template>
-                        </v-data-table>
+                        <v-card-text class="grey--text">Select <strong>category</strong> from below menu</v-card-text>
                         <v-col cols="12" md="12" sm="12">
-                            <v-text-field :rules="categoryRules" label="Category" prepend-icon="mdi-candy-outline" v-model="categoryName" readonly hint="Add category from above table"></v-text-field>
-                        </v-col>    
-                        <v-divider></v-divider>
-                        <v-row>
-                            <v-card-text class="grey--text">
-                                * If you won't find the category from the table, 
+                            <v-card-text>
+                                <v-autocomplete prepend-icon="mdi-candy-outline" :items="categories" v-model="category" :filter="categoryFilter" item-text='categoryName' item-value="categoryID" label="Category"  :rules="categoryRules"></v-autocomplete>
+                            </v-card-text>
+                        </v-col>
+                       
+                        
+                        <v-card color="grey lighten-3" flat >
+                            <v-card-text>
+                                If you won't find the <strong>Category</strong>, please create new <strong>Category</strong>,
                             </v-card-text>
                             <v-col class="text-center my-3">
-                                <v-btn color="primary" depressed @click="hideTable= !hideTable" outlined>create a new category</v-btn>
+                                <v-btn color="primary" depressed @click="hideTable= !hideTable, hideActions= !hideActions" outlined>create a new category</v-btn>
                             </v-col>
-                        </v-row>
+                        </v-card>
                     </div>
                     
                     
@@ -64,7 +59,7 @@
                             </v-col>
                             <v-col cols="12" md="6" sm="6" align-self="center">
                                 <v-btn depressed color="primary" outlined @click="createCategory()">Create Category</v-btn>
-                                <v-btn outlined color="grey" class="ml-2" @click="hideTable = !hideTable">Cancel</v-btn>
+                                <v-btn outlined color="grey" class="ml-2" @click="hideTable = !hideTable, hideActions= !hideActions">Cancel</v-btn>
                             </v-col>
                         </v-row>
                     </div>
@@ -80,12 +75,14 @@
 
 
 
-
-        <v-card-actions>
-            <v-spacer></v-spacer>
-            <v-btn   @click="dialog = false" outlined color="grey">Cancel</v-btn>
-            <v-btn :disabled="!valid || !subject || !getMedium || !categoryName" color="primary" @click="createSubject()" depressed>Create</v-btn>
-        </v-card-actions>
+        <div :hidden="hideActions">
+            <v-card-actions>
+                <v-spacer></v-spacer>
+                <v-btn   @click="dialog = false" outlined color="grey">Cancel</v-btn>
+                <v-btn :disabled="!valid || !subject || !getMedium || !category" color="primary" @click="createSubject()" depressed>Create</v-btn>
+            </v-card-actions>
+        </div>
+        
 
         <v-snackbar v-model="categoryCreated" :multi-line="multiLine">
             Category Create successfully. Now you can add it from the table.
@@ -126,6 +123,7 @@ export default {
             categoryCreated:false,
 
             hideTable:false,
+            hideActions:false,
 
             multiLine: true,
 
@@ -161,12 +159,23 @@ export default {
     },
 
     methods:{
+
+        categoryFilter (item, queryText) {
+            const textOne = item.categoryName.toLowerCase()
+            const textTwo = item.categoryID.toLowerCase()
+            const searchText = queryText.toLowerCase()
+
+            return textOne.indexOf(searchText) > -1 || textTwo.indexOf(searchText) > -1
+        },
+
+
         createSubject(){
             if(this.$refs.form.validate()){
                 this.axios.post(this.$apiUrl+"/api/v1.0/SubjectManagement/subjects",{
                     subjectName:this.subject+" ("+this.getMedium+")",
                     medium:this.getMedium,
                     categoryID:this.category,
+                    
                 })
                 .then(Response=>{
                     

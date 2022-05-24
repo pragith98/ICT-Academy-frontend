@@ -14,7 +14,7 @@
             <v-snackbar :timeout="3000" v-model="successAlert" color="green"  bottom><v-icon left>mdi-check</v-icon>Staff delete <strong>successful</strong> </v-snackbar>
             
             <v-snackbar v-model="successfulCreateSubject" :multi-line="multiLine">
-                Subject Create successfully. Now you can add it from the table.
+                Subject Create successfully. Now you can add it from the <strong>Subject</strong> menu.
                 <template v-slot:action="{ attrs }">
                     <v-btn color="red" text v-bind="attrs" @click="successfulCreateSubject = false">Close</v-btn>
                 </template>
@@ -67,7 +67,7 @@
                                             </v-col>
 
                                             <v-col cols="12" md="6" sm="6">
-                                                <v-text-field v-model="fee" label="Fee" prepend-icon="mdi-cash-multiple" :rules="feeRules" Required></v-text-field>
+                                                <v-text-field v-model="fee" label="Fee" prepend-icon="mdi-cash-multiple" :rules="feeRules" Required prefix="RS." clearable></v-text-field>
                                             </v-col>
 
                                             <v-col cols="12" md="6" sm="6">
@@ -106,7 +106,10 @@
                                     <v-card-actions>
                                         <v-spacer></v-spacer>
                                         <v-btn outlined color="grey" @click="Reset(),scrollToTop()">Cancel</v-btn>
-                                        <v-btn color="primary" @click="e1=2" depressed :disabled="!valid || !getFeeType || !fee || !getLocation || !getDay || !startTime || !endTime || !getGrade">Next
+                                        <!-- <v-btn color="primary" @click="e1=2" depressed :disabled="!valid || !getFeeType || !fee || !getLocation || !getDay || !startTime || !endTime || !getGrade">Next
+                                            <v-icon>mdi-chevron-right</v-icon>
+                                        </v-btn> -->
+                                        <v-btn color="primary" @click="e1=2" depressed >Next
                                             <v-icon>mdi-chevron-right</v-icon>
                                         </v-btn>
                                     </v-card-actions>
@@ -115,6 +118,9 @@
                                 <v-stepper-content step="2">
                                     <v-card class="mb-12" flat min-height="200px">
                                         <v-row dense>
+                                            <v-card-text class="grey--text">
+                                                Please select <strong>Teacher</strong> from below menu.
+                                            </v-card-text>
                                             <v-col cols="12" md="6" sm="6">
                                                 <v-card-text>
                                                     <v-autocomplete :items="teachers" v-model="teacher" :filter="teacherFilter" item-text="firstName" item-value="teacherID" label="Teacher" prepend-icon="mdi-account" :rules="teacherRules"></v-autocomplete>
@@ -144,42 +150,42 @@
                                 <v-stepper-content step="3">
                                     <v-card class="mb-12" flat min-height="200px">
                                         <v-row dense>
-                                            
                                             <v-card-text class="grey--text">
-                                                Add subject from below table
+                                                Please select <strong>Category</strong> and the <strong>Subject</strong> from below menu.
                                             </v-card-text>
-                                            
-                                           
-                                            <v-col cols="12" md="12" sm="12">
-                                                <v-card-title><v-spacer></v-spacer><v-text-field v-model="subjectSearch" append-icon="mdi-magnify" label="Search Subject" single-line hide-details></v-text-field></v-card-title>
-                                                <v-data-table :headers="subjectHeaders" :items="subjects" :search="subjectSearch" :items-per-page="5">
-                                                    <template v-slot:[`item.actions`]="{ item }">
-                                                        <v-btn color="primary" outlined @click="subjectName=item.subjectName, subject=item.subjectID">Add</v-btn>
-                                                    </template>
-                                                </v-data-table>
+                                            <v-col cols="12" md="6" sm="6">
+                                                <v-card-text>
+                                                    <v-autocomplete prepend-icon="mdi-format-align-center" :items="subjects" v-model="subjectName" :filter="subjectFilter" item-text='subjectName' item-value="subjectID" label="Category"  :rules="subjectRules"></v-autocomplete>
+                                                </v-card-text>
                                             </v-col>
-                                            
+
+                                            <v-col cols="12" md="6" sm="6">
+                                                <v-card-text>
+                                                    <v-autocomplete prepend-icon="mdi-format-align-center" :items="subjects" v-model="subjectName" :filter="subjectFilter" item-text='subjectName' item-value="subjectID" label="Subject" :rules="subjectRules"></v-autocomplete>
+                                                </v-card-text>
+                                            </v-col>
+
                                         </v-row>
-                                        <v-divider></v-divider>
-                                        <v-col cols="12" md="12" sm="12">
-                                            <v-text-field v-model="subjectName" label="Subject" prepend-icon="mdi-format-align-center" :rules="subjectRules" required  readonly hint="Add subject from below table"></v-text-field>
-                                        </v-col>
-                                        <v-card-text>
-                                            * If you won't find the Subject from the table,
-                                        </v-card-text>
-                                        <div class="mt-5">
-                                            <app-createSubject @success="successfulCreateSubjectAlert($event)" @failed="unsuccessfulCreateSubjectAlert($event)"></app-createSubject>
-                                        </div>
+                                        
+                                        <v-card color="grey lighten-3" flat class="pa-5">
+                                            <v-card-text>
+                                                If you won't find the <strong>Subject</strong>, please create new <strong>Subject</strong>,
+                                            </v-card-text>
+                                            <div class="mt-5">
+                                                <app-createSubject @success="successfulCreateSubjectAlert($event)" @failed="unsuccessfulCreateSubjectAlert($event)"></app-createSubject>
+                                            </div>
+                                        </v-card>
+                                        
                                         
                                     </v-card>
-                                    <v-divider></v-divider>
+                                    
                                     <v-card-actions>
                                         <v-spacer></v-spacer>
                                         <v-btn outlined color="grey" @click="e1=2">
                                             <v-icon >mdi-chevron-left</v-icon>
                                             Back
                                         </v-btn>
-                                        <v-btn color="primary" @click="e1=4" depressed :disabled="!valid || !subjectName">Next
+                                        <v-btn color="primary" @click="e1=4, createClassName()" depressed :disabled="!valid || !subjectName">Next
                                             <v-icon>mdi-chevron-right</v-icon>
                                         </v-btn>
                                     </v-card-actions>
@@ -262,9 +268,9 @@
 
                 getLocation:'',
                 getDay:'',
-                getFeeType:'Daily Pay',
+                getFeeType:'Daily',
                 className:'',
-                fee:'',
+                fee:'0.00',
                 getGrade:'',
 
 
@@ -300,7 +306,7 @@
 
 
                 // -----------Validation rules-----------
-                nameRules: [v=> !!v || 'Class name is required', v => /^[A-Za-z0-9 _]*[A-Za-z0-9][A-Za-z0-9 _]*$/.test(v) || 'Invalid characters', v=> (v && v.length >3)|| 'Name must be greater than 3'],
+                nameRules: [v=> !!v || 'Class name is required', v=> (v && v.length >3)|| 'Name must be greater than 3'],
                 
                 feeTypeRules: [v=> !!v || 'Fee type is required'],
 
@@ -348,8 +354,19 @@
         },
 
         methods: {
+            createClassName(){
+                this.className = this.subjectName+"/"+this.getGrade+"/"+this.getDay+"/"+this.startTime;
+            },
+
             getAllSubjects(){
-                this.axios.get(this.$apiUrl+"/api/v1.0/SubjectManagement/subjects").then(Response=>(this.subjects= Response.data.subject.data) )
+                this.axios.get(this.$apiUrl+"/api/v1.0/SubjectManagement/subjects").then(Response=>(
+                    this.subjects= Response.data.subject.data,
+
+                    this.subjects.forEach(element => {
+                        element.subjectName=element.subjectName+"  |  "+element.category.categoryName
+                    })
+                    
+                ))
             },
 
             getClassHall(){
@@ -358,7 +375,7 @@
                     var halls=Response.data.branch.data[0].noOfRooms;
 
                     for(var i=1; i<=halls; i++){
-                        this.location.push("Hall "+i);
+                        this.location.push("Room No. "+i);
                     }
                     this.location.push("Online");
                 })
@@ -394,7 +411,14 @@
                 const searchText = queryText.toLowerCase()
 
                 return textOne.indexOf(searchText) > -1 || textTwo.indexOf(searchText) > -1
+            },
 
+            subjectFilter (item, queryText) {
+                const textOne = item.subjectName.toLowerCase()
+                const textTwo = item.subjectID.toLowerCase()
+                const searchText = queryText.toLowerCase()
+
+                return textOne.indexOf(searchText) > -1 || textTwo.indexOf(searchText) > -1
             },
 
             submit(){
