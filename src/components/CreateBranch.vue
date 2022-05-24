@@ -143,6 +143,11 @@
                             this.unsuccessAlert=true;
                         }
                     })
+                    .catch(error => {
+                        this.unsuccessAlert=true;
+                        console.log(error.data)
+                        
+                    });
                      
 
 

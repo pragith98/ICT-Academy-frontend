@@ -12,9 +12,6 @@
 
             <v-snackbar :timeout="3000" v-model="unsuccessAlert" color="red"  bottom ><v-icon left>mdi-alert-outline</v-icon>Item delete <strong>failed</strong> </v-snackbar>
             <v-snackbar :timeout="3000" v-model="successAlert" color="green"  bottom><v-icon left>mdi-check</v-icon>Item delete <strong>successful</strong> </v-snackbar>
-            
-            <v-snackbar :timeout="3000" v-model="unsuccessAlertSubjectCreate" color="red"  bottom ><v-icon left>mdi-alert-outline</v-icon>Subject Create <strong>failed</strong> </v-snackbar>
-            <v-snackbar :timeout="3000" v-model="successAlertSubjectCreate" color="green"  bottom><v-icon left>mdi-check</v-icon>Subject Create <strong>successful</strong> </v-snackbar>
 
             <v-snackbar :timeout="3000" v-model="unsuccessAlertPayment" color="red"  bottom ><v-icon left>mdi-alert-outline</v-icon>Payment <strong>failed</strong> </v-snackbar>
             <v-snackbar :timeout="3000" v-model="successAlertPayment" color="green"  bottom><v-icon left>mdi-check</v-icon>Payment <strong>successful</strong> </v-snackbar>
@@ -34,7 +31,7 @@
                                     <v-card-title class="blue-grey--text text--darken-2">Pay Advance</v-card-title>
 
                                     <v-col cols="12" md="12" sm="12">
-                                        <v-autocomplete :items="teachers" :rules="teacherRules" :value="teachers" v-model="teacher" :filter="teacherFilter" item-text="fname" item-value="teacherID" label="Teacher" ></v-autocomplete>
+                                        <v-autocomplete :items="teachers" v-model="teacher" :filter="teacherFilter" item-text="firstName" item-value="teacherID" label="Teacher"  :rules="teacherRules"></v-autocomplete>
                                     </v-col>
                                     
                                     <v-col cols="12" md="12" sm="12">
@@ -105,7 +102,7 @@
                     <v-card-actions>
                         <v-spacer></v-spacer>
                         <v-btn color="grey"  outlined @click="dialog = false" >Cancel</v-btn>
-                        <v-btn @click="payAdvance(), Reset()" color="orange" dark depressed>Confirm</v-btn>
+                        <v-btn @click="payAdvance()" color="orange" dark depressed>Confirm</v-btn>
                     </v-card-actions>
                 </v-card>
             </v-dialog>
@@ -137,7 +134,7 @@
                 date: (new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().substr(0, 10),
                 dateMenu: false,
 
-                amount:'0.00',
+                amount:'0',
                 description:'',
 
                 
@@ -154,10 +151,7 @@
                     { text: '', sortable: false, value: 'actions' },
                 ],
 
-                teachers: [
-                    {fname:'Saman', teacherID:'123', lname:'Herath', date:'2022-04-28', advance:3400, description:'Class fees payments'},
-                    {fname:'Dasun', teacherID:'345', lname:'Herath', date:'2022-04-28', advance:3400, description:'Class fees payments'},  
-                ],
+                teachers: [],
 
                 teachersAdvance: [
                     {id:1, fname:'Saman', teacherID:'123', lname:'Herath', date:'2022-04-28', advance:3400, description:'Class fees payments', staff:'nirosh'},
@@ -196,10 +190,14 @@
             }
         },
 
+        created(){
+            this.getTeachers()
+        },
+
         methods: {
 
             teacherFilter (item, queryText) {
-                const textOne = item.fname.toLowerCase()
+                const textOne = item.firstName.toLowerCase()
                 const textTwo = item.teacherID.toLowerCase()
                 const searchText = queryText.toLowerCase()
 
@@ -209,14 +207,53 @@
 
             payAdvance(){
                 if(this.$refs.form.validate()){
-                    console.log(this.teacher+", "+this.amount+", "+this.description+", "+this.date)
-                    this.dialog=false
-                    this.successAlertPayment=true
+                    if(this.amount !=0){
+                        this.axios.post(this.$apiUrl+"/api/v1.0/AdvanceManagement/advances",{
+                            description:this.description,
+                            advanceAmount:this.amount+".00",
+                            date:this.date,
+                            employeeID:this.teacher,
+                            handlerStaffID:"STAFF001",
+                            branchID:"BRNCH001",
+                        })
+                        .then(Response=>{
+                            if(Response.data.success == true){
+                                this.Reset();
+                                this.dialog=false,
+                                this.successAlertPayment=true
+                            }else{
+                                this.unsuccessAlertPayment=true
+                            }
+                        })
+                        .catch(error => {
+                            this.unsuccessAlertPayment=true
+                            console.log(error.data)
+                            
+                        });
+                    }else{
+                        this.unsuccessAlertPayment=true
+                    }
                 }
             },
 
             Reset() {
                 this.$refs.form.reset()
+            },
+
+            getTeachers(){
+                this.axios.get(this.$apiUrl+"/api/v1.0/TeacherManagement/teachers",{
+                params:{
+                    status: "Active"
+                }
+                
+                }).then(Response=>(
+                    this.teachers=Response.data.teacher.data,
+                    
+                    this.teachers.forEach(element => {
+                        element.firstName=element.title+" "+element.firstName+" "+element.lastName
+                    })
+                    
+                ))
             },
 
 
