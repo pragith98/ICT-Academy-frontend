@@ -72,8 +72,12 @@
                             <v-card-title class="heading-1 blue-grey lighten-4  blue-grey--text text--darken-2">Teacher Advance</v-card-title>
                             <v-card-title><v-spacer></v-spacer><v-text-field v-model="Search" append-icon="mdi-magnify" label="Search" single-line hide-details></v-text-field></v-card-title>
                             
-                            <v-data-table :headers="headers" :items="teachersAdvance" :search="Search" >
-                                
+                            <v-data-table :headers="headers" :items="teachersAdvance" :search="Search" :items-per-page="5">
+                                <template v-slot:[`item.actions`]="{ item }">
+                                    <v-card-actions>
+                                        <app-EditPayAdvance :advance="item"></app-EditPayAdvance>
+                                    </v-card-actions>
+                                </template>
                             </v-data-table>
                         </v-card>
                     </v-col>
@@ -118,9 +122,10 @@
 </template>
 
 <script>
-
+    import EditPayAdvance from './EditPayAdvance.vue'
     export default {
         components:{
+            "app-EditPayAdvance":EditPayAdvance
         },
         data () {
             return {
@@ -142,21 +147,18 @@
                 
 
                 headers: [
-                    {text: 'ID',align: 'start', sortable: false, value:'id'},
-                    {text: 'NAME',align: 'start', sortable: false, value:'fname'},
+                    { text: 'ID',align: 'start', sortable: false, value:'advanceID'},
+                    { text: 'NAME',align: 'start', sortable: false, value:'teacher.teacherName'},
                     { text: 'DATE', sortable: false, value: 'date' },
-                    { text: 'ADVANCE', sortable: false, value: 'advance' },
+                    { text: 'ADVANCE', sortable: false, value: 'advanceAmount' },
                     { text: 'DESCRIPTION', sortable: false, value: 'description' },
-                    { text: 'STAFF', sortable: false, value: 'staff'},
+                    { text: 'STAFF', sortable: false, value: 'handledBy.staffName'},
                     { text: '', sortable: false, value: 'actions' },
                 ],
 
                 teachers: [],
 
-                teachersAdvance: [
-                    {id:1, fname:'Saman', teacherID:'123', lname:'Herath', date:'2022-04-28', advance:3400, description:'Class fees payments', staff:'nirosh'},
-                    {id:2, fname:'Dasun', teacherID:'345', lname:'Herath', date:'2022-04-30', advance:6300, description:'Class fees payments', staff:'Rathnayake'},  
-                ],
+                teachersAdvance: [],
 
                 breadcrumbs: [
                     { text: 'Financial', disabled: false, href: '/Financial' },
@@ -192,9 +194,22 @@
 
         created(){
             this.getTeachers()
+            this.getTeacherAdvance()
         },
 
         methods: {
+
+            getTeacherAdvance(){
+                this.axios.get(this.$apiUrl+"/api/v1.0/AdvanceManagement/advances",{
+                params:{
+                    employeeType: "teacher",
+                    date: "2022-05" 
+                }
+                
+                }).then(Response=>(
+                    this.teachersAdvance=Response.data.advance.data
+                ))
+            },
 
             teacherFilter (item, queryText) {
                 const textOne = item.firstName.toLowerCase()

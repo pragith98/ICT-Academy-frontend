@@ -11,7 +11,7 @@
                             <v-icon size="100" color="error">mdi-help-circle-outline</v-icon>
                         </v-row>
                     </v-card-title>
-                    <span class="text-h6 text-center">Do you really want to delete <br> <strong>"{{teacher.firstName}} {{teacher.lastName}}"</strong></span>
+                    <span class="text-h6 text-center">Do you really want to delete <br> <strong>"{{teacher.firstName}}"</strong></span>
                 </v-container>
                 
                 

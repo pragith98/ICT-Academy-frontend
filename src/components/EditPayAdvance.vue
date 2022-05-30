@@ -1,0 +1,208 @@
+<template>
+  <v-row justify="end">
+    <v-dialog v-model="dialog" scrollable max-width="500px" persistent>
+        <template v-slot:activator="{ on, attrs }">
+            <v-btn small @click="getTeacherAdvance()" class="teal" dark depressed  v-bind="attrs" v-on="on">Edit<v-icon dark right>mdi-pencil</v-icon></v-btn>
+        </template>
+        <v-card max-width="700" flat>
+        <v-card-title class="heading-1 blue-grey lighten-4  blue-grey--text text--darken-2">Edit Pay Advance</v-card-title>
+        
+        <v-divider></v-divider>
+        <v-card-text style="height: 800px;">
+
+            <v-col cols="12" md="12" sm="12">
+                <v-autocomplete :items="teachers" v-model="teacher" :filter="teacherFilter" item-text="firstName" item-value="teacherID" label="Teacher"  :rules="teacherRules"></v-autocomplete>
+            </v-col>
+            
+            <v-col cols="12" md="12" sm="12">
+                <v-text-field v-model="amount" :rules="amountRules" clearable  label="Amount" prefix="RS."></v-text-field>
+            </v-col>
+
+            <v-col cols="12" md="12" sm="12">
+                <v-textarea v-model="description" :rules="descriptionRules" rows="2"  label="Description"></v-textarea>
+            </v-col>
+
+            <v-col cols="12" md="12" sm="12">
+                <template>
+                    <div >
+                        <v-menu ref="menud" v-model="dateMenu" :close-on-content-click="true" transition="scale-transition" offset-y min-width="auto">
+                            <template v-slot:activator="{ on, attrs }">
+                                <v-text-field v-model="date" label="Date" readonly v-bind="attrs" v-on="on" :rules="dateRules"></v-text-field>
+                            </template>
+                            <v-date-picker v-model="date" :active-picker.sync="dateActivePicker" :max="(new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().substr(0, 10)" min="1950-01-01"></v-date-picker>
+                        </v-menu>
+                    </div>
+                </template>
+            </v-col>
+            
+          
+
+        </v-card-text>
+        <v-divider></v-divider>
+
+
+
+
+        <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn   @click="dialog=false" outlined color="grey" >Cancel</v-btn>
+            <v-btn :disabled="!valid " color="primary" @click="updateAdvance()" depressed >Save
+                <v-icon left>mdi-content-save</v-icon>
+            </v-btn>
+        </v-card-actions>
+
+        <!-- <v-snackbar v-model="hasSaved" :timeout="2000" absolute bottom left color="green">Teacher details has been updated</v-snackbar> -->
+
+      </v-card>
+    </v-dialog>
+  </v-row>
+</template>
+
+
+
+<script>
+    
+    export default {
+        props:['advance'],
+        
+        data () {
+            return {
+                dialog:false,
+
+                valid:true,
+                teacher:null,
+
+                dateActivePicker: null,
+                date: '',
+                dateMenu: false,
+
+                amount:'0',
+                description:'',
+
+
+                teachers: [],
+
+
+
+
+
+                // -----------Validation rules-----------
+                descriptionRules: [v=> !!v || 'Description is required', v=> (v && v.length >5)|| 'Description must be greater than 5'],
+            
+                amountRules: [v=> !!v || 'Amount is required', v => /^\d+$/.test(v) || 'Must be a number'],
+
+                teacherRules: [v=> !!v || 'Teacher is required'],
+
+                dateRules: [v=> !!v || 'Join Date is required'],
+
+
+
+
+                successAlert:false,
+                unsuccessAlert:false,
+
+                unsuccessAlertSubjectCreate:false,
+                successAlertSubjectCreate:false,
+
+                unsuccessAlertPayment:false,
+                successAlertPayment:false,
+
+            }
+        },
+
+        created(){
+            this.getTeachers()
+        },
+
+        methods: {
+
+            getTeacherAdvance(){
+                this.axios.get(this.$apiUrl+"/api/v1.0/AdvanceManagement/advances/"+this.advance.advanceID)
+                .then(Response=>{
+                    this.description=Response.data.advance.data[0].description;
+                    this.amount=Response.data.advance.data[0].advanceAmount;
+                    this.date=Response.data.advance.data[0].date;
+                    this.teacher=Response.data.advance.data[0].teacher;
+                    
+                })
+            },
+
+            teacherFilter (item, queryText) {
+                const textOne = item.firstName.toLowerCase()
+                const textTwo = item.teacherID.toLowerCase()
+                const searchText = queryText.toLowerCase()
+
+                return textOne.indexOf(searchText) > -1 || textTwo.indexOf(searchText) > -1
+
+            },
+
+            updateAdvance(){
+                if(this.$refs.form.validate()){
+                    if(this.amount !=0){
+                        this.axios.post(this.$apiUrl+"/api/v1.0/AdvanceManagement/advances",{
+                            description:this.description,
+                            advanceAmount:this.amount+".00",
+                            date:this.date,
+                            employeeID:this.teacher,
+                            handlerStaffID:"STAFF001",
+                            branchID:"BRNCH001",
+                        })
+                        .then(Response=>{
+                            if(Response.data.success == true){
+                                this.Reset();
+                                this.dialog=false,
+                                this.successAlertPayment=true
+                            }else{
+                                this.unsuccessAlertPayment=true
+                            }
+                        })
+                        .catch(error => {
+                            this.unsuccessAlertPayment=true
+                            console.log(error.data)
+                            
+                        });
+                    }else{
+                        this.unsuccessAlertPayment=true
+                    }
+                }
+            },
+
+            Reset() {
+                this.$refs.form.reset()
+            },
+
+            getTeachers(){
+                this.axios.get(this.$apiUrl+"/api/v1.0/TeacherManagement/teachers",{
+                params:{
+                    status: "Active"
+                }
+                
+                }).then(Response=>(
+                    this.teachers=Response.data.teacher.data,
+                    
+                    this.teachers.forEach(element => {
+                        element.firstName=element.title+" "+element.firstName+" "+element.lastName
+                    })
+                    
+                ))
+            },
+
+
+
+            
+           
+        }
+    }
+</script>
+            
+
+
+<style scoped>
+ fieldset{
+    border-color: rgb(225, 225, 225);
+    border-style: solid;
+    border:0.1;
+    border-style: solid;
+ }
+
+</style>

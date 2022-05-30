@@ -60,7 +60,7 @@
             return {
                 search: '',
                 headers: [
-                    { text: 'ID', sortable: false, value: 'staffID' },
+                    //{ text: 'ID', sortable: false, value: 'staffID' },
                     { text: 'NAME',align: 'start', sortable: false, value:'fname'},
                     { text: 'ROLE', sortable: true, value: 'role' },
                     { text: 'TELEPHONE NO.', sortable: false, value: 'tp' },
@@ -69,10 +69,10 @@
                 ],
 
                 staff: [
-                    {fname:'Saman', lname:'Herath', nicType:'old', nicNo:'871982289v', tp:'1231235323', email:'Saman@Saman.com', address:'no1, rathnapura', getGender:'Male', staffID:'2621', date:'2021-02-17', getBrach:'Hakmana', role:'Teacher'},
-                    {fname:'Dasun', lname:'Rathnayake', nicType:'old', nicNo:'871982289v', tp:'4321235323', email:'Dasun@Dasun.com', address:'no1, Matale', getGender:'Male', staffID:'2065', date:'2021-07-19', getBrach:'Walasmulla', role:'Admin'},
-                    {fname:'Kasun', lname:'Bandara', nicType:'old', nicNo:'871982289v', tp:'7831235323', email:'Kasun@Kasun.com', address:'no1, Kandy', getGender:'Male', date:'2021-02-19', staffID:'2071', getBrach:'Kamburupitiya', role:'Standerd user'},
-                    {fname:'Maheshi', lname:'Ranathunga', nicType:'old', nicNo:'871982289v',tp:'9931235323', email:'Maheshi@Maheshi.com', address:'no1, Jafna', getGender:'Female', date:'2021-09-12', staffID:'2024', getBrach:'Walasmulla', role:'Standerd user'},
+                    {fname:'Mr. Saman Herath', nicType:'old', nicNo:'781982289v', tp:'0778787878', email:'Saman@Saman.com', address:'no1, rathnapura', getGender:'Male', staffID:'2621', date:'2021-02-17', getBrach:'Hakmana', role:'Teacher'},
+                    {fname:'Mr. Dasun Rathnayake', nicType:'old', nicNo:'921982289v', tp:'0784545454', email:'Dasun@Dasun.com', address:'no1, Matale', getGender:'Male', staffID:'2065', date:'2021-07-19', getBrach:'Walasmulla', role:'Admin'},
+                    {fname:'Mr. Kasun Bandara', nicType:'old', nicNo:'871982289v', tp:'0771412125', email:'Kasun@Kasun.com', address:'no1, Kandy', getGender:'Male', date:'2021-02-19', staffID:'2071', getBrach:'Kamburupitiya', role:'Standerd'},
+                    {fname:'Ms. Maheshi Ranathunga', nicType:'old', nicNo:'981982289v',tp:'0701212121', email:'Maheshi@Maheshi.com', address:'no1, Jafna', getGender:'Female', date:'2021-09-12', staffID:'2024', getBrach:'Walasmulla', role:'Standerd'},
                     
                 ],
 

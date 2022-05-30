@@ -1,6 +1,6 @@
 <template>
   <v-app>
-    <app-AdminNavigation ></app-AdminNavigation>
+    <app-AdminNavigation></app-AdminNavigation>
     <v-main class="blue-grey  lighten-5">
       <!-- <v-container> -->
         <router-view></router-view>

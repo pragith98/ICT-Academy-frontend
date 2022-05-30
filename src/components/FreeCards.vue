@@ -64,10 +64,10 @@
                 ],
 
                 students: [
-                    {fname:'Saman', lname:'Herath', id:'2021'},
-                    {fname:'Dasun', lname:'Rathnayake', id:'2028'},
-                    {fname:'Kasun', lname:'Bandara', id:'2035'},
-                    {fname:'Maheshi', lname:'Ranathunga', id:'2077'},
+                    {fname:'Saman Herath', id:'2021'},
+                    {fname:'Dasun Rathnayake', id:'2028'},
+                    {fname:'Kasun Bandara', id:'2035'},
+                    {fname:'Maheshi Ranathunga', id:'2077'},
                 
                 ],
 
