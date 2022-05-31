@@ -41,14 +41,20 @@
 
             deleteSubjectCategory(){
                 this.axios.delete(this.$apiUrl+'/api/v1.0/CategoryManagement/categories/'+this.subjectCategory.categoryID)
-                    .then(Response=>{
-                        if(Response.data.success == true){
-                            this.successAlert();
-                            this.dialog=false;
-                        }else{
-                            this.failedAlert();
-                        }
-                    })
+                .then(Response=>{
+                    if(Response.data.success == true){
+                        this.successAlert();
+                        this.dialog = false
+                    }else{
+                        this.failedAlert();
+                    }
+                })
+                .catch(error => {
+                    this.failedAlert()
+                    console.log(error.data)
+                    
+                    
+                });
             },
 
             successAlert(){
