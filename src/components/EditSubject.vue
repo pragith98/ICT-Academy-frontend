@@ -2,10 +2,10 @@
   <v-row justify="end">
     <v-dialog v-model="dialog" scrollable max-width="700px" persistent>
         <template v-slot:activator="{ on, attrs }">
-            <v-btn @click="getAllCategories(),splitSubjectName(),getDetails()" class="teal" small block dark depressed  v-bind="attrs" v-on="on">Edit<v-icon dark right>mdi-pencil</v-icon></v-btn>
+            <v-btn @click="getAllCategories(),getSubject()" class="teal" small block dark depressed  v-bind="attrs" v-on="on">Edit<v-icon dark right>mdi-pencil</v-icon></v-btn>
         </template>
         <v-card max-width="700" flat>
-        <v-card-title class="heading-1 blue-grey lighten-4  blue-grey--text text--darken-2">Edit Subject</v-card-title>
+        <v-card-title class="heading-1 blue-grey lighten-4  blue-grey--text text--darken-2">Create Subject</v-card-title>
         
         <v-divider></v-divider>
         <v-card-text style="height: 800px;">
@@ -14,13 +14,13 @@
                 <fieldset class="px-5 pb-3" :hidden="hideTable">
                     <legend><v-card-text class="grey--text">Subject Details</v-card-text></legend>
                     <v-row justify="center" dense >
-                        <v-col cols="12" md="6" sm="6">
-                            <v-text-field disabled :rules="subjectRules" label="Subject" prepend-icon="mdi-format-align-center" v-model="subject"></v-text-field>
-                        </v-col>
+                            <v-col cols="12" md="6" sm="6">
+                                <v-text-field disabled :rules="subjectRules" label="Subject" prepend-icon="mdi-format-align-center" v-model="subject"></v-text-field>
+                            </v-col>
 
-                        <v-col cols="12" md="6" sm="6">
-                            <v-select :items="medium" v-model="getMedium" :rules="mediumRules" label="Medium" prepend-icon="mdi-web" required></v-select>
-                        </v-col>
+                            <v-col cols="12" md="6" sm="6">
+                                <v-select :items="medium" v-model="getMedium" :rules="mediumRules" label="Medium" prepend-icon="mdi-web" required></v-select>
+                            </v-col>
                     </v-row>
                 </fieldset>
                 <fieldset class="px-5 pb-3">
@@ -28,27 +28,22 @@
 
                     
                     <div :hidden="hideTable">
-                        <v-card-text class="grey--text">Select category from below table</v-card-text>
-                        
-                        <v-card-title><v-spacer></v-spacer><v-text-field v-model="search" append-icon="mdi-magnify" label="Search Category" single-line hide-details></v-text-field></v-card-title>
-                        <v-data-table :sort-by.sync="sortBy" :sort-desc.sync="sortDesc" :headers="headers" :items="categories" :search="search" :items-per-page="5">
-                            <template v-slot:[`item.actions`]="{ item }">
-                                <v-btn @click="category=item.categoryID, categoryName=item.categoryName" depressed color="primary" outlined>Select</v-btn>
-                                    
-                            </template>
-                        </v-data-table>
+                        <v-card-text class="grey--text">Select <strong>category</strong> from below menu</v-card-text>
                         <v-col cols="12" md="12" sm="12">
-                            <v-text-field :rules="categoryRules" label="Category" prepend-icon="mdi-candy-outline" v-model="categoryName" readonly hint="Add category from above table"></v-text-field>
-                        </v-col>    
-                        <v-divider></v-divider>
-                        <v-row>
-                            <v-card-text class="grey--text">
-                                * If you won't find the category from the table, 
+                            <v-card-text>
+                                <v-autocomplete prepend-icon="mdi-candy-outline" :items="categories" v-model="category" :filter="categoryFilter" item-text='categoryName' item-value="categoryID" label="Category"  :rules="categoryRules"></v-autocomplete>
+                            </v-card-text>
+                        </v-col>
+                       
+                        
+                        <v-card color="grey lighten-3" flat >
+                            <v-card-text>
+                                If you won't find the <strong>Category</strong>, please create new <strong>Category</strong>,
                             </v-card-text>
                             <v-col class="text-center my-3">
-                                <v-btn color="primary" depressed @click="hideTable= !hideTable" outlined>create a new category</v-btn>
+                                <v-btn color="primary" depressed @click="hideTable= !hideTable, hideActions= !hideActions" outlined>create a new category</v-btn>
                             </v-col>
-                        </v-row>
+                        </v-card>
                     </div>
                     
                     
@@ -64,7 +59,7 @@
                             </v-col>
                             <v-col cols="12" md="6" sm="6" align-self="center">
                                 <v-btn depressed color="primary" outlined @click="createCategory()">Create Category</v-btn>
-                                <v-btn outlined color="grey" class="ml-2" @click="hideTable = !hideTable">Cancel</v-btn>
+                                <v-btn outlined color="grey" class="ml-2" @click="hideTable = !hideTable, hideActions= !hideActions">Cancel</v-btn>
                             </v-col>
                         </v-row>
                     </div>
@@ -80,14 +75,16 @@
 
 
 
-
-        <v-card-actions>
-            <v-spacer></v-spacer>
-            <v-btn   @click="dialog = false" outlined color="grey">Cancel</v-btn>
-            <v-btn :disabled="!valid || !subject || !getMedium || !categoryName" color="primary" @click="updateSubject()" depressed>Save
-                <v-icon left>mdi-content-save</v-icon>
-            </v-btn>
-        </v-card-actions>
+        <div :hidden="hideActions">
+            <v-card-actions>
+                <v-spacer></v-spacer>
+                <v-btn   @click="dialog = false, Reset ()" outlined color="grey">Cancel</v-btn>
+                <v-btn :disabled="!valid || !subject || !getMedium || !category" color="primary" @click="updateSubject()" depressed>Save
+                    <v-icon left>mdi-content-save</v-icon>
+                </v-btn>
+            </v-card-actions>
+        </div>
+        
 
         <v-snackbar v-model="categoryCreated" :multi-line="multiLine">
             Category Create successfully. Now you can add it from the table.
@@ -105,11 +102,6 @@
 
 
 <script>
-
-
-
-
-
 export default {
     props:["subjectDetails"],
     data(){
@@ -123,10 +115,8 @@ export default {
 
             valid:true,
 
-            
             subject:'',
-
-            getMedium:'',
+            getMedium:'Sinhala',
             category:'',
             categoryName:'',
             newCategory:'',
@@ -135,6 +125,7 @@ export default {
             categoryCreated:false,
 
             hideTable:false,
+            hideActions:false,
 
             multiLine: true,
 
@@ -171,27 +162,42 @@ export default {
 
 
     methods:{
-        getDetails(){
-            this.getMedium=this.subjectDetails.medium;
-            this.category=this.subjectDetails.category.categoryID;
-            this.categoryName=this.subjectDetails.category.categoryName;
+        getSubject(){
+            this.axios.get(this.$apiUrl+"/api/v1.0/SubjectManagement/subjects/"+this.subjectDetails.subjectID)
+            .then(Response=>{
+                
+                this.category=Response.data.subject.data[0].category.categoryID;
+                this.categoryName=Response.data.subject.data[0].category.categoryName;
+                this.getMedium=Response.data.subject.data[0].medium;
+                this.splitSubjectName(Response.data.subject.data[0].subjectName)
+                
+            })
         },
 
-        splitSubjectName(){
-            const str=this.subjectDetails.subjectName;
+        splitSubjectName(subjectName){
+            const str=subjectName;
             const first=str.split(' (').shift();
             this.subject=first;
         },
 
+        categoryFilter (item, queryText) {
+            const textOne = item.categoryName.toLowerCase()
+            const textTwo = item.categoryID.toLowerCase()
+            const searchText = queryText.toLowerCase()
+
+            return textOne.indexOf(searchText) > -1 || textTwo.indexOf(searchText) > -1
+        },
+
+
         updateSubject(){
             if(this.$refs.form.validate()){
-                this.axios.patch(this.$apiUrl+"/api/v1.0/SubjectManagement/subjects/"+this.subjectDetails.subjectID,{
-                    subjectName:this.subject+" ("+this.getMedium+")",
-                    medium:this.getMedium,
-                    categoryID:this.category,
+
+                this.axios.patch(this.$apiUrl+'/api/v1.0/SubjectManagement/subjects/'+this.subjectDetails.subjectID,{
+                    subjectName: this.subject+" ("+this.getMedium+")",
+                    medium: this.getMedium,
+                    categoryID: this.category
                 })
                 .then(Response=>{
-                    //console.log(error.response.data)
                     
                     if(Response.data.success == true){
                         this.dialog = false
@@ -206,7 +212,9 @@ export default {
                     console.log(error.data)
                     
                 });
+
             }
+
         },
 
         getAllCategories(){
@@ -217,13 +225,13 @@ export default {
             var rule=/^[a-zA-Z\s.]+$/;
             if(!rule.test(this.newCategory)){
                 this.errormsg="Must be text only"
-            }else if(this.newCategory.length<3){
-                this.errormsg="Name must be greater than 2"
+            }else if(this.newCategory.length<4){
+                this.errormsg="Name must be greater than 3"
             }else{
                 this.errormsg=null
                 
 
-
+                
                 this.axios.post(this.$apiUrl+"/api/v1.0/CategoryManagement/categories",{
                     categoryName: this.newCategory
                 })
@@ -232,6 +240,7 @@ export default {
                         this.newCategory=null
                         this.categoryCreated=true
                         this.hideTable=false
+                        this.hideActions=false
 
                         this.getAllCategories()
                     }else{
@@ -240,6 +249,11 @@ export default {
                 }) 
                 
             }
+        },
+
+        Reset () {
+            this.$refs.form.reset()
+            window.scrollTo(0, 0)
         },
 
         successAlert(){
