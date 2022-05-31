@@ -2,7 +2,7 @@
   <v-row justify="end">
     <v-dialog v-model="dialog" scrollable max-width="700px" persistent>
         <template v-slot:activator="{ on, attrs }">
-            <v-btn class="teal" small block dark depressed  v-bind="attrs" v-on="on">Edit<v-icon dark right>mdi-pencil</v-icon></v-btn>
+            <v-btn @click="getSubjectCategory()" class="teal" small block dark depressed  v-bind="attrs" v-on="on">Edit<v-icon dark right>mdi-pencil</v-icon></v-btn>
         </template>
         <v-card max-width="700" flat>
         <v-card-title class="heading-1 blue-grey lighten-4  blue-grey--text text--darken-2">Edit Subject Category</v-card-title>
@@ -51,7 +51,7 @@ export default {
 
             valid:true,
 
-            category:this.subjectCategory.categoryName,
+            category:'',
             
 
             
@@ -64,28 +64,38 @@ export default {
         
         
     },
-    watch: {
-      menu (val) {
-        val && setTimeout(() => (this.activePicker = 'YEAR'))
-      }
-    },
 
     methods:{
+        getSubjectCategory(){
+            this.axios.get(this.$apiUrl+"/api/v1.0/CategoryManagement/categories/"+this.subjectCategory.categoryID)
+            .then(Response=>{
+                
+                this.category=Response.data.category.data[0].categoryName;
+                
+            })
+        },
+
+
         updateSubjectCategory(){
             if(this.$refs.form.validate()){
-                    
 
                 this.axios.patch(this.$apiUrl+'/api/v1.0/CategoryManagement/categories/'+this.subjectCategory.categoryID,{
                     categoryName:this.category
                 })
                 .then(Response=>{
-                    this.dialog=false
                     if(Response.data.success == true){
+                        this.dialog=false
                         this.successAlert();
                     }else{
                         this.failedAlert();
                     }
                 })
+                .catch(error => {
+                    this.failedAlert()
+                    console.log(error.data)
+                    
+                    
+                });
 
             }
 
