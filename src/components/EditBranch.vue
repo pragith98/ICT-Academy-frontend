@@ -126,14 +126,20 @@
                         noOfRooms:this.halls
                     })
                     .then(Response=>{
-                        this.Reset();
-
+                    
                         if(Response.data.success == true){
-                            this.successAlert();
+                            this.dialog = false
+                            this.successAlert()
                         }else{
-                            this.failedAlert();
+
+                            this.failedAlert()
                         }
                     })
+                    .catch(error => {
+                        this.failedAlert()
+                        console.log(error.data)
+                        
+                    });
 
                 }
 
