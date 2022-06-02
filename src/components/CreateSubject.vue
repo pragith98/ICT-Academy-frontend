@@ -78,7 +78,7 @@
         <div :hidden="hideActions">
             <v-card-actions>
                 <v-spacer></v-spacer>
-                <v-btn   @click="dialog = false" outlined color="grey">Cancel</v-btn>
+                <v-btn   @click="dialog = false, Reset ()" outlined color="grey">Cancel</v-btn>
                 <v-btn :disabled="!valid || !subject || !getMedium || !category" color="primary" @click="createSubject()" depressed>Create</v-btn>
             </v-card-actions>
         </div>
@@ -158,6 +158,7 @@ export default {
       }
     },
 
+
     methods:{
 
         categoryFilter (item, queryText) {
@@ -182,6 +183,7 @@ export default {
                     if(Response.data.success == true){
                         this.dialog = false
                         this.successAlert()
+                        this.Reset()
                     }else{
                         this.failedAlert()
                     }
@@ -217,6 +219,7 @@ export default {
                         this.newCategory=null
                         this.categoryCreated=true
                         this.hideTable=false
+                        this.hideActions=false
 
                         this.getAllCategories()
                     }else{
@@ -225,6 +228,11 @@ export default {
                 }) 
                 
             }
+        },
+
+        Reset () {
+            this.$refs.form.reset()
+            window.scrollTo(0, 0)
         },
 
         successAlert(){
