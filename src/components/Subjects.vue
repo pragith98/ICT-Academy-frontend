@@ -109,7 +109,7 @@
 
                 categoryHeaders: [
                     { text: 'NAME',align: 'start', sortable: true, value:'categoryName'},
-                    { text: '', sortable: false, value: 'actions' },
+                    { text: '', sortable: false, align: 'end', value: 'actions' },
                 ],
 
                 categories: [],
@@ -132,8 +132,10 @@
         },
 
         created(){
-            this.getAllCategories()
-            this.getAllSubjects()
+            //this.getAllCategories()
+            //this.getAllSubjects()
+            this.getSubjectsByCategory()
+            this.getClassesBySubject()
         },
 
         methods: {
@@ -142,9 +144,40 @@
                 this.axios.get(this.$apiUrl+"/api/v1.0/CategoryManagement/categories").then(Response=>(this.categories= Response.data.category.data) )
             },
 
+
             getAllSubjects(){
                 this.axios.get(this.$apiUrl+"/api/v1.0/SubjectManagement/subjects").then(Response=>(this.subjects= Response.data.subject.data) )
             },
+
+
+            getClassesBySubject(){
+                
+                this.axios.get(this.$apiUrl+"/api/v1.0/SubjectManagement/subjects").then(Response=>(
+                    this.subjects= Response.data.subject.data,
+                    this.subjects.forEach(element => {
+                        this.axios.get(this.$apiUrl+"/api/v1.0/SubjectManagement/subjects/"+element.subjectID+"/classes").then(Response=>(
+                            element.classCount=(Response.data.subject.data[0].classes).length
+                            //console.log(this.subjects)
+                        ))
+                        
+                    })
+                ))
+            },
+
+
+            getSubjectsByCategory(){
+                
+                this.axios.get(this.$apiUrl+"/api/v1.0/CategoryManagement/categories").then(Response=>(
+                    this.categories= Response.data.category.data,
+                    this.categories.forEach(element => {
+                        this.axios.get(this.$apiUrl+"/api/v1.0/CategoryManagement/categories/"+element.categoryID+"/subjects").then(Response=>(
+                            element.subjectCount=(Response.data.category.data[0].subjects).length
+                            //console.log(this.categories)
+                        ))
+                    })
+                ))
+            },
+
 
 
             // -------------------- alerts --------------------------------
