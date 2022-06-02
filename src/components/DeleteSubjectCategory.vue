@@ -4,7 +4,9 @@
             <template v-slot:activator="{ on, attrs }">
                 <v-btn class="error" fab dark x-small depressed v-bind="attrs" v-on="on"><v-icon dark>mdi-delete</v-icon></v-btn>
             </template>
-            <v-card>
+
+            <!-------------------- Delete confirmation dialog box --------------------->
+            <v-card v-if="subjectCategory.subjectCount ==0">
                 <v-container class="text-center">
                     <v-card-title>
                         <v-row justify="center">
@@ -23,6 +25,26 @@
                     </v-btn>
                 </v-card-actions>
             </v-card>
+
+
+            <!-------------------- inform can't delete --------------------->
+            <v-card v-else>
+                <v-container class="text-center">
+                    <v-card-title>
+                        <v-row justify="center">
+                            <v-icon size="100" color="orange">mdi-alert-circle-outline</v-icon>
+                        </v-row>
+                    </v-card-title>
+                    <span class="text-h6 text-center">You cannot delete<br> <strong>"{{subjectCategory.categoryName}}"</strong><br>It has been assigned subjects</span>
+                </v-container>
+                
+                <v-card-actions>
+                    <v-spacer></v-spacer>
+                    <v-btn class="ok_btn" color="grey" @click="dialog = false" outlined> OK </v-btn>
+                </v-card-actions>
+            </v-card>
+
+
         </v-dialog>
     </v-row>
 </template>
@@ -66,3 +88,9 @@
         }
     }
 </script>
+
+<style scoped>
+    .ok_btn{
+        width: 100px;
+    }
+</style>
