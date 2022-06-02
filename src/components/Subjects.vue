@@ -182,8 +182,8 @@
 
             // -------------------- alerts --------------------------------
             deleteAlert(success){
-                this.getAllCategories();
-                this.getAllSubjects()
+                this.getSubjectsByCategory()
+                this.getClassesBySubject()
                 this.successAlert = success;
             },
             faileAlert(failed){
@@ -191,7 +191,7 @@
             },
 
             subjectCreateSuccessAlert(success){
-                this.getAllSubjects()
+                this.getClassesBySubject()
                 this.successAlertSubjectCreate = success;
             },
             subjectCreateFaileAlert(failed){
@@ -199,8 +199,8 @@
             },
 
             updateSuccessAlert(success){
-                this.getAllCategories();
-                this.getAllSubjects()
+                this.getSubjectsByCategory()
+                this.getClassesBySubject()
                 this.successAlertUpdate = success;
             },
             updateFaileAlert(failed){
