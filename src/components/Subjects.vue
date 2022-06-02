@@ -191,6 +191,7 @@
             },
 
             subjectCreateSuccessAlert(success){
+                this.getSubjectsByCategory()
                 this.getClassesBySubject()
                 this.successAlertSubjectCreate = success;
             },
