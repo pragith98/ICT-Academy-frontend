@@ -5,7 +5,7 @@
             <v-btn @click="getAllCategories(),getSubject()" class="teal" small block dark depressed  v-bind="attrs" v-on="on">Edit<v-icon dark right>mdi-pencil</v-icon></v-btn>
         </template>
         <v-card max-width="700" flat>
-        <v-card-title class="heading-1 blue-grey lighten-4  blue-grey--text text--darken-2">Create Subject</v-card-title>
+        <v-card-title class="heading-1 blue-grey lighten-4  blue-grey--text text--darken-2">Edit Subject</v-card-title>
         
         <v-divider></v-divider>
         <v-card-text style="height: 800px;">
