@@ -15,7 +15,7 @@
                     <legend><v-card-text class="grey--text">Category Details</v-card-text></legend>
                     <v-row justify="center" dense >
                         <v-col cols="12" md="12" sm="12">
-                            <v-text-field :rules="categoryRules" label="Category" prepend-icon="mdi-format-align-center" v-model="category"></v-text-field>
+                            <v-text-field :rules="categoryRules" label="Category" prepend-icon="mdi-candy-outline" v-model="category"></v-text-field>
                         </v-col>
                     </v-row>
                 </fieldset>
