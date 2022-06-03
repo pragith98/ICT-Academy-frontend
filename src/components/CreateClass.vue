@@ -27,12 +27,12 @@
                             <v-divider></v-divider>
 
                             <v-stepper-step :complete="e1 > 2" step="2">
-                                Class Details
+                                Select Subject
                             </v-stepper-step>
                             <v-divider></v-divider>
 
                             <v-stepper-step :complete="e1 > 3" step="3">
-                                Select Subject
+                                Class Details
                             </v-stepper-step>
                             <v-divider></v-divider>
 
@@ -74,6 +74,50 @@
                                 </v-stepper-content>
 
                                 <v-stepper-content step="2">
+                                    <v-card class="mb-12" flat min-height="200px">
+                                        <v-row dense>
+                                            <v-card-text class="grey--text">
+                                                Please select <strong>Category</strong> and the <strong>Subject</strong> from below menu.
+                                            </v-card-text>
+                                            <v-col cols="12" md="6" sm="6">
+                                                <v-card-text>
+                                                    <v-autocomplete @click="getAllCategories(), subject.subjectID=null" @change="getSubjectsByCategory()"  prepend-icon="mdi-candy-outline" :items="categories" v-model="category" :filter="categoryFilter" item-text='categoryName' item-value="categoryID" label="Category"  :rules="subjectRules" return-object></v-autocomplete>
+                                                </v-card-text>
+                                            </v-col>
+
+                                            <v-col cols="12" md="6" sm="6">
+                                                <v-card-text>
+                                                    <v-autocomplete prepend-icon="mdi-format-align-center" :items="subjects" v-model="subject" :filter="subjectFilter" item-text='subjectName' item-value="subjectID" label="Subject" :rules="subjectRules" return-object></v-autocomplete>
+                                                </v-card-text>
+                                            </v-col>
+
+                                        </v-row>
+                                        
+                                        <v-card color="grey lighten-3" flat class="pa-5">
+                                            <v-card-text>
+                                                If you won't find the <strong>Subject</strong>, please create new <strong>Subject</strong>,
+                                            </v-card-text>
+                                            <div class="mt-5">
+                                                <app-createSubject @success="successfulCreateSubjectAlert($event)" @failed="unsuccessfulCreateSubjectAlert($event)"></app-createSubject>
+                                            </div>
+                                        </v-card>
+                                        
+                                        
+                                    </v-card>
+                                    
+                                    <v-card-actions>
+                                        <v-spacer></v-spacer>
+                                        <v-btn outlined color="grey" @click="e1=1">
+                                            <v-icon >mdi-chevron-left</v-icon>
+                                            Back
+                                        </v-btn>
+                                        <v-btn color="primary" @click="e1=3, createClassName()" depressed :disabled="!valid || !subject.subjectID || !category">Next
+                                            <v-icon>mdi-chevron-right</v-icon>
+                                        </v-btn>
+                                    </v-card-actions>
+                                </v-stepper-content>
+
+                                <v-stepper-content step="3">
                                     <v-card class="mb-12" flat min-height="250px">
                                         <v-row dense>
 
@@ -124,55 +168,11 @@
                                     </v-card>
                                     <v-card-actions>
                                         <v-spacer></v-spacer>
-                                        <v-btn outlined color="grey" @click="e1=1">
-                                            <v-icon >mdi-chevron-left</v-icon>
-                                            Back
-                                        </v-btn>
-                                        <v-btn color="primary" @click="e1=3" depressed :disabled="!valid || !getFeeType || !fee || !getLocation || !getDay || !startTime || !endTime || !getGrade">Next
-                                            <v-icon>mdi-chevron-right</v-icon>
-                                        </v-btn>
-                                    </v-card-actions>
-                                </v-stepper-content>
-
-                                <v-stepper-content step="3">
-                                    <v-card class="mb-12" flat min-height="200px">
-                                        <v-row dense>
-                                            <v-card-text class="grey--text">
-                                                Please select <strong>Category</strong> and the <strong>Subject</strong> from below menu.
-                                            </v-card-text>
-                                            <v-col cols="12" md="6" sm="6">
-                                                <v-card-text>
-                                                    <v-autocomplete @click="getAllCategories()" @change="getSubjectsByCategory()"  prepend-icon="mdi-candy-outline" :items="categories" v-model="category" :filter="categoryFilter" item-text='categoryName' item-value="categoryID" label="Category"  :rules="subjectRules" return-object></v-autocomplete>
-                                                </v-card-text>
-                                            </v-col>
-
-                                            <v-col cols="12" md="6" sm="6">
-                                                <v-card-text>
-                                                    <v-autocomplete prepend-icon="mdi-format-align-center" :items="subjects" v-model="subject" :filter="subjectFilter" item-text='subjectName' item-value="subjectID" label="Subject" :rules="subjectRules" return-object></v-autocomplete>
-                                                </v-card-text>
-                                            </v-col>
-
-                                        </v-row>
-                                        
-                                        <v-card color="grey lighten-3" flat class="pa-5">
-                                            <v-card-text>
-                                                If you won't find the <strong>Subject</strong>, please create new <strong>Subject</strong>,
-                                            </v-card-text>
-                                            <div class="mt-5">
-                                                <app-createSubject @success="successfulCreateSubjectAlert($event)" @failed="unsuccessfulCreateSubjectAlert($event)"></app-createSubject>
-                                            </div>
-                                        </v-card>
-                                        
-                                        
-                                    </v-card>
-                                    
-                                    <v-card-actions>
-                                        <v-spacer></v-spacer>
                                         <v-btn outlined color="grey" @click="e1=2">
                                             <v-icon >mdi-chevron-left</v-icon>
                                             Back
                                         </v-btn>
-                                        <v-btn color="primary" @click="e1=4, createClassName()" depressed :disabled="!valid || !subject">Next
+                                        <v-btn color="primary" @click="e1=4" depressed :disabled="!valid || !getFeeType || !fee || !getLocation || !getDay || !startTime || !endTime || !getGrade">Next
                                             <v-icon>mdi-chevron-right</v-icon>
                                         </v-btn>
                                     </v-card-actions>
@@ -271,11 +271,11 @@
 
                 teacher:null,
                 subject:[{
-                    subjectID:'', subjectName:''
+                    subjectID:null, subjectName:null
                 }],
 
                 category:[{
-                    categoryID:'', categoryName:''
+                    categoryID:null, categoryName:null
                 }],
                 
 
