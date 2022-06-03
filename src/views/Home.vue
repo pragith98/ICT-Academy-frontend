@@ -105,7 +105,7 @@
                 this.axios.get(this.$apiUrl+"/api/v1.0/ClassManagement/classes",{
                     params:{
                         status: "Active",
-                        day:"Sunday"
+                        //day:"Sunday"
                     }
                 }).then(Response=>(this.classes= Response.data.class.data))
             },
