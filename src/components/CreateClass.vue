@@ -10,18 +10,8 @@
 
             <!----------------------------- Alerts ---------------------------------->
 
-            <v-snackbar :timeout="3000" v-model="unsuccessAlert" color="red"  bottom ><v-icon left>mdi-alert-outline</v-icon> Staff delete <strong>failed</strong> </v-snackbar>
-            <v-snackbar :timeout="3000" v-model="successAlert" color="green"  bottom><v-icon left>mdi-check</v-icon>Staff delete <strong>successful</strong> </v-snackbar>
-            
-            <v-snackbar v-model="successfulCreateSubject" :multi-line="multiLine">
-                Subject Create successfully. Now you can add it from the <strong>Subject</strong> menu.
-                <template v-slot:action="{ attrs }">
-                    <v-btn color="red" text v-bind="attrs" @click="successfulCreateSubject = false">Close</v-btn>
-                </template>
-            </v-snackbar>
-
-            <v-snackbar :timeout="3000" v-model="unsuccessfulCreateSubject" color="red"  bottom ><v-icon left>mdi-alert-outline</v-icon> Subject Create <strong>failed</strong> </v-snackbar>
-            
+            <v-snackbar :timeout="3000" v-model="unsuccessfulCreateClass" color="red"  bottom ><v-icon left>mdi-alert-outline</v-icon> Class create <strong>failed</strong> </v-snackbar>
+           
             <!----------------------------- Alerts ---------------------------------->
  
 
@@ -32,12 +22,12 @@
                     <v-stepper v-model="e1" flat alt-labels>
                         <v-stepper-header style="box-shadow:0px 0px 0px 0px" class="px-15">
                             <v-stepper-step :complete="e1 > 1" step="1">
-                                Class Details
+                                Select Teacher
                             </v-stepper-step>
                             <v-divider></v-divider>
 
                             <v-stepper-step :complete="e1 > 2" step="2">
-                                Select Teacher
+                                Class Details
                             </v-stepper-step>
                             <v-divider></v-divider>
 
@@ -54,9 +44,38 @@
                         <v-stepper-items>
                             <v-form ref="form" v-model="valid" lazy-validation>
                                 <v-stepper-content step="1">
+                                    <v-card class="mb-12" flat min-height="200px">
+                                        <v-row dense>
+                                            <v-card-text class="grey--text">
+                                                Please select <strong>Teacher</strong> from below menu.
+                                            </v-card-text>
+                                            <v-col cols="12" md="12" sm="12">
+                                                <v-card-text>
+                                                    <v-autocomplete :items="teachers" v-model="teacher" :filter="teacherFilter" item-text="firstName" item-value="teacherID" label="Teacher" prepend-icon="mdi-account" :rules="teacherRules"></v-autocomplete>
+                                                </v-card-text>
+                                            </v-col>
+                                            <v-col cols="12" md="12" sm="12" align-self="center">
+                                                <v-card-text class="grey--text">
+                                                    * Use Name or ID to search for a teacher 
+                                                </v-card-text>
+                                            </v-col>
+
+                                        </v-row>
+                                        
+                                    </v-card>
+                                    <v-card-actions>
+                                        <v-spacer></v-spacer>
+                                        <v-btn outlined color="grey" @click="Reset(),scrollToTop()">Cancel</v-btn>
+                                        
+                                        <v-btn color="primary" @click="e1=2" depressed :disabled="!valid || !teacher">Next
+                                            <v-icon>mdi-chevron-right</v-icon>
+                                        </v-btn>
+                                    </v-card-actions>
+                                </v-stepper-content>
+
+                                <v-stepper-content step="2">
                                     <v-card class="mb-12" flat min-height="250px">
                                         <v-row dense>
-                                            
 
                                             <v-col cols="12" md="12" sm="12">
                                                 <v-select :items="grade" :rules="gradeRules" label="Grade" prepend-icon="mdi-card-bulleted" v-model="getGrade"></v-select>
@@ -105,43 +124,11 @@
                                     </v-card>
                                     <v-card-actions>
                                         <v-spacer></v-spacer>
-                                        <v-btn outlined color="grey" @click="Reset(),scrollToTop()">Cancel</v-btn>
-                                        <!-- <v-btn color="primary" @click="e1=2" depressed :disabled="!valid || !getFeeType || !fee || !getLocation || !getDay || !startTime || !endTime || !getGrade">Next
-                                            <v-icon>mdi-chevron-right</v-icon>
-                                        </v-btn> -->
-                                        <v-btn color="primary" @click="e1=2" depressed >Next
-                                            <v-icon>mdi-chevron-right</v-icon>
-                                        </v-btn>
-                                    </v-card-actions>
-                                </v-stepper-content>
-
-                                <v-stepper-content step="2">
-                                    <v-card class="mb-12" flat min-height="200px">
-                                        <v-row dense>
-                                            <v-card-text class="grey--text">
-                                                Please select <strong>Teacher</strong> from below menu.
-                                            </v-card-text>
-                                            <v-col cols="12" md="6" sm="6">
-                                                <v-card-text>
-                                                    <v-autocomplete :items="teachers" v-model="teacher" :filter="teacherFilter" item-text="firstName" item-value="teacherID" label="Teacher" prepend-icon="mdi-account" :rules="teacherRules"></v-autocomplete>
-                                                </v-card-text>
-                                            </v-col>
-                                            <v-col cols="12" md="6" sm="6" align-self="center">
-                                                <v-card-text class="grey--text">
-                                                    * Use Name or ID to search for a teacher 
-                                                </v-card-text>
-                                            </v-col>
-
-                                        </v-row>
-                                        
-                                    </v-card>
-                                    <v-card-actions>
-                                        <v-spacer></v-spacer>
                                         <v-btn outlined color="grey" @click="e1=1">
                                             <v-icon >mdi-chevron-left</v-icon>
                                             Back
                                         </v-btn>
-                                        <v-btn color="primary" @click="e1=3" depressed :disabled="!valid || !teacher">Next
+                                        <v-btn color="primary" @click="e1=3" depressed :disabled="!valid || !getFeeType || !fee || !getLocation || !getDay || !startTime || !endTime || !getGrade">Next
                                             <v-icon>mdi-chevron-right</v-icon>
                                         </v-btn>
                                     </v-card-actions>
@@ -155,13 +142,13 @@
                                             </v-card-text>
                                             <v-col cols="12" md="6" sm="6">
                                                 <v-card-text>
-                                                    <v-autocomplete prepend-icon="mdi-format-align-center" :items="subjects" v-model="subjectName" :filter="subjectFilter" item-text='subjectName' item-value="subjectID" label="Category"  :rules="subjectRules"></v-autocomplete>
+                                                    <v-autocomplete @click="getAllCategories()" @change="getSubjectsByCategory()"  prepend-icon="mdi-candy-outline" :items="categories" v-model="category" :filter="categoryFilter" item-text='categoryName' item-value="categoryID" label="Category"  :rules="subjectRules" return-object></v-autocomplete>
                                                 </v-card-text>
                                             </v-col>
 
                                             <v-col cols="12" md="6" sm="6">
                                                 <v-card-text>
-                                                    <v-autocomplete prepend-icon="mdi-format-align-center" :items="subjects" v-model="subjectName" :filter="subjectFilter" item-text='subjectName' item-value="subjectID" label="Subject" :rules="subjectRules"></v-autocomplete>
+                                                    <v-autocomplete prepend-icon="mdi-format-align-center" :items="subjects" v-model="subject" :filter="subjectFilter" item-text='subjectName' item-value="subjectID" label="Subject" :rules="subjectRules" return-object></v-autocomplete>
                                                 </v-card-text>
                                             </v-col>
 
@@ -185,7 +172,7 @@
                                             <v-icon >mdi-chevron-left</v-icon>
                                             Back
                                         </v-btn>
-                                        <v-btn color="primary" @click="e1=4, createClassName()" depressed :disabled="!valid || !subjectName">Next
+                                        <v-btn color="primary" @click="e1=4, createClassName()" depressed :disabled="!valid || !subject">Next
                                             <v-icon>mdi-chevron-right</v-icon>
                                         </v-btn>
                                     </v-card-actions>
@@ -198,7 +185,7 @@
                                         </v-col>
 
 
-                                        <v-btn x-large color="primary" depressed @click="submit()">Create Class
+                                        <v-btn x-large color="primary" depressed @click="createClass()">Create Class
                                             <v-icon right>mdi-home-plus</v-icon>
                                         </v-btn>
                                         <br>
@@ -236,7 +223,7 @@
                     
                     
                     <v-card-actions style="justify-content: center">
-                        <v-btn color="success" depressed @click="dialog = false, Reset(), e1=1" block >Ok</v-btn>
+                        <v-btn color="success" depressed @click="dialog = false" block >Ok</v-btn>
                     </v-card-actions>
                 </v-card>
             </v-dialog>
@@ -283,19 +270,17 @@
                 endTime: null,
 
                 teacher:null,
-                subject:null,
-                subjectName:null,
+                subject:[{
+                    subjectID:'', subjectName:''
+                }],
 
-                subjectSearch: '',
-                subjectHeaders: [
-                    {text: 'NAME',align: 'start', sortable: true, value:'subjectName'},
-                    { text: 'MEDIUM',sortable: true, value: 'medium', filterable:false},
-                    { text: 'CATEGORY', sortable: true, value: 'category.categoryName' },
-                    { text: '', sortable: false, value: 'actions' },
-                ],
-                subjects: [],
+                category:[{
+                    categoryID:'', categoryName:''
+                }],
+                
 
-                teachers:[],
+                
+                
 
                 
 
@@ -328,6 +313,12 @@
 
                 // -----------dropdown list-----------
                 location:[],
+                
+                subjects: [],
+
+                categories:[],
+
+                teachers:[],
 
                 day:['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'],
 
@@ -337,36 +328,37 @@
 
 
 
-                successAlert:false,
-                unsuccessAlert:false,
+                
 
                 multiLine: true,
 
-                successfulCreateSubject:false,
-                unsuccessfulCreateSubject:false,
+                
+                unsuccessfulCreateClass:false,
             }
         },
 
         created(){
             this.getClassHall()
             this.getTeachers()
-            this.getAllSubjects()
+            this.getAllCategories()
         },
 
         methods: {
             createClassName(){
-                this.className = this.subjectName+"/"+this.getGrade+"/"+this.getDay+"/"+this.startTime;
+                this.className = this.subject.subjectName+"/Grd"+this.getGrade+"/"+this.getDay+"/"+this.startTime;
             },
 
-            getAllSubjects(){
-                this.axios.get(this.$apiUrl+"/api/v1.0/SubjectManagement/subjects").then(Response=>(
-                    this.subjects= Response.data.subject.data,
-
-                    this.subjects.forEach(element => {
-                        element.subjectName=element.subjectName+"  |  "+element.category.categoryName
-                    })
-                    
+            getSubjectsByCategory(){
+                this.axios.get(this.$apiUrl+"/api/v1.0/CategoryManagement/categories/"+this.category.categoryID+"/subjects").then(Response=>(
+                    this.subjects= Response.data.category.data[0].subjects
                 ))
+            },
+
+            getAllCategories(){
+                this.axios.get(this.$apiUrl+"/api/v1.0/CategoryManagement/categories").then(Response=>(
+                    this.categories= Response.data.category.data
+                ))
+                
             },
 
             getClassHall(){
@@ -421,27 +413,68 @@
                 return textOne.indexOf(searchText) > -1 || textTwo.indexOf(searchText) > -1
             },
 
-            submit(){
-                console.log(this.startTime)
-                // console.log(this.teacher);
-                // this.dialog= !this.dialog
+            categoryFilter (item, queryText) {
+                const textOne = item.categoryName.toLowerCase()
+                const textTwo = item.categoryID.toLowerCase()
+                const searchText = queryText.toLowerCase()
+
+                return textOne.indexOf(searchText) > -1 || textTwo.indexOf(searchText) > -1
+            },
+
+
+            createClass(){
+                if(this.$refs.form.validate()){
+                    this.axios.post(this.$apiUrl+"/api/v1.0/ClassManagement/classes",{
+                        className: this.className,
+                        day: this.getDay,
+                        startTime: this.startTime,
+                        endTime : this.endTime,
+                        grade : this.getGrade,
+                        room: this.getLocation,
+                        classFee: this.fee,
+                        feeType: this.getFeeType,
+                        status: "Active",
+                        subjectID: this.subject.subjectID,
+                        categoryID: this.category.categoryID,
+                        teacherID: this.teacher,
+                        branchID: "BRNCH001",
+                        
+                        
+                    })
+                    .then(Response=>{
+                        
+                        if(Response.data.success == true){
+                            this.dialog = true
+                            this.e1=1
+                            this.Reset()
+                        }else{
+                            this.unsuccessfulCreateClass = true;
+                        }
+                    })
+                    .catch(error => {
+                        this.unsuccessfulCreateClass = true;
+                        console.log(error.data)
+                        
+                    });
+                    console.log(
+                        this.className,
+                        this.getDay,
+                        this.startTime,
+                        this.endTime,
+                        this.getGrade,
+                        this.getLocation,
+                        this.fee,
+                        this.getFeeType,
+                        this.subject.subjectID,
+                        this.category.categoryID,
+                        this.teacher,
+                    )
+                }
             },
 
 
 
-            // ----------------alerts--------------------------
-            deleteAlert(success){
-                this.successAlert = success;
-            },
-            faileAlert(failed){
-                this.unsuccessAlert = failed;
-            },
-            successfulCreateSubjectAlert(success){
-                this.successfulCreateSubject = success;
-            },
-            unsuccessfulCreateSubjectAlert(failed){
-                this.unsuccessfulCreateSubject = failed;
-            },
+            
 
 
         }
