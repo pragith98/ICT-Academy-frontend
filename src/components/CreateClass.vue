@@ -111,7 +111,7 @@
                                             <v-icon >mdi-chevron-left</v-icon>
                                             Back
                                         </v-btn>
-                                        <v-btn color="primary" @click="e1=3, createClassName()" depressed :disabled="!valid || !subject.subjectID || !category">Next
+                                        <v-btn color="primary" @click="e1=3" depressed :disabled="!valid || !subject.subjectID || !category">Next
                                             <v-icon>mdi-chevron-right</v-icon>
                                         </v-btn>
                                     </v-card-actions>
@@ -172,7 +172,7 @@
                                             <v-icon >mdi-chevron-left</v-icon>
                                             Back
                                         </v-btn>
-                                        <v-btn color="primary" @click="e1=4" depressed :disabled="!valid || !getFeeType || !fee || !getLocation || !getDay || !startTime || !endTime || !getGrade">Next
+                                        <v-btn color="primary" @click="e1=4, createClassName()" depressed :disabled="!valid || !getFeeType || !fee || !getLocation || !getDay || !startTime || !endTime || !getGrade">Next
                                             <v-icon>mdi-chevron-right</v-icon>
                                         </v-btn>
                                     </v-card-actions>
