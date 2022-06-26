@@ -456,19 +456,19 @@
                         console.log(error.data)
                         
                     });
-                    console.log(
-                        this.className,
-                        this.getDay,
-                        this.startTime,
-                        this.endTime,
-                        this.getGrade,
-                        this.getLocation,
-                        this.fee,
-                        this.getFeeType,
-                        this.subject.subjectID,
-                        this.category.categoryID,
-                        this.teacher,
-                    )
+                    // console.log(
+                    //     this.className,
+                    //     this.getDay,
+                    //     this.startTime,
+                    //     this.endTime,
+                    //     this.getGrade,
+                    //     this.getLocation,
+                    //     this.fee,
+                    //     this.getFeeType,
+                    //     this.subject.subjectID,
+                    //     this.category.categoryID,
+                    //     this.teacher,
+                    // )
                 }
             },
 
