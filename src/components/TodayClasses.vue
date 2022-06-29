@@ -43,7 +43,8 @@
 
 
                                 <v-card-actions  class="pb-5">
-                                    <app-MarkAttendanceDailyFee class="ml-1" :classDetails='classes'></app-MarkAttendanceDailyFee>
+                                    <!-- <app-MarkAttendanceDailyFee class="ml-1" :classDetails='classes'></app-MarkAttendanceDailyFee> -->
+                                    <v-btn :to="{ path: '/TodayClasses/MarkAttendanceDailyFee/'+classes.id}" color="primary" dark outlined>Mark Attendance</v-btn>
                                     <v-spacer></v-spacer>
                                     <app-CancelClass class="mr-1" :classDetails='classes'  @success="cancelAlert($event)" @failed="faileAlert($event)"></app-CancelClass>
                                 </v-card-actions>
@@ -96,11 +97,11 @@
 
 
 <script>
-    import MarkAttendanceDailyFee from './MarkAttendanceDailyFee.vue'
+    // import MarkAttendanceDailyFee from './MarkAttendanceDailyFee.vue'
     import CancelClass from './CancelClass.vue'
     export default{
         components:{
-            'app-MarkAttendanceDailyFee':MarkAttendanceDailyFee,
+            // 'app-MarkAttendanceDailyFee':MarkAttendanceDailyFee,
             'app-CancelClass':CancelClass
         },
         
