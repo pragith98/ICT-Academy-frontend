@@ -49,7 +49,6 @@
     import PayDailyFee from './PayDailyFee.vue'
 
     export default {
-        // props:['classDetails'],
 
         components:{
             'app-PayDailyFee':PayDailyFee
