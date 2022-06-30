@@ -301,7 +301,7 @@
 
                 timeRules: [v=> !!v || 'Time is required'],
 
-                feeRules: [v=> !!v || 'Fee is required', v => /^\d{0,8}(\.\d{1,4})?$/.test(v) ||'Invalid fee' ],
+                feeRules: [v=> !!v || 'Fee is required', v => /^\d{0,8}(\.\d{1,4})?$/.test(v) ||'Invalid fee', v=> v != 0.00 ],
 
                 teacherRules: [v=> !!v || 'Teacher is required'],
 
