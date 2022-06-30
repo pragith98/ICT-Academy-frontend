@@ -17,8 +17,8 @@
                 
                 <v-card-actions>
                     <v-spacer></v-spacer>
-                    <v-btn color="grey" @click="dialog = false, failedAlert()" outlined>Cancel</v-btn>
-                    <v-btn color="error" @click="dialog = false, successAlert()" depressed>Delete
+                    <v-btn color="grey" @click="dialog = false" outlined>Cancel</v-btn>
+                    <v-btn color="error" @click="deleteClass()" depressed>Delete
                         <v-icon right>mdi-delete</v-icon>
                     </v-btn>
                 </v-card-actions>
