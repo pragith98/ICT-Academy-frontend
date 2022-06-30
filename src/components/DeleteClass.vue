@@ -11,7 +11,7 @@
                             <v-icon size="100" color="error">mdi-help-circle-outline</v-icon>
                         </v-row>
                     </v-card-title>
-                    <span class="text-h6 text-center">Do you really want to delete <br> <strong>"{{classDetails.name}}"</strong></span>
+                    <span class="text-h6 text-center">Do you really want to delete <br> <strong>"{{classDetails.className}}"</strong></span>
                 </v-container>
                 
                 
@@ -38,6 +38,25 @@
         }),
 
         methods:{
+
+            deleteClass(){
+                this.axios.delete(this.$apiUrl+'/api/v1.0/ClassManagement/classes/'+this.classDetails.classID)
+                    .then(Response=>{
+                        if(Response.data.success == true){
+                            this.dialog = false
+                            this.successAlert();
+                        }else{
+                            this.failedAlert();
+                        }
+                    })
+                    .catch(error => {
+                        this.failedAlert()
+                        console.log(error.data)
+                        
+                    });
+            },
+
+
             successAlert(){
                 this.$emit('success',true)
             },
