@@ -24,27 +24,16 @@
                     <template>
                         <div>
                             <v-data-table :headers="headers" :items="classes" :search="search">
-                                <template v-slot:item="row">
-                                    <tr>
-                                        <td>{{row.item.name}}</td>
-                                        <td>{{row.item.teacher}}</td>
-                                        <td>{{row.item.grade}}</td>
-                                        <td>{{row.item.subject}}</td>
-                                        <td>{{row.item.fee}}</td>
-                                        <td>{{row.item.startTime}} - {{row.item.endTime}}</td>
-                                        <td>
-                                            <v-chip small :color="row.item.color" dark>{{row.item.location}}</v-chip>
-                                        </td>
-                                        <td>{{row.item.day}}</td>
-                                        <td >
-                                            <app-EditClass :classDetails='row.item'></app-EditClass>
-                                        </td>
-                                        <td>
-                                            <app-DeleteClass :classDetails='row.item' @success="deleteAlert($event)" @failed="faileAlert($event)"></app-DeleteClass>
-                                        </td>
-                                    </tr>
+                                <template v-slot:[`item.actions`]="{ item }">
+                                    <v-card-actions>
+                                        <app-EditClass :classDetails='item'></app-EditClass>
+                                        <v-spacer></v-spacer>
+                                        <app-DeleteClass class="ml-1" :classDetails='item' @success="deleteAlert($event)" @failed="faileAlert($event)"></app-DeleteClass>
+                                    </v-card-actions>
+
                                 </template>
                             </v-data-table>
+                            
                         </div>
                         
                     </template>
@@ -71,28 +60,18 @@
 
                 search: '',
                 headers: [
-                    { text: 'NAME',align: 'start', sortable: false, value:'name'},
-                    { text: 'TEACHER', sortable: false, value: 'teacher' },
-                    { text: 'GRADE',sortable: true, value: 'grade' },
-                    { text: 'SUBJECT', sortable: false, value: 'subject' },
-                    { text: 'FEE', sortable: false, value: 'fee', filterable:false},
-                    { text: 'TIME', sortable: true, value: 'startTime' },
-                    { text: 'LOCATION', sortable: false, value: 'location' },
+                    { text: 'NAME',align: 'start', sortable: false, value:'className'},
+                    { text: 'TEACHER', sortable: false, value: 'teacher.teacherName' },
+                    { text: 'GRADE',sortable: true, value: 'grade', width:'8%'},
+                    { text: 'SUBJECT', sortable: false, value: 'subject.subjectName' },
+                    { text: 'FEE', sortable: false, value: 'classFee', filterable:false},
+                    { text: 'TIME', sortable: true, value: 'time' },
+                    { text: 'LOCATION', sortable: false, value: 'room' },
                     { text: 'DAY', sortable: true, value: 'day' },
-                    { text: '', sortable: false, value: 'Action' },
-                    { text: '', sortable: false, value: 'Action' },
+                    { text: '', sortable: false, value: 'actions' , align:'end'},
                 ],
 
-                classes: [
-                    {name:'Sinhala 8', teacher:'Mr.Smantha Bandara', grade:'8', subject:'Sinhala', fee:'1500.00', startTime:'08:00', endTime:'10:00', location:'Hall 1', day:'Sunday', id:'clz8473', color:'green'},
-                    {name:'Maths 8', teacher:'Mr.Kelum Saranga', grade:'8', subject:'Maths', fee:'1500.00', startTime:'08:00', endTime:'10:00', location:'Hall 3', day:'Monday', id:'clz8473', color:'red'},
-                    {name:'Science 9', teacher:'Ms.Nirosha Damayanthi', grade:'9', subject:'Science', fee:'1500.00', startTime:'08:00', endTime:'10:00', location:'Hall 2', day:'Sunday', id:'clz8473', color:'blue'},
-                    {name:'History 6', teacher:'Mr.Nimal Santha', grade:'6', subject:'History', fee:'1500.00', startTime:'08:00', endTime:'10:00', location:'Hall 1', day:'Sunday', id:'clz8473', color:'brown'},
-                    {name:'Sinhala 7', teacher:'Mr.Kusal Bandara', grade:'7', subject:'Sinhala', fee:'1500.00', startTime:'08:00', endTime:'10:00', location:'Online', day:'Sunday', id:'clz8473', color:'grey'},
-
-                    
-                    
-                ],
+                classes: [],
 
                 breadcrumbs: [
                     { text: 'Classes', disabled: false, href: '/Classes' },
@@ -104,7 +83,34 @@
             }
         },
 
+        created(){
+            this.getAllClasses()
+        },
+
         methods: {
+
+            getAllClasses(){
+                this.axios.get(this.$apiUrl+"/api/v1.0/ClassManagement/classes",{
+                params:{
+                    status: "Active"
+                }
+                
+                }).then(Response=>(
+                    this.classes=Response.data.class.data,
+
+                    this.classes.forEach(element => {
+                        element.time=element.startTime+"-"+element.endTime
+                    }),
+
+                    this.classes.forEach(element => {
+                        if(element.grade==0){
+                            element.grade="Other"
+                        }
+                    })
+                ))
+            },
+
+
             deleteAlert(success){
                 this.successAlert = success;
             },
