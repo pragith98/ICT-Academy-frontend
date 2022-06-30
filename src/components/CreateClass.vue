@@ -81,7 +81,7 @@
                                             </v-card-text>
                                             <v-col cols="12" md="6" sm="6">
                                                 <v-card-text>
-                                                    <v-autocomplete @click="getAllCategories(), subject.subjectID=null" @change="getSubjectsByCategory()"  prepend-icon="mdi-candy-outline" :items="categories" v-model="category" :filter="categoryFilter" item-text='categoryName' item-value="categoryID" label="Category"  :rules="subjectRules" return-object></v-autocomplete>
+                                                    <v-autocomplete @click="getAllCategories(), subject.subjectID=''" @change="getSubjectsByCategory()"  prepend-icon="mdi-candy-outline" :items="categories" v-model="category" :filter="categoryFilter" item-text='categoryName' item-value="categoryID" label="Category"  :rules="subjectRules" return-object></v-autocomplete>
                                                 </v-card-text>
                                             </v-col>
 
@@ -111,7 +111,7 @@
                                             <v-icon >mdi-chevron-left</v-icon>
                                             Back
                                         </v-btn>
-                                        <v-btn color="primary" @click="e1=3" depressed :disabled="!valid || !subject.subjectID || !category">Next
+                                        <v-btn color="primary" @click="e1=3" depressed :disabled="!valid || !subject || !category">Next
                                             <v-icon>mdi-chevron-right</v-icon>
                                         </v-btn>
                                     </v-card-actions>
@@ -223,7 +223,7 @@
                     
                     
                     <v-card-actions style="justify-content: center">
-                        <v-btn color="success" depressed @click="dialog = false" block >Ok</v-btn>
+                        <v-btn @click="dialog=false" depressed block color="success">Ok</v-btn>
                     </v-card-actions>
                 </v-card>
             </v-dialog>
@@ -325,6 +325,7 @@
                 feeType:['Monthly','Daily'],
 
                 grade:['1','2','3','4','5','6','7','8','9','10','11','12','13','Other'],
+                
 
 
 
@@ -431,7 +432,7 @@
                         endTime : this.endTime,
                         grade : this.getGrade,
                         room: this.getLocation,
-                        classFee: this.fee,
+                        classFee: this.fee +".00",
                         feeType: this.getFeeType,
                         status: "Active",
                         subjectID: this.subject.subjectID,
@@ -456,19 +457,7 @@
                         console.log(error.data)
                         
                     });
-                    // console.log(
-                    //     this.className,
-                    //     this.getDay,
-                    //     this.startTime,
-                    //     this.endTime,
-                    //     this.getGrade,
-                    //     this.getLocation,
-                    //     this.fee,
-                    //     this.getFeeType,
-                    //     this.subject.subjectID,
-                    //     this.category.categoryID,
-                    //     this.teacher,
-                    // )
+                    
                 }
             },
 
