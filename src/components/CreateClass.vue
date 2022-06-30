@@ -130,7 +130,7 @@
                                             </v-col>
 
                                             <v-col cols="12" md="6" sm="6">
-                                                <v-text-field v-model="fee" label="Fee" prepend-icon="mdi-cash-multiple" :rules="feeRules" Required prefix="RS." clearable></v-text-field>
+                                                <v-text-field v-model="fee" label="Fee" prepend-icon="mdi-cash-multiple" :rules="feeRules" Required prefix="RS." placeholder="0.00" clearable></v-text-field>
                                             </v-col>
 
                                             <v-col cols="12" md="6" sm="6">
