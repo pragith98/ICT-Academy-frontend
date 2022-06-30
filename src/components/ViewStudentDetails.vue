@@ -113,6 +113,14 @@
                         </template>
                     </v-col>
 
+                    <v-col cols="12" md="12" sm="12">
+                        
+                        <v-switch color="red" @change="deactiveStudent()"  inset v-model="status" label="Deactive this student"></v-switch>
+                            
+                        
+                        
+                    </v-col>
+
                 </v-row>
             </v-form>
             
@@ -143,6 +151,8 @@
 
 
 <script>
+
+
 export default {
     props:['student'],
     data(){
@@ -162,7 +172,8 @@ export default {
             getGender:'',
             getGrade:'',
             getBranch:'',
-            status:'',
+            status:null,
+            showStatus:'',
             title:'',
             
 
@@ -243,6 +254,15 @@ export default {
 
     methods:{
 
+        deactiveStudent(){
+            if(this.status == false){
+                this.showStatus = "Active"
+            }else if(this.status == true){
+                this.showStatus = "Past"
+            }
+            console.log(this.showStatus)
+        },
+
         getStudent(){
             this.axios.get(this.$apiUrl+"/api/v1.0/StudentManagement/students/"+this.student.studentID)
             .then(Response=>{
@@ -257,8 +277,15 @@ export default {
                 this.parentTp=Response.data.student.data[0].parent.parentTelNo;
                 this.parentName=Response.data.student.data[0].parent.parentName;
                 this.parent=Response.data.student.data[0].parent.parentType;
-                this.status=Response.data.student.data[0].status;
                 this.getGrade=Response.data.student.data[0].grade;
+
+                if(Response.data.student.data[0].status=="Active"){
+                    this.status=false;
+                    this.showStatus="Active"
+                }else{
+                    this.status=true;
+                    this.showStatus="Past"
+                }
 
                 
                 this.getBranchDetails(Response.data.student.data[0].branch.branchID)
@@ -305,11 +332,12 @@ export default {
                     dob:this.date,
                     joinedDate:this.joingDate,
                     branchID:this.getBranch,
-                    status: "Active",
                     parentTelNo:this.parentTp,
                     parentName:this.parentName,
                     parentType:this.parent,
                     grade:this.getGrade,
+                    
+                    status: this.showStatus,
 
 
                     
