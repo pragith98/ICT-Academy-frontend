@@ -301,7 +301,7 @@ export default {
                     address:this.address,
                     sex:this.getGender,
                     nic:this.nicNo,
-                    title:this.getTitle,
+                    title:this.title,
                     dob:this.date,
                     joinedDate:this.joingDate,
                     branchID:this.getBranch,
