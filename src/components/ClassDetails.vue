@@ -112,6 +112,7 @@
 
 
             deleteAlert(success){
+                this.getAllClasses()
                 this.successAlert = success;
             },
             faileAlert(failed){
