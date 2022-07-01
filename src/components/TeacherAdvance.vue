@@ -86,7 +86,8 @@
                                 <template v-slot:[`item.actions`]="{ item }">
                                     <v-card-actions>
                                         <app-EditPayTeacherAdvance :advance="item" @success="updateSuccessAlert($event)" @failed="updateFaileAlert($event)"></app-EditPayTeacherAdvance>
-                                        <app-DeletePayTeacherAdvance :advance="item" @success="deleteAlert($event)" @failed="FaileAlert($event)"></app-DeletePayTeacherAdvance>
+                                        <v-spacer></v-spacer>
+                                        <app-DeletePayTeacherAdvance class="ml-5" :advance="item" @success="deleteAlert($event)" @failed="FaileAlert($event)"></app-DeletePayTeacherAdvance>
                                     </v-card-actions>
                                 </template>
                             </v-data-table>
