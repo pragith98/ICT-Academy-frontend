@@ -114,11 +114,8 @@
                     </v-col>
 
                     <v-col cols="12" md="12" sm="12">
-                        
+                        <v-divider></v-divider>
                         <v-switch color="red" @change="pastStudent()"  inset v-model="status" label="Make a past student"></v-switch>
-                            
-                        
-                        
                     </v-col>
 
                 </v-row>
