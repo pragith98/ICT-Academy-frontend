@@ -96,6 +96,7 @@
                 ],
 
                 breadcrumbs: [
+                    { text: 'Attendance', disabled: false, href: '/Attendance' },
                     { text: 'Today Classes', disabled: false, href: '/Attendance/TodayClasses' },
                     { text: 'Mark Attendance', disabled: true, href: '' }
                 ],

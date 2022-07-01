@@ -43,7 +43,7 @@
 
 
                                 <v-card-actions  class="pb-5">
-                                    <v-btn :to="{ path: '/TodayClasses/MarkAttendanceDailyFee/'+classes.id}" color="primary" dark outlined>Mark Attendance</v-btn>
+                                    <v-btn :to="{ path: '/Attendance/TodayClasses/MarkAttendanceDailyFee/'+classes.id}" color="primary" dark outlined>Mark Attendance</v-btn>
                                     <v-spacer></v-spacer>
                                     <app-CancelClass class="mr-1" :classDetails='classes'  @success="cancelAlert($event)" @failed="faileAlert($event)"></app-CancelClass>
                                 </v-card-actions>
