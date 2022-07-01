@@ -41,6 +41,7 @@ const routes = [
   { path:'/Teachers/DeactivatedTeacherDetails', name:'DeactivatedTeacherDetails', component:()=> import('../components/DeactivatedTeacherDetails.vue')},
   { path:'/Staff/StaffRegistration', name:'StaffRegistration', component:()=> import('../components/StaffRegistration.vue')},
   { path:'/Staff/StaffDetails', name:'StaffDetails', component:()=> import('../components/StaffDetails.vue')},
+  { path:'/Staff/DeactivatedStaffDetails', name:'DeactivatedStaffDetails', component:()=> import('../components/DeactivatedStaffDetails.vue')},
   { path:'/Users/SystemUsers', name:'SystemUsers', component:()=> import('../components/SystemUsers.vue')},
   { path:'/Classes/CreateClass', name:'CreateClass', component:()=> import('../components/CreateClass.vue')},
   { path:'/Classes/Subjects', name:'Subjects', component:()=> import('../components/Subjects.vue')},
