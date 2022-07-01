@@ -2,7 +2,7 @@
   <v-row >
     <v-dialog v-model="dialog" scrollable max-width="500px" persistent>
         <template v-slot:activator="{ on, attrs }">
-            <v-btn small @click="getTeacherAdvance()" class="teal" dark depressed  v-bind="attrs" v-on="on">Edit<v-icon dark right>mdi-pencil</v-icon></v-btn>
+            <v-btn small @click="getStaffAdvance()" class="teal" dark depressed  v-bind="attrs" v-on="on">Edit<v-icon dark right>mdi-pencil</v-icon></v-btn>
         </template>
 
         <v-form ref="form" v-model="valid" lazy-validation>
@@ -14,7 +14,7 @@
                 <v-card-text style="height: 800px;">
 
                     <v-col cols="12" md="12" sm="12">
-                        <v-autocomplete :items="teachers" v-model="teacher" :filter="teacherFilter" item-text="firstName" item-value="teacherID" label="Teacher"  :rules="teacherRules"></v-autocomplete>
+                        <v-autocomplete :items="staffs" v-model="staff" :filter="staffFilter" item-text="firstName" item-value="staffID" label="Staff member"  :rules="staffRules"></v-autocomplete>
                     </v-col>
                     
                     <v-col cols="12" md="12" sm="12">
@@ -73,7 +73,7 @@
                 dialog:false,
 
                 valid:true,
-                teacher:null,
+                staff:null,
 
                 dateActivePicker: null,
                 date: '',
@@ -83,7 +83,7 @@
                 description:'',
 
 
-                teachers: [],
+                staffs: [],
 
 
 
@@ -94,7 +94,7 @@
             
                 amountRules: [v=> !!v || 'Amount is required', v => /^\d+$/.test(v) || 'Must be a number'],
 
-                teacherRules: [v=> !!v || 'Teacher is required'],
+                staffRules: [v=> !!v || 'Staff member is required'],
 
                 dateRules: [v=> !!v || 'Join Date is required'],
 
@@ -104,17 +104,17 @@
         },
 
         created(){
-            this.getTeachers()
+            this.getStaffs()
         },
 
         methods: {
 
-            getTeacherAdvance(){
+            getStaffAdvance(){
                 this.axios.get(this.$apiUrl+"/api/v1.0/AdvanceManagement/advances/"+this.advance.advanceID)
                 .then(Response=>{
                     this.description=Response.data.advance.data[0].description;
                     this.date=Response.data.advance.data[0].date;
-                    this.teacher=Response.data.advance.data[0].teacher;
+                    this.staff=Response.data.advance.data[0].staff;
 
                     const fullAmount=(Response.data.advance.data[0].advanceAmount).split('.');
                     this.amount=fullAmount[0]
@@ -124,9 +124,9 @@
                 })
             },
 
-            teacherFilter (item, queryText) {
+            staffFilter (item, queryText) {
                 const textOne = item.firstName.toLowerCase()
-                const textTwo = item.teacherID.toLowerCase()
+                const textTwo = item.staffID.toLowerCase()
                 const searchText = queryText.toLowerCase()
 
                 return textOne.indexOf(searchText) > -1 || textTwo.indexOf(searchText) > -1
@@ -139,7 +139,7 @@
                         description:this.description,
                         advanceAmount:this.amount+".00",
                         date:this.date,
-                        employeeID:this.teacher.teacherID,
+                        employeeID:this.staff.staffID,
                         handlerStaffID:"STAFF001",
                         branchID:"BRNCH001",
                     })
@@ -165,16 +165,16 @@
                 this.$refs.form.reset()
             },
 
-            getTeachers(){
-                this.axios.get(this.$apiUrl+"/api/v1.0/TeacherManagement/teachers",{
+            getStaffs(){
+                this.axios.get(this.$apiUrl+"/api/v1.0/StaffManagement/staffs",{
                 params:{
                     status: "Active"
                 }
                 
                 }).then(Response=>(
-                    this.teachers=Response.data.teacher.data,
+                    this.staffs=Response.data.staff.data,
                     
-                    this.teachers.forEach(element => {
+                    this.staffs.forEach(element => {
                         element.firstName=element.title+" "+element.firstName+" "+element.lastName
                     })
                     
