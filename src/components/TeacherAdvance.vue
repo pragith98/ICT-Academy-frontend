@@ -16,7 +16,8 @@
             <v-snackbar :timeout="3000" v-model="unsuccessAlertPayment" color="red"  bottom ><v-icon left>mdi-alert-outline</v-icon>Payment <strong>failed</strong> </v-snackbar>
             <v-snackbar :timeout="3000" v-model="successAlertPayment" color="green"  bottom><v-icon left>mdi-check</v-icon>Payment <strong>successful</strong> </v-snackbar>
             
-            
+            <v-snackbar :timeout="3000" v-model="unsuccessAlertUpdate" color="red"  bottom ><v-icon left>mdi-alert-outline</v-icon>Payment update <strong>failed</strong> </v-snackbar>
+            <v-snackbar :timeout="3000" v-model="successAlertUpdate" color="green"  bottom><v-icon left>mdi-check</v-icon>Payment update <strong>successful</strong> </v-snackbar>
             <!----------------------------- Alerts ---------------------------------->
             
 
@@ -84,7 +85,7 @@
                             <v-data-table :headers="headers" :items="teachersAdvance" :search="Search" :items-per-page="5">
                                 <template v-slot:[`item.actions`]="{ item }">
                                     <v-card-actions>
-                                        <app-EditPayAdvance :advance="item"></app-EditPayAdvance>
+                                        <app-EditPayAdvance :advance="item" @success="updateSuccessAlert($event)" @failed="updateFaileAlert($event)"></app-EditPayAdvance>
                                     </v-card-actions>
                                 </template>
                             </v-data-table>
@@ -197,8 +198,8 @@
                 successAlert:false,
                 unsuccessAlert:false,
 
-                unsuccessAlertSubjectCreate:false,
-                successAlertSubjectCreate:false,
+                unsuccessAlertUpdate:false,
+                successAlertUpdate:false,
 
                 unsuccessAlertPayment:false,
                 successAlertPayment:false,
@@ -294,16 +295,11 @@
             faileAlert(failed){
                 this.unsuccessAlert = failed;
             },
-
-            subjectCreateSuccessAlert(success){
-                this.successAlertSubjectCreate = success;
-            },
-            subjectCreateFaileAlert(failed){
-                this.unsuccessAlertSubjectCreate = failed;
-            },
+            
 
             updateSuccessAlert(success){
                 this.successAlertUpdate = success;
+                this.getTeacherAdvance()
             },
             updateFaileAlert(failed){
                 this.unsuccessAlertUpdate = failed;

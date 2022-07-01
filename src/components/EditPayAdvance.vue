@@ -4,56 +4,59 @@
         <template v-slot:activator="{ on, attrs }">
             <v-btn small @click="getTeacherAdvance()" class="teal" dark depressed  v-bind="attrs" v-on="on">Edit<v-icon dark right>mdi-pencil</v-icon></v-btn>
         </template>
-        <v-card max-width="700" flat>
-        <v-card-title class="heading-1 blue-grey lighten-4  blue-grey--text text--darken-2">Edit Pay Advance</v-card-title>
-        
-        <v-divider></v-divider>
-        <v-card-text style="height: 800px;">
 
-            <v-col cols="12" md="12" sm="12">
-                <v-autocomplete :items="teachers" v-model="teacher" :filter="teacherFilter" item-text="firstName" item-value="teacherID" label="Teacher"  :rules="teacherRules"></v-autocomplete>
-            </v-col>
-            
-            <v-col cols="12" md="12" sm="12">
-                <v-text-field v-model="amount" :rules="amountRules" clearable  label="Amount" prefix="RS."></v-text-field>
-            </v-col>
+        <v-form ref="form" v-model="valid" lazy-validation>
+            <v-card max-width="700" flat>
+                <v-card-title class="heading-1 blue-grey lighten-4  blue-grey--text text--darken-2">Edit Pay Advance</v-card-title>
+                
+                <v-divider></v-divider>
+                
+                <v-card-text style="height: 800px;">
 
-            <v-col cols="12" md="12" sm="12">
-                <v-textarea v-model="description" :rules="descriptionRules" rows="2"  label="Description"></v-textarea>
-            </v-col>
+                    <v-col cols="12" md="12" sm="12">
+                        <v-autocomplete :items="teachers" v-model="teacher" :filter="teacherFilter" item-text="firstName" item-value="teacherID" label="Teacher"  :rules="teacherRules"></v-autocomplete>
+                    </v-col>
+                    
+                    <v-col cols="12" md="12" sm="12">
+                        <v-text-field v-model="amount" :rules="amountRules" clearable  label="Amount" prefix="RS."></v-text-field>
+                    </v-col>
 
-            <v-col cols="12" md="12" sm="12">
-                <template>
-                    <div >
-                        <v-menu ref="menud" v-model="dateMenu" :close-on-content-click="true" transition="scale-transition" offset-y min-width="auto">
-                            <template v-slot:activator="{ on, attrs }">
-                                <v-text-field v-model="date" label="Date" readonly v-bind="attrs" v-on="on" :rules="dateRules"></v-text-field>
-                            </template>
-                            <v-date-picker v-model="date" :active-picker.sync="dateActivePicker" :max="(new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().substr(0, 10)" min="1950-01-01"></v-date-picker>
-                        </v-menu>
-                    </div>
-                </template>
-            </v-col>
-            
-          
+                    <v-col cols="12" md="12" sm="12">
+                        <v-textarea v-model="description" :rules="descriptionRules" rows="2"  label="Description"></v-textarea>
+                    </v-col>
 
-        </v-card-text>
-        <v-divider></v-divider>
+                    <v-col cols="12" md="12" sm="12">
+                        <template>
+                            <div >
+                                <v-menu ref="menud" v-model="dateMenu" :close-on-content-click="true" transition="scale-transition" offset-y min-width="auto">
+                                    <template v-slot:activator="{ on, attrs }">
+                                        <v-text-field v-model="date" label="Date" readonly v-bind="attrs" v-on="on" :rules="dateRules"></v-text-field>
+                                    </template>
+                                    <v-date-picker v-model="date" :active-picker.sync="dateActivePicker" :max="(new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().substr(0, 10)" min="1950-01-01"></v-date-picker>
+                                </v-menu>
+                            </div>
+                        </template>
+                    </v-col>
+                    
+                
+
+                </v-card-text>
+                <v-divider></v-divider>
 
 
 
 
-        <v-card-actions>
-            <v-spacer></v-spacer>
-            <v-btn   @click="dialog=false" outlined color="grey" >Cancel</v-btn>
-            <v-btn :disabled="!valid " color="primary" @click="updateAdvance()" depressed >Save
-                <v-icon left>mdi-content-save</v-icon>
-            </v-btn>
-        </v-card-actions>
+                <v-card-actions>
+                    <v-spacer></v-spacer>
+                    <v-btn   @click="dialog=false" outlined color="grey" >Cancel</v-btn>
+                    <v-btn :disabled="!valid " color="primary" @click="updateAdvance()" depressed >Save
+                        <v-icon left>mdi-content-save</v-icon>
+                    </v-btn>
+                </v-card-actions>
 
-        <!-- <v-snackbar v-model="hasSaved" :timeout="2000" absolute bottom left color="green">Teacher details has been updated</v-snackbar> -->
-
-      </v-card>
+                
+            </v-card>
+        </v-form>
     </v-dialog>
   </v-row>
 </template>
@@ -97,16 +100,6 @@
 
 
 
-
-                successAlert:false,
-                unsuccessAlert:false,
-
-                unsuccessAlertSubjectCreate:false,
-                successAlertSubjectCreate:false,
-
-                unsuccessAlertPayment:false,
-                successAlertPayment:false,
-
             }
         },
 
@@ -142,33 +135,30 @@
 
             updateAdvance(){
                 if(this.$refs.form.validate()){
-                    if(this.amount !=0){
-                        this.axios.post(this.$apiUrl+"/api/v1.0/AdvanceManagement/advances",{
-                            description:this.description,
-                            advanceAmount:this.amount+".00",
-                            date:this.date,
-                            employeeID:this.teacher,
-                            handlerStaffID:"STAFF001",
-                            branchID:"BRNCH001",
-                        })
-                        .then(Response=>{
-                            if(Response.data.success == true){
-                                this.Reset();
-                                this.dialog=false,
-                                this.successAlertPayment=true
-                            }else{
-                                this.unsuccessAlertPayment=true
-                            }
-                        })
-                        .catch(error => {
-                            this.unsuccessAlertPayment=true
-                            console.log(error.data)
+                    this.axios.patch(this.$apiUrl+'/api/v1.0/AdvanceManagement/advances/'+this.advance.advanceID,{
+                        description:this.description,
+                        advanceAmount:this.amount+".00",
+                        date:this.date,
+                        employeeID:this.teacher.teacherID,
+                        handlerStaffID:"STAFF001",
+                        branchID:"BRNCH001",
+                    })
+                    .then(Response=>{
+                        if(Response.data.success == true){
+                            this.successAlert(),
+                            this.dialog=false
                             
-                        });
-                    }else{
-                        this.unsuccessAlertPayment=true
-                    }
+                        }else{
+                            this.failedAlert()
+                        }
+                    })
+                    .catch(error => {
+                        this.failedAlert(),
+                        console.log(error.data)
+                        
+                    });
                 }
+                
             },
 
             Reset() {
@@ -190,6 +180,14 @@
                     
                 ))
             },
+
+            successAlert(){
+                this.$emit('success',true)
+            },
+
+            failedAlert(){
+                this.$emit('failed',true)
+            }
 
 
 
