@@ -69,7 +69,16 @@
 
                     <v-col>
                         <v-card  flat>
-                            <v-card-title class="heading-1 blue-grey lighten-4  blue-grey--text text--darken-2">Teacher Advance</v-card-title>
+                            <v-card-title class="heading-1 blue-grey lighten-4  blue-grey--text text--darken-2">Teacher Advance
+                                <v-spacer></v-spacer>
+                                <v-menu ref="menud" v-model="monthMenu" :close-on-content-click="false" transition="scale-transition" offset-y min-width="auto">
+                                    <template v-slot:activator="{ on, attrs }">
+                                        <v-text-field v-model="month" label="Date"  readonly v-bind="attrs" v-on="on" hint="*Select Month to search for a previous month's Details" persistent-hint  single-line></v-text-field>
+                                    </template>
+                                    <v-date-picker v-model="month" type="month" @input="monthMenu = false" ></v-date-picker>
+                                </v-menu>
+                            </v-card-title>
+
                             <v-card-title><v-spacer></v-spacer><v-text-field v-model="Search" append-icon="mdi-magnify" label="Search" single-line hide-details></v-text-field></v-card-title>
                             
                             <v-data-table :headers="headers" :items="teachersAdvance" :search="Search" :items-per-page="5">
@@ -138,6 +147,10 @@
                 dateActivePicker: null,
                 date: (new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().substr(0, 10),
                 dateMenu: false,
+
+                monthActivePicker: null,
+                month: new Date().getFullYear()+"-"+String(new Date().getMonth()+ 1).padStart(2, '0'),
+                monthMenu: false,
 
                 amount:'0',
                 description:'',
