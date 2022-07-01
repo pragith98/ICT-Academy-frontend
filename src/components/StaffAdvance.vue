@@ -85,7 +85,7 @@
                             <v-data-table :headers="headers" :items="staffAdvance" :search="Search" :items-per-page="5">
                                 <template v-slot:[`item.actions`]="{ item }">
                                     <v-card-actions>
-                                        <app-EditPayTeacherAdvance :advance="item" @success="updateSuccessAlert($event)" @failed="updateFaileAlert($event)"></app-EditPayTeacherAdvance>
+                                        <app-EditPayStaffAdvance :advance="item" @success="updateSuccessAlert($event)" @failed="updateFaileAlert($event)"></app-EditPayStaffAdvance>
                                         <v-spacer></v-spacer>
                                         <app-DeletePayTeacherAdvance class="ml-5" :advance="item" @success="deleteAlert($event)" @failed="FaileAlert($event)"></app-DeletePayTeacherAdvance>
                                     </v-card-actions>
@@ -134,11 +134,11 @@
 </template>
 
 <script>
-    import EditPayTeacherAdvance from './EditPayTeacherAdvance.vue'
+    import EditPayStaffAdvance from './EditPayStaffAdvance.vue'
     import DeletePayTeacherAdvance from './DeletePayTeacherAdvance.vue'
     export default {
         components:{
-            "app-EditPayTeacherAdvance":EditPayTeacherAdvance,
+            "app-EditPayStaffAdvance":EditPayStaffAdvance,
             "app-DeletePayTeacherAdvance":DeletePayTeacherAdvance
         },
         data () {
