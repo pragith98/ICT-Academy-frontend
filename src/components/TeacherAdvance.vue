@@ -85,7 +85,7 @@
                             <v-data-table :headers="headers" :items="teachersAdvance" :search="Search" :items-per-page="5">
                                 <template v-slot:[`item.actions`]="{ item }">
                                     <v-card-actions>
-                                        <app-EditPayAdvance :advance="item" @success="updateSuccessAlert($event)" @failed="updateFaileAlert($event)"></app-EditPayAdvance>
+                                        <app-EditPayTeacherAdvance :advance="item" @success="updateSuccessAlert($event)" @failed="updateFaileAlert($event)"></app-EditPayTeacherAdvance>
                                     </v-card-actions>
                                 </template>
                             </v-data-table>
@@ -132,10 +132,10 @@
 </template>
 
 <script>
-    import EditPayAdvance from './EditPayAdvance.vue'
+    import EditPayTeacherAdvance from './EditPayTeacherAdvance.vue'
     export default {
         components:{
-            "app-EditPayAdvance":EditPayAdvance
+            "app-EditPayTeacherAdvance":EditPayTeacherAdvance
         },
         data () {
             return {
