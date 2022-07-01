@@ -15,7 +15,7 @@
 
             <template>
                 <v-card flat>
-                    <v-card-title class="heading-1 blue-grey lighten-4  blue-grey--text text--darken-2">Teacher Details</v-card-title>
+                    <v-card-title class="heading-1 blue-grey lighten-4  blue-grey--text text--darken-2">Deactivated Teacher Details</v-card-title>
                     <v-card-title><v-spacer></v-spacer><v-text-field v-model="search" append-icon="mdi-magnify" label="Search" single-line hide-details></v-text-field></v-card-title>
                     
                     <v-data-table :headers="headers" :items="teachers" :search="search">
@@ -61,7 +61,7 @@
 
                 breadcrumbs: [
                     { text: 'Teachers', disabled: false, href: '/Teachers' },
-                    { text: 'TeacherDetails', disabled: true, href: '/Teachers/TeacherDetails' }
+                    { text: 'DeactivatedTeacherDetails', disabled: true, href: '/Teachers/DeactivatedTeacherDetails' }
                 ],
 
                 successAlert:false,
