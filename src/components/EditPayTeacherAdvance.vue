@@ -1,5 +1,5 @@
 <template>
-  <v-row justify="end">
+  <v-row >
     <v-dialog v-model="dialog" scrollable max-width="500px" persistent>
         <template v-slot:activator="{ on, attrs }">
             <v-btn small @click="getTeacherAdvance()" class="teal" dark depressed  v-bind="attrs" v-on="on">Edit<v-icon dark right>mdi-pencil</v-icon></v-btn>
