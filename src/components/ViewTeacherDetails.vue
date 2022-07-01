@@ -102,6 +102,11 @@
                     <v-col cols="12" md="6" sm="6">
                         <!-- for empty space -->
                     </v-col>
+
+                    <v-col cols="12" md="12" sm="12">
+                        <v-divider></v-divider>
+                        <v-switch color="red" @change="deactivateTeacher()"  inset v-model="status" label="Mark as a Deactivated Teacher"></v-switch>
+                    </v-col>
                 
                 </v-row>
             </v-form>
@@ -151,6 +156,9 @@ export default {
             nicNo:'',
             nicType:'',
             getTitle:'',
+
+            status:null,
+            showStatus:'',
 
             activePicker: null,
             date: '',
@@ -208,6 +216,14 @@ export default {
 
     methods:{
 
+        deactivateTeacher(){
+            if(this.status == false){
+                this.showStatus = "Active"
+            }else if(this.status == true){
+                this.showStatus = "Deactivate"
+            }
+        },
+
         getTeacher(){
             this.axios.get(this.$apiUrl+"/api/v1.0/TeacherManagement/teachers/"+this.teacher.teacherID)
             .then(Response=>{
@@ -221,6 +237,14 @@ export default {
                 this.getTitle=Response.data.teacher.data[0].title;
                 this.date=Response.data.teacher.data[0].dob;
                 this.joingDate=Response.data.teacher.data[0].joinedDate;
+
+                if(Response.data.teacher.data[0].status=="Active"){
+                    this.status=false;
+                    this.showStatus="Active"
+                }else{
+                    this.status=true;
+                    this.showStatus="Deactivate"
+                }
                 
                 if((Response.data.teacher.data[0].nic).length>10){
                     this.nicType="new"
@@ -246,7 +270,7 @@ export default {
                     dob:this.date,
                     joinedDate:this.joingDate,
                     qualification: "Hons bbbba in ICT",
-                    status: "Active",
+                    status: this.showStatus,
                 })
                 .then(Response=>{
 
