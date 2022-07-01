@@ -87,7 +87,7 @@
                                     <v-card-actions>
                                         <app-EditPayStaffAdvance :advance="item" @success="updateSuccessAlert($event)" @failed="updateFaileAlert($event)"></app-EditPayStaffAdvance>
                                         <v-spacer></v-spacer>
-                                        <app-DeletePayTeacherAdvance class="ml-5" :advance="item" @success="deleteAlert($event)" @failed="FaileAlert($event)"></app-DeletePayTeacherAdvance>
+                                        <app-DeletePayStaffAdvance class="ml-5" :advance="item" @success="deleteAlert($event)" @failed="FaileAlert($event)"></app-DeletePayStaffAdvance>
                                     </v-card-actions>
                                 </template>
                             </v-data-table>
@@ -135,11 +135,11 @@
 
 <script>
     import EditPayStaffAdvance from './EditPayStaffAdvance.vue'
-    import DeletePayTeacherAdvance from './DeletePayTeacherAdvance.vue'
+    import DeletePayStaffAdvance from './DeletePayStaffAdvance.vue'
     export default {
         components:{
             "app-EditPayStaffAdvance":EditPayStaffAdvance,
-            "app-DeletePayTeacherAdvance":DeletePayTeacherAdvance
+            "app-DeletePayStaffAdvance":DeletePayStaffAdvance
         },
         data () {
             return {
@@ -166,7 +166,7 @@
 
                 headers: [
                     { text: 'ID',align: 'start', sortable: false, value:'advanceID'},
-                    { text: 'NAME',align: 'start', sortable: false, value:'teacher.teacherName'},
+                    { text: 'NAME',align: 'start', sortable: false, value:'staff.staffName'},
                     { text: 'DATE', sortable: false, value: 'date' },
                     { text: 'ADVANCE', sortable: false, value: 'advanceAmount' },
                     { text: 'DESCRIPTION', sortable: false, value: 'description' },
