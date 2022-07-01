@@ -14,6 +14,7 @@ import Classes from '../views/Classes.vue'
 import Financial from '../views/Financial.vue'
 import Staff from '../views/Staff.vue'
 import Teachers from '../views/Teachers.vue'
+import Users from '../views/Users.vue'
 import Login from '../views/Login.vue'
 import ForgotPassword from '../views/ForgotPassword.vue'
 
@@ -28,6 +29,7 @@ const routes = [
   { path:'/Financial', name:'Financial', component:Financial },
   { path:'/Staff', name:'Staff', component:Staff},
   { path:'/Teachers', name:'Teachers', component:Teachers},
+  { path:'/Users', name:'Users', component:Users},
   { path:'/Login', name:'Login', component:Login},
   { path:'/ForgotPassword', name:'ForgotPassword', component:ForgotPassword},
 
@@ -39,7 +41,7 @@ const routes = [
   { path:'/Teachers/DeactivatedTeacherDetails', name:'DeactivatedTeacherDetails', component:()=> import('../components/DeactivatedTeacherDetails.vue')},
   { path:'/Staff/StaffRegistration', name:'StaffRegistration', component:()=> import('../components/StaffRegistration.vue')},
   { path:'/Staff/StaffDetails', name:'StaffDetails', component:()=> import('../components/StaffDetails.vue')},
-  { path:'/Staff/SystemUsers', name:'SystemUsers', component:()=> import('../components/SystemUsers.vue')},
+  { path:'/User/SystemUsers', name:'SystemUsers', component:()=> import('../components/SystemUsers.vue')},
   { path:'/Classes/CreateClass', name:'CreateClass', component:()=> import('../components/CreateClass.vue')},
   { path:'/Classes/Subjects', name:'Subjects', component:()=> import('../components/Subjects.vue')},
   { path:'/Classes/ClassDetails', name:'ClassDetails', component:()=> import('../components/ClassDetails.vue')},
