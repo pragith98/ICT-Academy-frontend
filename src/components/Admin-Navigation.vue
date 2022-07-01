@@ -106,12 +106,14 @@
                     { text: 'Dashboard', icon: 'mdi-view-dashboard', link:'/' },
                     { text: 'Students', icon: 'mdi-account-group', link:'/Students'},
                     { text: 'Teachers', icon: 'mdi-human-male-board', link:'/Teachers' },
-                    { text: 'Staff', icon: 'mdi-account-multiple', link:'/Staff' },
                     { text: 'Classes', icon: 'mdi-google-classroom', link:'/Classes' },
                     { text: 'Attendance', icon: 'mdi-checkbox-marked-outline', link:'/Attendance' },
                     { text: 'Financial', icon: 'mdi-credit-card-outline', link:'/Financial' },
+                    { text: 'Staff', icon: 'mdi-account-multiple', link:'/Staff' },
                     { text: 'Users', icon: 'mdi-account-cog', link:'/Users' },
-                    { text: 'Branches', icon: 'mdi-sitemap', link:'/Branches' }
+                    { text: 'Branches', icon: 'mdi-sitemap', link:'/Branches' },
+                    { text: 'Reports', icon: 'mdi-file-document-multiple', link:'' },
+                    { text: 'Processes', icon: 'mdi-cog', link:'' }
                 ],
 
                 getBranch:'Hakmana',
