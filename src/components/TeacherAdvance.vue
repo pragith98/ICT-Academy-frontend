@@ -86,6 +86,7 @@
                                 <template v-slot:[`item.actions`]="{ item }">
                                     <v-card-actions>
                                         <app-EditPayTeacherAdvance :advance="item" @success="updateSuccessAlert($event)" @failed="updateFaileAlert($event)"></app-EditPayTeacherAdvance>
+                                        <app-DeletePayTeacherAdvance :advance="item" @success="deleteAlert($event)" @failed="FaileAlert($event)"></app-DeletePayTeacherAdvance>
                                     </v-card-actions>
                                 </template>
                             </v-data-table>
@@ -133,9 +134,11 @@
 
 <script>
     import EditPayTeacherAdvance from './EditPayTeacherAdvance.vue'
+    import DeletePayTeacherAdvance from './DeletePayTeacherAdvance.vue'
     export default {
         components:{
-            "app-EditPayTeacherAdvance":EditPayTeacherAdvance
+            "app-EditPayTeacherAdvance":EditPayTeacherAdvance,
+            "app-DeletePayTeacherAdvance":DeletePayTeacherAdvance
         },
         data () {
             return {
@@ -291,6 +294,7 @@
             // -------------------- alerts --------------------------------
             deleteAlert(success){
                 this.successAlert = success;
+                this.getTeacherAdvance()
             },
             faileAlert(failed){
                 this.unsuccessAlert = failed;
