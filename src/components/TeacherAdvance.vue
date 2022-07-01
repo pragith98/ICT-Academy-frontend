@@ -255,6 +255,7 @@
                                 this.Reset();
                                 this.dialog=false,
                                 this.successAlertPayment=true
+                                this.getTeacherAdvance()
                             }else{
                                 this.unsuccessAlertPayment=true
                             }
