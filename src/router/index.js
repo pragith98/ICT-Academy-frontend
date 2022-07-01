@@ -36,6 +36,7 @@ const routes = [
   { path:'/Students/PastStudentDetails', name:'PastStudentDetails', component:()=> import('../components/PastStudentDetails.vue')},
   { path:'/Teachers/TeacherRegistration', name:'TeacherRegistration', component:()=> import('../components/TeacherRegistration.vue')},
   { path:'/Teachers/TeacherDetails', name:'TeacherDetails', component:()=> import('../components/TeacherDetails.vue')},
+  { path:'/Teachers/DeactivatedTeacherDetails', name:'DeactivatedTeacherDetails', component:()=> import('../components/DeactivatedTeacherDetails.vue')},
   { path:'/Staff/StaffRegistration', name:'StaffRegistration', component:()=> import('../components/StaffRegistration.vue')},
   { path:'/Staff/StaffDetails', name:'StaffDetails', component:()=> import('../components/StaffDetails.vue')},
   { path:'/Staff/SystemUsers', name:'SystemUsers', component:()=> import('../components/SystemUsers.vue')},
