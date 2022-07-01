@@ -43,6 +43,7 @@
                 cardlist:[
                     {name:'Register Staff', icon:'mdi-account-plus', color:'teal', link:'/Staff/StaffRegistration'},
                     {name:'Staff Details', icon:'mdi-view-list', color:'orange', link:'/Staff/StaffDetails'},
+                    {name:'Deactivated Staff', icon:'mdi-account-off', color:'red', link:'/Staff/DeactivatedStaffDetails'}
                 ],
 
 
