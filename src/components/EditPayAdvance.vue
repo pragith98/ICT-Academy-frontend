@@ -120,9 +120,13 @@
                 this.axios.get(this.$apiUrl+"/api/v1.0/AdvanceManagement/advances/"+this.advance.advanceID)
                 .then(Response=>{
                     this.description=Response.data.advance.data[0].description;
-                    this.amount=Response.data.advance.data[0].advanceAmount;
                     this.date=Response.data.advance.data[0].date;
                     this.teacher=Response.data.advance.data[0].teacher;
+
+                    const fullAmount=(Response.data.advance.data[0].advanceAmount).split('.');
+                    this.amount=fullAmount[0]
+
+                    
                     
                 })
             },
