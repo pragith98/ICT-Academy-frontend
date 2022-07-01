@@ -102,6 +102,11 @@
                             </div>
                         </template>
                     </v-col>
+
+                    <v-col cols="12" md="12" sm="12">
+                        <v-divider></v-divider>
+                        <v-switch color="red" @change="deactivateStaff()"  inset v-model="status" label="Mark as a Deactivated Staff Member"></v-switch>
+                    </v-col>
                     
                 </v-row>
             </v-form>
@@ -154,6 +159,9 @@ export default {
             activePicker: null,
             date: '',
             getBranch:'',
+
+            status:null,
+            showStatus:'',
             
 
             joingActivePicker: null,
@@ -217,6 +225,15 @@ export default {
     },
 
     methods:{
+
+        deactivateStaff(){
+            if(this.status == false){
+                this.showStatus = "Active"
+            }else if(this.status == true){
+                this.showStatus = "Deactivate"
+            }
+        },
+
         getStaff(){
             this.axios.get(this.$apiUrl+"/api/v1.0/StaffManagement/staffs/"+this.staff.staffID)
             .then(Response=>{
@@ -237,7 +254,13 @@ export default {
                     this.nicType="old"
                 }
 
-
+                if(Response.data.staff.data[0].status=="Active"){
+                    this.status=false;
+                    this.showStatus="Active"
+                }else{
+                    this.status=true;
+                    this.showStatus="Deactivate"
+                }
                 
                 this.getBranchDetails(Response.data.staff.data[0].branch.branchID)
                 
@@ -268,7 +291,7 @@ export default {
                     dob:this.date,
                     joinedDate:this.joingDate,
                     branchID:this.getBranch,
-                    status: "Active",
+                    status: this.showStatus,
 
 
                     
