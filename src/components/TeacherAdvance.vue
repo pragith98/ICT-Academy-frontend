@@ -75,7 +75,7 @@
                                     <template v-slot:activator="{ on, attrs }">
                                         <v-text-field v-model="month" label="Date"  readonly v-bind="attrs" v-on="on" hint="*Select Month to search for a previous month's Details" persistent-hint  single-line></v-text-field>
                                     </template>
-                                    <v-date-picker v-model="month" type="month" @input="monthMenu = false" ></v-date-picker>
+                                    <v-date-picker v-model="month" type="month" @input="monthMenu = false, getTeacherAdvance()" ></v-date-picker>
                                 </v-menu>
                             </v-card-title>
 
@@ -178,6 +178,7 @@
                     { text: 'Teacher Advance', disabled: true, href: '/Financial/TeacherAdvance' }
                 ],
 
+                index:0,
 
 
 
@@ -214,11 +215,11 @@
 
             getTeacherAdvance(){
                 this.axios.get(this.$apiUrl+"/api/v1.0/AdvanceManagement/advances",{
-                params:{
-                    employeeType: "teacher",
-                    date: "2022-05" 
-                }
-                
+                    params:{
+                        employeeType: "teacher",
+                        date: this.month 
+                    }
+
                 }).then(Response=>(
                     this.teachersAdvance=Response.data.advance.data
                 ))
