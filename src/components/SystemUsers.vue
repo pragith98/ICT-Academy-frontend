@@ -77,8 +77,8 @@
                 ],
 
                 breadcrumbs: [
-                    { text: 'Staff', disabled: false, href: '/Staff' },
-                    { text: 'SystemUsers', disabled: true, href: '/Staff/SystemUsers' }
+                    { text: 'Users', disabled: false, href: '/Users' },
+                    { text: 'SystemUsers', disabled: true, href: '/Users/SystemUsers' }
                 ],
 
                 successAlert:false,
