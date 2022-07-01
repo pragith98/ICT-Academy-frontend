@@ -44,7 +44,7 @@
                     {name:'Fees Payment', icon:'mdi-cash-check', color:'pink lighten-2', link:'/Financial/FeesPayment'},
                     {name:'Payment Details', icon:'mdi-view-list', color:'orange', link:'/Financial'},
                     {name:'Teacher Advance', icon:'mdi-account-cash', color:'cyan', link:'/Financial/TeacherAdvance'},
-                    {name:'Staff Advance', icon:'mdi-account-cash', color:'lime', link:'/Financial'},
+                    {name:'Staff Advance', icon:'mdi-account-cash', color:'lime', link:'/Financial/StaffAdvance'},
                     {name:'Expences', icon:'mdi-chart-donut', color:'green', link:'/Financial'}
                 ],
 
