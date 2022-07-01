@@ -54,6 +54,7 @@ const routes = [
   { path:'/Branches/BranchDetails', name:'BranchDetails', component:()=> import('../components/BranchDetails.vue')},
   { path:'/Financial/FeesPayment', name:'FeesPayment', component:()=> import('../components/FeesPayment.vue')},
   { path:'/Financial/TeacherAdvance', name:'TeacherAdvance', component:()=> import('../components/TeacherAdvance.vue')},
+  { path:'/Financial/StaffAdvance', name:'StaffAdvance', component:()=> import('../components/StaffAdvance.vue')},
   { path:'/TodayClasses/MarkAttendanceDailyFee/:id', name:'MarkAttendanceDailyFee', component:()=> import('../components/MarkAttendanceDailyFee.vue')}
   
   // {
