@@ -260,7 +260,6 @@ export default {
             }else if(this.status == true){
                 this.showStatus = "Past"
             }
-            console.log(this.showStatus)
         },
 
         getStudent(){
