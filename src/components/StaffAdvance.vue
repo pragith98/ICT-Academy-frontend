@@ -32,7 +32,7 @@
                                     <v-card-title class="blue-grey--text text--darken-2">Pay Advance</v-card-title>
 
                                     <v-col cols="12" md="12" sm="12">
-                                        <v-autocomplete :items="teachers" v-model="teacher" :filter="teacherFilter" item-text="firstName" item-value="teacherID" label="Teacher"  :rules="teacherRules"></v-autocomplete>
+                                        <v-autocomplete :items="staffs" v-model="staff" :filter="staffFilter" item-text="firstName" item-value="staffID" label="Staff member"  :rules="staffRules"></v-autocomplete>
                                     </v-col>
                                     
                                     <v-col cols="12" md="12" sm="12">
@@ -61,7 +61,7 @@
                                 </v-row>
 
                                 <v-card-actions class="px-6">
-                                    <v-btn depressed color="primary" block :disabled="!valid || !description || !amount || !teacher || !date" @click="dialog=true">Pay</v-btn>
+                                    <v-btn depressed color="primary" block :disabled="!valid || !description || !amount || !staff || !date" @click="dialog=true">Pay</v-btn>
                                 </v-card-actions>
                                 
                             </v-card>
@@ -70,19 +70,19 @@
 
                     <v-col>
                         <v-card  flat>
-                            <v-card-title class="heading-1 blue-grey lighten-4  blue-grey--text text--darken-2">Teacher Advance
+                            <v-card-title class="heading-1 blue-grey lighten-4  blue-grey--text text--darken-2">Staff Advance
                                 <v-spacer></v-spacer>
                                 <v-menu ref="menud" v-model="monthMenu" :close-on-content-click="false" transition="scale-transition" offset-y min-width="auto">
                                     <template v-slot:activator="{ on, attrs }">
                                         <v-text-field v-model="month" label="Date"  readonly v-bind="attrs" v-on="on" hint="*Select Month to search for a previous month's Details" persistent-hint  single-line></v-text-field>
                                     </template>
-                                    <v-date-picker v-model="month" type="month" @input="monthMenu = false, getTeacherAdvance()" ></v-date-picker>
+                                    <v-date-picker v-model="month" type="month" @input="monthMenu = false, getStaffAdvance()" ></v-date-picker>
                                 </v-menu>
                             </v-card-title>
 
                             <v-card-title><v-spacer></v-spacer><v-text-field v-model="Search" append-icon="mdi-magnify" label="Search" single-line hide-details></v-text-field></v-card-title>
                             
-                            <v-data-table :headers="headers" :items="teachersAdvance" :search="Search" :items-per-page="5">
+                            <v-data-table :headers="headers" :items="staffAdvance" :search="Search" :items-per-page="5">
                                 <template v-slot:[`item.actions`]="{ item }">
                                     <v-card-actions>
                                         <app-EditPayTeacherAdvance :advance="item" @success="updateSuccessAlert($event)" @failed="updateFaileAlert($event)"></app-EditPayTeacherAdvance>
@@ -147,7 +147,7 @@
 
                 valid:true,
                 Search: '',
-                teacher:null,
+                staff:null,
 
                 dateActivePicker: null,
                 date: (new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().substr(0, 10),
@@ -174,13 +174,13 @@
                     { text: '', sortable: false, value: 'actions' },
                 ],
 
-                teachers: [],
+                staffs: [],
 
-                teachersAdvance: [],
+                staffAdvance: [],
 
                 breadcrumbs: [
                     { text: 'Financial', disabled: false, href: '/Financial' },
-                    { text: 'Teacher Advance', disabled: true, href: '/Financial/TeacherAdvance' }
+                    { text: 'Staff Advance', disabled: true, href: '/Financial/StaffAdvance' }
                 ],
 
                 index:0,
@@ -192,7 +192,7 @@
             
                 amountRules: [v=> !!v || 'Amount is required', v => /^\d+$/.test(v) || 'Must be a number'],
 
-                teacherRules: [v=> !!v || 'Teacher is required'],
+                staffRules: [v=> !!v || 'Staff member is required'],
 
                 dateRules: [v=> !!v || 'Join Date is required'],
 
@@ -212,27 +212,27 @@
         },
 
         created(){
-            this.getTeachers()
-            this.getTeacherAdvance()
+            this.getStaffs()
+            this.getStaffAdvance()
         },
 
         methods: {
 
-            getTeacherAdvance(){
+            getStaffAdvance(){
                 this.axios.get(this.$apiUrl+"/api/v1.0/AdvanceManagement/advances",{
                     params:{
-                        employeeType: "teacher",
+                        employeeType: "staff",
                         date: this.month 
                     }
 
                 }).then(Response=>(
-                    this.teachersAdvance=Response.data.advance.data
+                    this.staffAdvance=Response.data.advance.data
                 ))
             },
 
-            teacherFilter (item, queryText) {
+            staffFilter (item, queryText) {
                 const textOne = item.firstName.toLowerCase()
-                const textTwo = item.teacherID.toLowerCase()
+                const textTwo = item.staffID.toLowerCase()
                 const searchText = queryText.toLowerCase()
 
                 return textOne.indexOf(searchText) > -1 || textTwo.indexOf(searchText) > -1
@@ -246,7 +246,7 @@
                             description:this.description,
                             advanceAmount:this.amount+".00",
                             date:this.date,
-                            employeeID:this.teacher,
+                            employeeID:this.staff,
                             handlerStaffID:"STAFF001",
                             branchID:"BRNCH001",
                         })
@@ -254,6 +254,7 @@
                             if(Response.data.success == true){
                                 this.Reset();
                                 this.dialog=false,
+                                this.getStaffAdvance()
                                 this.successAlertPayment=true
                             }else{
                                 this.unsuccessAlertPayment=true
@@ -274,16 +275,16 @@
                 this.$refs.form.reset()
             },
 
-            getTeachers(){
-                this.axios.get(this.$apiUrl+"/api/v1.0/TeacherManagement/teachers",{
+            getStaffs(){
+                this.axios.get(this.$apiUrl+"/api/v1.0/StaffManagement/staffs",{
                 params:{
                     status: "Active"
                 }
                 
                 }).then(Response=>(
-                    this.teachers=Response.data.teacher.data,
+                    this.staffs=Response.data.staff.data,
                     
-                    this.teachers.forEach(element => {
+                    this.staffs.forEach(element => {
                         element.firstName=element.title+" "+element.firstName+" "+element.lastName
                     })
                     
@@ -295,7 +296,7 @@
             // -------------------- alerts --------------------------------
             deleteAlert(success){
                 this.successAlert = success;
-                this.getTeacherAdvance()
+                this.getStaffAdvance()
             },
             faileAlert(failed){
                 this.unsuccessAlert = failed;
@@ -304,7 +305,7 @@
 
             updateSuccessAlert(success){
                 this.successAlertUpdate = success;
-                this.getTeacherAdvance()
+                this.getStaffAdvance()
             },
             updateFaileAlert(failed){
                 this.unsuccessAlertUpdate = failed;
