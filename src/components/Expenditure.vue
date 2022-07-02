@@ -13,11 +13,11 @@
             <v-snackbar :timeout="3000" v-model="unsuccessAlert" color="red"  bottom ><v-icon left>mdi-alert-outline</v-icon>Item delete <strong>failed</strong> </v-snackbar>
             <v-snackbar :timeout="3000" v-model="successAlert" color="green"  bottom><v-icon left>mdi-check</v-icon>Item delete <strong>successful</strong> </v-snackbar>
 
-            <v-snackbar :timeout="3000" v-model="unsuccessAlertPayment" color="red"  bottom ><v-icon left>mdi-alert-outline</v-icon>Payment <strong>failed</strong> </v-snackbar>
-            <v-snackbar :timeout="3000" v-model="successAlertPayment" color="green"  bottom><v-icon left>mdi-check</v-icon>Payment <strong>successful</strong> </v-snackbar>
+            <v-snackbar :timeout="3000" v-model="unsuccessAlertPayment" color="red"  bottom ><v-icon left>mdi-alert-outline</v-icon>Mark expenditure <strong>failed</strong> </v-snackbar>
+            <v-snackbar :timeout="3000" v-model="successAlertPayment" color="green"  bottom><v-icon left>mdi-check</v-icon>Mark expenditure <strong>successful</strong> </v-snackbar>
             
-            <v-snackbar :timeout="3000" v-model="unsuccessAlertUpdate" color="red"  bottom ><v-icon left>mdi-alert-outline</v-icon>Payment update <strong>failed</strong> </v-snackbar>
-            <v-snackbar :timeout="3000" v-model="successAlertUpdate" color="green"  bottom><v-icon left>mdi-check</v-icon>Payment update <strong>successful</strong> </v-snackbar>
+            <v-snackbar :timeout="3000" v-model="unsuccessAlertUpdate" color="red"  bottom ><v-icon left>mdi-alert-outline</v-icon>Expenditure update <strong>failed</strong> </v-snackbar>
+            <v-snackbar :timeout="3000" v-model="successAlertUpdate" color="green"  bottom><v-icon left>mdi-check</v-icon>Expenditure update <strong>successful</strong> </v-snackbar>
             <!----------------------------- Alerts ---------------------------------->
             
 
@@ -81,9 +81,9 @@
                             <v-data-table :headers="headers" :items="expenditures" :search="Search" :items-per-page="5">
                                 <template v-slot:[`item.actions`]="{ item }">
                                     <v-card-actions>
-                                        <app-EditPayStaffAdvance :advance="item" @success="updateSuccessAlert($event)" @failed="updateFaileAlert($event)"></app-EditPayStaffAdvance>
+                                        <app-EditExpenditure :expenditure="item" @success="updateSuccessAlert($event)" @failed="updateFaileAlert($event)"></app-EditExpenditure>
                                         <v-spacer></v-spacer>
-                                        <app-DeletePayStaffAdvance class="ml-5" :advance="item" @success="deleteAlert($event)" @failed="FaileAlert($event)"></app-DeletePayStaffAdvance>
+                                        <app-DeleteExpenditure class="ml-5" :expenditure="item" @success="deleteAlert($event)" @failed="FaileAlert($event)"></app-DeleteExpenditure>
                                     </v-card-actions>
                                 </template>
                             </v-data-table>
@@ -130,12 +130,12 @@
 </template>
 
 <script>
-    import EditPayStaffAdvance from './EditPayStaffAdvance.vue'
-    import DeletePayStaffAdvance from './DeletePayStaffAdvance.vue'
+    import EditExpenditure from './EditExpenditure.vue'
+    import DeleteExpenditure from './DeleteExpenditure.vue'
     export default {
         components:{
-            "app-EditPayStaffAdvance":EditPayStaffAdvance,
-            "app-DeletePayStaffAdvance":DeletePayStaffAdvance
+            "app-EditExpenditure":EditExpenditure,
+            "app-DeleteExpenditure":DeleteExpenditure
         },
         data () {
             return {
@@ -160,11 +160,10 @@
                 
 
                 headers: [
-                    { text: 'ID',align: 'start', sortable: false, value:'advanceID'},
-                    { text: 'NAME',align: 'start', sortable: false, value:'staff.staffName'},
+                    { text: 'ID',align: 'start', sortable: false, value:'expenseID'},
                     { text: 'DATE', sortable: false, value: 'date' },
-                    { text: 'ADVANCE', sortable: false, value: 'advanceAmount' },
-                    { text: 'DESCRIPTION', sortable: false, value: 'description' },
+                    { text: 'ADVANCE', sortable: false, value: 'expenseAmount' },
+                    { text: 'DESCRIPTION', sortable: false, value: 'expense' },
                     { text: 'STAFF', sortable: false, value: 'handledBy.staffName'},
                     { text: '', sortable: false, value: 'actions' },
                 ],
@@ -261,7 +260,7 @@
             // -------------------- alerts --------------------------------
             deleteAlert(success){
                 this.successAlert = success;
-                this.getStaffAdvance()
+                this.getExpenditures()
             },
             faileAlert(failed){
                 this.unsuccessAlert = failed;
@@ -270,7 +269,7 @@
 
             updateSuccessAlert(success){
                 this.successAlertUpdate = success;
-                this.getStaffAdvance()
+                this.getExpenditures()
             },
             updateFaileAlert(failed){
                 this.unsuccessAlertUpdate = failed;
