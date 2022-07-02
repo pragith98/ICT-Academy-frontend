@@ -72,13 +72,13 @@
                                     <template v-slot:activator="{ on, attrs }">
                                         <v-text-field v-model="month" label="Date"  readonly v-bind="attrs" v-on="on" hint="*Select Month to search for a previous month's Details" persistent-hint  single-line></v-text-field>
                                     </template>
-                                    <v-date-picker v-model="month" type="month" @input="monthMenu = false, getStaffAdvance()" ></v-date-picker>
+                                    <v-date-picker v-model="month" type="month" @input="monthMenu = false, getExpenditures()" ></v-date-picker>
                                 </v-menu>
                             </v-card-title>
 
                             <v-card-title><v-spacer></v-spacer><v-text-field v-model="Search" append-icon="mdi-magnify" label="Search" single-line hide-details></v-text-field></v-card-title>
                             
-                            <v-data-table :headers="headers" :items="staffAdvance" :search="Search" :items-per-page="5">
+                            <v-data-table :headers="headers" :items="expenditures" :search="Search" :items-per-page="5">
                                 <template v-slot:[`item.actions`]="{ item }">
                                     <v-card-actions>
                                         <app-EditPayStaffAdvance :advance="item" @success="updateSuccessAlert($event)" @failed="updateFaileAlert($event)"></app-EditPayStaffAdvance>
@@ -143,7 +143,6 @@
 
                 valid:true,
                 Search: '',
-                staff:null,
 
                 dateActivePicker: null,
                 date: (new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().substr(0, 10),
@@ -170,16 +169,14 @@
                     { text: '', sortable: false, value: 'actions' },
                 ],
 
-                staffs: [],
-
-                staffAdvance: [],
+                expenditures: [],
 
                 breadcrumbs: [
                     { text: 'Financial', disabled: false, href: '/Financial' },
                     { text: 'Expenditure', disabled: true, href: '/Financial/Expenditure' }
                 ],
 
-                index:0,
+                
 
 
 
@@ -206,31 +203,20 @@
         },
 
         created(){
-            this.getStaffs()
-            this.getStaffAdvance()
+            this.getExpenditures()
         },
 
         methods: {
 
-            getStaffAdvance(){
-                this.axios.get(this.$apiUrl+"/api/v1.0/AdvanceManagement/advances",{
+            getExpenditures(){
+                this.axios.get(this.$apiUrl+"/api/v1.0/ExpenditureManagement/expenditures",{
                     params:{
-                        employeeType: "staff",
                         date: this.month 
                     }
 
                 }).then(Response=>(
-                    this.staffAdvance=Response.data.advance.data
+                    this.expenditures=Response.data.expense.data
                 ))
-            },
-
-            staffFilter (item, queryText) {
-                const textOne = item.firstName.toLowerCase()
-                const textTwo = item.staffID.toLowerCase()
-                const searchText = queryText.toLowerCase()
-
-                return textOne.indexOf(searchText) > -1 || textTwo.indexOf(searchText) > -1
-
             },
 
             markExpense(){
@@ -247,7 +233,7 @@
                             if(Response.data.success == true){
                                 this.Reset();
                                 this.dialog=false,
-                                // this.getStaffAdvance()
+                                this.getExpenditures()
                                 this.successAlertPayment=true
                             }else{
                                 this.unsuccessAlertPayment=true
@@ -268,21 +254,7 @@
                 this.$refs.form.reset()
             },
 
-            getStaffs(){
-                this.axios.get(this.$apiUrl+"/api/v1.0/StaffManagement/staffs",{
-                params:{
-                    status: "Active"
-                }
-                
-                }).then(Response=>(
-                    this.staffs=Response.data.staff.data,
-                    
-                    this.staffs.forEach(element => {
-                        element.firstName=element.title+" "+element.firstName+" "+element.lastName
-                    })
-                    
-                ))
-            },
+            
 
 
 
