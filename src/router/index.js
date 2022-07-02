@@ -55,6 +55,7 @@ const routes = [
   { path:'/Financial/FeesPayment', name:'FeesPayment', component:()=> import('../components/FeesPayment.vue')},
   { path:'/Financial/TeacherAdvance', name:'TeacherAdvance', component:()=> import('../components/TeacherAdvance.vue')},
   { path:'/Financial/StaffAdvance', name:'StaffAdvance', component:()=> import('../components/StaffAdvance.vue')},
+  { path:'/Financial/Expenditure', name:'Expenditure', component:()=> import('../components/Expenditure.vue')},
   { path:'/Attendance/TodayClasses/MarkAttendanceDailyFee/:id', name:'MarkAttendanceDailyFee', component:()=> import('../components/MarkAttendanceDailyFee.vue')}
   
   // {
