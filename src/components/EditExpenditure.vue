@@ -2,20 +2,16 @@
   <v-row >
     <v-dialog v-model="dialog" scrollable max-width="500px" persistent>
         <template v-slot:activator="{ on, attrs }">
-            <v-btn small @click="getTeacherAdvance()" class="teal" dark depressed  v-bind="attrs" v-on="on">Edit<v-icon dark right>mdi-pencil</v-icon></v-btn>
+            <v-btn small @click="getExpenditures()" class="teal" dark depressed  v-bind="attrs" v-on="on">Edit<v-icon dark right>mdi-pencil</v-icon></v-btn>
         </template>
 
         <v-form ref="form" v-model="valid" lazy-validation>
             <v-card max-width="700" flat>
-                <v-card-title class="heading-1 blue-grey lighten-4  blue-grey--text text--darken-2">Edit Pay Advance</v-card-title>
+                <v-card-title class="heading-1 blue-grey lighten-4  blue-grey--text text--darken-2">Edit Expenduture</v-card-title>
                 
                 <v-divider></v-divider>
                 
                 <v-card-text style="height: 800px;">
-
-                    <v-col cols="12" md="12" sm="12">
-                        <v-autocomplete :items="teachers" v-model="teacher" :filter="teacherFilter" item-text="firstName" item-value="teacherID" label="Teacher"  :rules="teacherRules"></v-autocomplete>
-                    </v-col>
                     
                     <v-col cols="12" md="12" sm="12">
                         <v-text-field v-model="amount" :rules="amountRules" clearable  label="Amount" prefix="RS."></v-text-field>
@@ -49,7 +45,7 @@
                 <v-card-actions>
                     <v-spacer></v-spacer>
                     <v-btn   @click="dialog=false" outlined color="grey" >Cancel</v-btn>
-                    <v-btn :disabled="!valid " color="primary" @click="updateAdvance()" depressed >Save
+                    <v-btn :disabled="!valid " color="primary" @click="updateExpense()" depressed >Save
                         <v-icon left>mdi-content-save</v-icon>
                     </v-btn>
                 </v-card-actions>
@@ -66,26 +62,28 @@
 <script>
     
     export default {
-        props:['advance'],
+        props:['expenditure'],
         
         data () {
             return {
                 dialog:false,
 
                 valid:true,
-                teacher:null,
+                Search: '',
 
                 dateActivePicker: null,
-                date: '',
+                date: (new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().substr(0, 10),
                 dateMenu: false,
+
+                monthActivePicker: null,
+                month: new Date().getFullYear()+"-"+String(new Date().getMonth()+ 1).padStart(2, '0'),
+                monthMenu: false,
 
                 amount:'0',
                 description:'',
 
 
-                teachers: [],
-
-
+                
 
 
 
@@ -94,8 +92,6 @@
             
                 amountRules: [v=> !!v || 'Amount is required', v => /^\d+$/.test(v) || 'Must be a number'],
 
-                teacherRules: [v=> !!v || 'Teacher is required'],
-
                 dateRules: [v=> !!v || 'Join Date is required'],
 
 
@@ -103,43 +99,28 @@
             }
         },
 
-        created(){
-            this.getTeachers()
-        },
+        
 
         methods: {
 
-            getTeacherAdvance(){
-                this.axios.get(this.$apiUrl+"/api/v1.0/AdvanceManagement/advances/"+this.advance.advanceID)
+            getExpenditures(){
+                this.axios.get(this.$apiUrl+'/api/v1.0/ExpenditureManagement/expenditures/'+this.expenditure.expenseID)
                 .then(Response=>{
-                    this.description=Response.data.advance.data[0].description;
-                    this.date=Response.data.advance.data[0].date;
-                    this.teacher=Response.data.advance.data[0].teacher;
+                    this.description=Response.data.expense.data[0].expense;
+                    this.date=Response.data.expense.data[0].date;
 
-                    const fullAmount=(Response.data.advance.data[0].advanceAmount).split('.');
+                    const fullAmount=(Response.data.expense.data[0].expenseAmount).split('.');
                     this.amount=fullAmount[0]
-
-                    
                     
                 })
             },
 
-            teacherFilter (item, queryText) {
-                const textOne = item.firstName.toLowerCase()
-                const textTwo = item.teacherID.toLowerCase()
-                const searchText = queryText.toLowerCase()
-
-                return textOne.indexOf(searchText) > -1 || textTwo.indexOf(searchText) > -1
-
-            },
-
-            updateAdvance(){
+            updateExpense(){
                 if(this.$refs.form.validate()){
-                    this.axios.patch(this.$apiUrl+'/api/v1.0/AdvanceManagement/advances/'+this.advance.advanceID,{
-                        description:this.description,
-                        advanceAmount:this.amount+".00",
+                    this.axios.patch(this.$apiUrl+'/api/v1.0/ExpenditureManagement/expenditures/'+this.expenditure.expenseID,{
+                        expense:this.description,
+                        expenseAmount:this.amount+".00",
                         date:this.date,
-                        employeeID:this.teacher.teacherID,
                         handlerStaffID:"STAFF001",
                         branchID:"BRNCH001",
                     })
@@ -157,30 +138,15 @@
                         console.log(error.data)
                         
                     });
+                    
                 }
-                
             },
 
             Reset() {
                 this.$refs.form.reset()
             },
 
-            getTeachers(){
-                this.axios.get(this.$apiUrl+"/api/v1.0/TeacherManagement/teachers",{
-                params:{
-                    status: "Active"
-                }
-                
-                }).then(Response=>(
-                    this.teachers=Response.data.teacher.data,
-                    
-                    this.teachers.forEach(element => {
-                        element.firstName=element.title+" "+element.firstName+" "+element.lastName
-                    })
-                    
-                ))
-            },
-
+           
             successAlert(){
                 this.$emit('success',true)
             },
