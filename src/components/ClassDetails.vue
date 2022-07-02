@@ -100,12 +100,6 @@
 
                     this.classes.forEach(element => {
                         element.time=element.startTime+"-"+element.endTime
-                    }),
-
-                    this.classes.forEach(element => {
-                        if(element.grade==0){
-                            element.grade="Other"
-                        }
                     })
                 ))
             },
