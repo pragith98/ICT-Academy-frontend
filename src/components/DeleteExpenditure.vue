@@ -11,14 +11,14 @@
                             <v-icon size="100" color="error">mdi-help-circle-outline</v-icon>
                         </v-row>
                     </v-card-title>
-                    <span class="text-h6 text-center">Do you really want to delete <br> <strong>"Advance"</strong></span>
+                    <span class="text-h6 text-center">Do you really want to delete <br> <strong>"Expenditure"</strong></span>
                 </v-container>
                 
                 
                 <v-card-actions>
                     <v-spacer></v-spacer>
                     <v-btn color="grey" @click="dialog = false" outlined>Cancel</v-btn>
-                    <v-btn color="error" @click="deleteAdvance()" depressed>Delete
+                    <v-btn color="error" @click="deleteExpenditure()" depressed>Delete
                         <v-icon right>mdi-delete</v-icon>
                     </v-btn>
                 </v-card-actions>
@@ -31,15 +31,15 @@
 
 <script>
     export default {
-        props:['advance'],
+        props:['expenditure'],
         data: () => ({
             dialog: false,
             
         }),
 
         methods:{
-            deleteAdvance(){
-                this.axios.delete(this.$apiUrl+'/api/v1.0/AdvanceManagement/advances/'+this.advance.advanceID)
+            deleteExpenditure(){
+                this.axios.delete(this.$apiUrl+'/api/v1.0/ExpenditureManagement/expenditures/'+this.expenditure.expenseID)
                     .then(Response=>{
                         if(Response.data.success == true){
                             this.successAlert();
