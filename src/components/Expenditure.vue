@@ -30,13 +30,9 @@
                                 <v-row justify="center" class="px-5 pb-1" dense>
                                     
                                     <v-card-title class="blue-grey--text text--darken-2">Mark Expenditures</v-card-title>
-
-                                    <v-col cols="12" md="12" sm="12">
-                                        <v-autocomplete :items="staffs" v-model="staff" :filter="staffFilter" item-text="firstName" item-value="staffID" label="Staff member"  :rules="staffRules"></v-autocomplete>
-                                    </v-col>
                                     
                                     <v-col cols="12" md="12" sm="12">
-                                        <v-text-field v-model="amount" :rules="amountRules" clearable  label="Amount" prefix="RS."></v-text-field>
+                                        <v-text-field v-model="amount" :rules="amountRules" clearable  label="Amount" prefix="RS." placeholder=".00"></v-text-field>
                                     </v-col>
 
                                     <v-col cols="12" md="12" sm="12">
@@ -61,7 +57,7 @@
                                 </v-row>
 
                                 <v-card-actions class="px-6">
-                                    <v-btn depressed color="primary" block :disabled="!valid || !description || !amount || !staff || !date" @click="dialog=true">Pay</v-btn>
+                                    <v-btn depressed color="primary" block :disabled="!valid || !description || !amount || !date" @click="dialog=true">Mark as expenditure</v-btn>
                                 </v-card-actions>
                                 
                             </v-card>
@@ -109,7 +105,7 @@
                                 <v-icon size="100" color="orange">mdi-alert-circle-outline</v-icon>
                             </v-row>
                         </v-card-title>
-                        <span class="text-h6 text-center"> Confirm Payment</span>
+                        <span class="text-h6 text-center"> Confirm Expenditure Details</span>
                         <v-card-text>Amount: Rs. {{amount}} <br>Description: {{description}} <br>Date: {{date}} </v-card-text>
                         
                     </v-container>
@@ -118,7 +114,7 @@
                     <v-card-actions>
                         <v-spacer></v-spacer>
                         <v-btn color="grey"  outlined @click="dialog = false" >Cancel</v-btn>
-                        <v-btn @click="payAdvance()" color="orange" dark depressed>Confirm</v-btn>
+                        <v-btn @click="markExpense()" color="orange" dark depressed>Confirm</v-btn>
                     </v-card-actions>
                 </v-card>
             </v-dialog>
@@ -180,7 +176,7 @@
 
                 breadcrumbs: [
                     { text: 'Financial', disabled: false, href: '/Financial' },
-                    { text: 'Staff Advance', disabled: true, href: '/Financial/StaffAdvance' }
+                    { text: 'Expenditure', disabled: true, href: '/Financial/Expenditure' }
                 ],
 
                 index:0,
@@ -191,8 +187,6 @@
                 descriptionRules: [v=> !!v || 'Description is required', v=> (v && v.length >5)|| 'Description must be greater than 5'],
             
                 amountRules: [v=> !!v || 'Amount is required', v => /^\d+$/.test(v) || 'Must be a number'],
-
-                staffRules: [v=> !!v || 'Staff member is required'],
 
                 dateRules: [v=> !!v || 'Join Date is required'],
 
@@ -239,14 +233,13 @@
 
             },
 
-            payAdvance(){
+            markExpense(){
                 if(this.$refs.form.validate()){
                     if(this.amount !=0){
-                        this.axios.post(this.$apiUrl+"/api/v1.0/AdvanceManagement/advances",{
-                            description:this.description,
-                            advanceAmount:this.amount+".00",
+                        this.axios.post(this.$apiUrl+"/api/v1.0/ExpenditureManagement/expenditures",{
+                            expense:this.description,
+                            expenseAmount:this.amount+".00",
                             date:this.date,
-                            employeeID:this.staff,
                             handlerStaffID:"STAFF001",
                             branchID:"BRNCH001",
                         })
@@ -254,7 +247,7 @@
                             if(Response.data.success == true){
                                 this.Reset();
                                 this.dialog=false,
-                                this.getStaffAdvance()
+                                // this.getStaffAdvance()
                                 this.successAlertPayment=true
                             }else{
                                 this.unsuccessAlertPayment=true
