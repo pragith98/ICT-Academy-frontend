@@ -144,8 +144,8 @@
                             </fieldset>
                             <v-card-actions class="justify-end mt-2">
                                 <v-btn   @click="Reset" outlined color="grey">Reset</v-btn>
-                                <!-- <v-btn :disabled="!valid || !fname || !lname || !tp || !email || !address || !parentTp || !parentName || !parent || !getGender || !getGrade || !getBranch || !date || !joingDate" color="primary" @click="Register(),scrollToTop()" depressed>Register</v-btn> -->
-                                <v-btn  color="primary" @click="success=true"  depressed>Register</v-btn>
+                                <v-btn :disabled="!valid || !fname || !lname || !tp || !email || !address || !parentTp || !parentName || !parent || !getGender || !getGrade || !getBranch || !date || !joingDate" color="primary" @click="Register(),scrollToTop()" depressed>Register</v-btn>
+                                <!-- <v-btn  color="primary" @click="success=true"  depressed>Register</v-btn> -->
                             </v-card-actions>
                             
                         </v-col>
@@ -210,7 +210,7 @@ export default {
     data(){
         return{
             copySuccess:false,
-            studentID:'ICTA1998001',
+            studentID:'',
             imageUrl:'',
             image:null,
 
@@ -336,7 +336,9 @@ export default {
 
                 })
                 .then(Response=>{
+                    console.log(Response)
                     if(Response.data.success == true){
+                        this.studentID=Response.data.student.studentID;
                         this.Reset();
                         this.successAlert()
                     }else{
