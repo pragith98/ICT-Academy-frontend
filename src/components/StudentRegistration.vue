@@ -185,7 +185,7 @@
                     <v-card-text class="text-subtitle-1">Do you want to enroll this student in a class?</v-card-text>
                     <v-card-actions>
                         <v-spacer></v-spacer>
-                        <v-btn color="grey" outlined @click="dialog = false">Do later</v-btn>
+                        <v-btn color="grey" outlined @click="success = false">Do later</v-btn>
                         <v-btn color="primary" depressed>Enroll now</v-btn>
                     </v-card-actions>
 
