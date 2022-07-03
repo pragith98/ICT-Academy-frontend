@@ -336,7 +336,6 @@ export default {
 
                 })
                 .then(Response=>{
-                    console.log(Response)
                     if(Response.data.success == true){
                         this.studentID=Response.data.student.studentID;
                         this.Reset();
