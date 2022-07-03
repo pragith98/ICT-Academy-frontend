@@ -9,7 +9,7 @@
         <v-container>
 
             <v-snackbar :timeout="3000" v-model="unsuccess" color="red"  bottom ><v-icon left>mdi-alert-outline</v-icon> Student Registration has been<strong>failed</strong> </v-snackbar>
-            <v-snackbar :timeout="3000" v-model="success" color="green"  bottom><v-icon left>mdi-check</v-icon>Student Registration has been <strong>successful</strong> </v-snackbar>
+            
             
             <v-form ref="form" v-model="valid" lazy-validation>
                 
@@ -144,13 +144,57 @@
                             </fieldset>
                             <v-card-actions class="justify-end mt-2">
                                 <v-btn   @click="Reset" outlined color="grey">Reset</v-btn>
-                                <v-btn :disabled="!valid || !fname || !lname || !tp || !email || !address || !parentTp || !parentName || !parent || !getGender || !getGrade || !getBranch || !date || !joingDate" color="primary" @click="Register(),scrollToTop()" depressed>Register</v-btn>
+                                <!-- <v-btn :disabled="!valid || !fname || !lname || !tp || !email || !address || !parentTp || !parentName || !parent || !getGender || !getGrade || !getBranch || !date || !joingDate" color="primary" @click="Register(),scrollToTop()" depressed>Register</v-btn> -->
+                                <v-btn  color="primary" @click="success=true"  depressed>Register</v-btn>
                             </v-card-actions>
                             
                         </v-col>
                     </v-row>
                 </v-card>
             </v-form>
+
+
+
+            <!----------------------------------- dialog box ------------------------------------------>
+
+            <v-dialog v-model="success" persistent max-width="500px">
+                <v-card>
+                    <v-card  flat color="#66BB6A" class="pa-5" tile>
+                        <v-card-title>
+                            <v-row justify="center">
+                                <v-icon size="100" color="white">mdi-check-circle-outline</v-icon>
+                            </v-row>
+                        </v-card-title>
+                        <v-container class="text-center" fluid>
+                            <span class="text-h5 text-center white--text">Registration Successful</span>
+                        </v-container>
+                    </v-card>
+                    <v-container class="text-center pb-0" fluid>
+                        <v-row class="pl-5 pr-3 ma-0">
+                            <v-col cols="9" md="9" sm="9">
+                                <v-text-field v-model="studentID" label="Student ID" outlined append-icon="mdi-account-outline" dense readonly></v-text-field>
+                            </v-col>
+                            <v-col cols="2" md="2" sm="2">
+                                <v-btn  outlined @click="copyID(),copySuccess=true">Copy</v-btn>
+                            </v-col>
+                        </v-row>
+                    </v-container>
+                    
+                    <v-divider></v-divider>
+                    <legend><v-card-text class="grey--text">Enrollement</v-card-text></legend>
+                    <v-card-text class="text-subtitle-1">Do you want to enroll this student in a class?</v-card-text>
+                    <v-card-actions>
+                        <v-spacer></v-spacer>
+                        <v-btn color="grey" outlined @click="dialog = false">Do later</v-btn>
+                        <v-btn color="primary" depressed>Enroll now</v-btn>
+                    </v-card-actions>
+
+                    <v-snackbar :timeout="2000" v-model="copySuccess"  absolute bottom left>Student ID copied </v-snackbar>
+                
+                </v-card>
+            </v-dialog>
+
+            <!----------------------------------- dialog box ------------------------------------------>
             
             
                
@@ -165,6 +209,8 @@
 export default {
     data(){
         return{
+            copySuccess:false,
+            studentID:'ICTA1998001',
             imageUrl:'',
             image:null,
 
@@ -252,6 +298,12 @@ export default {
     },
 
     methods:{
+        copyID(){
+            navigator.clipboard.writeText(this.studentID);
+
+        },
+
+
         Register(){
             if(this.$refs.form.validate()){
                 
