@@ -8,8 +8,9 @@
             </v-breadcrumbs>
         <v-container>
 
-            <v-snackbar :timeout="3000" v-model="unsuccess" color="red"  bottom ><v-icon left>mdi-alert-outline</v-icon> Student Registration has been<strong>failed</strong> </v-snackbar>
-            
+            <v-snackbar :timeout="3000" v-model="unsuccess" color="red"  bottom ><v-icon left>mdi-alert-outline</v-icon> Student Registration has been <strong>failed</strong> </v-snackbar>
+            <v-snackbar :timeout="3000" v-model="enrollSuccess" color="green"  bottom ><v-icon left>mdi-check</v-icon> Student Enroll has been <strong>Success</strong> </v-snackbar>
+            <v-snackbar :timeout="3000" v-model="enrollFaile" color="red"  bottom ><v-icon left>mdi-alert-outline</v-icon> Student Enroll has been <strong>failed</strong> </v-snackbar>
             
             <v-form ref="form" v-model="valid" lazy-validation>
                 
@@ -85,7 +86,7 @@
                                 <v-row justify="center" dense >
 
                                     <v-col cols="12" md="6" sm="6">
-                                        <v-text-field v-model="tp" :rules="tpRules" label="Telephone No." prepend-icon="mdi-phone-classic" required maxlength="10" ></v-text-field>
+                                        <v-text-field v-model="tp" placeholder="eg: 0714332332" :rules="tpRules" label="Telephone No." prepend-icon="mdi-phone-classic" required maxlength="10" ></v-text-field>
                                     </v-col>
 
                                     <v-col cols="12" md="6" sm="6">
@@ -115,7 +116,7 @@
                                     </v-col>
 
                                     <v-col cols="12" md="6" sm="6">
-                                        <v-text-field v-model="parentTp" :rules="tpRules" label="Telephone No." prepend-icon="mdi-phone-classic" required maxlength="10"></v-text-field>
+                                        <v-text-field v-model="parentTp" placeholder="eg: 0714332332" :rules="tpRules" label="Telephone No." prepend-icon="mdi-phone-classic" required maxlength="10"></v-text-field>
                                     </v-col>
                                 </v-row>
                             </fieldset>
@@ -145,7 +146,7 @@
                             <v-card-actions class="justify-end mt-2">
                                 <v-btn   @click="Reset" outlined color="grey">Reset</v-btn>
                                 <v-btn :disabled="!valid || !fname || !lname || !tp || !email || !address || !parentTp || !parentName || !parent || !getGender || !getGrade || !getBranch || !date || !joingDate" color="primary" @click="Register(),scrollToTop()" depressed>Register</v-btn>
-                                <!-- <v-btn  color="primary" @click="success=true"  depressed>Register</v-btn> -->
+                                
                             </v-card-actions>
                             
                         </v-col>
@@ -185,8 +186,8 @@
                     <v-card-text class="text-subtitle-1">Do you want to enroll this student in a class?</v-card-text>
                     <v-card-actions>
                         <v-spacer></v-spacer>
-                        <v-btn color="grey" outlined @click="success = false">Do later</v-btn>
-                        <v-btn color="primary" depressed>Enroll now</v-btn>
+                        <v-btn class="mr-2" color="grey" outlined @click="success = false">Do later</v-btn>
+                        <app-EnrollStudentsInClass :studentID="studentID" @success="enrollSuccessAlert($event)" @failed="enrollFaileAlert($event)"></app-EnrollStudentsInClass>
                     </v-card-actions>
 
                     <v-snackbar :timeout="2000" v-model="copySuccess"  absolute bottom left>Student ID copied </v-snackbar>
@@ -206,7 +207,13 @@
 
 
 <script>
+import EnrollStudentsInClass from './EnrollStudentsInClass.vue'
+
 export default {
+    components:{
+        'app-EnrollStudentsInClass':EnrollStudentsInClass
+    },
+    
     data(){
         return{
             copySuccess:false,
@@ -286,6 +293,8 @@ export default {
 
             success:false,
             unsuccess:false,
+            enrollSuccess:false,
+            enrollFaile:false
         
         }
         
@@ -380,6 +389,15 @@ export default {
         },
         failedAlert(){
             this.unsuccess=true
+        },
+
+        enrollSuccessAlert(success){
+            this.enrollSuccess = success;
+            this.success=false;
+        },
+        
+        enrollFaileAlert(failed){
+            this.enrollFaile = failed;
         },
 
         
