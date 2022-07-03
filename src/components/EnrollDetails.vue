@@ -61,21 +61,12 @@
 
                 search: '',
                 headers: [
-                    { text: 'Class',align: 'start', sortable: false, value:'name'},
-                    { text: 'Students Count', sortable: false, value: 'students' },
+                    { text: 'CLASSES',align: 'start', sortable: false, value:'className'},
+                    { text: 'STUDENT COUNT', sortable: false, value: 'studentCount' },
                     { text: '', sortable: false, value: 'actions'}
                 ],
 
-                classes: [
-                    {name:'Sinhala 8', students:'30', id:'clz8773'},
-                    {name:'Maths 8', students:'15', id:'clz8343'},
-                    {name:'Science 9', students:'400', id:'clz8003'},
-                    {name:'History 6', students:'55', id:'clz8467'},
-                    {name:'Sinhala 7', students:'10', id:'clz4473'},
-
-                    
-                    
-                ],
+                classes: [],
 
                 breadcrumbs: [
                     { text: 'Classes', disabled: false, href: '/Classes' },
@@ -87,7 +78,26 @@
             }
         },
 
+        created(){
+            this.getAllClasses()
+        },
+
         methods: {
+            getAllClasses(){
+                this.axios.get(this.$apiUrl+"/api/v1.0/EnrollmentManagement/classes",{
+                
+                }).then(Response=>(
+                    this.classes=Response.data.enrollment.data,
+                    
+                    this.classes.forEach(element =>{
+                        var student=[]
+                        student=element.students
+                        
+                        element.studentCount=student.length
+                    })
+                ))
+            },
+
             deleteAlert(success){
                 this.successAlert = success;
             },
