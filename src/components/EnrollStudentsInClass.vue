@@ -1,45 +1,29 @@
 <template>
-  <v-row justify="end">
+  <v-row justify="end" class="px-0 mx-0">
     <v-dialog v-model="dialog" scrollable max-width="700px" persistent>
         <template v-slot:activator="{ on, attrs }">
-            <v-btn class="orange" small dark depressed  v-bind="attrs" v-on="on">Students<v-icon dark right>mdi-account-group</v-icon></v-btn>
+            <v-btn block width="8px" depressed color="success"   v-bind="attrs" v-on="on">Enroll Now</v-btn>
         </template>
         <v-card max-width="700" flat>
-        <v-card-title class="heading-1 blue-grey lighten-4  blue-grey--text text--darken-2">Students</v-card-title>
+        <v-card-title class="heading-1 blue-grey lighten-4  blue-grey--text text--darken-2">Enrollment</v-card-title>
         
         <v-divider></v-divider>
         <v-card-text style="height: 800px;">
-            <v-form ref="form" v-model="valid" lazy-validation>
-                
-                <div>
-                    <v-card-text>Students of <strong>{{classDetails.name}}</strong> class.</v-card-text>
-                    <v-card-title><v-spacer></v-spacer><v-text-field persistent-hint hint="*Use Name OR ID to search for a student" v-model="search" append-icon="mdi-magnify" label="Search Students" single-line ></v-text-field></v-card-title>
-                    
-                    <v-data-table :headers="headers" :items="students" :search="search">
-                        <template v-slot:[`item.actions`]="{ item }">
-
-                            <v-btn @click="addStudent(item.id,classDetails.id)"  depressed color="error" outlined>Remove</v-btn>
-                                
-                        </template>
+            <div>
+                <v-card-text>Select class/classes from below table</v-card-text>
+                <v-card-title><v-spacer></v-spacer><v-text-field v-model="search" append-icon="mdi-magnify" label="Search Class" single-line ></v-text-field></v-card-title>
+                <template>
+                    <v-data-table @input="getSelect($event)"   :headers="headers" :items="classes" :search="search" item-key="classID"  show-select>
                     </v-data-table>
-                </div>
-                    
-                    
-                    
-                
-            </v-form>
-            
-          
-
+                </template>
+            </div>
         </v-card-text>
         <v-divider></v-divider>
 
-
-
-
         <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn  color="primary" @click="dialog = false" depressed>OK</v-btn>
+            <v-btn  color="grey" outlined depressed @click="dialog=false">Cancel</v-btn>
+            <v-btn  color="primary"  depressed @click="enrollStudent()">Submit</v-btn>
         </v-card-actions>
 
         <v-snackbar v-model="addSuccessAlert" :timeout="2000" absolute bottom left color="green">Student has been removed from the class</v-snackbar>
@@ -54,58 +38,86 @@
 
 <script>
 export default {
-    props:['classDetails'],
+    props:['studentID'],
     data(){
         return{
             
             dialog: false,
-            valid:true,
-
             errormsg:null,
             
-
             addSuccessAlert:false,
-
-            
-
 
             search: '',
             headers: [
-                { text: 'STUDENT',align: 'start', sortable: false, value:'fname'},
-                { text: 'ID',align: 'start', sortable: false, value:'id'},
-                { text: '', sortable: false, value: 'actions',align:'end'},
-            ],
-
-            students: [
-                {fname:'Saman Herath', id:'2021'},
-                {fname:'Dasun Rathnayake', id:'2028'},
-                {fname:'Kasun Bandara', id:'2035'},
-                {fname:'Maheshi Ranathunga', id:'2077'},
+                { text: 'CLASS',align: 'start', sortable: false, value:'className'},
+                { text: 'TEACHER', sortable: false, value: 'teacher.teacherName' },
+                { text: 'GRADE',sortable: true, value: 'grade', width:'15%'},
                 
             ],
-            
-            
 
-        
+            classes: [],
+            selectedClasses:''
+            
         }
         
         
     },
     
-    
+    created(){
+        this.getAllClasses()
+    },
 
     methods:{
-        addStudent(studentID,classID){
-            this.addSuccessAlert=true
-            console.log(studentID+" "+classID)
+
+        getAllClasses(){
+            this.axios.get(this.$apiUrl+"/api/v1.0/ClassManagement/classes",{
+            params:{
+                status: "Active"
+            }
+            
+            }).then(Response=>(
+                this.classes=Response.data.class.data
+            ))
+        },
+
+        
+        getSelect(values) {
+            this.selectedClasses = values.map(function(value){ return value.classID })
+        },
+
+
+        enrollStudent(){
+            console.log(this.studentID);
+            console.log(this.selectedClasses)
+            this.axios.post(this.$apiUrl+"/api/v1.0/EnrollmentManagement/students",{
+                studentID:this.studentID,
+                classID: this.selectedClasses
+
+            })
+            .then(Response=>{
+                if(Response.data.success == true){
+                    this.dialog=false
+                    this.successAlert()
+                }else{
+                    this.failedAlert()
+                }
+            })
+            .catch(error => {
+                this.failedAlert()
+                console.log(error)
+                
+            });
+            
+        },
+
+
+        successAlert(){
+            this.$emit('success',true)
+        },
+
+        failedAlert(){
+            this.$emit('failed',true)
         }
-
-        
-
-        
-       
-
-        
         
         
         
