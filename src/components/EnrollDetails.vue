@@ -8,14 +8,15 @@
             </v-breadcrumbs>
         <v-container>
 
-            <v-snackbar :timeout="3000" v-model="unsuccessAlert" color="red"  bottom ><v-icon left>mdi-alert-outline</v-icon> Student delete <strong>failed</strong> </v-snackbar>
-            <v-snackbar :timeout="3000" v-model="successAlert" color="green"  bottom><v-icon left>mdi-check</v-icon>Student delete <strong>successful</strong> </v-snackbar>
-            
-            
-            
-            
+            <!------------------------------------------------- Alerts -------------------------------------------------------->
 
+            <v-snackbar :timeout="3000" v-model="enrollSuccess" color="green"  bottom ><v-icon left>mdi-check</v-icon> Student Enroll has been <strong>Success</strong> </v-snackbar>
+            <v-snackbar :timeout="3000" v-model="enrollFaile" color="red"  bottom ><v-icon left>mdi-alert-outline</v-icon> Student Enroll has been <strong>failed</strong> </v-snackbar>
+            <v-snackbar :timeout="3000" v-model="removeSuccess" color="green"  bottom ><v-icon left>mdi-check</v-icon> Student Remove from class has been <strong>Success</strong> </v-snackbar>
+            <v-snackbar :timeout="3000" v-model="removeFaile" color="red"  bottom ><v-icon left>mdi-alert-outline</v-icon> Student Remove from class has been <strong>failed</strong> </v-snackbar>
             
+            <!------------------------------------------------- Alerts -------------------------------------------------------->
+
 
             <template>
                 <v-card flat>
@@ -26,13 +27,10 @@
                             <v-data-table :headers="headers" :items="classes" :search="search">
                                 <template v-slot:[`item.actions`]="{ item }">
                                     <v-card-actions>
-                                        <app-EnrollStudentsDetails :classDetails='item'></app-EnrollStudentsDetails>
+                                        <app-EnrollStudentsDetails @success="removeSuccessAlert($event)" @failed="removeFaileAlert($event)" :classDetails='item'></app-EnrollStudentsDetails>
                                         <v-spacer></v-spacer>
-                                        <app-EnrollStudents class="ml-5" :classDetails='item'></app-EnrollStudents>
-                                    </v-card-actions>
-                                            
-                                       
-                                            
+                                        <app-EnrollStudents @success="enrollSuccessAlert($event)" @failed="enrollFaileAlert($event)" class="ml-5" :classDetails='item'></app-EnrollStudents>
+                                    </v-card-actions>        
                                 </template>
                             </v-data-table>
                         </div>
@@ -73,8 +71,10 @@
                     { text: 'Enroll Students', disabled: true, href: '/Classes/EnrollDetails' }
                 ],
 
-                successAlert:false,
-                unsuccessAlert:false,
+                enrollSuccess:false,
+                enrollFaile:false,
+                removeSuccess:false,
+                removeFaile:false
             }
         },
 
@@ -98,11 +98,23 @@
                 ))
             },
 
-            deleteAlert(success){
-                this.successAlert = success;
+            
+            enrollSuccessAlert(success){
+                this.enrollSuccess = success;
+                this.getAllClasses()
             },
-            faileAlert(failed){
-                this.unsuccessAlert = failed;
+            
+            enrollFaileAlert(failed){
+                this.enrollFaile = failed;
+            },
+
+            removeSuccessAlert(success){
+                this.removeSuccess = success;
+                this.getAllClasses()
+            },
+            
+            removeFaileAlert(failed){
+                this.removeFaile = failed;
             },
         }
     }
