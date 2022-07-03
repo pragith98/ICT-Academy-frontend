@@ -87,8 +87,6 @@ export default {
 
 
         enrollStudent(){
-            console.log(this.studentID);
-            console.log(this.selectedClasses)
             this.axios.post(this.$apiUrl+"/api/v1.0/EnrollmentManagement/students",{
                 studentID:this.studentID,
                 classID: this.selectedClasses
