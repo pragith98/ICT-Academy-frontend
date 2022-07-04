@@ -27,11 +27,11 @@
                                 <v-row justify="center" class="px-5 pb-1" dense>
                                     <v-card-title class="blue-grey--text text--darken-2">Individual Enrollment</v-card-title>
                                     <v-col cols="12" md="12" sm="12">
-                                        <v-text-field v-model="studentID" :rules="studentIdRule" clearable  label="Student ID" placeholder="ICTAxxxxxxx"></v-text-field>
+                                        <v-text-field v-model="studentID" maxlength="11" :rules="studentIdRule" clearable  label="Student ID" placeholder="ICTAxxxxxxx"></v-text-field>
                                     </v-col>
                                 </v-row>
                                 <v-card-actions class="px-6">
-                                    <v-btn depressed color="primary" block :disabled="!valid || !studentID">Enroll</v-btn>
+                                    <app-EnrollStudentsInClass :disabled="true" :studentID="studentID" @success="enrollSuccessAlert($event)" @failed="enrollFaileAlert($event)" ></app-EnrollStudentsInClass>
                                 </v-card-actions>
                                 
                             </v-card>
@@ -41,11 +41,7 @@
                     </v-col>
 
                     <v-col lg="8" md="6" sm="6" cols="12" width="600">
-                        <v-card width="800" height="210" flat>hello</v-card>
-                    </v-col>
-                    
-                    <v-col  max-width="300">
-                        <v-card color="red" width="300"></v-card>
+                        <v-card width="800" height="190" flat>hello</v-card>
                     </v-col>
 
                     <v-col lg="12">
@@ -80,11 +76,13 @@
 <script>
     import EnrollStudents from './EnrollStudents.vue'
     import EnrollStudentsDetails from './EnrollStudentsDetails.vue'
+    import EnrollStudentsInClass from './EnrollStudentsInClass.vue'
 
     export default {
         components:{
             'app-EnrollStudents':EnrollStudents,
-            'app-EnrollStudentsDetails':EnrollStudentsDetails
+            'app-EnrollStudentsDetails':EnrollStudentsDetails,
+            'app-EnrollStudentsInClass':EnrollStudentsInClass
         },
         data () {
             return {
@@ -113,7 +111,7 @@
 
 
                 // -----------Validation rules-----------
-                studentIdRule: [v=> !!v || 'Student ID is required', v=> (v && v.length >5)|| 'Invalid student ID'],
+                studentIdRule: [v=> !!v || 'Student ID is required', v=> /ICTA+\d\d\d\d\d\d\d/.test(v) || 'Invalid student ID', v=> (v && v.length ==11)|| 'Invalid student ID'],
             }
         },
 
