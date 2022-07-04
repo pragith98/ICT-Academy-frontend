@@ -2,7 +2,7 @@
   <v-row justify="end" class="px-0 mx-0">
     <v-dialog v-model="dialog" scrollable max-width="700px" persistent>
         <template v-slot:activator="{ on, attrs }">
-            <v-btn :disabled="!studentID|| !valid" block width="8px" depressed color="success"   v-bind="attrs" v-on="on">Enroll Now</v-btn>
+            <v-btn :disabled="!studentID|| !valid" @click="selectedClasses=null" block width="8px" depressed color="success"   v-bind="attrs" v-on="on">Enroll Now</v-btn>
         </template>
         <v-card max-width="700" flat>
         <v-card-title class="heading-1 blue-grey lighten-4  blue-grey--text text--darken-2">Enrollment</v-card-title>
@@ -23,7 +23,7 @@
         <v-card-actions>
             <v-spacer></v-spacer>
             <v-btn  color="grey" outlined depressed @click="dialog=false">Cancel</v-btn>
-            <v-btn  color="primary"  depressed @click="enrollStudent()">Submit</v-btn>
+            <v-btn  color="primary" :disabled="!selectedClasses"  depressed @click="enrollStudent()">Submit</v-btn>
         </v-card-actions>
 
         
