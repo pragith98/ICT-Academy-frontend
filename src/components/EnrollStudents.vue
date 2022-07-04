@@ -2,7 +2,7 @@
   <v-row justify="start">
     <v-dialog v-model="dialog" scrollable max-width="700px" persistent>
         <template v-slot:activator="{ on, attrs }">
-            <v-btn @click="getAllStudent()" class="primary" small dark depressed  v-bind="attrs" v-on="on">Enroll New Students<v-icon dark right>mdi-link-variant</v-icon></v-btn>
+            <v-btn @click="getAllStudent(),selectedStudents=null" class="primary" small dark depressed  v-bind="attrs" v-on="on">Enroll New Students<v-icon dark right>mdi-link-variant</v-icon></v-btn>
         </template>
         <v-card max-width="700" flat>
         <v-card-title class="heading-1 blue-grey lighten-4  blue-grey--text text--darken-2">Enrollment</v-card-title>
@@ -70,11 +70,7 @@ export default {
         
     },
 
-    created(){
-        this.selectedStudents=null
-    },
-    
-    
+   
 
     methods:{
         getSelect(values) {
