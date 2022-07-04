@@ -41,7 +41,26 @@
                     </v-col>
 
                     <v-col lg="8" md="6" sm="6" cols="12" width="600">
-                        <v-card width="800" height="190" flat>hello</v-card>
+                        <v-card width="800" height="190" flat class="px-5 pt-15">
+                            <v-row>
+                                <v-col lg="6" v-for="cardlist in cardlist" :key="cardlist.name">
+                                    <v-card flat  :color=cardlist.color dark class="lighten-2">
+                                        <v-row>
+                                            <v-col>
+                                                <v-responsive class="text-left ml-5">
+                                                    <v-icon size="80">{{cardlist.icon}}</v-icon>
+                                                </v-responsive>
+                                            </v-col>
+                                            <v-col class="text-right mr-5">
+                                                <div class="display-1 font-weight-black" >{{ cardlist.count }}</div>
+                                                <div class="title" >{{ cardlist.name }}</div>
+                                            </v-col>
+                                        </v-row>
+                                    </v-card>
+                                </v-col>
+                            </v-row>
+                            
+                        </v-card>
                     </v-col>
 
                     <v-col lg="12">
@@ -90,6 +109,10 @@
                 studentID:'',
                 valid:true,
                 search: '',
+
+                classCount:'',
+                studentCount:'',
+
                 headers: [
                     { text: 'CLASSES',align: 'start', sortable: false, value:'className'},
                     { text: 'STUDENT COUNT', sortable: false, value: 'studentCount' },
@@ -109,6 +132,13 @@
                 removeFaile:false,
 
 
+                cardlist:[
+                    {name:'STUDENTS', count:"", icon:'mdi-account-group', color:'purple lighten-2'},
+                    {name:'CLASSES', count:"", icon:'mdi-google-classroom', color:'blue'},
+                    
+                ],
+
+
 
                 // -----------Validation rules-----------
                 studentIdRule: [v=> !!v || 'Student ID is required', v=> /ICTA+\d\d\d\d\d\d\d/.test(v) || 'Invalid student ID', v=> (v && v.length ==11)|| 'Invalid student ID'],
@@ -117,6 +147,8 @@
 
         created(){
             this.getAllClasses()
+            this.getStudentCount();
+            this.getClassCount();
         },
 
         methods: {
@@ -131,6 +163,41 @@
                         student=element.students
                         
                         element.studentCount=student.length
+                    })
+                ))
+            },
+
+            getStudentCount(){
+                this.axios.get(this.$apiUrl+"/api/v1.0/StudentManagement/students",{
+                params:{
+                    status: "Active"
+                }
+                
+                }).then(Response=>(
+                    this.studentCount=Response.data.student.meta.student_count,
+                   
+
+                    this.cardlist.forEach(element => {
+                        if(element.name=="STUDENTS"){
+                            element.count=this.studentCount
+                        }
+                    })
+                ))
+            },
+
+            getClassCount(){
+                this.axios.get(this.$apiUrl+"/api/v1.0/ClassManagement/classes",{
+                params:{
+                    status: "Active"
+                }
+                
+                }).then(Response=>(
+                    this.classCount=Response.data.class.meta.class_count,
+
+                    this.cardlist.forEach(element => {
+                        if(element.name=="CLASSES"){
+                            element.count=this.classCount
+                        }
                     })
                 ))
             },
