@@ -26,7 +26,19 @@
             <v-btn  color="primary"  depressed @click="enrollStudent()">Submit</v-btn>
         </v-card-actions>
 
+        
+        <!-- ---------------------------alerts ---------------------------------------->
+
         <v-snackbar v-model="addSuccessAlert" :timeout="2000" absolute bottom left color="green">Student has been removed from the class</v-snackbar>
+        
+        <v-snackbar v-model="errorMsgAlert" :multi-line="true" :timeout="0">
+            {{errorMsgBody}}
+            <template v-slot:action="{ attrs }">
+                <v-btn color="red" text v-bind="attrs" @click="errorMsgAlert = false">Close</v-btn>
+            </template>
+        </v-snackbar>
+
+        <!-- ---------------------------alerts ---------------------------------------->
         
       </v-card>
       
@@ -44,8 +56,10 @@ export default {
             
             dialog: false,
             errormsg:null,
-            
+            errorMsgAlert:false,
+            errorMsgBody:'',
             addSuccessAlert:false,
+            
 
             search: '',
             headers: [
@@ -101,6 +115,8 @@ export default {
                 }
             })
             .catch(error => {
+                this.errorMsgBody=error.response.data.message
+                this.errorMsgAlert=true
                 this.failedAlert()
                 console.log(error)
                 
