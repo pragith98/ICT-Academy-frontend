@@ -19,24 +19,57 @@
 
 
             <template>
-                <v-card flat>
-                    <v-card-title class="heading-1 blue-grey lighten-4  blue-grey--text text--darken-2">Enroll Details</v-card-title>
-                    <v-card-title><v-spacer></v-spacer><v-text-field v-model="search" append-icon="mdi-magnify" label="Search" single-line hide-details></v-text-field></v-card-title>
-                    <template>
-                        <div>
-                            <v-data-table :headers="headers" :items="classes" :search="search">
-                                <template v-slot:[`item.actions`]="{ item }">
-                                    <v-card-actions>
-                                        <app-EnrollStudentsDetails @success="removeSuccessAlert($event)" @failed="removeFaileAlert($event)" :classDetails='item'></app-EnrollStudentsDetails>
-                                        <v-spacer></v-spacer>
-                                        <app-EnrollStudents @success="enrollSuccessAlert($event)" @failed="enrollFaileAlert($event)" class="ml-5" :classDetails='item'></app-EnrollStudents>
-                                    </v-card-actions>        
-                                </template>
-                            </v-data-table>
-                        </div>
+                <v-row style="padding:12px">
+                    <v-col lg="4" md="6" sm="6" cols="12" width="300">
+                        <v-form ref="form" v-model="valid" lazy-validation>
+                            <v-card class="pb-5">
+                                
+                                <v-row justify="center" class="px-5 pb-1" dense>
+                                    <v-card-title class="blue-grey--text text--darken-2">Individual Enrollment</v-card-title>
+                                    <v-col cols="12" md="12" sm="12">
+                                        <v-text-field v-model="studentID" :rules="studentIdRule" clearable  label="Student ID" placeholder="ICTAxxxxxxx"></v-text-field>
+                                    </v-col>
+                                </v-row>
+                                <v-card-actions class="px-6">
+                                    <v-btn depressed color="primary" block :disabled="!valid || !studentID">Enroll</v-btn>
+                                </v-card-actions>
+                                
+                            </v-card>
+                        </v-form>
+
                         
-                    </template>
-                </v-card>
+                    </v-col>
+
+                    <v-col lg="8" md="6" sm="6" cols="12" width="600">
+                        <v-card width="800" height="210" flat>hello</v-card>
+                    </v-col>
+                    
+                    <v-col  max-width="300">
+                        <v-card color="red" width="300"></v-card>
+                    </v-col>
+
+                    <v-col lg="12">
+                        <v-card flat >
+                            <v-card-title class="heading-1 blue-grey lighten-4  blue-grey--text text--darken-2">Enroll Details</v-card-title>
+                            <v-card-title><v-spacer></v-spacer><v-text-field v-model="search" append-icon="mdi-magnify" label="Search" single-line hide-details></v-text-field></v-card-title>
+                            <template>
+                                <div>
+                                    <v-data-table :headers="headers" :items="classes" :search="search">
+                                        <template v-slot:[`item.actions`]="{ item }">
+                                            <v-card-actions>
+                                                <app-EnrollStudentsDetails @success="removeSuccessAlert($event)" @failed="removeFaileAlert($event)" :classDetails='item'></app-EnrollStudentsDetails>
+                                                <v-spacer></v-spacer>
+                                                <app-EnrollStudents @success="enrollSuccessAlert($event)" @failed="enrollFaileAlert($event)" class="ml-5" :classDetails='item'></app-EnrollStudents>
+                                            </v-card-actions>        
+                                        </template>
+                                    </v-data-table>
+                                </div>
+                                
+                            </template>
+                        </v-card>
+                    </v-col>
+                </v-row>
+                
             </template>
         </v-container>
     </div>
@@ -56,7 +89,8 @@
         data () {
             return {
                 menu:false,
-
+                studentID:'',
+                valid:true,
                 search: '',
                 headers: [
                     { text: 'CLASSES',align: 'start', sortable: false, value:'className'},
@@ -74,7 +108,12 @@
                 enrollSuccess:false,
                 enrollFaile:false,
                 removeSuccess:false,
-                removeFaile:false
+                removeFaile:false,
+
+
+
+                // -----------Validation rules-----------
+                studentIdRule: [v=> !!v || 'Student ID is required', v=> (v && v.length >5)|| 'Invalid student ID'],
             }
         },
 
