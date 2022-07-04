@@ -14,7 +14,7 @@
                 <v-card-title><v-spacer></v-spacer><v-text-field persistent-hint hint="*Use Name OR ID to search for a student" v-model="search" append-icon="mdi-magnify" label="Search" single-line ></v-text-field></v-card-title>
                 
                 <template>
-                    <v-data-table @input="getSelect($event)"   :headers="headers" :items="students" :search="search" item-key="studentID"  show-select>
+                    <v-data-table @input="getSelect($event)"   :headers="headers" :items="students" :search="search" item-key="studentID"  show-select v-model="table">
                     </v-data-table>
                 </template>
                 
@@ -48,11 +48,7 @@ export default {
             
             dialog: false,
             valid:true,
-
-            errormsg:null,
-            
-
-            addSuccessAlert:false,
+            table:[],
 
             
 
@@ -67,11 +63,15 @@ export default {
 
             students: [],
 
-            selectedStudents:'',
+            selectedStudents:[],
             
         }
         
         
+    },
+
+    created(){
+        this.selectedStudents=null
     },
     
     
@@ -101,7 +101,12 @@ export default {
                     this.dialog=false
                     this.successAlert()
                     this.getAllStudent()
-                    this.selectedStudents.length=0
+                    
+                    // ---------empty array----------------
+                    while(this.table.length>0){
+                        this.table.pop()
+                    }
+                    //console.log(this.table)
                 }else{
                     this.failedAlert()
                 }
