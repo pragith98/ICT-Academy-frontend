@@ -187,7 +187,7 @@
                     <v-card-actions>
                         <v-spacer></v-spacer>
                         <v-btn class="mr-2" color="grey" outlined @click="success = false">Do later</v-btn>
-                        <app-EnrollStudentsInClass :studentID="studentID" @success="enrollSuccessAlert($event)" @failed="enrollFaileAlert($event)"></app-EnrollStudentsInClass>
+                        <app-EnrollStudentsInClass :valid="valid" :studentID="studentID" @success="enrollSuccessAlert($event)" @failed="enrollFaileAlert($event)"></app-EnrollStudentsInClass>
                     </v-card-actions>
 
                     <v-snackbar :timeout="2000" v-model="copySuccess"  absolute bottom left>Student ID copied </v-snackbar>
