@@ -58,8 +58,8 @@
                                     </v-col>
 
                                     <v-col cols="12" md="6" sm="6">
-                                        <v-text-field v-if="nicType=='new'" v-model="nicNo" :rules="newNicRules" label="NIC no.new" prepend-icon="mdi-card-bulleted" required maxlength="12"></v-text-field>
-                                        <v-text-field v-else-if="nicType=='old'" v-model="nicNo" :rules="oldNicRules" label="NIC no.old" prepend-icon="mdi-card-bulleted" required maxlength="10"></v-text-field>
+                                        <v-text-field v-if="nicType=='new'" placeholder="eg: 199836487634" v-model="nicNo" :rules="newNicRules" label="NIC no.new" prepend-icon="mdi-card-bulleted" required maxlength="12"></v-text-field>
+                                        <v-text-field v-else-if="nicType=='old'" placeholder="eg: 981232289v" v-model="nicNo" :rules="oldNicRules" label="NIC no.old" prepend-icon="mdi-card-bulleted" required maxlength="10"></v-text-field>
                                     </v-col>
 
                                     <v-col cols="12" md="6" sm="6">
@@ -89,7 +89,7 @@
                                 <v-row justify="center" dense >
 
                                     <v-col cols="12" md="6" sm="6">
-                                        <v-text-field v-model="tp" :rules="tpRules" label="Telephone No." prepend-icon="mdi-phone-classic" required maxlength="10" ></v-text-field>
+                                        <v-text-field v-model="tp" placeholder="eg: 0714332332" :rules="tpRules" label="Telephone No." prepend-icon="mdi-phone-classic" required maxlength="10" ></v-text-field>
                                     </v-col>
 
                                     <v-col cols="12" md="6" sm="6">
