@@ -31,7 +31,7 @@
                                     </v-col>
                                 </v-row>
                                 <v-card-actions class="px-6">
-                                    <app-EnrollStudentsInClass :disabled="true" :studentID="studentID" @success="enrollSuccessAlert($event)" @failed="enrollFaileAlert($event)" ></app-EnrollStudentsInClass>
+                                    <app-EnrollStudentsInClass :valid="valid" :studentID="studentID" @success="enrollSuccessAlert($event)" @failed="enrollFaileAlert($event)" ></app-EnrollStudentsInClass>
                                 </v-card-actions>
                                 
                             </v-card>
