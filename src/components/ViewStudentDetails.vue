@@ -138,7 +138,8 @@
             </v-btn>
         </v-card-actions>
 
-        <v-snackbar v-model="hasSaved" :timeout="2000" absolute bottom left color="green">Student details has been updated</v-snackbar>
+        <v-snackbar v-model="hasSaved" :timeout="3000" absolute bottom left color="green">Student details has been updated</v-snackbar>
+        <v-snackbar v-model="hasFailed" :timeout="3000" absolute bottom left color="red">Updated failed</v-snackbar>
 
       </v-card>
     </v-dialog>
@@ -187,6 +188,7 @@ export default {
 
             isEditing: null,
             hasSaved: false,
+            hasFailed:false,
             
             // -----------Validation rules-----------
             nameRules: [v=> !!v || 'Name is required', v => /^[a-zA-Z\s.]+$/.test(v) || 'Must be text only', v=> (v && v.length >3)|| 'Name must be greater than 3'],
@@ -332,22 +334,24 @@ export default {
                     parentName:this.parentName,
                     parentType:this.parent,
                     grade:this.getGrade,
-                    
                     status: this.showStatus,
-
-
-                    
                 })
                 .then(Response=>{
 
                     if(Response.data.success == true){
+                        this.deactivateClassEnrollments()
+
                         this.hasSaved = true;
                         this.isEditing = !this.isEditing;
                         this.reCreate()
                     }else{
-                        this.hasSaved = false;
+                        this.hasFailed = true;
                     }
-                })
+                }).catch(error => {
+                    this.hasFailed = true;
+                    console.log(error.data)
+
+                });
                 
             }  
         },
@@ -377,6 +381,23 @@ export default {
         reCreate(){
             this.$emit('success',true)
         },
+
+
+        deactivateClassEnrollments(){
+            this.axios.patch(this.$apiUrl+'/api/v1.0/EnrollmentManagement/students/'+this.student.studentID+'/classes',{
+                status:'0',
+            })
+            .then(Response=>{
+                if(Response.data.success == true){
+                    console.log("Deactivate")
+                }else{
+                    console.log("Deactivate fail")
+                }
+            }).catch(error => {
+                console.log(error.data)
+                console.log("Deactivate fail")
+            });
+        }
         
       
     }
