@@ -45,7 +45,8 @@
                     {name:'Class Details', icon:'mdi-view-list', color:'orange', link:'/Classes/ClassDetails'},
                     {name:'Enroll Students', icon:'mdi-link-box-variant', color:'brown', link:'/Classes/EnrollDetails'},
                     {name:'Subjects', icon:'mdi-format-align-center', color:'blue', link:'/Classes/Subjects'},
-                    {name:'Free Cards', icon:'mdi-credit-card-remove', color:'teal', link:'/Classes/FreeCards'}
+                    {name:'Free Cards', icon:'mdi-credit-card-remove', color:'teal', link:'/Classes/FreeCards'},
+                    {name:'Deactivated Classes', icon:'mdi-checkbox-blank-off', color:'red', link:'/Classes/DeactivatedClassDetails'}
                 ],
 
 
