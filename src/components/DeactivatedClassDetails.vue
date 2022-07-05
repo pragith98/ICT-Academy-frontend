@@ -21,7 +21,7 @@
 
             <template>
                 <v-card flat>
-                    <v-card-title class="heading-1 blue-grey lighten-4  blue-grey--text text--darken-2">Class Details</v-card-title>
+                    <v-card-title class="heading-1 blue-grey lighten-4  blue-grey--text text--darken-2">Deactivated Class Details</v-card-title>
                     <v-card-title><v-spacer></v-spacer><v-text-field v-model="search" append-icon="mdi-magnify" label="Search" single-line hide-details></v-text-field></v-card-title>
                     <template>
                         <div>
@@ -96,7 +96,7 @@
             getAllClasses(){
                 this.axios.get(this.$apiUrl+"/api/v1.0/ClassManagement/classes",{
                 params:{
-                    status: "Active"
+                    status: "Deactivate"
                 }
                 
                 }).then(Response=>(
