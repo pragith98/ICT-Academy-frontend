@@ -17,7 +17,7 @@
                     
                     <v-data-table :headers="headers" :items="students" :search="search">
                         <template v-slot:[`item.actions`]="{ item }">
-                            <app-FreeCardClasses :studentDetails='item'></app-FreeCardClasses>
+                            <app-FreeCardClasses task="Enrolled Classes" :studentDetails='item'></app-FreeCardClasses>
                         
                         </template>
                     </v-data-table>
