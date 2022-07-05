@@ -17,7 +17,7 @@
                     
                     <v-data-table :headers="headers" :items="students" :search="search">
                         <template v-slot:[`item.actions`]="{ item }">
-                            <app-FreeCardClasses task="Enrolled Classes" :studentDetails='item'></app-FreeCardClasses>
+                            <app-FreeCardClasses @success="successAlert($event)" task="Enrolled Classes" :studentDetails='item'></app-FreeCardClasses>
                         
                         </template>
                     </v-data-table>
@@ -101,6 +101,12 @@
                 this.axios.get(this.$apiUrl+"/api/v1.0/EnrollmentManagement/students/notInFreeCard").then(Response=>(
                     this.students=Response.data.data
                 ))
+            },
+
+            successAlert(success){
+                this.getStudentsNotInFreeCard()
+                this.$emit('success',true)
+                console.log(success)
             },
 
         }
