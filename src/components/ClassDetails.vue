@@ -10,6 +10,8 @@
 
             <v-snackbar :timeout="3000" v-model="unsuccessAlert" color="red"  bottom ><v-icon left>mdi-alert-outline</v-icon> Class delete <strong>failed</strong> </v-snackbar>
             <v-snackbar :timeout="3000" v-model="successAlert" color="green"  bottom><v-icon left>mdi-check</v-icon>Class delete <strong>successful</strong> </v-snackbar>
+            <v-snackbar :timeout="3000" v-model="updateFail" color="red"  bottom ><v-icon left>mdi-alert-outline</v-icon> Class update <strong>failed</strong> </v-snackbar>
+            <v-snackbar :timeout="3000" v-model="updateSuccess" color="green"  bottom><v-icon left>mdi-check</v-icon>Class update <strong>successful</strong> </v-snackbar>
             
             
             
@@ -26,7 +28,7 @@
                             <v-data-table :headers="headers" :items="classes" :search="search">
                                 <template v-slot:[`item.actions`]="{ item }">
                                     <v-card-actions>
-                                        <app-EditClass :classDetails='item'></app-EditClass>
+                                        <app-EditClass @success="updateSuccessAlert($event)" @failed="updateFailAlert($event)" :classDetails='item'></app-EditClass>
                                         <v-spacer></v-spacer>
                                         <app-DeleteClass class="ml-1" :classDetails='item' @success="deleteAlert($event)" @failed="faileAlert($event)"></app-DeleteClass>
                                     </v-card-actions>
@@ -80,6 +82,8 @@
 
                 successAlert:false,
                 unsuccessAlert:false,
+                updateSuccess:false,
+                updateFail:false
             }
         },
 
@@ -111,6 +115,14 @@
             },
             faileAlert(failed){
                 this.unsuccessAlert = failed;
+            },
+
+            updateSuccessAlert(success){
+                this.getAllClasses()
+                this.updateSuccess = success;
+            },
+            updateFailAlert(failed){
+                this.updateFail = failed;
             },
         }
     }
