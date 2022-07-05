@@ -2,7 +2,7 @@
   <v-row justify="center">
     <v-dialog v-model="dialog" scrollable max-width="700px" persistent>
         <template v-slot:activator="{ on, attrs }">
-            <v-btn class="orange" small dark depressed  v-bind="attrs" v-on="on">Free Cards</v-btn>
+            <v-btn @click="getStudentsEnrolledClasses()" class="orange" small dark depressed  v-bind="attrs" v-on="on">{{task}}</v-btn>
         </template>
         <v-card max-width="700" flat>
         <v-card-title class="heading-1 blue-grey lighten-4  blue-grey--text text--darken-2">Free Cards</v-card-title>
@@ -12,12 +12,12 @@
             <v-form ref="form" v-model="valid" lazy-validation>
                 
                 <div>
-                    <v-card-text>Free cards of <strong>{{studentDetails.fname}}</strong>. </v-card-text>
+                    <v-card-text>Free cards of <strong>{{studentDetails.studentName}}</strong>. </v-card-text>
                     <v-card-title><v-spacer></v-spacer><v-text-field persistent-hint hint="*Use Name OR ID to search for a class" v-model="search" append-icon="mdi-magnify" label="Search Class" single-line  ></v-text-field></v-card-title>
                    
                     <v-data-table :headers="headers" :items="classes" :search="search">
                         <template v-slot:[`item.actions`]="{ item }">
-                            <v-switch color="red" @change="giveFreeCard(item.id,item.freeCard)" inset v-model="item.freeCard" :label="switchLabel(item.freeCard)"></v-switch>
+                            <v-switch color="red" @change="giveFreeCard(item.classID,item.freeCard)" inset v-model="item.freeCard" :label="switchLabel(item.freeCard)"></v-switch>
                                 
                         </template>
                     </v-data-table>
@@ -41,8 +41,9 @@
             <v-btn  color="primary" @click="dialog = false" depressed>OK</v-btn>
         </v-card-actions>
 
-        <v-snackbar v-model="addSuccessAlert" :timeout="2000" absolute bottom left color="green">Free Card has been added to the student</v-snackbar>
-        <v-snackbar v-model="removeSuccessAlert" :timeout="2000" absolute bottom left color="green">Free Card has been removed from the student</v-snackbar>
+        <v-snackbar v-model="addSuccessAlert" :timeout="3000" absolute bottom left color="green">Free Card has been added to the student</v-snackbar>
+        <v-snackbar v-model="removeSuccessAlert" :timeout="3000" absolute bottom left color="green">Free Card has been removed from the student</v-snackbar>
+        <v-snackbar v-model="failAlert" :timeout="3000" absolute bottom left color="red">Faild Operation</v-snackbar>
         
       </v-card>
       
@@ -54,12 +55,13 @@
 
 <script>
 export default {
-    props:['studentDetails'],
+    props:['studentDetails','task'],
     data(){
         return{
             
             dialog: false,
             valid:true,
+            buttonName:'',
             
 
             errormsg:null,
@@ -67,24 +69,18 @@ export default {
 
             addSuccessAlert:false,
             removeSuccessAlert:false,
+            failAlert:false,
 
             
 
 
             search: '',
             headers: [
-                { text: 'CLASS',align: 'start', sortable: false, value:'name'},
-                { text: 'ID',align: 'start', sortable: false, value:'id'},
+                { text: 'CLASS',align: 'start', sortable: false, value:'className'},
                 { text: 'FREE CARD', sortable: false, value: 'actions',align:'start'},
             ],
 
-            classes: [
-                {name:'Sinhala 8', id:'clz8773', freeCard:true},
-                {name:'Maths 8', id:'clz8343', freeCard:false},
-                {name:'Science 9', id:'clz8003', freeCard:false},
-                {name:'History 6', id:'clz8467', freeCard:true},
-                {name:'Sinhala 7', id:'clz4473', freeCard:false},
-            ],
+            classes: [],
             
             
 
@@ -102,17 +98,61 @@ export default {
             return bool?'Free Card':'No'
         },
 
-        giveFreeCard(id,bool){
+        giveFreeCard(classID,bool){
             if(bool == true){
-                this.addSuccessAlert=true
-                console.log(this.studentDetails.id,id,"   1")
+
+                this.axios.patch(this.$apiUrl+'/api/v1.0/EnrollmentManagement/students/'+this.studentDetails.studentID+'/classes/'+classID+'/freeClass',{
+                    paymentStatus: '-1'
+                })
+                .then(Response=>{
+                    if(Response.data.success == true){
+                        this.addSuccessAlert=true
+                    }else{
+                        this.failAlert=true
+                        this.getStudentsEnrolledClasses()
+                    }
+                })
+                .catch(error => {
+                    this.failAlert=true
+                    this.getStudentsEnrolledClasses()
+                    console.log(error.data)
+                });
+                
+                
             }else{
-                this.removeSuccessAlert=true
-                console.log(this.studentDetails.id,id,"   0")
+                this.axios.patch(this.$apiUrl+'/api/v1.0/EnrollmentManagement/students/'+this.studentDetails.studentID+'/classes/'+classID+'/freeClass',{
+                    paymentStatus: '1'
+                })
+                .then(Response=>{
+                    if(Response.data.success == true){
+                        this.removeSuccessAlert=true
+                    }else{
+                        this.failAlert=true
+                        this.getStudentsEnrolledClasses()
+                    }
+                })
+                .catch(error => {
+                    this.failAlert=true
+                    this.getStudentsEnrolledClasses()
+                    console.log(error.data)
+                });
             }
-            
-            
-        }
+        },
+
+        getStudentsEnrolledClasses(){
+            this.axios.get(this.$apiUrl+"/api/v1.0/EnrollmentManagement/students/"+this.studentDetails.studentID).then(Response=>(
+                this.classes=Response.data.enrollment.data[0].classes,
+                
+                this.classes.forEach(element => {
+                    if(element.paymentStatus == 1){
+                        element.freecard=false
+                    }else if(element.paymentStatus == -1){
+                        element.freecard=true
+                    }
+                })
+                
+            ))
+        },
 
         
 
