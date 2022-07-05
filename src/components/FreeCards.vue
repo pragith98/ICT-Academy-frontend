@@ -58,18 +58,12 @@
 
                 search: '',
                 headers: [
-                    { text: 'STUDENT',align: 'start', sortable: false, value:'fname'},
-                    { text: 'ID', sortable: false, value: 'id' },
+                    { text: 'STUDENT',align: 'start', sortable: false, value:'studentName'},
+                    { text: 'ID', sortable: false, value: 'studentID' },
                     { text: '', sortable: false, value: 'actions'}
                 ],
 
-                students: [
-                    {fname:'Saman Herath', id:'2021'},
-                    {fname:'Dasun Rathnayake', id:'2028'},
-                    {fname:'Kasun Bandara', id:'2035'},
-                    {fname:'Maheshi Ranathunga', id:'2077'},
-                
-                ],
+                students: [],
 
 
 
@@ -85,7 +79,18 @@
             }
         },
 
+        created(){
+            this.getStudentsInFreeCard()
+        },
+
         methods: {
+            getStudentsInFreeCard(){
+                this.axios.get(this.$apiUrl+"/api/v1.0/EnrollmentManagement/students/inFreeCard").then(Response=>(
+                    this.students=Response.data.data
+                ))
+            },
+
+
             deleteAlert(success){
                 this.successAlert = success;
             },
