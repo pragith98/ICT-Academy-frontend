@@ -339,7 +339,11 @@ export default {
                 .then(Response=>{
 
                     if(Response.data.success == true){
-                        this.deactivateClassEnrollments()
+                        if(this.showStatus == "Active"){
+                            this.changeClassEnrollmentStatus('1')
+                        }else if(this.showStatus == "Past"){
+                            this.changeClassEnrollmentStatus('0')
+                        }
 
                         this.hasSaved = true;
                         this.isEditing = !this.isEditing;
@@ -383,9 +387,9 @@ export default {
         },
 
 
-        deactivateClassEnrollments(){
+        changeClassEnrollmentStatus(status){
             this.axios.patch(this.$apiUrl+'/api/v1.0/EnrollmentManagement/students/'+this.student.studentID+'/classes',{
-                status:'0',
+                status:status,
             })
             .then(Response=>{
                 if(Response.data.success == true){
