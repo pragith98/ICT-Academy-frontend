@@ -2,7 +2,7 @@
   <v-row justify="end">
     <v-dialog v-model="dialog" scrollable max-width="700px" persistent>
         <template v-slot:activator="{ on, attrs }">
-            <v-btn class="blue-grey" dark depressed  v-bind="attrs" v-on="on">new Free Card<v-icon dark right>mdi-plus</v-icon></v-btn>
+            <v-btn @click="getStudentsNotInFreeCard()" class="blue-grey" dark depressed  v-bind="attrs" v-on="on">new Free Card<v-icon dark right>mdi-plus</v-icon></v-btn>
         </template>
         <v-card max-width="700" flat>
         <v-card-title class="heading-1 blue-grey lighten-4  blue-grey--text text--darken-2">Create Free Card Student</v-card-title>
@@ -12,7 +12,7 @@
             <v-form ref="form" v-model="valid" lazy-validation>
                 
                 <div>
-                    <v-card-text>You can add free card for student</v-card-text>
+                    <v-card-text>These students have <strong>not enrolled</strong> for any <strong>free-card</strong> yet. If you want, you can enroll them now.</v-card-text>
                     <v-card-title><v-spacer></v-spacer><v-text-field persistent-hint hint="*Use Name OR ID to search for a student" v-model="search" append-icon="mdi-magnify" label="Search Class" single-line ></v-text-field></v-card-title>
                     
                     <v-data-table :headers="headers" :items="students" :search="search">
@@ -77,18 +77,13 @@
 
                 search: '',
                 headers: [
-                    { text: 'STUDENT',align: 'start', sortable: false, value:'fname'},
-                    { text: 'ID',align: 'start', sortable: false, value:'id'},
+                    { text: 'STUDENT',align: 'start', sortable: false, value:'studentName'},
+                    { text: 'ID',align: 'start', sortable: false, value:'studentID'},
+                    { text: 'GRADE',align: 'start', sortable: true, value:'grade'},
                     { text: '', sortable: false, value: 'actions',align:'start'},
                 ],
 
-                students: [
-                    {fname:'Saman Herath', id:'2021'},
-                    {fname:'Dasun Rathnayake', id:'2028'},
-                    {fname:'Kasun Bandara', id:'2035'},
-                    {fname:'Maheshi Ranathunga', id:'2077'},
-                
-                ],
+                students: [],
                 
                 
 
@@ -102,42 +97,15 @@
 
         methods:{
 
-            switchLabel (bool) {
-                return bool?'Free Card':'No'
+            getStudentsNotInFreeCard(){
+                this.axios.get(this.$apiUrl+"/api/v1.0/EnrollmentManagement/students/notInFreeCard").then(Response=>(
+                    this.students=Response.data.data
+                ))
             },
 
-            giveFreeCard(id,bool){
-                if(bool == true){
-                    this.addSuccessAlert=true
-                    console.log(this.studentDetails.id,id,"   1")
-                }else{
-                    this.removeSuccessAlert=true
-                    console.log(this.studentDetails.id,id,"   0")
-                }
-                
-                
-            }
-
-            
-
-            
-        
-
-            
-            
-            
-            
-        
         }
     }
 </script>
 
-
-<style scoped>
-    .v-btn-toggle > .v-btn.v-btn--active{
-        background-color: red !important;
-        color:white !important;
-    }
-</style>
 
 
