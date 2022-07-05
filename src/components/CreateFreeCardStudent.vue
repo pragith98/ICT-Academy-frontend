@@ -12,7 +12,7 @@
             <v-form ref="form" v-model="valid" lazy-validation>
                 
                 <div>
-                    <v-card-text>These students have <strong>not enrolled</strong> for any <strong>free-card</strong> yet. If you want, you can enroll them now.</v-card-text>
+                    <v-card-text>These students have <strong>not enrolled</strong> for any <strong>free-card</strong> yet. Here you can see their enrolled classes and change those as free-card classes.</v-card-text>
                     <v-card-title><v-spacer></v-spacer><v-text-field persistent-hint hint="*Use Name OR ID to search for a student" v-model="search" append-icon="mdi-magnify" label="Search Class" single-line ></v-text-field></v-card-title>
                     
                     <v-data-table :headers="headers" :items="students" :search="search">
