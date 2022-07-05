@@ -77,7 +77,7 @@
 
                 breadcrumbs: [
                     { text: 'Classes', disabled: false, href: '/Classes' },
-                    { text: 'ClassDetails', disabled: true, href: '/Classes/ClassDetails' }
+                    { text: 'DeactivatedClasseDetails', disabled: true, href: '/Classes/DeactivatedClasseDetails' }
                 ],
 
                 successAlert:false,
