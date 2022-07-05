@@ -62,17 +62,10 @@ export default {
             dialog: false,
             valid:true,
             buttonName:'',
-            
-
-            errormsg:null,
-            
 
             addSuccessAlert:false,
             removeSuccessAlert:false,
             failAlert:false,
-
-            
-
 
             search: '',
             headers: [
@@ -107,6 +100,7 @@ export default {
                 .then(Response=>{
                     if(Response.data.success == true){
                         this.addSuccessAlert=true
+                        this.successAlert()
                     }else{
                         this.failAlert=true
                         this.getStudentsEnrolledClasses()
@@ -125,7 +119,8 @@ export default {
                 })
                 .then(Response=>{
                     if(Response.data.success == true){
-                        this.removeSuccessAlert=true
+                        this.removeSuccessAlert=
+                        this.successAlert()
                     }else{
                         this.failAlert=true
                         this.getStudentsEnrolledClasses()
@@ -142,27 +137,22 @@ export default {
         getStudentsEnrolledClasses(){
             this.axios.get(this.$apiUrl+"/api/v1.0/EnrollmentManagement/students/"+this.studentDetails.studentID).then(Response=>(
                 this.classes=Response.data.enrollment.data[0].classes,
-                
                 this.classes.forEach(element => {
-                    if(element.paymentStatus == 1){
-                        element.freecard=false
-                    }else if(element.paymentStatus == -1){
-                        element.freecard=true
+                    if(element.paymentStatus == '1'){
+                        element.freeCard=false
+                    }else if(element.paymentStatus == '-1'){
+                        element.freeCard=true
                     }
                 })
                 
             ))
         },
 
-        
 
-        
-       
-
-        
-        
-        
-        
+        successAlert(){
+            this.$emit('success',true)
+        },
+  
       
     }
 }
