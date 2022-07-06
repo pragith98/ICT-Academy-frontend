@@ -1,238 +1,98 @@
 <template>
     <v-row justify="end">
 
-            <!----------------------------- Alerts ---------------------------------->
-
-            <v-snackbar :timeout="3000" v-model="unsuccessfulCreateClass" color="red"  bottom ><v-icon left>mdi-alert-outline</v-icon> Class create <strong>failed</strong> </v-snackbar>
-           
-            <!----------------------------- Alerts ---------------------------------->
-
-        <v-dialog v-model="dialogMain" scrollable max-width="700px" persistent>
+            
+        <v-dialog v-model="dialog" scrollable max-width="700px" persistent>
             <template v-slot:activator="{ on, attrs }">
-                <v-btn @click="getClassDetails()" class="teal mr-5" small block dark depressed  v-bind="attrs" v-on="on">Edit<v-icon dark right>mdi-pencil</v-icon></v-btn>
+                <v-btn @click="getClassDetails(),getClassHall(),getTeachers()" class="teal mr-5" small block dark depressed  v-bind="attrs" v-on="on">Edit<v-icon dark right>mdi-pencil</v-icon></v-btn>
             </template>
             <v-card max-width="700" flat>
                 <v-card-title class="heading-1 blue-grey lighten-4  blue-grey--text text--darken-2">Edit Class</v-card-title>
                 
                 <v-divider></v-divider>
                 <v-card-text >
+                    <v-card-text>You can change details.</v-card-text>
                     <v-card flat max-width="750px" style="margin: auto">
                         
-                        
-                        <v-stepper v-model="e1" flat alt-labels>
-                            <v-stepper-header style="box-shadow:0px 0px 0px 0px" class="px-15">
-                                <v-stepper-step :complete="e1 > 1" step="1">
-                                    Select Teacher
-                                </v-stepper-step>
-                                <v-divider></v-divider>
+                        <v-form ref="form" v-model="valid" lazy-validation>
+                            <v-card class="mb-12" flat min-height="250px">
+                                <v-row dense>
+                                    <v-col cols="12" md="6" sm="6">
+                                        <v-autocomplete :items="teachers" v-model="teacher" :filter="teacherFilter" item-text="firstName" item-value="teacherID" label="Teacher" prepend-icon="mdi-account" :rules="teacherRules"></v-autocomplete>
+                                    </v-col>
 
-                                <v-stepper-step :complete="e1 > 2" step="2">
-                                    Select Subject
-                                </v-stepper-step>
-                                <v-divider></v-divider>
+                                    <v-col cols="12" md="6" sm="6">
+                                        <v-select @change="createClassName()" :items="grade" :rules="gradeRules" label="Grade" prepend-icon="mdi-card-bulleted" v-model="getGrade"></v-select>
+                                    </v-col>
 
-                                <v-stepper-step :complete="e1 > 3" step="3">
-                                    Class Details
-                                </v-stepper-step>
-                                <v-divider></v-divider>
+                                    <v-col cols="12" md="6" sm="6">
+                                        <v-select :items="feeType"  label="Fee Type" prepend-icon="mdi-form-select" v-model="getFeeType" :rules="feeTypeRules" Required></v-select>
+                                    </v-col>
 
-                                <v-stepper-step step="4">
-                                    Finish
-                                </v-stepper-step>
-                            </v-stepper-header>
-                            <v-divider></v-divider>
-                            <v-stepper-items>
-                                <v-form ref="form" v-model="valid" lazy-validation>
-                                    <v-stepper-content step="1">
-                                        <v-card class="mb-12" flat min-height="200px">
-                                            <v-row dense>
-                                                <v-card-text class="grey--text">
-                                                    You can change <strong>Teacher</strong> from below menu.
-                                                </v-card-text>
-                                                <v-col cols="12" md="12" sm="12">
-                                                    <v-card-text>
-                                                        <v-autocomplete :items="teachers" v-model="teacher" :filter="teacherFilter" item-text="firstName" item-value="teacherID" label="Teacher" prepend-icon="mdi-account" :rules="teacherRules"></v-autocomplete>
-                                                    </v-card-text>
-                                                </v-col>
-                                                <v-col cols="12" md="12" sm="12" align-self="center">
-                                                    <v-card-text class="grey--text">
-                                                        * Use Name or ID to search for a teacher 
-                                                    </v-card-text>
-                                                </v-col>
+                                    <v-col cols="12" md="6" sm="6">
+                                        <v-text-field v-model="fee" label="Fee" prepend-icon="mdi-cash-multiple" :rules="feeRules" Required prefix="RS." placeholder="0.00" clearable></v-text-field>
+                                    </v-col>
 
-                                            </v-row>
-                                            
-                                        </v-card>
-                                        <v-card-actions>
-                                            <v-spacer></v-spacer>
-                                            <v-btn outlined color="grey" @click="Reset(),scrollToTop(), dialogMain=false">Cancel</v-btn>
-                                            
-                                            <v-btn color="primary" @click="e1=2" depressed :disabled="!valid || !teacher">Next
-                                                <v-icon>mdi-chevron-right</v-icon>
-                                            </v-btn>
-                                        </v-card-actions>
-                                    </v-stepper-content>
+                                    <v-col cols="12" md="6" sm="6">
+                                        <v-select @change="createClassName()" :items="day" label="Day" prepend-icon="mdi-calendar" v-model="getDay" :rules="dayRules" Required ></v-select>
+                                    </v-col>
 
-                                    <v-stepper-content step="2">
-                                        <v-card class="mb-12" flat min-height="200px">
-                                            <v-row dense>
-                                                <v-card-text class="grey--text">
-                                                    You can change <strong>Category</strong> and the <strong>Subject</strong> from below menu.
-                                                </v-card-text>
-                                                <v-col cols="12" md="6" sm="6">
-                                                    <v-card-text>
-                                                        <v-autocomplete @click="getAllCategories(), subject.subjectID=''" @change="getSubjectsByCategory()"  prepend-icon="mdi-candy-outline" :items="categories" v-model="category" :filter="categoryFilter" item-text='categoryName' item-value="categoryID" label="Category"  :rules="subjectRules" return-object></v-autocomplete>
-                                                    </v-card-text>
-                                                </v-col>
+                                    <v-col cols="12" md="6" sm="6">
+                                        <v-select :items="location"  label="Location" prepend-icon="mdi-map-marker" v-model="getLocation" :rules="locationRules" Required :disabled="!getDay"></v-select>
+                                    </v-col>
 
-                                                <v-col cols="12" md="6" sm="6">
-                                                    <v-card-text>
-                                                        <v-autocomplete prepend-icon="mdi-format-align-center" :items="subjects" v-model="subject" :filter="subjectFilter" item-text='subjectName' item-value="subjectID" label="Subject" :rules="subjectRules" return-object></v-autocomplete>
-                                                    </v-card-text>
-                                                </v-col>
+                                    <v-col cols="12" md="6" sm="6">
+                                        <div>
+                                            <v-menu ref="startTimeMenu" v-model="startTimeMenu" :close-on-content-click="false" :nudge-right="40" :return-value.sync="startTime" transition="scale-transition" offset-y max-width="290px" min-width="290px">
+                                                <template v-slot:activator="{ on, attrs }">
+                                                    <v-text-field @change="createClassName()" v-model="startTime" label="Start Time" prepend-icon="mdi-clock-time-four-outline" readonly v-bind="attrs" v-on="on" :rules="timeRules" Required :disabled="!getDay"></v-text-field>
+                                                </template>
+                                                <v-time-picker v-if="startTimeMenu" v-model="startTime" full-width @click:minute="$refs.startTimeMenu.save(startTime)" ></v-time-picker>
+                                            </v-menu>
+                                        </div>
+                                    </v-col>
 
-                                            </v-row>
-                                            
-                                            <v-card color="grey lighten-3" flat class="pa-5">
-                                                <v-card-text>
-                                                    If you won't find the <strong>Subject</strong>, please create new <strong>Subject</strong>,
-                                                </v-card-text>
-                                                <div class="mt-5">
-                                                    <app-createSubject @success="successfulCreateSubjectAlert($event)" @failed="unsuccessfulCreateSubjectAlert($event)"></app-createSubject>
-                                                </div>
-                                            </v-card>
-                                            
-                                            
-                                        </v-card>
-                                        
-                                        <v-card-actions>
-                                            <v-spacer></v-spacer>
-                                            <v-btn outlined color="grey" @click="e1=1">
-                                                <v-icon >mdi-chevron-left</v-icon>
-                                                Back
-                                            </v-btn>
-                                            <v-btn color="primary" @click="e1=3" depressed :disabled="!valid || !subject || !category">Next
-                                                <v-icon>mdi-chevron-right</v-icon>
-                                            </v-btn>
-                                        </v-card-actions>
-                                    </v-stepper-content>
+                                    <v-col cols="12" md="6" sm="6">
+                                        <div>
+                                            <v-menu ref="endTimeMenu" v-model="endTimeMenu" :close-on-content-click="false" :nudge-right="40" :return-value.sync="endTime" transition="scale-transition" offset-y max-width="290px" min-width="290px">
+                                                <template v-slot:activator="{ on, attrs }">
+                                                    <v-text-field v-model="endTime" label="End Time" prepend-icon="mdi-clock-time-four-outline" readonly v-bind="attrs" v-on="on" :rules="timeRules" Required :disabled="!startTime"></v-text-field>
+                                                </template>
+                                                <v-time-picker v-if="endTimeMenu" v-model="endTime" full-width @click:minute="$refs.endTimeMenu.save(endTime)"></v-time-picker>
+                                            </v-menu>
+                                        </div>
+                                    </v-col>
 
-                                    <v-stepper-content step="3">
-                                        <v-card class="mb-12" flat min-height="250px">
-                                            <v-row dense>
+                                    <v-col cols="12" md="12" sm="12">
+                                        <v-text-field v-model="className" label="Class Name" prepend-icon="mdi-home-variant" :rules="nameRules" required ></v-text-field>
+                                    </v-col>
 
-                                                <v-col cols="12" md="12" sm="12">
-                                                    <v-select :items="grade" :rules="gradeRules" label="Grade" prepend-icon="mdi-card-bulleted" v-model="getGrade"></v-select>
-                                                </v-col>
+                                    <v-col cols="12" md="12" sm="12">
+                                        <v-divider></v-divider>
+                                        <v-switch color="red" @change="classStatus()"  inset v-model="status" label="Mark as a Deactivated Class"></v-switch>
+                                    </v-col>
 
-                                                <v-col cols="12" md="6" sm="6">
-                                                    <v-select :items="feeType"  label="Fee Type" prepend-icon="mdi-form-select" v-model="getFeeType" :rules="feeTypeRules" Required></v-select>
-                                                </v-col>
-
-                                                <v-col cols="12" md="6" sm="6">
-                                                    <v-text-field v-model="fee" label="Fee" prepend-icon="mdi-cash-multiple" :rules="feeRules" Required prefix="RS." placeholder="0.00" clearable></v-text-field>
-                                                </v-col>
-
-                                                <v-col cols="12" md="6" sm="6">
-                                                    <v-select :items="day" label="Day" prepend-icon="mdi-calendar" v-model="getDay" :rules="dayRules" Required ></v-select>
-                                                </v-col>
-
-                                                <v-col cols="12" md="6" sm="6">
-                                                    <v-select :items="location"  label="Location" prepend-icon="mdi-map-marker" v-model="getLocation" :rules="locationRules" Required :disabled="!getDay"></v-select>
-                                                </v-col>
-
-                                                <v-col cols="12" md="6" sm="6">
-                                                    <div>
-                                                        <v-menu ref="startTimeMenu" v-model="startTimeMenu" :close-on-content-click="false" :nudge-right="40" :return-value.sync="startTime" transition="scale-transition" offset-y max-width="290px" min-width="290px">
-                                                            <template v-slot:activator="{ on, attrs }">
-                                                                <v-text-field v-model="startTime" label="Start Time" prepend-icon="mdi-clock-time-four-outline" readonly v-bind="attrs" v-on="on" :rules="timeRules" Required :disabled="!getDay"></v-text-field>
-                                                            </template>
-                                                            <v-time-picker v-if="startTimeMenu" v-model="startTime" full-width @click:minute="$refs.startTimeMenu.save(startTime)" ></v-time-picker>
-                                                        </v-menu>
-                                                    </div>
-                                                </v-col>
-
-                                                <v-col cols="12" md="6" sm="6">
-                                                    <div>
-                                                        <v-menu ref="endTimeMenu" v-model="endTimeMenu" :close-on-content-click="false" :nudge-right="40" :return-value.sync="endTime" transition="scale-transition" offset-y max-width="290px" min-width="290px">
-                                                            <template v-slot:activator="{ on, attrs }">
-                                                                <v-text-field v-model="endTime" label="End Time" prepend-icon="mdi-clock-time-four-outline" readonly v-bind="attrs" v-on="on" :rules="timeRules" Required :disabled="!startTime"></v-text-field>
-                                                            </template>
-                                                            <v-time-picker v-if="endTimeMenu" v-model="endTime" full-width @click:minute="$refs.endTimeMenu.save(endTime)"></v-time-picker>
-                                                        </v-menu>
-                                                    </div>
-                                                </v-col>
-
-                                            </v-row>
-                                            
-                                        </v-card>
-                                        <v-card-actions>
-                                            <v-spacer></v-spacer>
-                                            <v-btn outlined color="grey" @click="e1=2">
-                                                <v-icon >mdi-chevron-left</v-icon>
-                                                Back
-                                            </v-btn>
-                                            <v-btn color="primary" @click="e1=4, createClassName()" depressed :disabled="!valid || !getFeeType || !fee || !getLocation || !getDay || !startTime || !endTime || !getGrade">Next
-                                                <v-icon>mdi-chevron-right</v-icon>
-                                            </v-btn>
-                                        </v-card-actions>
-                                    </v-stepper-content>
-
-                                    <v-stepper-content step="4">
-                                        <v-card  class="mb-12 text-center" height="100px" flat>
-                                            <v-col cols="12" md="12" sm="12">
-                                                <v-text-field v-model="className" label="Class Name" prepend-icon="mdi-home-variant" :rules="nameRules" required ></v-text-field>
-                                            </v-col>
-
-
-                                            <v-btn x-large color="primary" depressed>Save Class
-                                                <v-icon right>mdi-home-plus</v-icon>
-                                            </v-btn>
-                                            <br>
-                                            <v-btn text color="grey" class="mt-3" @click="Reset(), e1=1, dialogMain=false">Cancel</v-btn>
-                                        </v-card>
-
-                                        <v-card-actions>
-                                            <v-spacer></v-spacer>
-                                            <v-btn outlined color="grey" @click="e1=3">
-                                                <v-icon >mdi-chevron-left</v-icon>
-                                                Back
-                                            </v-btn>
-                                        </v-card-actions>
-                                    </v-stepper-content>
-                                </v-form>
+                                </v-row>
                                 
-                            </v-stepper-items>
-                        </v-stepper>
+                            </v-card>
+                        </v-form>
                     </v-card>   
                 
                 </v-card-text>
+                <v-divider></v-divider>
+
+                <v-card-actions>
+                    <v-spacer></v-spacer>
+                    <v-btn   @click="dialog = false" outlined color="grey">Cancel</v-btn>
+                    <v-btn  color="primary" @click="updateClass()" depressed>Save
+                        <v-icon left>mdi-content-save</v-icon>
+                    </v-btn>
+                </v-card-actions>
                 
             </v-card>
         
         </v-dialog>
 
-        <!----------------------------------- dialog box ------------------------------------------>
-
-        <v-dialog v-model="dialog" persistent max-width="400px">
-            <v-card>
-                <v-container class="text-center">
-                    <v-card-title>
-                        <v-row justify="center">
-                            <v-icon size="100" color="success">mdi-check-circle-outline</v-icon>
-                        </v-row>
-                    </v-card-title>
-                    <span class="text-h6 text-center">Class created <strong>successfully</strong> </span>
-                </v-container>
-                
-                
-                <v-card-actions style="justify-content: center">
-                    <v-btn @click="dialog=false" depressed block color="success">Ok</v-btn>
-                </v-card-actions>
-            </v-card>
-        </v-dialog>
-
-        <!----------------------------------- dialog box ------------------------------------------>
 
     </v-row>
 </template>
@@ -240,23 +100,15 @@
 
 
 <script>
-    import CreateSubject from './CreateSubject.vue'
     
 
     export default {
         props:['classDetails'],
-        components:{
-            'app-createSubject':CreateSubject
-        },
         data () {
             return {
-                dialogMain:false,
                 dialog:false,
 
                 valid:true,
-                e1: 1,
-
-                
 
                 getLocation:'',
                 getDay:'',
@@ -275,6 +127,8 @@
                 endTime: null,
 
                 teacher:null,
+                status:null,
+                showStatus:'',
                 subject:[{
                     subjectID:null, subjectName:null, medium:null
                 }],
@@ -283,16 +137,6 @@
                     categoryID:null, categoryName:null
                 }],
                 
-
-                
-                
-
-                
-
-                breadcrumbs: [
-                    { text: 'Classes', disabled: false, href: '/Classes' },
-                    { text: 'CreateClass', disabled: true, href: '/Class/CreateClass' }
-                ],
 
 
                 // -----------Validation rules-----------
@@ -343,13 +187,17 @@
             }
         },
 
-        created(){
-            this.getClassHall()
-            this.getTeachers()
-            this.getAllCategories()
-        },
 
         methods: {
+
+            classStatus(){
+                if(this.status == false){
+                    this.showStatus = "Active"
+                }else if(this.status == true){
+                    this.showStatus = "Deactivate"
+                }
+            },
+
             getClassDetails(){
                 this.axios.get(this.$apiUrl+"/api/v1.0/ClassManagement/classes/"+this.classDetails.classID)
                 .then(Response=>{
@@ -358,50 +206,28 @@
                     this.getDay=Response.data.class.data[0].day;
                     this.getFeeType=Response.data.class.data[0].feeType;
                     this.className=Response.data.class.data[0].className;
-                    this.fee=Response.data.class.data[0].classFee;
-                    
-                    this.startTime=this.changeTimeFormat(Response.data.class.data[0].startTime);
-                    this.endTime=this.changeTimeFormat(Response.data.class.data[0].endTime);
-                    // this.subject.subjectID=Response.data.class.data[0].subject.subjectID;
-                    // this.subject.subjectName=Response.data.class.data[0].subject.subjectName;
-                    // this.category.categoryID=Response.data.class.data[0].category.categoryID;
-                    // this.category.categoryName=Response.data.class.data[0].category.categoryName;
-                    // console.log(Response.data.class.data[0])
-                    //console.log(Response.data.class.data[0].grade)
-
                     this.category=Response.data.class.data[0].category;
                     this.subject=Response.data.class.data[0].subject;
+                    this.getGrade=Response.data.class.data[0].grade;
+                        
+                    this.startTime=this.changeTimeFormat(Response.data.class.data[0].startTime);
+                    this.endTime=this.changeTimeFormat(Response.data.class.data[0].endTime);
 
-                    console.log(this.category.categoryID)
-                    console.log(this.subject.subjectID)
-
-                    if(Response.data.class.data[0].grade==0){
-                        this.getGrade="Other";
-                        console.log(this.getGrade)
+                    if(Response.data.class.data[0].status=="Active"){
+                        this.status=false;
+                        this.showStatus="Active"
                     }else{
-                        this.getGrade=Response.data.class.data[0].grade;
-                        console.log(this.getGrade)
+                        this.status=true;
+                        this.showStatus="Deactivate"
                     }
                     
-                    
+                    const str=Response.data.class.data[0].classFee;
+                    this.fee=str.split('.')[0]
                 })
             },
 
             createClassName(){
-                this.className = this.subject.subjectName+"/Grd"+this.getGrade+"/"+this.getDay+"/"+this.startTime;
-            },
-
-            getSubjectsByCategory(){
-                this.axios.get(this.$apiUrl+"/api/v1.0/CategoryManagement/categories/"+this.category.categoryID+"/subjects").then(Response=>(
-                    this.subjects= Response.data.category.data[0].subjects
-                ))
-            },
-
-            getAllCategories(){
-                this.axios.get(this.$apiUrl+"/api/v1.0/CategoryManagement/categories").then(Response=>(
-                    this.categories= Response.data.category.data
-                ))
-                
+                this.className = this.subject.subjectName+"/Grd_"+this.getGrade+"/"+this.getDay+"/"+this.startTime;
             },
 
             getClassHall(){
@@ -448,21 +274,6 @@
                 return textOne.indexOf(searchText) > -1 || textTwo.indexOf(searchText) > -1
             },
 
-            subjectFilter (item, queryText) {
-                const textOne = item.subjectName.toLowerCase()
-                const textTwo = item.subjectID.toLowerCase()
-                const searchText = queryText.toLowerCase()
-
-                return textOne.indexOf(searchText) > -1 || textTwo.indexOf(searchText) > -1
-            },
-
-            categoryFilter (item, queryText) {
-                const textOne = item.categoryName.toLowerCase()
-                const textTwo = item.categoryID.toLowerCase()
-                const searchText = queryText.toLowerCase()
-
-                return textOne.indexOf(searchText) > -1 || textTwo.indexOf(searchText) > -1
-            },
 
             changeTimeFormat(time){
                 const str = time;
@@ -507,50 +318,90 @@
                     newHour=arr2[0];
                 }
                 return newHour+":"+newMin;
-            }
+            },
 
 
-            // createClass(){
-            //     if(this.$refs.form.validate()){
-            //         this.axios.post(this.$apiUrl+"/api/v1.0/ClassManagement/classes",{
-            //             className: this.className,
-            //             day: this.getDay,
-            //             startTime: this.startTime,
-            //             endTime : this.endTime,
-            //             grade : this.getGrade,
-            //             room: this.getLocation,
-            //             classFee: this.fee +".00",
-            //             feeType: this.getFeeType,
-            //             status: "Active",
-            //             subjectID: this.subject.subjectID,
-            //             categoryID: this.category.categoryID,
-            //             teacherID: this.teacher,
-            //             branchID: "BRNCH001",
+            updateClass(){
+                console.log(this.className)
+                console.log(this.getDay)
+                console.log(this.startTime)
+                console.log(this.endTime)
+                console.log(this.getGrade)
+                console.log(this.getLocation)
+                console.log(this.fee +".00")
+                console.log(this.getFeeType)
+                console.log(this.showStatus)
+                console.log(this.subject.subjectID)
+                console.log(this.category.categoryID)
+                console.log(this.teacher)
+                if(this.$refs.form.validate()){
+                    this.axios.patch(this.$apiUrl+"/api/v1.0/ClassManagement/classes/"+this.classDetails.classID,{
+                        className: this.className,
+                        day: this.getDay,
+                        startTime: this.startTime,
+                        endTime : this.endTime,
+                        grade : this.getGrade,
+                        room: this.getLocation,
+                        classFee: this.fee +".00",
+                        feeType: this.getFeeType,
+                        status: this.showStatus,
+                        subjectID: this.subject.subjectID,
+                        categoryID: this.category.categoryID,
+                        teacherID: this.teacher,
+                        branchID: "BRNCH001",
                         
                         
-            //         })
-            //         .then(Response=>{
+                    })
+                    .then(Response=>{
                         
-            //             if(Response.data.success == true){
-            //                 this.dialog = true
-            //                 this.e1=1
-            //                 this.Reset()
-            //             }else{
-            //                 this.unsuccessfulCreateClass = true;
-            //             }
-            //         })
-            //         .catch(error => {
-            //             this.unsuccessfulCreateClass = true;
-            //             console.log(error.data)
+                        if(Response.data.success == true){
+                            if(this.showStatus == "Active"){
+                                this.changeStudentEnrollmentStatus('1')
+                            }else if(this.showStatus == "Deactivate"){
+                                this.changeStudentEnrollmentStatus('0')
+                            }
+
+                            this.dialog = false
+                            this.Reset()
+                            this.successAlert()
+                        }else{
+                            this.failedAlert()
+                        }
+                    })
+                    .catch(error => {
+                        this.failedAlert()
+                        console.log(error.data)
                         
-            //         });
+                    });
                     
-            //     }
-            // },
+                }
+            },
+
+            successAlert(){
+                this.$emit('success',true)
+            },
+
+            failedAlert(){
+                this.$emit('failed',true)
+            },
 
 
+            changeStudentEnrollmentStatus(status){
+            this.axios.patch(this.$apiUrl+'/api/v1.0/EnrollmentManagement/classes/'+this.classDetails.classID+'/students',{
+                status:status,
+            })
+            .then(Response=>{
+                if(Response.data.success == true){
+                    console.log("Done")
+                }else{
+                    console.log("fail")
+                }
+            }).catch(error => {
+                console.log(error.data)
+                console.log("fail")
+            });
+        }
 
-            
 
 
         }
