@@ -57,7 +57,7 @@
                 headers: [
                     { text: 'NAME',align: 'start', sortable: false, value:'firstName'},
                     { text: 'GENDER', value:'sex'},
-                    { text: 'ADMISSION NO.', sortable: false, value: 'studentID' },
+                    { text: 'ID.', sortable: false, value: 'studentID' },
                     { text: 'GRADE', value: 'grade' },
                     { text: 'TELEPHONE NO.', sortable: false, value: 'telNo' },
                     { text: '', sortable: false, value: 'actions' },
