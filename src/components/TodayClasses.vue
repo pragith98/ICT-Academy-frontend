@@ -119,6 +119,7 @@
                 startedClassDetails:[],
                 newClassDetails:[],
                 
+                todayDate:'',
 
                 breadcrumbs: [
                     { text: 'Attendance', disabled: false, href: '/Attendance' },
@@ -135,16 +136,13 @@
         },
 
         created(){
+            this.getTodayDate()
             this.getClasses()
         },
 
         methods:{
 
             getClasses(){
-                // this.todayClasses=null
-                // this.startedClasses=null
-                // this.startedClassDetails=null
-                // this.newClassDetails=null
                 this.getStartedClasses()
                 this.getClasseDetails()
             },
@@ -200,8 +198,7 @@
                 var dd = String(today.getDate()).padStart(2, '0');
                 var mm = String(today.getMonth() + 1).padStart(2, '0');
                 var yyyy = today.getFullYear();
-                today = yyyy + '-' + mm + '-' + dd;
-                return today;
+                this.todayDate = yyyy + '-' + mm + '-' + dd;
             },
 
 
@@ -213,7 +210,7 @@
                 .then(Response=>{
                     if(Response.data.success == true){
                         this.classStartAlert=true
-                        //this.getClasses()
+                        this.getClasses()
                     }else{
                         this.startUnsuccessAlert=true
                     }
