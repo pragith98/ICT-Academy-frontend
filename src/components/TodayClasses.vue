@@ -141,6 +141,10 @@
         methods:{
 
             getClasses(){
+                // this.todayClasses=null
+                // this.startedClasses=null
+                // this.startedClassDetails=null
+                // this.newClassDetails=null
                 this.getStartedClasses()
                 this.getClasseDetails()
             },
@@ -149,7 +153,7 @@
                 this.axios.get(this.$apiUrl+"/api/v1.0/ClassManagement/classes",{
                 params:{
                     status: "Active",
-                    day:"Tuesday"
+                    day:"Thursday"
                 }
                 
                 }).then(Response=>(
@@ -164,24 +168,25 @@
                         todayClass=element;
                         var classID=element.classID;
 
-                        this.startedClasses.forEach(element => {
-                            if(element.classID==classID){
-                                this.startedClassDetails.push(todayClass)
-                            }else{
-                                this.newClassDetails.push(todayClass)
-                            }
-                        })
-
+                        if(this.startedClasses.length>0){
+                            this.startedClasses.forEach(element => {
+                                if(element.classID==classID){
+                                    this.startedClassDetails.push(todayClass)
+                                }else{
+                                    this.newClassDetails.push(todayClass)
+                                }
+                            })
+                        }else{
+                            this.newClassDetails=Response.data.class.data
+                        }
                     })
-                    
                 ))
-                
             },
 
             getStartedClasses(){
                 this.axios.get(this.$apiUrl+"/api/v1.0/AttendanceManagement/attendances",{
                 params:{
-                    date: "2022-07-06"
+                    date: "2022-07-07"
                 }
                 }).then(Response=>(
                     this.startedClasses=Response.data.attendance.data
@@ -201,13 +206,14 @@
 
 
             startClass(classID){
-                this.axios.patch(this.$apiUrl+'/api/v1.0/AttendanceManagement/attendances/classes',{
+                console.log(classID)
+                this.axios.post(this.$apiUrl+'/api/v1.0/AttendanceManagement/attendances/classes',{
                     classID: classID
                 })
                 .then(Response=>{
                     if(Response.data.success == true){
                         this.classStartAlert=true
-                        this.getClasses()
+                        //this.getClasses()
                     }else{
                         this.startUnsuccessAlert=true
                     }
@@ -216,9 +222,9 @@
                     this.startUnsuccessAlert=true
                     console.log(error.data)
                 });
-
-                
             },
+
+
 
             cancelAlert(success){
                 this.successAlert = success;
