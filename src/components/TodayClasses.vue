@@ -30,31 +30,31 @@
                 <v-card flat class="blue-grey lighten-5" outlined color="red">
                     <v-card-title class="heading-1 blue-grey lighten-4  blue-grey--text text--darken-2">Started Classes</v-card-title>
                     <v-row class="pa-5">
-                        <!-- <v-col lg="4" md="4" sm="6" cols="12" v-for="startedClassesDetails in startedClassesDetails" :key="startedClassesDetails.teacher">
+                        <v-col lg="4" md="4" sm="6" cols="12" v-for="startedClassDetails in startedClassDetails" :key="startedClassDetails.classID">
                             <v-card flat>
         
-                                <v-card-title style="background: #43A047" class="mb-2">
-                                    <div class="title white--text" v-if="(startedClassesDetails.subject).length<18">{{ startedClassesDetails.subject}}</div>
-                                    <div class="title white--text" v-else>{{ (startedClassesDetails.subject).substring(0,16)+".. " }}</div>
+                                <v-card-title style="background: #006994" class="mb-2">
+                                    <div class="title white--text" v-if="(startedClassDetails.subject.subjectName).length<18">{{ startedClassDetails.subject.subjectName}}</div>
+                                    <div class="title white--text" v-else>{{ (startedClassDetails.subject.subjectName).substring(0,16)+".. " }}</div>
                                     <v-spacer></v-spacer>
-                                    <div class="subtitle-1 white--text"><v-chip small>Grade:{{ startedClassesDetails.grade }} </v-chip></div>
+                                    <div class="subtitle-1 white--text"><v-chip small>Grade:{{ startedClassDetails.grade }} </v-chip></div>
                                 </v-card-title>
                                 
-                                <v-card-text><v-icon left>mdi-clock</v-icon> {{startedClassesDetails.time}} <br>
-                                <v-icon left>mdi-home</v-icon><v-chip small outlined>{{startedClassesDetails.location}}</v-chip> <br>
-                                <v-icon left>mdi-account</v-icon> {{startedClassesDetails.teacher}} </v-card-text>
+                                <v-card-text><v-icon left>mdi-clock</v-icon> {{startedClassDetails.time}} <br>
+                                <v-icon left>mdi-home</v-icon><v-chip small outlined>{{startedClassDetails.room}}</v-chip> <br>
+                                <v-icon left>mdi-account</v-icon> {{startedClassDetails.teacher.teacherName}} </v-card-text>
 
 
                                 <v-card-actions  class="pb-5">
-                                    <v-btn :to="{ path: '/Attendance/TodayClasses/MarkAttendanceDailyFee/'+startedClassesDetails.classID}" color="primary" dark outlined>Mark Attendance</v-btn>
+                                    <v-btn :to="{ path: '/Attendance/TodayClasses/MarkAttendanceDailyFee/'+startedClassDetails.classID}" color="primary" dark outlined>Mark Attendance</v-btn>
                                     <v-spacer></v-spacer>
-                                    <app-CancelClass class="mr-1" :classDetails='startedClasses'  @success="cancelAlert($event)" @failed="faileAlert($event)"></app-CancelClass>
+                                    <app-CancelClass class="mr-1" :classDetails='startedClassDetails'  @success="cancelAlert($event)" @failed="faileAlert($event)"></app-CancelClass>
                                 </v-card-actions>
                                 
                             </v-card>
                             
                             
-                        </v-col> -->
+                        </v-col>
 
                     </v-row>
                 </v-card>
@@ -64,29 +64,29 @@
                 <v-card flat  class="mt-6 blue-grey lighten-5">
                     <v-card-title class="heading-1 blue-grey lighten-4  blue-grey--text text--darken-2">New Classes</v-card-title>
                     <v-row class="pa-5">
-                        <!-- <v-col lg="4" md="4" sm="6" cols="12" v-for="newClasses in newClasses" :key="newClasses.classID">
+                        <v-col lg="4" md="4" sm="6" cols="12" v-for="newClassDetails in newClassDetails" :key="newClassDetails.classID">
                             <v-card flat>
         
                                 <v-card-title style="background: #43A047" class="mb-2">
-                                    <div class="title white--text" v-if="(newClasses.subject.subjectName).length<18">{{ newClasses.subject.subjectName }}</div>
-                                    <div class="title white--text" v-else>{{ (newClasses.subject.subjectName).substring(0,16)+".. " }}</div>
+                                    <div class="title white--text" v-if="(newClassDetails.subject.subjectName).length<18">{{ newClassDetails.subject.subjectName }}</div>
+                                    <div class="title white--text" v-else>{{ (newClassDetails.subject.subjectName).substring(0,16)+".. " }}</div>
                                     <v-spacer></v-spacer>
-                                    <div class="subtitle-1 white--text"><v-chip small>Grade:{{ newClasses.grade }} </v-chip></div>
+                                    <div class="subtitle-1 white--text"><v-chip small>Grade:{{ newClassDetails.grade }} </v-chip></div>
                                 </v-card-title>
                                 
-                                <v-card-text><v-icon left>mdi-clock</v-icon> {{newClasses.time}} <br>
-                                <v-icon left>mdi-home</v-icon><v-chip small outlined>{{newClasses.room}}</v-chip> <br>
-                                <v-icon left>mdi-account</v-icon> {{newClasses.teacher.teacherName}} </v-card-text>
+                                <v-card-text><v-icon left>mdi-clock</v-icon> {{newClassDetails.time}} <br>
+                                <v-icon left>mdi-home</v-icon><v-chip small outlined>{{newClassDetails.room}}</v-chip> <br>
+                                <v-icon left>mdi-account</v-icon> {{newClassDetails.teacher.teacherName}} </v-card-text>
 
 
                                 <v-card-actions  class="pb-5">
-                                    <v-btn depressed block dark color="#43A047" @click="startClass(newClasses.classID)">Start Class</v-btn>
+                                    <v-btn depressed block dark color="#43A047" @click="startClass(newClassDetails.classID)">Start Class</v-btn>
                                 </v-card-actions>
                                 
                             </v-card>
                             
                             
-                        </v-col> -->
+                        </v-col>
 
                     </v-row>
                 </v-card>
@@ -103,11 +103,11 @@
 
 <script>
     
-    // import CancelClass from './CancelClass.vue'
+    import CancelClass from './CancelClass.vue'
     export default{
-        // components:{
-        //     'app-CancelClass':CancelClass
-        // },
+        components:{
+            'app-CancelClass':CancelClass
+        },
         
         data(){
             return{
@@ -132,13 +132,17 @@
         },
 
         created(){
-            this.getStartedClasses()
-            this.getTodayClasses()
+            this.getClasses()
         },
 
         methods:{
 
-            getTodayClasses(){
+            getClasses(){
+                this.getStartedClasses()
+                this.getClasseDetails()
+            },
+
+            getClasseDetails(){
                 this.axios.get(this.$apiUrl+"/api/v1.0/ClassManagement/classes",{
                 params:{
                     status: "Active",
@@ -166,13 +170,6 @@
                         })
 
                     })
-
-                    // this.startedClassDetails.forEach(element => {
-                    //     console.log(element)
-                    // }),
-                    // this.newClassDetails.forEach(element => {
-                    //     console.log(element)
-                    // })
                     
                 ))
                 
@@ -187,6 +184,8 @@
                     this.startedClasses=Response.data.attendance.data
                 ))
             },
+
+
 
             getTodayDate(){
                 var today = new Date();
