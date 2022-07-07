@@ -12,8 +12,10 @@
 
             <!----------------------------- Alerts ---------------------------------->
 
+            <v-snackbar :timeout="5000" v-model="startUnsuccessAlert" color="red"  bottom ><v-icon left>mdi-alert-outline</v-icon> Class start <strong>failed</strong> </v-snackbar>
             <v-snackbar :timeout="5000" v-model="unsuccessAlert" color="red"  bottom ><v-icon left>mdi-alert-outline</v-icon> Class cancel <strong>failed</strong> </v-snackbar>
             <v-snackbar :timeout="5000" v-model="successAlert" color="green"  bottom><v-icon left>mdi-check</v-icon>Class cancel <strong>successful</strong> </v-snackbar>
+            
             
             <v-snackbar v-model="classStartAlert" :multi-line="multiLine">
                 Class start successfully. Now you can mark <strong>Attendance</strong> .
@@ -128,6 +130,7 @@
 
                 successAlert:false,
                 unsuccessAlert:false,
+                startUnsuccessAlert:false
             }
         },
 
@@ -197,14 +200,24 @@
             },
 
 
-            
-
-            
-
-
             startClass(classID){
-                console.log(classID)
-                this.classStartAlert=true
+                this.axios.patch(this.$apiUrl+'/api/v1.0/AttendanceManagement/attendances/classes',{
+                    classID: classID
+                })
+                .then(Response=>{
+                    if(Response.data.success == true){
+                        this.classStartAlert=true
+                        this.getClasses()
+                    }else{
+                        this.startUnsuccessAlert=true
+                    }
+                })
+                .catch(error => {
+                    this.startUnsuccessAlert=true
+                    console.log(error.data)
+                });
+
+                
             },
 
             cancelAlert(success){
