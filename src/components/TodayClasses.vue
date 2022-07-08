@@ -28,8 +28,8 @@
 
 
 
-            <template>
-                <v-card flat class="blue-grey lighten-5" outlined color="red">
+            <template >
+                <v-card flat class="blue-grey lighten-5" outlined color="red" >
                     <v-card-title class="heading-1 blue-grey lighten-4  blue-grey--text text--darken-2">Started Classes</v-card-title>
                     <v-row class="pa-5">
                         <v-col lg="4" md="4" sm="6" cols="12" v-for="startedClassDetails in startedClassDetails" :key="startedClassDetails.classID">
@@ -113,13 +113,14 @@
         
         data(){
             return{
-
-                todayClasses:[],
+                enrolledClasses:[],
+                classDetails:[],
                 startedClasses:[],
                 startedClassDetails:[],
                 newClassDetails:[],
                 
                 todayDate:'',
+                todayDay:'',
 
                 breadcrumbs: [
                     { text: 'Attendance', disabled: false, href: '/Attendance' },
@@ -137,59 +138,114 @@
 
         created(){
             this.getTodayDate()
-            this.getClasses()
+            this.getTodayDay()
+            this.getEnrolledClassDetails()
+            
+           // this.classDetails.forEach(element=>{console.log(element)})
+
         },
 
         methods:{
 
-            getClasses(){
-                this.getStartedClasses()
-                this.getClasseDetails()
-            },
-
-            getClasseDetails(){
-                this.axios.get(this.$apiUrl+"/api/v1.0/ClassManagement/classes",{
-                params:{
-                    status: "Active",
-                    day:"Thursday"
-                }
+            getEnrolledClassDetails(){
                 
+                this.classDetails.splice(0);
+                this.startedClassDetails.splice(0);
+                this.newClassDetails.splice(0);
+                var classDetails=[]
+
+                //------class details
+                this.axios.get(this.$apiUrl+"/api/v1.0/ClassManagement/classes",{
+                    params:{
+                        status: "Active",
+                        day:this.todayDay
+                    }
                 }).then(Response=>(
-                    this.todayClasses=Response.data.class.data,
-
-                    this.todayClasses.forEach(element => {
+                    classDetails=Response.data.class.data,
+                    classDetails.forEach(element => {
                         element.time=element.startTime+"-"+element.endTime
-                    }),
+                    })
+                )).then(
+                    //------enrolled classes
+                    this.axios.get(this.$apiUrl+"/api/v1.0/EnrollmentManagement/classes")
+                    .then(Response=>(
+                        
+                        this.enrolledClasses=Response.data.enrollment.data,
 
-                    this.todayClasses.forEach(element => {
-                        var todayClass=[]
-                        todayClass=element;
-                        var classID=element.classID;
+                        classDetails.forEach(element => {
+                            var classID=element.classID
+                            var classElements=element
 
-                        if(this.startedClasses.length>0){
-                            this.startedClasses.forEach(element => {
-                                if(element.classID==classID){
-                                    this.startedClassDetails.push(todayClass)
-                                }else{
-                                    this.newClassDetails.push(todayClass)
+                            this.enrolledClasses.forEach(element=>{
+                                if(element.classID == classID){
+                                    this.classDetails.push(classElements)
                                 }
                             })
-                        }else{
-                            this.newClassDetails=Response.data.class.data
+                            
+                        }) 
+                    ))
+                ).then(
+                    //------started classes
+                    this.axios.get(this.$apiUrl+"/api/v1.0/AttendanceManagement/attendances",{
+                        params:{
+                            date: this.todayDate
                         }
-                    })
-                ))
+                    }).then(Response=>(
+                        this.startedClasses=Response.data.attendance.data,
+
+                        
+                        this.classDetails.forEach(element=>{
+                            var classElements=element
+                            var classID=element.classID
+                            if(this.startedClasses.length == 0){
+                                this.newClassDetails.push(classElements)
+                            }else{
+                                this.startedClasses.forEach(element=>{
+                                    if(element.classID == classID){
+                                        this.startedClassDetails.push(classElements)
+                                    }
+                                })
+                            }      
+                        }),
+
+
+                        this.classDetails.forEach(element=>{
+                            var classElements=element
+                            var classID=element.classID
+
+
+                            var startedClassID=[]
+                            var allClassID=[]
+
+                            if(this.startedClasses.length != 0){
+
+                                this.startedClasses.forEach(element=>{
+                                    startedClassID.push(element.classID)
+                                })
+
+                                this.classDetails.forEach(element=>{
+                                    allClassID.push(element.classID)
+                                })
+
+                                startedClassID.sort()
+                                allClassID.sort()
+
+                                // ----------compaire and get non-match values
+                                let newClassID = allClassID.filter(x => startedClassID.indexOf(x) === -1);
+
+                                newClassID.forEach(element=>{
+                                    if(element == classID){
+                                        this.newClassDetails.push(classElements)
+                                    }
+                                    
+                                })
+                            }
+                        })    
+                    ))
+                )
+                
             },
 
-            getStartedClasses(){
-                this.axios.get(this.$apiUrl+"/api/v1.0/AttendanceManagement/attendances",{
-                params:{
-                    date: "2022-07-07"
-                }
-                }).then(Response=>(
-                    this.startedClasses=Response.data.attendance.data
-                ))
-            },
 
 
 
@@ -201,16 +257,22 @@
                 this.todayDate = yyyy + '-' + mm + '-' + dd;
             },
 
+            getTodayDay(){
+                const weekday = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
+                const d = new Date();
+                var day = weekday[d.getDay()];
+                this.todayDay = day
+            },
+
 
             startClass(classID){
-                console.log(classID)
                 this.axios.post(this.$apiUrl+'/api/v1.0/AttendanceManagement/attendances/classes',{
                     classID: classID
                 })
                 .then(Response=>{
                     if(Response.data.success == true){
                         this.classStartAlert=true
-                        this.getClasses()
+                        this.getEnrolledClassDetails()
                     }else{
                         this.startUnsuccessAlert=true
                     }
@@ -225,11 +287,64 @@
 
             cancelAlert(success){
                 this.successAlert = success;
+                this.getEnrolledClassDetails()
             },
             faileAlert(failed){
                 this.unsuccessAlert = failed;
             },
+
+
+
+            //getClasseDetails(){
+                // ---------empty array----------------
+            //     while(this.newClassDetails.length>0){
+            //         this.newClassDetails.pop()
+            //     }
+
+            //     this.axios.get(this.$apiUrl+"/api/v1.0/ClassManagement/classes",{
+            //     params:{
+            //         status: "Active",
+            //         day:"Thursday"
+            //     }
+                
+            //     }).then(Response=>(
+            //         this.todayClasses=Response.data.class.data,
+
+            //         this.todayClasses.forEach(element => {
+            //             element.time=element.startTime+"-"+element.endTime
+            //         }),
+
+            //         this.todayClasses.forEach(element => {
+            //             var todayClass=[]
+            //             todayClass=element;
+            //             var classID=element.classID;
+
+            //             if(this.startedClasses.length != 0){
+            //                 this.startedClasses.forEach(element => {
+            //                     if(element.classID==classID){
+            //                         this.startedClassDetails.push(todayClass)
+            //                     }else{
+            //                         this.newClassDetails.push(todayClass)
+            //                     }
+            //                 })
+            //             }else{
+            //                 this.newClassDetails=Response.data.class.data
+            //             }
+
+            //             while(todayClass.length>0){
+            //                 this.todayClass.pop()
+            //             }
+            //         })
+            //     ))
+            // },
         }
         
     }
 </script>
+
+
+
+// ---------empty array----------------
+                        while(this.table.length>0){
+                            this.table.pop()
+                        }
