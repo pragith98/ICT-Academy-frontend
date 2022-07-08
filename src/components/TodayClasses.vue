@@ -28,8 +28,8 @@
 
 
 
-            <template >
-                <v-card flat class="blue-grey lighten-5" outlined color="red" >
+            <template>
+                <v-card flat class="blue-grey lighten-5" outlined color="red">
                     <v-card-title class="heading-1 blue-grey lighten-4  blue-grey--text text--darken-2">Started Classes</v-card-title>
                     <v-row class="pa-5">
                         <v-col lg="4" md="4" sm="6" cols="12" v-for="startedClassDetails in startedClassDetails" :key="startedClassDetails.classID">
@@ -54,7 +54,6 @@
                                 </v-card-actions>
                                 
                             </v-card>
-                            
                             
                         </v-col>
 
