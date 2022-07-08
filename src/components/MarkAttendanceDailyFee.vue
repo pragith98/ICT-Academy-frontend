@@ -55,7 +55,7 @@
         },
         data () {
             return {
-                classID:'',
+                classID:this.$route.params.id,
 
                 dialog: false,
                 notifications: false,
@@ -95,6 +95,8 @@
                 
                 ],
 
+                classDetails:[],
+
                 breadcrumbs: [
                     { text: 'Attendance', disabled: false, href: '/Attendance' },
                     { text: 'Today Classes', disabled: false, href: '/Attendance/TodayClasses' },
@@ -104,7 +106,8 @@
         },
 
         created(){
-            this.classID=this.$route.params.id
+            //this.classID=this.$route.params.id
+            console.log(this.classID)
         },
 
         methods:{
