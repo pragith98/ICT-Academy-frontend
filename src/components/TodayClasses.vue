@@ -29,7 +29,7 @@
 
 
             <template>
-                <v-card flat class="blue-grey lighten-5" outlined color="red">
+                <v-card flat class="blue-grey lighten-5" outlined color="red" v-show="startedClassDetails.length>0">
                     <v-card-title class="heading-1 blue-grey lighten-4  blue-grey--text text--darken-2">Started Classes</v-card-title>
                     <v-row class="pa-5">
                         <v-col lg="4" md="4" sm="6" cols="12" v-for="startedClassDetails in startedClassDetails" :key="startedClassDetails.classID">
@@ -48,7 +48,8 @@
 
 
                                 <v-card-actions  class="pb-5">
-                                    <v-btn :to="{ path: '/Attendance/TodayClasses/MarkAttendanceDailyFee/'+startedClassDetails.classID}" color="primary" dark outlined>Mark Attendance</v-btn>
+                                    <v-btn v-if="startedClassDetails.feeType=='Daily'" :to="{ path: '/Attendance/TodayClasses/MarkAttendanceDailyFee/'+startedClassDetails.classID}" color="primary" dark outlined>Mark Attendance</v-btn>
+                                    <v-btn v-else :to="{ path: '/Attendance/TodayClasses/MarkAttendanceMonthlyFee/'+startedClassDetails.classID}" color="primary" dark outlined>Mark Attendance</v-btn>
                                     <v-spacer></v-spacer>
                                     <app-CancelClass class="mr-1" :todayDate="todayDate" :classDetails='startedClassDetails'  @success="cancelAlert($event)" @failed="faileAlert($event)"></app-CancelClass>
                                 </v-card-actions>
@@ -62,7 +63,7 @@
             </template>
 
             <template >
-                <v-card flat  class="mt-6 blue-grey lighten-5">
+                <v-card flat  class="mt-6 blue-grey lighten-5" v-show="newClassDetails.length>0">
                     <v-card-title class="heading-1 blue-grey lighten-4  blue-grey--text text--darken-2">New Classes</v-card-title>
                     <v-row class="pa-5">
                         <v-col lg="4" md="4" sm="6" cols="12" v-for="newClassDetails in newClassDetails" :key="newClassDetails.classID">
