@@ -2,7 +2,7 @@
   <v-row justify="end">
     <v-dialog v-model="dialog" scrollable max-width="450" persistent>
         <template v-slot:activator="{ on, attrs }">
-           <v-btn @click="selectedPayments=null" width="200" block class="teal" dark depressed  v-bind="attrs" v-on="on">Pay<v-icon dark right>mdi-cash-multiple</v-icon></v-btn>
+           <v-btn @click="selectedPayments=null,selectedPaymentStatus=null" width="200" block class="teal" dark depressed  v-bind="attrs" v-on="on">Pay<v-icon dark right>mdi-cash-multiple</v-icon></v-btn>
         </template>
         <v-card max-width="450" flat >
             <v-card-title class="heading-1 blue-grey lighten-4  blue-grey--text text--darken-2">Payment</v-card-title>
@@ -16,7 +16,7 @@
                             <div>
                                 <div class="pa-5">
                                     <legend> Payment Details </legend>
-                                    <v-data-table @input="getSelect($event)" :headers="headers" :items="payments" show-select item-key="no" dense hide-default-footer>
+                                    <v-data-table @input="getSelect($event),getSelectStatus($event)" :headers="headers" :items="payments" show-select item-key="no" dense hide-default-footer>
                                         <template v-slot:[`item.classFee`]="{ item }" >
                                             <v-text-field :rules="amountRules" class="centered-input" suffix=".00"  style="width:70px" v-model="item.fee" dense></v-text-field>
                                         </template>
@@ -43,7 +43,7 @@
             <v-card-actions>
                 <v-spacer></v-spacer>
                 <v-btn color="grey" @click="dialog = false" outlined>Cancel</v-btn>
-                <v-btn  color="primary" @click="dialog = false" depressed width="150" :disabled="!valid || selectedPayments=='' || !selectedPayments">Pay now</v-btn>
+                <v-btn  color="primary" @click="payNow()" depressed width="150" :disabled="!valid || selectedPayments=='' || !selectedPayments">Pay now</v-btn>
             </v-card-actions>
         
         </v-card>
@@ -77,7 +77,9 @@
                 ],
 
                 payments:[],
+
                 selectedPayments:[],
+                selectedPaymentStatus:[],
 
 
 
@@ -96,14 +98,18 @@
                 this.amount= this.selectedPayments.reduce((a,b)=>a+b,0)+'.00'
             },
 
+            getSelectStatus(values) {
+                this.selectedPaymentStatus = values.map(function(value){ return parseInt(value.no) })
+            },
+
             getFees(){
                 this.classFee=300
-                var paymentStatus=3
+                var paymentStatus=this.student.paymentStatus
                 var payment
-                var i=0
+                var i=1
                 if(paymentStatus>1){
                     var arrears= paymentStatus-1
-                    for(i; i < arrears; i++){
+                    for(i; i <= arrears; i++){
                         payment={no:i, description:"Arrears",fee:this.classFee}
                         this.payments.push(payment)
                     }
@@ -115,6 +121,33 @@
                 }
                 
             },
+
+            payNow(){
+                this.axios.patch(this.$apiUrl+'/api/v1.0/EnrollmentManagement/students/'+this.student.studentID+'/classes/'+this.classID+'/daily',{
+                    decrement: this.selectedPaymentStatus.reduce((a,b)=>a+b,0),
+
+                })
+                .then(Response=>{
+                    if(Response.data.success == true){
+                        this.successAlert()
+                        this.dialog=false
+                    }else{
+                        this.failedAlert()
+                    }
+                })
+                .catch(error => {
+                    this.failedAlert
+                    console.log(error.data)
+                });
+            },
+
+            successAlert(){
+                this.$emit('success',true)
+            },
+
+            failedAlert(){
+                this.$emit('failed',true)
+            }
         },
 
         created(){
