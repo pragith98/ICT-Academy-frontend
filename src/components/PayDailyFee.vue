@@ -2,7 +2,7 @@
   <v-row justify="end">
     <v-dialog v-model="dialog" scrollable max-width="450" persistent>
         <template v-slot:activator="{ on, attrs }">
-           <v-btn @click="selectedPayments=null,selectedPaymentStatus=null" width="200" block class="teal" dark depressed  v-bind="attrs" v-on="on">Pay<v-icon dark right>mdi-cash-multiple</v-icon></v-btn>
+           <v-btn @click="getFees()" width="200" block class="teal" dark depressed  v-bind="attrs" v-on="on">Pay<v-icon dark right>mdi-cash-multiple</v-icon></v-btn>
         </template>
         <v-card max-width="450" flat >
             <v-card-title class="heading-1 blue-grey lighten-4  blue-grey--text text--darken-2">Payment</v-card-title>
@@ -16,7 +16,7 @@
                             <div>
                                 <div class="pa-5">
                                     <legend> Payment Details </legend>
-                                    <v-data-table @input="getSelect($event),getSelectStatus($event)" :headers="headers" :items="payments" show-select item-key="no" dense hide-default-footer>
+                                    <v-data-table v-model="table" @input="getSelect($event),getSelectStatus($event)" :headers="headers" :items="payments" show-select item-key="no" dense hide-default-footer>
                                         <template v-slot:[`item.classFee`]="{ item }" >
                                             <v-text-field :rules="amountRules" class="centered-input" suffix=".00"  style="width:70px" v-model="item.fee" dense></v-text-field>
                                         </template>
@@ -57,7 +57,7 @@
 <script>
     
     export default {
-        props:['classID','student'],
+        props:['classDetails','student'],
         data(){
             return{
                 
@@ -100,10 +100,27 @@
 
             getSelectStatus(values) {
                 this.selectedPaymentStatus = values.map(function(value){ return parseInt(value.no) })
+                
             },
 
             getFees(){
-                this.classFee=300
+                // ---------empty array----------------
+                while(this.payments.length>0){
+                    this.payments.pop()
+                }
+                while(this.selectedPayments.length>0){
+                    this.selectedPayments.pop()
+                }
+                while(this.selectedPaymentStatus.length>0){
+                    this.selectedPaymentStatus.pop()
+                }
+                while(this.table.length>0){
+                    this.table.pop()
+                }
+
+                const classFeeWithDoubleZero = (this.classDetails.classFee).split('.')
+
+                this.classFee = classFeeWithDoubleZero[0]
                 var paymentStatus=this.student.paymentStatus
                 var payment
                 var i=1
@@ -123,8 +140,8 @@
             },
 
             payNow(){
-                this.axios.patch(this.$apiUrl+'/api/v1.0/EnrollmentManagement/students/'+this.student.studentID+'/classes/'+this.classID+'/daily',{
-                    decrement: this.selectedPaymentStatus.reduce((a,b)=>a+b,0),
+                this.axios.patch(this.$apiUrl+'/api/v1.0/EnrollmentManagement/students/'+this.student.studentID+'/classes/'+this.classDetails.classID+'/daily',{
+                    decrement: this.selectedPaymentStatus.length
 
                 })
                 .then(Response=>{
@@ -152,7 +169,6 @@
 
         created(){
             this.getFees()
-
         }
 
         
