@@ -20,12 +20,21 @@
             <template>
                 <v-card flat>
                     <v-card-title class="heading-1 blue-grey lighten-4  blue-grey--text text--darken-2">Attendance Details</v-card-title>
-                    <v-card-title><v-spacer></v-spacer><v-text-field v-model="search" append-icon="mdi-magnify" label="Search" single-line hide-details></v-text-field></v-card-title>
+                    <v-card-title>
+                        <v-spacer></v-spacer>
+                        <v-menu ref="menu" v-model="menu" :close-on-content-click="false" transition="scale-transition" offset-y min-width="auto">
+                            <template v-slot:activator="{ on, attrs }">
+                                <v-text-field clearable v-model="search" label="Search"  readonly v-bind="attrs" v-on="on" hint="* Use date to search for classes" persistent-hint single-line></v-text-field>
+                            </template>
+                            <v-date-picker v-model="search" @input="menu = false" ></v-date-picker>
+                        </v-menu>
+                    </v-card-title>
+
                     <template>
                         <div>
                             <v-data-table :headers="headers" :items="classes" :search="search">
                                 <template v-slot:[`item.actions`]="{ item }">
-                                    <app-ClassConductedDates :classDetails="item.id" :className="item.name"></app-ClassConductedDates>
+                                    <app-ClassConductedDates :classDetails="item.classID" :className="item.className"></app-ClassConductedDates>
                                 </template>
                             </v-data-table>
                         </div>
@@ -51,27 +60,21 @@
 
         data () {
             return {
-                menu:false,
+                activePicker: null,
+                date: '2022-07-15',
+                menu: false,
+
+
 
                 search: '',
                 headers: [
-                    { text: 'CLASS',align: 'start', sortable: false, value:'name'},
-                    { text: 'TEACHER', sortable: false, value: 'teacher' },
-                    { text: 'SUBJECT', sortable: false, value: 'subject' },
-                    { text: 'GRADE',sortable: true, value: 'grade' },
+                    { text: 'CLASS',align: 'start', sortable: false, value:'className'},
+                    { text: 'ABSENT STUDENTS', sortable: false, value:'absentCount'},
+                    { text: 'PRESENT STUDENTS', sortable: false, value:'presentCount'},
                     { value: 'actions', sortable: false,align:'start' },
                 ],
 
-                classes: [
-                    {name:'Sinhala 8', teacher:'Mr.Smantha Bandara', grade:'8', subject:'Sinhala', fee:'1500.00', startTime:'08:00', endTime:'10:00', location:'Hall 1', day:'Sunday', id:'clz8673', color:'green'},
-                    {name:'Maths 8', teacher:'Mr.Kelum Saranga', grade:'8', subject:'Maths', fee:'1500.00', startTime:'08:00', endTime:'10:00', location:'Hall 3', day:'Monday', id:'clz8473', color:'red'},
-                    {name:'Science 9', teacher:'Ms.Nirosha Damayanthi', grade:'9', subject:'Science', fee:'1500.00', startTime:'08:00', endTime:'10:00', location:'Hall 2', day:'Sunday', id:'clz8883', color:'blue'},
-                    {name:'History 6', teacher:'Mr.Nimal Santha', grade:'6', subject:'History', fee:'1500.00', startTime:'08:00', endTime:'10:00', location:'Hall 1', day:'Sunday', id:'clz9473', color:'brown'},
-                    {name:'Sinhala 7', teacher:'Mr.Kusal Bandara', grade:'7', subject:'Sinhala', fee:'1500.00', startTime:'08:00', endTime:'10:00', location:'Online', day:'Sunday', id:'clz8403', color:'grey'},
-
-                    
-                    
-                ],
+                classes: [],
 
                 breadcrumbs: [
                     { text: 'Attendance', disabled: false, href: '/Attendance' },
@@ -83,7 +86,40 @@
             }
         },
 
+        created(){
+            this.getAllClasses(this.date)
+        },
+
         methods: {
+            getAllClasses(date){
+                this.axios.get(this.$apiUrl+"/api/v1.0/AttendanceManagement/attendances",{
+                params:{
+                    date: date
+                }
+                
+                }).then(Response=>(
+                    this.classes=Response.data.attendance.data,
+                    this.classes.forEach(element=>{
+                        var student=element.students
+                        var absentCount = 0
+                        var presentCount = 0
+                        student.forEach(element=>{
+                            if(element.attendStatus==1){
+                                presentCount += 1
+                            }else{
+                                absentCount += 1
+                            }
+                        })
+                        element.absentCount=absentCount
+                        element.presentCount=presentCount
+                        
+                    })
+
+                ))
+            },
+
+
+
             deleteAlert(success){
                 this.successAlert = success;
             },
