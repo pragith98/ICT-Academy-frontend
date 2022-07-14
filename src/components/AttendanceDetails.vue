@@ -8,14 +8,6 @@
             </v-breadcrumbs>
         <v-container>
 
-            <v-snackbar :timeout="3000" v-model="unsuccessAlert" color="red"  bottom ><v-icon left>mdi-alert-outline</v-icon> Student delete <strong>failed</strong> </v-snackbar>
-            <v-snackbar :timeout="3000" v-model="successAlert" color="green"  bottom><v-icon left>mdi-check</v-icon>Student delete <strong>successful</strong> </v-snackbar>
-            
-            
-            
-            
-
-            
 
             <template>
                 <v-card flat>
@@ -34,7 +26,7 @@
                         <div>
                             <v-data-table :headers="headers" :items="classes" :search="search">
                                 <template v-slot:[`item.actions`]="{ item }">
-                                    <app-ViewAttendaceDetails :classDetails="item" :conductedDate="date"></app-ViewAttendaceDetails>
+                                    <app-ViewAttendaceDetails @success="reCreate($event)" :classDetails="item" :conductedDate="date"></app-ViewAttendaceDetails>
                                 </template>
                             </v-data-table>
                         </div>
@@ -120,11 +112,10 @@
 
 
 
-            deleteAlert(success){
-                this.successAlert = success;
-            },
-            faileAlert(failed){
-                this.unsuccessAlert = failed;
+
+            reCreate(success){
+                this.getAllClasses()
+                console.log(success)
             },
         }
     }
