@@ -227,7 +227,7 @@
             },
 
             createClassName(){
-                this.className = this.subject.subjectName+"/Grd_"+this.getGrade+"/"+this.getDay+"/"+this.startTime;
+                this.className = this.subject.subjectName+"/Grd"+this.getGrade+"/"+this.getDay+"/"+this.startTime;
             },
 
             getClassHall(){
