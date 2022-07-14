@@ -24,9 +24,9 @@
                         <v-spacer></v-spacer>
                         <v-menu ref="menu" v-model="menu" :close-on-content-click="false" transition="scale-transition" offset-y min-width="auto">
                             <template v-slot:activator="{ on, attrs }">
-                                <v-text-field clearable v-model="search" label="Search"  readonly v-bind="attrs" v-on="on" hint="* Use date to search for classes" persistent-hint single-line></v-text-field>
+                                <v-text-field clearable v-model="search" label="Search"  readonly v-bind="attrs" v-on="on" hint="* Use date to search for previous class attendance" persistent-hint single-line></v-text-field>
                             </template>
-                            <v-date-picker v-model="search" @input="menu = false" ></v-date-picker>
+                            <v-date-picker v-model="date" @input="menu = false,getAllClasses()" ></v-date-picker>
                         </v-menu>
                     </v-card-title>
 
@@ -61,7 +61,7 @@
         data () {
             return {
                 activePicker: null,
-                date: '2022-07-15',
+                date: (new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().substr(0, 10),
                 menu: false,
 
 
@@ -87,14 +87,14 @@
         },
 
         created(){
-            this.getAllClasses(this.date)
+            this.getAllClasses()
         },
 
         methods: {
-            getAllClasses(date){
+            getAllClasses(){
                 this.axios.get(this.$apiUrl+"/api/v1.0/AttendanceManagement/attendances",{
                 params:{
-                    date: date
+                    date: this.date
                 }
                 
                 }).then(Response=>(
