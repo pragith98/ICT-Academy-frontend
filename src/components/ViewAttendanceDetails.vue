@@ -1,24 +1,24 @@
 <template>
-  <v-row justify="end">
+  <v-row justify="center">
     <v-dialog v-model="dialog" scrollable max-width="700px" persistent>
         <template v-slot:activator="{ on, attrs }">
-            <v-btn color="primary" small dark depressed outlined v-bind="attrs" v-on="on">Students<v-icon dark right>mdi-account-group</v-icon></v-btn>
+            <v-btn @click="getStudents()" color="primary" small dark depressed v-bind="attrs" v-on="on">Students<v-icon dark right>mdi-account-group</v-icon></v-btn>
         </template>
         <v-card max-width="700" flat>
-        <v-card-title class="heading-1 blue lighten-4 primary--text">Student Attendance</v-card-title>
+        <v-card-title class="heading-1 blue-grey lighten-4  blue-grey--text text--darken-2">Student Attendance</v-card-title>
         
         <v-divider></v-divider>
         <v-card-text style="height: 800px;">
             <v-form ref="form" v-model="valid" lazy-validation>
                 
                 <div>
-                    <v-card-text>Attendance Details of <strong>{{className}}</strong> on <strong>{{conductedDate}}</strong>  </v-card-text>
+                    <v-card-text>Attendance Details of <strong>{{classDetails.className}}</strong> on <strong>{{conductedDate}}</strong>  </v-card-text>
                     <v-card-title><v-spacer></v-spacer><v-text-field persistent-hint hint="* Use Name OR ID to search for a student" v-model="search" append-icon="mdi-magnify" label="Search" single-line ></v-text-field></v-card-title>
                     
                     <v-data-table :headers="headers" :items="students" :search="search">
                         <template v-slot:[`item.actions`]="{ item }">
                             <v-card-actions>
-                                <v-switch color="blue" @change="updateAttendance(item.id,item.attendance)" inset v-model="item.attendance" :label="switchLabel(item.attendance)" class="mr-3"></v-switch>
+                                <v-switch color="blue" @change="markAttendance(item.studentID,item.attendance)" inset v-model="item.attendance" :label="switchLabel(item.attendance)" class="mr-3"></v-switch>
                             </v-card-actions>
                         </template>
                     </v-data-table>
@@ -54,7 +54,7 @@
 
 <script>
 export default {
-    props:['classDetails', 'conductedDate','className'],
+    props:['classDetails', 'conductedDate'],
     data(){
         return{
             
@@ -71,34 +71,14 @@ export default {
 
             search: '',
             headers: [
-                { text: 'Student',align: 'start', sortable: false, value:'fname'},
-                { text: 'ID',align: 'start', sortable: false, value:'id'},
-                { text: '', sortable: false, value: 'actions',align:'end'},
-            ],
-
-            students: [
-                {fname:'Saman', lname:'Herath', id:'2025', attendance:true},
-                {fname:'Dasun', lname:'Rathnayake', id:'2028', attendance:true},
-                {fname:'Kasun', lname:'Bandara', id:'2035', attendance:false},
-                {fname:'Maheshi', lname:'Ranathunga', id:'2077', attendance:true},
-                {fname:'Saman', lname:'Herath', id:'2043', attendance:false},
-                {fname:'Dasun', lname:'Rathnayake', id:'2022', attendance:false},
-                {fname:'Kasun', lname:'Bandara', id:'2038', attendance:true},
-                {fname:'Maheshi', lname:'Ranathunga', id:'3477', attendance:true},
-                {fname:'Saman', lname:'Herath', id:'2020', attendance:true},
-                {fname:'Dasun', lname:'Rathnayake', id:'2078', attendance:true},
-                {fname:'Kasun', lname:'Bandara', id:'2026', attendance:true},
-                {fname:'Maheshi', lname:'Ranathunga', id:'2099', attendance:false},
-                {fname:'Saman', lname:'Herath', id:'2001', attendance:false},
-                {fname:'Dasun', lname:'Rathnayake', id:'2528', attendance:true},
-                {fname:'Kasun', lname:'Bandara', id:'5035', attendance:true},
-                {fname:'Maheshi', lname:'Ranathunga', id:'2448', attendance:true},
-                {fname:'Saman', lname:'Herath', id:'2021', attendance:true},
-                {fname:'Dasun', lname:'Rathnayake', id:'9328', attendance:true},
-                {fname:'Kasun', lname:'Bandara', id:'2082', attendance:true},
-                {fname:'Maheshi', lname:'Ranathunga', id:'2117', attendance:true},
+                { text: 'STUDENT',align: 'start', sortable: false, value:'studentName'},
+                { text: 'ID', sortable: false, value: 'studentID' },
+                { text: "MARKED TIME", value: 'time', sortable: false,align:'start' },
+                { text: "ATTENDANCE", value: 'actions', sortable: false,align:'start' },
                 
             ],
+
+            students: [],
             
             
 
@@ -111,26 +91,52 @@ export default {
     
 
     methods:{
-        
 
-        updateAttendance(id,bool){
-            var attendance
-            if(bool == true){
-                attendance=1
-                this.addSuccessAlert=true
-                console.log(this.classDetails+" "+id+" "+attendance+" "+this.conductedDate)
-            }else{
-                attendance=0
-                this.addSuccessAlert=true
-                console.log(this.classDetails+" "+id+" "+attendance+" "+this.conductedDate)
-            }
-            
-            
+        show(id){
+            console.log(id)
         },
 
         switchLabel (bool) {
             return bool?'Present ':'Absent  '
         },
+
+        getStudents(){
+            this.axios.get(this.$apiUrl+"/api/v1.0/AttendanceManagement/attendances/classes/"+this.classDetails.classID,{
+                params:{
+                    date: this.conductedDate
+                }
+            }).then(Response=>{
+                this.students=Response.data.attendance.data[0].students
+
+                this.students.forEach(element => {
+                    if(element.attendStatus == '0'){
+                        element.attendance=false
+                    }else if(element.attendStatus == '1'){
+                        element.attendance=true
+                    }
+                })
+            })
+        },
+        
+
+        // updateAttendance(id,bool){
+        //     var attendance
+        //     if(bool == true){
+        //         attendance=1
+        //         this.addSuccessAlert=true
+        //         console.log(this.classDetails+" "+id+" "+attendance+" "+this.conductedDate)
+        //     }else{
+        //         attendance=0
+        //         this.addSuccessAlert=true
+        //         console.log(this.classDetails+" "+id+" "+attendance+" "+this.conductedDate)
+        //     }
+            
+            
+        // },
+
+        // switchLabel (bool) {
+        //     return bool?'Present ':'Absent  '
+        // },
 
 
         
