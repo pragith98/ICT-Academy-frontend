@@ -294,57 +294,8 @@
             },
 
 
-
-            //getClasseDetails(){
-                // ---------empty array----------------
-            //     while(this.newClassDetails.length>0){
-            //         this.newClassDetails.pop()
-            //     }
-
-            //     this.axios.get(this.$apiUrl+"/api/v1.0/ClassManagement/classes",{
-            //     params:{
-            //         status: "Active",
-            //         day:"Thursday"
-            //     }
-                
-            //     }).then(Response=>(
-            //         this.todayClasses=Response.data.class.data,
-
-            //         this.todayClasses.forEach(element => {
-            //             element.time=element.startTime+"-"+element.endTime
-            //         }),
-
-            //         this.todayClasses.forEach(element => {
-            //             var todayClass=[]
-            //             todayClass=element;
-            //             var classID=element.classID;
-
-            //             if(this.startedClasses.length != 0){
-            //                 this.startedClasses.forEach(element => {
-            //                     if(element.classID==classID){
-            //                         this.startedClassDetails.push(todayClass)
-            //                     }else{
-            //                         this.newClassDetails.push(todayClass)
-            //                     }
-            //                 })
-            //             }else{
-            //                 this.newClassDetails=Response.data.class.data
-            //             }
-
-            //             while(todayClass.length>0){
-            //                 this.todayClass.pop()
-            //             }
-            //         })
-            //     ))
-            // },
         }
         
     }
 </script>
 
-
-
-// ---------empty array----------------
-                        while(this.table.length>0){
-                            this.table.pop()
-                        }
