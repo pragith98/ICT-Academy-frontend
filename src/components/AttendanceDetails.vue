@@ -34,7 +34,7 @@
                         <div>
                             <v-data-table :headers="headers" :items="classes" :search="search">
                                 <template v-slot:[`item.actions`]="{ item }">
-                                    <app-ClassConductedDates :classDetails="item.classID" :className="item.className"></app-ClassConductedDates>
+                                    <app-ViewAttendaceDetails :classDetails="item" :conductedDate="date"></app-ViewAttendaceDetails>
                                 </template>
                             </v-data-table>
                         </div>
@@ -50,12 +50,12 @@
 
 <script>
     
-    import ClassConductedDates from './ClassConductedDates.vue'
+    import ViewAttendaceDetails from './ViewAttendanceDetails.vue'
 
     export default {
         
         components:{
-            'app-ClassConductedDates':ClassConductedDates
+            'app-ViewAttendaceDetails':ViewAttendaceDetails
         },
 
         data () {
