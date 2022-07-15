@@ -161,12 +161,12 @@ export default {
             .then(() => {
                 window.Email && window.Email.send({
                     Host : "smtp.gmail.com",
-                    Username : "lakshanj1ace@gmail.com",
-                    Password : "nymefuphawvotnst",
+                    Username : this.$emailAddress,
+                    Password : this.$emailPassword,
                     To : emailAddress,
-                    From : "lakshanj1ace@gmail.com",
+                    From : this.$emailAddress,
                     Subject : "Login Details",
-                    Body : `Hello, <br>You got a new message from <b>ICT Academy</b>.<br><br>Your account was created successfully. Please use the given Password and Username to log into the system.<br><br><b>User name:</b> ${emailAddress}<br><b>Password:</b> ${password}<br><br><i>Please change the password as soon as you log in to the system.</i><br><br>Best wishes,<br>ICT Academy - Hakmana<br>076 9198533`
+                    Body : `Hello, <br>You got a new message from <b>ICT Academy</b>.<br><br>Your account was created successfully. Please use the given Password and Username to log into the system.<br><br><b>User name:</b> ${emailAddress}<br><b>Password:</b> ${password}<br><br><i>Please change the password as soon as you log in to the system.</i><br><br>Best wishes,<br>ICT Academy - Hakmana<br>${this.$tpNo}`
                 }).then(
                     message => console.log(message)
                 );
