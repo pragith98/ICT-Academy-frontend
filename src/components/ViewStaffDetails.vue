@@ -87,7 +87,7 @@
                     <v-card-text class="grey--text">Class Details</v-card-text>
 
                     <v-col cols="12" md="6" sm="6">
-                        <v-select :items="branch" item-text='branchName' item-value="branchID" :rules="branchRules" label="Branch" prepend-icon="mdi-sitemap" v-model="getBranch"></v-select>
+                        <v-select disabled :items="branch" item-text='branchName' item-value="branchID" :rules="branchRules" label="Branch" prepend-icon="mdi-sitemap" v-model="getBranch"></v-select>
                     </v-col>
 
                     <v-col cols="12" md="6" sm="6">

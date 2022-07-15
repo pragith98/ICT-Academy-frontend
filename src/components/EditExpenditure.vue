@@ -122,7 +122,7 @@
                         expenseAmount:this.amount+".00",
                         date:this.date,
                         handlerStaffID:"STAFF001",
-                        branchID:"BRNCH001",
+                        branchID:localStorage.getItem('branch'),
                     })
                     .then(Response=>{
                         if(Response.data.success == true){

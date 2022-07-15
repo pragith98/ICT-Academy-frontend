@@ -141,7 +141,7 @@
                         date:this.date,
                         employeeID:this.staff.staffID,
                         handlerStaffID:"STAFF001",
-                        branchID:"BRNCH001",
+                        branchID:localStorage.getItem('branch'),
                     })
                     .then(Response=>{
                         if(Response.data.success == true){

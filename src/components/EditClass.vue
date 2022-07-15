@@ -231,7 +231,7 @@
             },
 
             getClassHall(){
-                this.axios.get(this.$apiUrl+"/api/v1.0/BranchManagement/branches/"+'BRNCH001')
+                this.axios.get(this.$apiUrl+"/api/v1.0/BranchManagement/branches/"+localStorage.getItem('branch'))
                 .then(Response=>{
                     var halls=Response.data.branch.data[0].noOfRooms;
 
@@ -348,7 +348,7 @@
                         subjectID: this.subject.subjectID,
                         categoryID: this.category.categoryID,
                         teacherID: this.teacher,
-                        branchID: "BRNCH001",
+                        branchID: localStorage.getItem('branch'),
                         
                         
                     })
@@ -392,9 +392,9 @@
             })
             .then(Response=>{
                 if(Response.data.success == true){
-                    console.log("Done")
+                    console.log(status)
                 }else{
-                    console.log("fail")
+                    console.log(status)
                 }
             }).catch(error => {
                 console.log(error.data)
