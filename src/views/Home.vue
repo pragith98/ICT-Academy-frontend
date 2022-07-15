@@ -92,7 +92,7 @@
 
         created(){
             localStorage.setItem('branch', 'BRNCH001') //set localStorage to branch details
-
+            localStorage.setItem('userID', 'STAFF001') //set localStorage to branch details
 
             this.getClassDetails();
             this.getStudentCount();
