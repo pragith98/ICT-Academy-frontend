@@ -126,7 +126,7 @@
                                 <v-row justify="center" dense >
 
                                     <v-col cols="12" md="6" sm="6">
-                                       <v-select :items="branch" item-text='branchName' item-value="branchID" :rules="branchRules" label="Branch" prepend-icon="mdi-sitemap" v-model="getBranch"></v-select>
+                                        <v-text-field disabled v-model="branch.branchName"  :rules="branchRules" label="Branch" prepend-icon="mdi-sitemap"></v-text-field>
                                     </v-col>
 
                                     <v-col cols="12" md="6" sm="6">
@@ -232,7 +232,6 @@ export default {
             parent:'Mother',
             getGender:'',
             getGrade:'',
-            getBranch:'',
             title:'',
 
             activePicker: null,
@@ -336,7 +335,7 @@ export default {
                     email:this.email,
                     status:"Active",
                     joinedDate:this.joingDate,
-                    branchID:this.getBranch,
+                    branchID:this.branch.branchID,
                     title:this.title,
                     parentName:this.parentName,
                     parentType:this.parent,
@@ -400,6 +399,12 @@ export default {
             this.enrollFaile = failed;
         },
 
+        getBranch(branchID){
+            this.axios.get(this.$apiUrl+"/api/v1.0/BranchManagement/branches/"+branchID).then(Response=>(
+                this.branch= Response.data.branch.data[0]
+            ))
+        }
+
         
         
       
@@ -407,10 +412,7 @@ export default {
 
     
     created(){
-        this.axios.get(this.$apiUrl+"/api/v1.0/BranchManagement/branches").then(Response=>(
-            this.branch= Response.data.branch.data
-            
-        ))
+        this.getBranch(localStorage.getItem('branch'))
     }
 
 

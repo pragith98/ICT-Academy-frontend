@@ -107,7 +107,7 @@
                                 <v-row justify="center" dense >
 
                                     <v-col cols="12" md="6" sm="6">
-                                        <v-select :items="branch" item-text='branchName' item-value="branchID" :rules="branchRules" label="Branch" prepend-icon="mdi-sitemap" v-model="getBranch"></v-select>
+                                        <v-text-field disabled v-model="branch.branchName"  :rules="branchRules" label="Branch" prepend-icon="mdi-sitemap"></v-text-field>
                                     </v-col>
 
                                     <v-col cols="12" md="6" sm="6">
@@ -174,7 +174,6 @@ export default {
             nicNo:'',
             nicType:'old',
 
-            getBranch:'',
 
             activePicker: null,
             date: null,
@@ -258,7 +257,7 @@ export default {
                     address:this.address,
                     email:this.email,
                     joinedDate:this.joingDate,
-                    branchID: this.getBranch,
+                    branchID: this.branch.branchID,
                     status:"Active",
                     
 
@@ -312,14 +311,18 @@ export default {
             this.unsuccess=true
         },
 
+        getBranch(branchID){
+            this.axios.get(this.$apiUrl+"/api/v1.0/BranchManagement/branches/"+branchID).then(Response=>(
+                this.branch= Response.data.branch.data[0]
+            ))
+        }
+
         
       
     },
 
     created(){
-        this.axios.get(this.$apiUrl+"/api/v1.0/BranchManagement/branches").then(Response=>(
-            this.branch= Response.data.branch.data
-        ) )
+        this.getBranch(localStorage.getItem('branch'))
     }
 
     
