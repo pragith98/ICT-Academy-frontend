@@ -55,7 +55,7 @@
 
 
 <script>
-    
+    import { loadScript } from "vue-plugin-load-script";
     export default {
         props:['classDetails','student'],
         data(){
@@ -68,7 +68,7 @@
 
                 paySuccessAlert:false,
                 
-                
+                studentEmail:'',
 
                 table:[],
                 headers: [
@@ -164,11 +164,39 @@
 
             failedAlert(){
                 this.$emit('failed',true)
-            }
+            },
+
+
+
+            getStudent(studentID){
+                this.axios.get(this.$apiUrl+"/api/v1.0/StudentManagement/students/"+studentID).then(Response=>{
+                    this.studentEmail=Response.data.student.data[0].email
+                })
+            },
+
+            sendInvoice(emailAddress,password){
+                loadScript("https://smtpjs.com/v3/smtp.js")
+                .then(() => {
+                    window.Email && window.Email.send({
+                        Host : "smtp.gmail.com",
+                        Username : this.$emailAddress,
+                        Password : this.$emailPassword,
+                        To : emailAddress,
+                        From : this.$emailAddress,
+                        Subject : "Password Reset",
+                        Body : `Hello,<br>You got a new message from <b>ICT Academy</b>.<br><br>Your account password reset successfully. Please use the given password to log into the system. <br><br><b>User name:</b> ${emailAddress}<br><b>Password:</b> ${password}<br><br><i>Please change the password as soon as you log in to the system.</i><br><br>Best wishes,<br>ICT Academy - Hakmana<br>${this.$tpNo}`
+                    }).then(
+                        message => console.log(message)
+                    );
+                }).catch(() => {
+                    // Failed to fetch script
+                });
+            },
         },
 
         created(){
             this.getFees()
+            console.log(this.student)
         }
 
         
