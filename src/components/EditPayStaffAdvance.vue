@@ -140,7 +140,7 @@
                         advanceAmount:this.amount+".00",
                         date:this.date,
                         employeeID:this.staff.staffID,
-                        handlerStaffID:"STAFF001",
+                        handlerStaffID: localStorage.getItem('userID'),
                         branchID:localStorage.getItem('branch'),
                     })
                     .then(Response=>{
