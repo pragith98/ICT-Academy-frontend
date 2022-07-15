@@ -6,6 +6,11 @@ require('./assets/custom-globle.css');
 
 Vue.prototype.$apiUrl="http://127.0.0.1:8000"  //////////////change this address when change the backend server
 
+Vue.prototype.$emailAddress="lakshanj1ace@gmail.com"  //////////////system email
+Vue.prototype.$emailPassword="nymefuphawvotnst"  //////////////system email password
+Vue.prototype.$tpNo="076 9198533"  //////////////system TP no.
+
+
 Vue.config.productionTip = false
 
 new Vue({
