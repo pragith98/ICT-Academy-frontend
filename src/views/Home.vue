@@ -69,7 +69,7 @@
                 cardlist:[
                     {name:'STUDENTS', count:"", icon:'mdi-account-group', color:'purple lighten-2'},
                     {name:'TEACHERS', count:"", icon:'mdi-human-male-board', color:'pink lighten-2'},
-                    {name:'STAFF', count:"", icon:'mdi-account-multiple', color:'brown'},
+                    {name:'EMPLOYEES', count:"", icon:'mdi-account-multiple', color:'brown'},
                     {name:'CLASSES', count:"", icon:'mdi-google-classroom', color:'blue'},
                     
                 ],
@@ -159,7 +159,7 @@
                     this.staffCount=Response.data.staff.meta.staff_count,
 
                     this.cardlist.forEach(element => {
-                        if(element.name=="STAFF"){
+                        if(element.name=="EMPLOYEES"){
                             element.count=this.staffCount
                         }
                     })
