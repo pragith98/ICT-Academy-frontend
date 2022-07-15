@@ -146,6 +146,9 @@
                 })
                 .then(Response=>{
                     if(Response.data.success == true){
+                        //call get student function
+                        this.getStudent(this.student.studentID)
+                        
                         this.successAlert()
                         this.dialog=false
                     }else{
@@ -171,6 +174,9 @@
             getStudent(studentID){
                 this.axios.get(this.$apiUrl+"/api/v1.0/StudentManagement/students/"+studentID).then(Response=>{
                     this.studentEmail=Response.data.student.data[0].email
+
+                    //call send recept function
+                    this.sendReceipt()
                 })
             },
 
@@ -211,7 +217,7 @@
 
         created(){
             this.getFees()
-            console.log(this.student)
+            
         }
 
         
