@@ -91,6 +91,9 @@
         },
 
         created(){
+            localStorage.setItem('branch', 'BRNCH001') //set localStorage to branch details
+
+
             this.getClassDetails();
             this.getStudentCount();
             this.getTeacherCount();
