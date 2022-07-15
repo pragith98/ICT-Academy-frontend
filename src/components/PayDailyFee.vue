@@ -174,17 +174,32 @@
                 })
             },
 
-            sendInvoice(emailAddress,password){
+            sendReceipt(){
                 loadScript("https://smtpjs.com/v3/smtp.js")
                 .then(() => {
                     window.Email && window.Email.send({
                         Host : "smtp.gmail.com",
                         Username : this.$emailAddress,
                         Password : this.$emailPassword,
-                        To : emailAddress,
+                        To : this.studentEmail,
                         From : this.$emailAddress,
-                        Subject : "Password Reset",
-                        Body : `Hello,<br>You got a new message from <b>ICT Academy</b>.<br><br>Your account password reset successfully. Please use the given password to log into the system. <br><br><b>User name:</b> ${emailAddress}<br><b>Password:</b> ${password}<br><br><i>Please change the password as soon as you log in to the system.</i><br><br>Best wishes,<br>ICT Academy - Hakmana<br>${this.$tpNo}`
+                        Subject : "Payment Receipt",
+                        Body : 
+                        `Hello,<br>
+                        You got a new message from <b>ICT Academy</b>.<br><br>
+
+                        Your payment for ${this.classDetails.className} class was successful. on ${(new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().substr(0, 10)} <br><br><b>
+                        Student ID: ${this.student.studentID}<br>
+                        Student Name: ${this.student.studentName}<br><br>
+
+                        Amount: Rs.${(this.selectedPaymentStatus.length)*this.classFee}
+
+                        <i>If any doubt please contact the class immediately</i><br><br>
+                        
+                        Best wishes,<br>
+                        ICT Academy - Hakmana<br>
+                        ${this.$tpNo}`
+
                     }).then(
                         message => console.log(message)
                     );
