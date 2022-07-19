@@ -44,7 +44,9 @@
                                 
                                 <v-card-text><v-icon left>mdi-clock</v-icon> {{startedClassDetails.time}} <br>
                                 <v-icon left>mdi-home</v-icon><v-chip small outlined>{{startedClassDetails.room}}</v-chip> <br>
-                                <v-icon left>mdi-account</v-icon> {{startedClassDetails.teacher.teacherName}} </v-card-text>
+                                <div v-if="(startedClassDetails.teacher.teacherName).length<28"><v-icon left>mdi-account</v-icon>{{ startedClassDetails.teacher.teacherName }}</div>
+                                <div v-else><v-icon left>mdi-account</v-icon>{{ (startedClassDetails.teacher.teacherName).substring(0,28)+".. " }}</div>
+                                </v-card-text>
 
 
                                 <v-card-actions  class="pb-5">
@@ -78,7 +80,9 @@
                                 
                                 <v-card-text><v-icon left>mdi-clock</v-icon> {{newClassDetails.time}} <br>
                                 <v-icon left>mdi-home</v-icon><v-chip small outlined>{{newClassDetails.room}}</v-chip> <br>
-                                <v-icon left>mdi-account</v-icon> {{newClassDetails.teacher.teacherName}} </v-card-text>
+                                <div v-if="(newClassDetails.teacher.teacherName).length<28"><v-icon left>mdi-account</v-icon>{{ newClassDetails.teacher.teacherName }}</div>
+                                <div v-else><v-icon left>mdi-account</v-icon>{{ (newClassDetails.teacher.teacherName).substring(0,28)+".. " }}</div>
+                                </v-card-text>
 
 
                                 <v-card-actions  class="pb-5">
