@@ -26,7 +26,7 @@
         <v-card-actions>
             <v-spacer></v-spacer>
             <v-btn  color="grey" outlined depressed @click="dialog=false" >Cancel</v-btn>
-            <v-btn  color="primary"  depressed @click="enrollStudent()" :disabled="!selectedStudents">Submit</v-btn>
+            <v-btn  color="primary"  depressed @click="enrollStudent()" :disabled="!selectedStudents || selectedStudents==''">Enroll Selected Students</v-btn>
         </v-card-actions>
 
 
