@@ -10,8 +10,16 @@
         <!-- ---------------------------------overlay for waiting ----------------------------------------->
         <v-overlay :value="overlay">
             <div class="text-center">
-                <v-progress-circular indeterminate size="64"></v-progress-circular><br><br>
-                <p>Please wait..</p>
+                <div v-if="overlayMessage">
+                    <v-progress-circular indeterminate size="64"></v-progress-circular><br><br>
+                    <p>Please wait..</p>
+                </div>
+                <div v-else>
+                    <p>It seems spent more time. Please refresh!</p>
+                    <v-btn color="white" depressed class="black--text" @click="reloadPage()">click here</v-btn>
+                </div>
+                
+                
             </div>
         </v-overlay>
         <!-- ---------------------------------overlay for waiting ----------------------------------------->
@@ -75,7 +83,7 @@
 
             <template >
                 <v-card flat  class="mt-6 blue-grey lighten-5" v-show="newClassDetails.length>0">
-                    <v-card-title class="heading-1 blue-grey lighten-4  blue-grey--text text--darken-2">New Classes</v-card-title>
+                    <v-card-title class="heading-1 blue-grey lighten-4  blue-grey--text text--darken-2">Scheduled Classes</v-card-title>
                     <v-row class="pa-5">
                         <v-col lg="4" md="4" sm="6" cols="12" v-for="newClassDetails in newClassDetails" :key="newClassDetails.classID">
                             <v-card flat>
@@ -147,7 +155,9 @@
 
                 successAlert:false,
                 unsuccessAlert:false,
-                startUnsuccessAlert:false
+                startUnsuccessAlert:false,
+
+                overlayMessage:true
             }
         },
 
@@ -156,12 +166,21 @@
             this.getTodayDate()
             this.getTodayDay()
             this.getEnrolledClassDetails()
+
+            setTimeout(()=>{
+                if(this.overlay != false){
+                    this.overlayMessage=false
+                }
+            },500)
             
-           // this.classDetails.forEach(element=>{console.log(element)})
+           
 
         },
 
         methods:{
+            reloadPage(){
+                location.reload();
+            },
 
             getEnrolledClassDetails(){
                 
@@ -304,6 +323,8 @@
                     //this.overlay=false
                 });
             },
+
+
 
 
 
