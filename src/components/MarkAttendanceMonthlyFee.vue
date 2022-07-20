@@ -133,6 +133,7 @@
                             //     this.addSuccessAlert=true,
                             //     this.getStudents()
                             // ) )
+                            this.addSuccessAlert=true,
                             this.getStudents()
 
                             
@@ -162,6 +163,7 @@
                             //     this.removeSuccessAlert=true,
                             //     this.getStudents()
                             // ))
+                            this.removeSuccessAlert=true,
                             this.getStudents()
 
                         }else{
