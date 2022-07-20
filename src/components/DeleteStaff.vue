@@ -18,7 +18,7 @@
                 <v-card-actions>
                     <v-spacer></v-spacer>
                     <v-btn color="grey" @click="dialog = false" outlined>Cancel</v-btn>
-                    <v-btn color="error" @click="dialog = false, deleteStaff()" depressed>Delete
+                    <v-btn :loading="loading" color="error" @click="deleteStaff()" depressed>Delete
                         <v-icon right>mdi-delete</v-icon>
                     </v-btn>
                 </v-card-actions>
@@ -34,19 +34,27 @@
         props:['staff'],
         data: () => ({
             dialog: false,
-            
+            loading:false,
         }),
 
         methods:{
             deleteStaff(){
+                this.loading=true
                 this.axios.delete(this.$apiUrl+'/api/v1.0/StaffManagement/staffs/'+this.staff.staffID)
                     .then(Response=>{
                         if(Response.data.success == true){
                             this.successAlert();
+                            this.loading=false
+                            this.dialog=false
                         }else{
                             this.failedAlert();
                         }
-                    })
+                    }).catch(error => {
+                        this.loading=false
+                        this.failedAlert()
+                        console.log(error.data)
+                        
+                    });
             },
 
             successAlert(){

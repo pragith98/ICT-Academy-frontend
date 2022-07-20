@@ -2,7 +2,7 @@
     <v-row justify="start">
         <v-dialog v-model="dialog" persistent max-width="400px">
             <template v-slot:activator="{ on, attrs }">
-                <v-btn class="error" fab dark x-small depressed v-bind="attrs" v-on="on"><v-icon dark>mdi-delete</v-icon></v-btn>
+                <v-btn  class="error" fab dark x-small depressed v-bind="attrs" v-on="on"><v-icon dark>mdi-delete</v-icon></v-btn>
             </template>
             <v-card>
                 <v-container class="text-center">
@@ -18,7 +18,7 @@
                 <v-card-actions>
                     <v-spacer></v-spacer>
                     <v-btn color="grey" @click="dialog = false" outlined>Cancel</v-btn>
-                    <v-btn color="error" @click="deleteClass()" depressed>Delete
+                    <v-btn :loading="loading" color="error" @click="deleteClass()" depressed>Delete
                         <v-icon right>mdi-delete</v-icon>
                     </v-btn>
                 </v-card-actions>
@@ -34,22 +34,26 @@
         props:['classDetails'],
         data: () => ({
             dialog: false,
+            loading:false,
             
         }),
 
         methods:{
 
             deleteClass(){
+                this.loading=true
                 this.axios.delete(this.$apiUrl+'/api/v1.0/ClassManagement/classes/'+this.classDetails.classID)
                     .then(Response=>{
                         if(Response.data.success == true){
                             this.dialog = false
                             this.successAlert();
+                            this.loading=false
                         }else{
                             this.failedAlert();
                         }
                     })
                     .catch(error => {
+                        this.loading=false
                         this.failedAlert()
                         console.log(error.data)
                         

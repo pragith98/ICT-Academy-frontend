@@ -20,7 +20,7 @@
                 <v-card-actions>
                     <v-spacer></v-spacer>
                     <v-btn color="grey" @click="dialog = false" outlined>Cancel</v-btn>
-                    <v-btn color="error" @click=" deleteSubjectCategory()" depressed>Delete
+                    <v-btn :loading="loading" color="error" @click=" deleteSubjectCategory()" depressed>Delete
                         <v-icon right>mdi-delete</v-icon>
                     </v-btn>
                 </v-card-actions>
@@ -56,17 +56,19 @@
         props:['subjectCategory'],
         data: () => ({
             dialog: false,
-            
+            loading:false,
         }),
 
         methods:{
 
             deleteSubjectCategory(){
+                this.loading=true
                 this.axios.delete(this.$apiUrl+'/api/v1.0/CategoryManagement/categories/'+this.subjectCategory.categoryID)
                 .then(Response=>{
                     if(Response.data.success == true){
                         this.successAlert();
                         this.dialog = false
+                        this.loading=false
                     }else{
                         this.failedAlert();
                     }
@@ -74,6 +76,7 @@
                 .catch(error => {
                     this.failedAlert()
                     console.log(error.data)
+                    this.loading=false
                     
                     
                 });
