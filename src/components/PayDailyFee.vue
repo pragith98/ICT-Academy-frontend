@@ -2,7 +2,7 @@
   <v-row justify="end">
     <v-dialog v-model="dialog" scrollable max-width="450" persistent>
         <template v-slot:activator="{ on, attrs }">
-           <v-btn @click="getFees()" width="200" block class="teal" dark depressed  v-bind="attrs" v-on="on">Pay<v-icon dark right>mdi-cash-multiple</v-icon></v-btn>
+           <v-btn :disabled="show<=0" @click="getFees()" width="200" block class="teal" depressed  v-bind="attrs" v-on="on" color="white--text">Pay<v-icon dark right>mdi-cash-multiple</v-icon></v-btn>
         </template>
         <v-card max-width="450" flat >
             <v-card-title class="heading-1 blue-grey lighten-4  blue-grey--text text--darken-2">Payment</v-card-title>
@@ -57,7 +57,7 @@
 <script>
     import { loadScript } from "vue-plugin-load-script";
     export default {
-        props:['classDetails','student'],
+        props:['show','classDetails','student'],
         data(){
             return{
                 loading:false,
