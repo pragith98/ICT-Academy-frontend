@@ -171,7 +171,7 @@
                 if(this.overlay != false){
                     this.overlayMessage=false
                 }
-            },500)
+            },5000)
             
            
 
