@@ -2,7 +2,7 @@
   <v-row justify="end" class="px-0 mx-0">
     <v-dialog v-model="dialog" scrollable max-width="700px" persistent>
         <template v-slot:activator="{ on, attrs }">
-            <v-btn :disabled="!studentID|| !valid" @click="selectedClasses=null" block width="8px" depressed color="success"   v-bind="attrs" v-on="on">Enroll Now</v-btn>
+            <v-btn :disabled="!studentID|| !valid" @click="selectedClasses=null, getAllClasses()" block width="8px" depressed color="success"   v-bind="attrs" v-on="on">Enroll Now</v-btn>
         </template>
         <v-card max-width="700" flat>
         <v-card-title class="heading-1 blue-grey lighten-4  blue-grey--text text--darken-2">Enrollment</v-card-title>
@@ -77,20 +77,13 @@ export default {
         
     },
     
-    created(){
-        this.getAllClasses()
-    },
-
+    
     methods:{
 
         getAllClasses(){
-            this.axios.get(this.$apiUrl+"/api/v1.0/ClassManagement/classes",{
-            params:{
-                status: "Active"
-            }
-            
-            }).then(Response=>(
-                this.classes=Response.data.class.data
+            this.axios.get(this.$apiUrl+"/api/v1.0/EnrollmentManagement/students/"+this.studentID+"/notInStudent").then(Response=>(
+                this.classes=Response.data.classes
+                //console.log(Response.data.classes)
             ))
         },
 
