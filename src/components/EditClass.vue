@@ -84,7 +84,7 @@
                 <v-card-actions>
                     <v-spacer></v-spacer>
                     <v-btn   @click="dialog = false" outlined color="grey">Cancel</v-btn>
-                    <v-btn  color="primary" @click="updateClass()" depressed>Save
+                    <v-btn :loading="loading"  color="primary" @click="updateClass()" depressed>Save
                         <v-icon left>mdi-content-save</v-icon>
                     </v-btn>
                 </v-card-actions>
@@ -107,7 +107,7 @@
         data () {
             return {
                 dialog:false,
-
+                loading:false,
                 valid:true,
 
                 getLocation:'',
@@ -322,19 +322,8 @@
 
 
             updateClass(){
-                console.log(this.className)
-                console.log(this.getDay)
-                console.log(this.startTime)
-                console.log(this.endTime)
-                console.log(this.getGrade)
-                console.log(this.getLocation)
-                console.log(this.fee +".00")
-                console.log(this.getFeeType)
-                console.log(this.showStatus)
-                console.log(this.subject.subjectID)
-                console.log(this.category.categoryID)
-                console.log(this.teacher)
                 if(this.$refs.form.validate()){
+                    this.loading=true
                     this.axios.patch(this.$apiUrl+"/api/v1.0/ClassManagement/classes/"+this.classDetails.classID,{
                         className: this.className,
                         day: this.getDay,
@@ -360,7 +349,7 @@
                             }else if(this.showStatus == "Deactivate"){
                                 this.changeStudentEnrollmentStatus('0')
                             }
-
+                            this.loading=false
                             this.dialog = false
                             this.Reset()
                             this.successAlert()
@@ -371,7 +360,7 @@
                     .catch(error => {
                         this.failedAlert()
                         console.log(error.data)
-                        
+                        this.loading=false
                     });
                     
                 }

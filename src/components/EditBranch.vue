@@ -42,7 +42,7 @@
         <v-card-actions>
             <v-spacer></v-spacer>
             <v-btn   @click="dialog = false" outlined color="grey">Cancel</v-btn>
-            <v-btn :disabled="!valid || !tp || !address || !halls" color="primary" @click="updateBranch(), dialog = false" depressed>Save
+            <v-btn :loading="loading" :disabled="!valid || !tp || !address || !halls" color="primary" @click="updateBranch(), dialog = false" depressed>Save
                 <v-icon left>mdi-content-save</v-icon>
             </v-btn>
         </v-card-actions>
@@ -65,7 +65,7 @@
             return {
 
                 dialog: false,
-
+                loading:false,
                 valid:true,
                 
                 branchName:'',
@@ -117,7 +117,7 @@
 
             updateBranch(){
                 if(this.$refs.form.validate()){
-                    
+                    this.loading=true
 
                     this.axios.patch(this.$apiUrl+'/api/v1.0/BranchManagement/branches/'+this.branchDetails.branchID,{
                         branchName:this.branchName,
@@ -130,6 +130,7 @@
                         if(Response.data.success == true){
                             this.dialog = false
                             this.successAlert()
+                            this.loading=false
                         }else{
 
                             this.failedAlert()
@@ -138,7 +139,7 @@
                     .catch(error => {
                         this.failedAlert()
                         console.log(error.data)
-                        
+                        this.loading=false
                     });
 
                 }

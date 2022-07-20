@@ -45,7 +45,7 @@
                 <v-card-actions>
                     <v-spacer></v-spacer>
                     <v-btn   @click="dialog=false" outlined color="grey" >Cancel</v-btn>
-                    <v-btn :disabled="!valid " color="primary" @click="updateExpense()" depressed >Save
+                    <v-btn :loading="loading" :disabled="!valid " color="primary" @click="updateExpense()" depressed >Save
                         <v-icon left>mdi-content-save</v-icon>
                     </v-btn>
                 </v-card-actions>
@@ -67,7 +67,7 @@
         data () {
             return {
                 dialog:false,
-
+                loading:false,
                 valid:true,
                 Search: '',
 
@@ -117,6 +117,7 @@
 
             updateExpense(){
                 if(this.$refs.form.validate()){
+                    this.loading=true
                     this.axios.patch(this.$apiUrl+'/api/v1.0/ExpenditureManagement/expenditures/'+this.expenditure.expenseID,{
                         expense:this.description,
                         expenseAmount:this.amount+".00",
@@ -128,7 +129,7 @@
                         if(Response.data.success == true){
                             this.successAlert(),
                             this.dialog=false
-                            
+                            this.loading=false
                         }else{
                             this.failedAlert()
                         }
@@ -136,7 +137,7 @@
                     .catch(error => {
                         this.failedAlert(),
                         console.log(error.data)
-                        
+                        this.loading=false
                     });
                     
                 }

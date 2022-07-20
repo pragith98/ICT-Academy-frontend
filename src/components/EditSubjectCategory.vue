@@ -28,7 +28,7 @@
         <v-card-actions>
             <v-spacer></v-spacer>
             <v-btn   @click="dialog = false" outlined color="grey">Cancel</v-btn>
-            <v-btn :disabled="!valid || !category" color="primary" @click="updateSubjectCategory()" depressed>Save
+            <v-btn :loading="loading" :disabled="!valid || !category" color="primary" @click="updateSubjectCategory()" depressed>Save
                 <v-icon left>mdi-content-save</v-icon>
             </v-btn>
         </v-card-actions>
@@ -48,7 +48,7 @@ export default {
         return{
             dialogm1: '',
             dialog: false,
-
+            loading:false,
             valid:true,
 
             category:'',
@@ -78,7 +78,7 @@ export default {
 
         updateSubjectCategory(){
             if(this.$refs.form.validate()){
-
+                this.loading=true
                 this.axios.patch(this.$apiUrl+'/api/v1.0/CategoryManagement/categories/'+this.subjectCategory.categoryID,{
                     categoryName:this.category
                 })
@@ -86,6 +86,7 @@ export default {
                     if(Response.data.success == true){
                         this.dialog=false
                         this.successAlert();
+                        this.loading=false
                     }else{
                         this.failedAlert();
                     }
@@ -93,7 +94,7 @@ export default {
                 .catch(error => {
                     this.failedAlert()
                     console.log(error.data)
-                    
+                    this.loading=false
                     
                 });
 
