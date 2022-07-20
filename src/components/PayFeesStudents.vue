@@ -12,7 +12,7 @@
                     <v-spacer></v-spacer>
                     <v-toolbar-items>
                         <v-btn dark text @click="dialog = false">Close</v-btn>
-                    </v-toolbar-items>
+                    </v-toolbar-items> 
             
                 </v-toolbar>
 

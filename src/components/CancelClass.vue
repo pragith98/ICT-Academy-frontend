@@ -18,7 +18,7 @@
                 <v-card-actions>
                     <v-spacer></v-spacer>
                     <v-btn color="grey" @click="dialog = false" outlined>No</v-btn>
-                    <v-btn color="error" @click="cancelClass()" depressed>Yes</v-btn>
+                    <v-btn :loading="loading"  color="error" @click="cancelClass()" depressed>Yes</v-btn>
                 </v-card-actions>
             </v-card>
         </v-dialog>
@@ -32,12 +32,13 @@
         props:['classDetails','todayDate'],
         data: () => ({
             dialog: false,
-            
+            loading:false,
         }),
 
         methods:{
 
             cancelClass(){
+                this.loading=true
                 this.axios.delete(this.$apiUrl+"/api/v1.0/AttendanceManagement/attendances/classes/"+this.classDetails.classID,{
                     data: {
                         date:this.todayDate
@@ -48,6 +49,7 @@
                     if(Response.data.success == true){
                         this.dialog=false
                         this.successAlert()
+                        this.loading=false
                     }else{
                         this.failedAlert()
                     }
@@ -55,6 +57,7 @@
                 .catch(error => {
                     this.failedAlert()
                     console.log(error)
+                    this.loading=false
                 });
                 
             },

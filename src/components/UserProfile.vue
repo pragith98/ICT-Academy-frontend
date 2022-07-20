@@ -47,7 +47,7 @@
                                             </v-col>
 
                                             <v-col cols="12" md="6" sm="6">
-                                                <v-btn outlined color="primary" @click="changePassword()" >Change Password</v-btn>
+                                                <v-btn :loading="loading" outlined color="primary" @click="changePassword()" >Change Password</v-btn>
                                             </v-col>
 
                                             <v-col cols="12" md="6" sm="6">
@@ -87,7 +87,7 @@ export default {
             imageUrl:'',
             image:null,
             dialog:false,
-
+            loading:false,
             valid:true,
             
             password1:'',
@@ -124,6 +124,7 @@ export default {
     methods:{
         changePassword(){
             if(this.$refs.form.validate()){
+                
                 if(this.password1 != this.password2){
                     this.errormsg="Password do not match"
                 }else{

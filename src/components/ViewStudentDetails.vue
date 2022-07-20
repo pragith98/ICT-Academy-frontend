@@ -133,7 +133,7 @@
             <v-spacer></v-spacer>
             <v-btn   @click="dialog = false" color="primary" v-if="!isEditing" depressed>OK</v-btn>
             <v-btn   @click="cancelEdit()" outlined color="grey" v-if="isEditing">Cancel</v-btn>
-            <v-btn :disabled="!valid" color="primary" @click="updateStudent()" depressed v-if="isEditing">Save
+            <v-btn :loading="loading" :disabled="!valid" color="primary" @click="updateStudent()" depressed v-if="isEditing">Save
                 <v-icon left>mdi-content-save</v-icon>
             </v-btn>
         </v-card-actions>
@@ -157,7 +157,7 @@ export default {
         return{
             imageUrl:'',
             image:null,
-
+            loading:false,
             valid:true,
             fname: '',
             lname: '',
@@ -309,7 +309,7 @@ export default {
 
         updateStudent(){
             if(this.$refs.form.validate()){
-
+                this.loading=true
                 if(this.parent=="Father"){
                     this.title="Mr."
                 }else if(this.parent=="Mother"){
@@ -344,7 +344,7 @@ export default {
                         }else if(this.showStatus == "Past"){
                             this.changeClassEnrollmentStatus('0')
                         }
-
+                        this.loading=false
                         this.hasSaved = true;
                         this.isEditing = !this.isEditing;
                         this.reCreate()
@@ -354,7 +354,7 @@ export default {
                 }).catch(error => {
                     this.hasFailed = true;
                     console.log(error.data)
-
+                    this.loading=false
                 });
                 
             }  

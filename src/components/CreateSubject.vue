@@ -79,7 +79,7 @@
             <v-card-actions>
                 <v-spacer></v-spacer>
                 <v-btn   @click="dialog = false, Reset ()" outlined color="grey">Cancel</v-btn>
-                <v-btn :disabled="!valid || !subject || !getMedium || !category" color="primary" @click="createSubject()" depressed>Create</v-btn>
+                <v-btn :loading="loading" :disabled="!valid || !subject || !getMedium || !category" color="primary" @click="createSubject()" depressed>Create</v-btn>
             </v-card-actions>
         </div>
         
@@ -107,7 +107,7 @@ export default {
 
             sortBy: 'categoryID',
             sortDesc: true,
-
+            loading:false,
             dialogm1: '',
             dialog: false,
 
@@ -172,6 +172,7 @@ export default {
 
         createSubject(){
             if(this.$refs.form.validate()){
+                this.loading=true
                 this.axios.post(this.$apiUrl+"/api/v1.0/SubjectManagement/subjects",{
                     subjectName:this.subject+" ("+this.getMedium+")",
                     medium:this.getMedium,
@@ -184,6 +185,7 @@ export default {
                         this.dialog = false
                         this.successAlert()
                         this.Reset()
+                        this.loading=false
                     }else{
                         this.failedAlert()
                     }
@@ -191,7 +193,7 @@ export default {
                 .catch(error => {
                     this.failedAlert()
                     console.log(error.data)
-                    
+                    this.loading=false
                 });
             }
         },

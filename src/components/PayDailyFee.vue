@@ -43,7 +43,7 @@
             <v-card-actions>
                 <v-spacer></v-spacer>
                 <v-btn color="grey" @click="dialog = false" outlined>Cancel</v-btn>
-                <v-btn  color="primary" @click="payNow()" depressed width="150" :disabled="!valid || selectedPayments=='' || !selectedPayments">Pay now</v-btn>
+                <v-btn :loading="loading"  color="primary" @click="payNow()" depressed width="150" :disabled="!valid || selectedPayments=='' || !selectedPayments">Pay now</v-btn>
             </v-card-actions>
         
         </v-card>
@@ -60,7 +60,7 @@
         props:['classDetails','student'],
         data(){
             return{
-                
+                loading:false,
                 dialog: false,
                 valid:true,
                 classFee:'',
@@ -140,6 +140,7 @@
             },
 
             payNow(){
+                this.loading=true
                 this.axios.patch(this.$apiUrl+'/api/v1.0/EnrollmentManagement/students/'+this.student.studentID+'/classes/'+this.classDetails.classID+'/daily',{
                     decrement: this.selectedPaymentStatus.length
 
@@ -148,7 +149,7 @@
                     if(Response.data.success == true){
                         //call get student function
                         this.getStudent(this.student.studentID)
-                        
+                        this.loading=false
                         this.successAlert()
                         this.dialog=false
                     }else{
@@ -158,6 +159,7 @@
                 .catch(error => {
                     this.failedAlert
                     console.log(error.data)
+                    this.loading=false
                 });
             },
 

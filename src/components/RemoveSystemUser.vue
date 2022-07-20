@@ -18,7 +18,7 @@
                 <v-card-actions>
                     <v-spacer></v-spacer>
                     <v-btn color="grey" @click="dialog = false, failedAlert()" outlined>Cancel</v-btn>
-                    <v-btn color="error" @click="dialog = false, successAlert()" depressed>Remove</v-btn>
+                    <v-btn :loading="loading" color="error" @click="dialog = false, successAlert()" depressed>Remove</v-btn>
                 </v-card-actions>
             </v-card>
         </v-dialog>
@@ -32,7 +32,7 @@
         props:['staff'],
         data: () => ({
             dialog: false,
-            
+            loading:false,
         }),
 
         methods:{

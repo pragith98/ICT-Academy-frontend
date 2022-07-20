@@ -26,7 +26,7 @@
         <v-card-actions>
             <v-spacer></v-spacer>
             <v-btn  color="grey" outlined depressed @click="dialog=false" >Cancel</v-btn>
-            <v-btn  color="error"   depressed @click="removeStudent()" :disabled="!selectedStudents || selectedStudents==''">Remove selected students</v-btn>
+            <v-btn :loading="loading"  color="error"   depressed @click="removeStudent()" :disabled="!selectedStudents || selectedStudents==''">Remove selected students</v-btn>
         </v-card-actions>
 
 
@@ -48,7 +48,7 @@ export default {
             
             dialog: false,
             valid:true,
-
+            loading:false,
             table:[],
 
             
@@ -90,6 +90,7 @@ export default {
 
 
         removeStudent(){
+            this.loading=true
             this.axios.delete(this.$apiUrl+"/api/v1.0/EnrollmentManagement/classes/"+this.classDetails.classID,{
                 data: {
                     studentID:this.selectedStudents
@@ -106,7 +107,7 @@ export default {
                     while(this.table.length>0){
                         this.table.pop()
                     }
-
+                    this.loading=false
                 }else{
                     this.failedAlert()
                 }
@@ -115,6 +116,7 @@ export default {
                 this.failedAlert()
                 console.log(error)
                 console.log(this.selectedStudents)
+                this.loading=false
             });
             
         },

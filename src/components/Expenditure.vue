@@ -114,7 +114,7 @@
                     <v-card-actions>
                         <v-spacer></v-spacer>
                         <v-btn color="grey"  outlined @click="dialog = false" >Cancel</v-btn>
-                        <v-btn @click="markExpense()" color="orange" dark depressed>Confirm</v-btn>
+                        <v-btn :loading="loading" @click="markExpense()" color="orange" dark depressed>Confirm</v-btn>
                     </v-card-actions>
                 </v-card>
             </v-dialog>
@@ -140,7 +140,7 @@
         data () {
             return {
                 dialog:false,
-
+                loading:false,
                 valid:true,
                 Search: '',
 
@@ -220,6 +220,7 @@
 
             markExpense(){
                 if(this.$refs.form.validate()){
+                    this.loading=true
                     if(this.amount !=0){
                         this.axios.post(this.$apiUrl+"/api/v1.0/ExpenditureManagement/expenditures",{
                             expense:this.description,
@@ -234,17 +235,20 @@
                                 this.dialog=false,
                                 this.getExpenditures()
                                 this.successAlertPayment=true
+                                this.loading=false
                             }else{
                                 this.unsuccessAlertPayment=true
+                                this.loading=false
                             }
                         })
                         .catch(error => {
                             this.unsuccessAlertPayment=true
                             console.log(error.data)
-                            
+                            this.loading=false
                         });
                     }else{
                         this.unsuccessAlertPayment=true
+                        this.loading=false
                     }
                 }
             },

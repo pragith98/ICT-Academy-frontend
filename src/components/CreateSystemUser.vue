@@ -46,10 +46,10 @@
             <v-spacer></v-spacer>
             <v-btn   @click="dialog = false, failedAlert()" outlined color="grey" class="mr-2">Cancel</v-btn>
             <div :hidden="!staffShow">
-                <v-btn  :disabled="!staffMember || !getRole" color="primary" @click="createUserStaff(), successAlert(), dialog = false" depressed>Create</v-btn>
+                <v-btn :loading="loading"  :disabled="!staffMember || !getRole" color="primary" @click="createUserStaff(), successAlert(), dialog = false" depressed>Create</v-btn>
             </div>
             <div :hidden="!teacherShow">
-                <v-btn  :disabled="!teacher" color="primary" @click="createUserTeacher(), successAlert(), dialog = false" depressed>Create</v-btn>
+                <v-btn :loading="loading"  :disabled="!teacher" color="primary" @click="createUserTeacher(), successAlert(), dialog = false" depressed>Create</v-btn>
             </div>
             
             
@@ -71,7 +71,7 @@ export default {
         return{
             dialog: false,
 
-            
+            loading:false,
             staffMember:'',
             teacher:'',
             getRole:'',
@@ -117,13 +117,17 @@ export default {
 
     methods:{
         createUserTeacher(){
+            this.loading=true
             console.log(this.teacher);
             this.sendPassword("lakshanugc@gmail.com",this.genPassword())
+            this.loading=false
         },
 
         createUserStaff(){
+            this.loading=true
             console.log(this.staffMember);
             this.sendPassword("lakshanugc@gmail.com",this.genPassword())
+            this.loading=false
         },
 
         staffFilter (item, queryText) {

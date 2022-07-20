@@ -118,7 +118,7 @@
                     <v-card-actions>
                         <v-spacer></v-spacer>
                         <v-btn color="grey"  outlined @click="dialog = false" >Cancel</v-btn>
-                        <v-btn @click="payAdvance()" color="orange" dark depressed>Confirm</v-btn>
+                        <v-btn :loading="loading" @click="payAdvance()" color="orange" dark depressed>Confirm</v-btn>
                     </v-card-actions>
                 </v-card>
             </v-dialog>
@@ -144,7 +144,7 @@
         data () {
             return {
                 dialog:false,
-
+                loading:false,
                 valid:true,
                 Search: '',
                 teacher:null,
@@ -241,6 +241,7 @@
 
             payAdvance(){
                 if(this.$refs.form.validate()){
+                    this.loading=true
                     if(this.amount !=0){
                         this.axios.post(this.$apiUrl+"/api/v1.0/AdvanceManagement/advances",{
                             description:this.description,
@@ -256,17 +257,21 @@
                                 this.dialog=false,
                                 this.successAlertPayment=true
                                 this.getTeacherAdvance()
+                                this.loading=false
                             }else{
                                 this.unsuccessAlertPayment=true
+                                this.loading=false
                             }
                         })
                         .catch(error => {
                             this.unsuccessAlertPayment=true
                             console.log(error.data)
+                            this.loading=false
                             
                         });
                     }else{
                         this.unsuccessAlertPayment=true
+                        this.loading=false
                     }
                 }
             },

@@ -123,12 +123,14 @@
             <v-spacer></v-spacer>
             <v-btn   @click="dialog = false" color="primary" v-if="!isEditing" depressed>OK</v-btn>
             <v-btn   @click="cancelEdit()" outlined color="grey" v-if="isEditing">Cancel</v-btn>
-            <v-btn :disabled="!valid || !getTitle || !fname || !lname || !tp || !email || !address || !getGender || !nicNo || !nicType || !date || !joingDate" color="primary" @click="updateTeacher()" depressed v-if="isEditing">Save
+            <v-btn :loading="loading" :disabled="!valid || !getTitle || !fname || !lname || !tp || !email || !address || !getGender || !nicNo || !nicType || !date || !joingDate" color="primary" @click="updateTeacher()" depressed v-if="isEditing">Save
                 <v-icon left>mdi-content-save</v-icon>
             </v-btn>
         </v-card-actions>
 
         <v-snackbar v-model="hasSaved" :timeout="2000" absolute bottom left color="green">Teacher details has been updated</v-snackbar>
+        <v-snackbar :timeout="3000" v-model="hasNotSaved" color="red"  absolute bottom left ><v-icon left>mdi-alert-outline</v-icon>Updated failed </v-snackbar>
+
 
       </v-card>
     </v-dialog>
@@ -145,7 +147,7 @@ export default {
         return{
             imageUrl:'',
             image:null,
-
+            loading:false,
             valid:true,
             fname: '',
             lname: '',
@@ -173,7 +175,7 @@ export default {
 
             isEditing: null,
             hasSaved: false,
-            
+            hasNotSaved:false,
             // -----------Validation rules-----------
             nameRules: [v=> !!v || 'Name is required', v => /^[a-zA-Z\s.]+$/.test(v) || 'Must be text only', v=> (v && v.length >3)|| 'Name must be greater than 3'],
             
@@ -258,6 +260,7 @@ export default {
 
         updateTeacher(){
             if(this.$refs.form.validate()){
+                this.loading=true
                 this.axios.patch(this.$apiUrl+'/api/v1.0/TeacherManagement/teachers/'+this.teacher.teacherID,{
                     firstName:this.fname,
                     lastName:this.lname,
@@ -278,10 +281,15 @@ export default {
                         this.hasSaved = true;
                         this.isEditing = !this.isEditing;
                         this.reCreate()
+                        this.loading=false
                     }else{
                         this.hasSaved = false;
                     }
-                })
+                }).catch(error => {
+                    this.loading=false
+                    console.log(error.data)
+                    this.hasNotSaved=true
+                });
                 
             }  
         },

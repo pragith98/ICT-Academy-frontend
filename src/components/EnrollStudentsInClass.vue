@@ -23,7 +23,7 @@
         <v-card-actions>
             <v-spacer></v-spacer>
             <v-btn  color="grey" outlined depressed @click="dialog=false">Cancel</v-btn>
-            <v-btn  color="primary" :disabled="!selectedClasses"  depressed @click="enrollStudent()">Submit</v-btn>
+            <v-btn :loading="loading"  color="primary" :disabled="!selectedClasses || selectedClasses==''"  depressed @click="enrollStudent()">Enroll</v-btn>
         </v-card-actions>
 
         
@@ -53,7 +53,7 @@ export default {
     props:['studentID','valid'],
     data(){
         return{
-            
+            loading:false,
             dialog: false,
             errormsg:null,
             errorMsgAlert:false,
@@ -101,6 +101,7 @@ export default {
 
 
         enrollStudent(){
+            this.loading=true
             this.axios.post(this.$apiUrl+"/api/v1.0/EnrollmentManagement/students",{
                 studentID:this.studentID,
                 classID: this.selectedClasses
@@ -110,6 +111,7 @@ export default {
                 if(Response.data.success == true){
                     this.dialog=false
                     this.successAlert()
+                    this.loading=false
                 }else{
                     this.failedAlert()
                 }
@@ -119,6 +121,7 @@ export default {
                 this.errorMsgAlert=true
                 this.failedAlert()
                 console.log(error)
+                this.loading=false
                 
             });
             
