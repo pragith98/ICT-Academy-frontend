@@ -2,10 +2,22 @@
     <div>
 
         <v-breadcrumbs :items="breadcrumbs">
-                <template v-slot:divider>
-                    <v-icon>mdi-chevron-right</v-icon>
-                </template>
-            </v-breadcrumbs>
+            <template v-slot:divider>
+                <v-icon>mdi-chevron-right</v-icon>
+            </template>
+        </v-breadcrumbs>
+
+        <!-- ---------------------------------overlay for waiting ----------------------------------------->
+        <v-overlay :value="overlay">
+            <div class="text-center">
+                <v-progress-circular indeterminate size="64"></v-progress-circular><br><br>
+                <p>Please wait..</p>
+            </div>
+        </v-overlay>
+        <!-- ---------------------------------overlay for waiting ----------------------------------------->
+
+
+
         <v-container>
 
             <!----------------------------- Alerts ---------------------------------->
@@ -246,6 +258,8 @@
         },
         data () {
             return {
+                overlay:false,
+
                 dialog:false,
 
                 valid:true,
@@ -424,6 +438,8 @@
 
 
             createClass(){
+                this.overlay=!this.overlay
+
                 if(this.$refs.form.validate()){
                     this.axios.post(this.$apiUrl+"/api/v1.0/ClassManagement/classes",{
                         className: this.className,
@@ -445,6 +461,7 @@
                     .then(Response=>{
                         
                         if(Response.data.success == true){
+                            this.overlay=false
                             this.dialog = true
                             this.e1=1
                             this.Reset()
@@ -453,6 +470,7 @@
                         }
                     })
                     .catch(error => {
+                        this.overlay=false
                         this.unsuccessfulCreateClass = true;
                         console.log(error.data)
                         

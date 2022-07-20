@@ -2,11 +2,23 @@
     <div>
 
         <v-breadcrumbs :items="breadcrumbs">
-                <template v-slot:divider>
-                    <v-icon>mdi-chevron-right</v-icon>
-                </template>
-            </v-breadcrumbs>
+            <template v-slot:divider>
+                <v-icon>mdi-chevron-right</v-icon>
+            </template>
+        </v-breadcrumbs>
+
+        <!-- ---------------------------------overlay for waiting ----------------------------------------->
+        <v-overlay :value="overlay">
+            <div class="text-center">
+                <v-progress-circular indeterminate size="64"></v-progress-circular><br><br>
+                <p>Please wait..</p>
+            </div>
+        </v-overlay>
+        <!-- ---------------------------------overlay for waiting ----------------------------------------->
+
         <v-container>
+
+            
 
             <!----------------------------- Alerts ---------------------------------->
 
@@ -82,7 +94,7 @@
         },
         data () {
             return {
-
+                overlay:false,
                 valid:true,
                 
                 branchName:'',
@@ -125,6 +137,8 @@
 
 
             createBranch(){
+                this.overlay=!this.overlay
+
                 if(this.$refs.form.validate()){
 
                     this.axios.post(this.$apiUrl+"/api/v1.0/BranchManagement/branches",{
@@ -135,15 +149,17 @@
 
                     })
                     .then(Response=>{
-                        this.Reset();
-
+                        
                         if(Response.data.success == true){
+                            this.overlay=false
+                            this.Reset();
                             this.successAlert=true;
                         }else{
                             this.unsuccessAlert=true;
                         }
                     })
                     .catch(error => {
+                        this.overlay=false
                         this.unsuccessAlert=true;
                         console.log(error.data)
                         

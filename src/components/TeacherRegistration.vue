@@ -2,10 +2,20 @@
     <div>
 
         <v-breadcrumbs :items="breadcrumbs">
-                <template v-slot:divider>
-                    <v-icon>mdi-chevron-right</v-icon>
-                </template>
-            </v-breadcrumbs>
+            <template v-slot:divider>
+                <v-icon>mdi-chevron-right</v-icon>
+            </template>
+        </v-breadcrumbs>
+
+        <!-- ---------------------------------overlay for waiting ----------------------------------------->
+        <v-overlay :value="overlay">
+            <div class="text-center">
+                <v-progress-circular indeterminate size="64"></v-progress-circular><br><br>
+                <p>Please wait..</p>
+            </div>
+        </v-overlay>
+        <!-- ---------------------------------overlay for waiting ----------------------------------------->
+
         <v-container>
 
             <v-snackbar :timeout="3000" v-model="unsuccess" color="red"  bottom ><v-icon left>mdi-alert-outline</v-icon> Teacher Registration has been<strong>failed</strong> </v-snackbar>
@@ -156,6 +166,8 @@
 export default {
     data(){
         return{
+            overlay:false,
+
             imageUrl:'',
             image:null,
 
@@ -236,6 +248,8 @@ export default {
 
     methods:{
         Register(){
+            this.overlay=!this.overlay
+
             if(this.$refs.form.validate()){
                 this.axios.post(this.$apiUrl+"/api/v1.0/TeacherManagement/teachers",{
                     title:this.getTitle,
@@ -254,6 +268,7 @@ export default {
                 })
                 .then(Response=>{
                     if(Response.data.success == true){
+                        this.overlay=false
                         this.Reset();
                         this.success=true;
                     }else{
@@ -261,6 +276,7 @@ export default {
                     }
                 })
                 .catch(error => {
+                    this.overlay=false
                     this.unsuccess=true;
                     console.log(error)
                     
