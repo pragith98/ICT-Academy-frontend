@@ -14,7 +14,7 @@
                 <v-card flat>
                     <v-card-title class="heading-1 blue-grey lighten-4  blue-grey--text text--darken-2">Mark Attendance</v-card-title>
                     <v-card-text class="mt-2">
-                        Mark <strong>Attendance</strong> & <strong>Payments</strong> of <strong>className</strong>
+                        Mark <strong>Attendance</strong> & <strong>Daily Payments</strong> of <strong>{{classDetails.className}}</strong>
                     </v-card-text>
                     <v-card class="pl-10 pr-10" flat>
                         <v-card-title><v-spacer></v-spacer><v-text-field v-model="search" append-icon="mdi-magnify" label="Search" single-line hide-details></v-text-field></v-card-title>
@@ -23,10 +23,10 @@
                                 <v-data-table :headers="headers" :items="students" :search="search">
                                     <template v-slot:[`item.actions`]="{ item }">
                                         <v-card-actions>
-                                            <v-switch color="blue" @change="markAttendance(item.id,item.attendance)" inset v-model="item.attendance" :label="switchLabel(item.attendance)" class="mr-3"></v-switch>
+                                            <v-switch color="blue" @change="markAttendance(item.studentID,item.attendance)" inset v-model="item.attendance" :label="switchLabel(item.attendance)" class="mr-3"></v-switch>
                                             <v-spacer></v-spacer>
-                                            <v-badge bordered :content="item.notifications" :value="item.notifications"  color="error">
-                                                <app-PayDailyFee :studentID="item.id" :classID="classID" class="ml-2"></app-PayDailyFee>
+                                            <v-badge bordered :content="item.paymentStatus" :value="item.paymentStatus>1" color="error">
+                                                <app-PayDailyFee @success="paymentSuccessAlert($event)" @failed="paymentFaileAlert($event)" :student="item" :classDetails="classDetails" class="ml-2"></app-PayDailyFee>
                                             </v-badge>
                                         </v-card-actions>
                                     </template>
@@ -35,10 +35,21 @@
                             
                         </template>
                     </v-card>
-                
+
+
                     
+
+
                 </v-card>
             </template>
+                <!-- --------------------------------------------------------alerts-------------------------------------- -->
+                <v-snackbar v-model="addSuccessAlert" :timeout="3000" absolute bottom color="green"><v-icon left>mdi-check</v-icon>Attendance has been marked <strong>successfully</strong> </v-snackbar>
+                <v-snackbar v-model="removeSuccessAlert" :timeout="3000" absolute bottom color="green"><v-icon left>mdi-check</v-icon>Attendance has been removed <strong>successfully</strong> </v-snackbar>
+                <v-snackbar v-model="failAlert" :timeout="3000" absolute bottom color="red"><v-icon left>mdi-alert-outline</v-icon>Operation is <strong>failed</strong></v-snackbar>
+                <v-snackbar v-model="successAlert" :timeout="3000" absolute bottom color="green"><v-icon left>mdi-check</v-icon>Payment has been <strong>successfully</strong> </v-snackbar>
+                <v-snackbar v-model="unsuccessAlert" :timeout="3000" absolute bottom color="red"><v-icon left>mdi-alert-outline</v-icon>Payment has been <strong>failed</strong></v-snackbar>
+                <!-- --------------------------------------------------------alerts-------------------------------------- -->
+
         </v-container>
     </div>
  
@@ -55,45 +66,32 @@
         },
         data () {
             return {
-                classID:'',
+                classID:this.$route.params.id,
 
-                dialog: false,
-                notifications: false,
-                sound: true,
-                widgets: false,
-
+                todayDate:'',
 
                 search: '',
                 headers: [
-                    { text: 'STUDENT',align: 'start', sortable: false, value:'fname'},
-                    { text: 'ID', sortable: false, value: 'id' },
+                    { text: 'STUDENT',align: 'start', sortable: false, value:'studentName'},
+                    { text: 'ID', sortable: false, value: 'studentID' },
+                    { text: "MARKED TIME", value: 'time', sortable: false,align:'start' },
                     { text: "ATTENDANCE", value: 'actions', sortable: false,align:'start' },
+                    
                 ],
 
 
-                students: [
-                    {fname:'Saman Herath', id:'20212021',attendance:false, payment:true, notifications:' '},
-                    {fname:'Dasun Rathnayake', id:'2028',attendance:false, payment:false, notifications:0},
-                    {fname:'Kasun Bandara', id:'2035',attendance:false, payment:false, notifications:' '},
-                    {fname:'Maheshi Ranathunga', id:'2077',attendance:false, payment:true, notifications:' '},
-                    {fname:'Saman Herath', id:'2056',attendance:false, payment:false, notifications:0},
-                    {fname:'Dasun Rathnayake', id:'2054',attendance:false, payment:false, notifications:' '},
-                    {fname:'Kasun Bandara', id:'2099',attendance:false, payment:false, notifications:0},
-                    {fname:'Maheshi Ranathunga', id:'2016',attendance:false, payment:true, notifications:0},
-                    {fname:'Saman Herath', id:'2093',attendance:false, payment:false, notifications:0},
-                    {fname:'Dasun Rathnayake', id:'2027',attendance:false, payment:false, notifications:' '},
-                    {fname:'Kasun Bandara', id:'2094',attendance:false, payment:false, notifications:0},
-                    {fname:'Maheshi Ranathunga', id:'2011',attendance:false, payment:false, notifications:0},
-                    {fname:'Saman Herath', id:'2075',attendance:false, payment:false, notifications:0},
-                    {fname:'Dasun Rathnayake', id:'2069',attendance:false, payment:false, notifications:' '},
-                    {fname:'Kasun Bandara', id:'2098',attendance:false, payment:false, notifications:0},
-                    {fname:'Maheshi Ranathunga', id:'2059',attendance:false, payment:false, notifications:0},
-                    {fname:'Saman Herath', id:'2021',attendance:false, payment:false, notifications:' '},
-                    {fname:'Dasun Rathnayake', id:'2020',attendance:false, payment:false, notifications:' '},
-                    {fname:'Kasun Bandara', id:'2050',attendance:false, payment:false, notifications:' '},
-                    {fname:'Maheshi Ranathunga', id:'200',attendance:false, payment:false, notifications:' '},
-                
-                ],
+                // students: [
+                //     {fname:'Saman Herath', id:'20212021',attendance:false, payment:true, notifications:' '},
+                // ],
+                students: [],
+
+                classDetails:[],
+
+                addSuccessAlert:false,
+                removeSuccessAlert:false,
+                failAlert:false,
+                successAlert:false,
+                unsuccessAlert:false,
 
                 breadcrumbs: [
                     { text: 'Attendance', disabled: false, href: '/Attendance' },
@@ -104,7 +102,10 @@
         },
 
         created(){
-            this.classID=this.$route.params.id
+            this.getTodayDate()
+            this.getClassDetails()
+            this.getStudents()
+            
         },
 
         methods:{
@@ -116,33 +117,113 @@
                 return bool?'Present ':'Absent  '
             },
 
-            switchLabe2 (bool) {
-                return bool?'Paid    ':'Not Paid'
+            markAttendance(studentID,bool){
+                if(bool == true){
+
+                    this.axios.patch(this.$apiUrl+'/api/v1.0/AttendanceManagement/attendances/students/'+studentID,{
+                        classID: this.classID,
+                        date:this.todayDate,
+                        attendStatus:'1'
+
+                    })
+                    .then(Response=>{
+                        if(Response.data.success == true){
+                            // this.axios.patch(this.$apiUrl+"/api/v1.0/EnrollmentManagement/classes/"+this.classID+"/students/"+studentID+"/daily").then(Response=>(
+                            //     console.log(Response.data.success),
+                            //     this.addSuccessAlert=true,
+                            //     this.getStudents()
+                            // ) )
+                            this.getStudents()
+
+                            
+                        }else{
+                           this.failAlert=true
+                            this.getStudents()
+                        }
+                    })
+                    .catch(error => {
+                        this.failAlert=true
+                        this.getStudents()
+                        console.log(error.data)
+                    });
+                    
+                    
+                }else{
+                    this.axios.patch(this.$apiUrl+'/api/v1.0/AttendanceManagement/attendances/students/'+studentID,{
+                        classID: this.classID,
+                        date:this.todayDate,
+                        attendStatus:'0'
+
+                    })
+                    .then(Response=>{
+                        if(Response.data.success == true){
+                            // this.axios.patch(this.$apiUrl+"/api/v1.0/EnrollmentManagement/classes/"+this.classID+"/students/"+studentID+"/dailyDecrement").then(Response=>(
+                            //     console.log(Response.data.success),
+                            //     this.removeSuccessAlert=true,
+                            //     this.getStudents()
+                            // ))
+                            this.getStudents()
+
+                        }else{
+                            this.failAlert=true
+                            this.getStudents()
+                        }
+                    })
+                    .catch(error => {
+                        this.failAlert=true
+                        this.getStudents()
+                        console.log(error.data)
+                    });
+                }
             },
 
-            markAttendance(id,bool){
-                if(bool == true){
-                    this.addSuccessAlert=true
-                    console.log(this.classID,id,"   1")
-                }else{
-                    this.removeSuccessAlert=true
-                    console.log(this.classID,id,"   0")
-                }
-                
-                
+
+            getClassDetails(){
+                this.axios.get(this.$apiUrl+"/api/v1.0/ClassManagement/classes/"+this.classID)
+                .then(Response=>{
+                    this.classDetails=Response.data.class.data[0]
+                })
             },
 
-            markPayment(id,bool){
-                if(bool == true){
-                    this.addSuccessAlert=true
-                    console.log(this.classID,id,"   1")
-                }else{
-                    this.removeSuccessAlert=true
-                    console.log(this.classID,id,"   0")
-                }
-                
-                
-            }
+            getStudents(){
+                this.axios.get(this.$apiUrl+"/api/v1.0/AttendanceManagement/attendances/classes/"+this.classID,{
+                    params:{
+                        date: this.todayDate
+                    }
+                }).then(Response=>{
+                    this.students=Response.data.attendance.data[0].students
+
+                    this.students.forEach(element => {
+                        if(element.attendStatus == '0'){
+                            element.attendance=false
+                        }else if(element.attendStatus == '1'){
+                            element.attendance=true
+                        }
+                    })
+                })
+            },
+
+            getTodayDate(){
+                var today = new Date();
+                var dd = String(today.getDate()).padStart(2, '0');
+                var mm = String(today.getMonth() + 1).padStart(2, '0');
+                var yyyy = today.getFullYear();
+                this.todayDate = yyyy + '-' + mm + '-' + dd;
+            },
+
+            showPaymentStatus(status){
+                console.log(status)
+            },
+
+
+            paymentSuccessAlert(success){
+                this.getStudents()
+                this.successAlert = success;
+
+            },
+            paymentFaileAlert(failed){
+                this.unsuccessAlert = failed;
+            },
         }
     }
 </script>
