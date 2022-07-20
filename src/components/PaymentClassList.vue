@@ -1,20 +1,27 @@
 <template>
-  <v-row justify="start">
+  <v-row justify="center">
     <v-dialog v-model="dialog" scrollable max-width="700px" persistent>
         <template v-slot:activator="{ on, attrs }">
-            <v-btn @click="getAllStudent(),selectedStudents=null" class="primary" small dark depressed  v-bind="attrs" v-on="on">Enroll New Students<v-icon dark right>mdi-link-variant</v-icon></v-btn>
+            <v-btn :disabled="!studentID|| !valid" @click="getClasses()"   width="8px"  block class="primary" depressed  v-bind="attrs" v-on="on">Show classes</v-btn>
         </template>
         <v-card max-width="700" flat>
-        <v-card-title class="heading-1 blue-grey lighten-4  blue-grey--text text--darken-2">Enrollment</v-card-title>
+        <v-card-title class="heading-1 blue-grey lighten-4  blue-grey--text text--darken-2">Classes</v-card-title>
         
         <v-divider></v-divider>
         <v-card-text style="height: 800px;">
             <div>
-                <v-card-text>You can add students to <strong>{{classDetails.className}}</strong> class.</v-card-text>
-                <v-card-title><v-spacer></v-spacer><v-text-field persistent-hint hint="*Use Name OR ID to search for a student" v-model="search" append-icon="mdi-magnify" label="Search" single-line ></v-text-field></v-card-title>
+                <v-card-text>You can add students to <strong>clssname---</strong> class.</v-card-text>
+                <v-card-title><v-spacer></v-spacer><v-text-field v-model="search" append-icon="mdi-magnify" label="Search" single-line ></v-text-field></v-card-title>
                 
                 <template>
-                    <v-data-table @input="getSelect($event)"   :headers="headers" :items="students" :search="search" item-key="studentID"  show-select v-model="table">
+                    <v-data-table :headers="headers" :items="classes" :search="search" >
+                        <template v-slot:[`item.actions`]="{ item }">
+                            <v-card-actions>
+                                <v-badge bordered :content="item.paymentStatus" :value="item.paymentStatus>0" color="error">
+                                    <app-PayDailyFee @success="paymentSuccessAlert($event)" @failed="paymentFaileAlert($event)" :student="studentID" :classDetails="item" class="ml-2"></app-PayDailyFee>
+                                </v-badge>
+                            </v-card-actions>
+                        </template>
                     </v-data-table>
                 </template>
                 
@@ -25,8 +32,7 @@
 
         <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn  color="grey" outlined depressed @click="dialog=false" >Cancel</v-btn>
-            <v-btn  color="primary"  depressed @click="enrollStudent()" :disabled="!selectedStudents || selectedStudents==''">Enroll Selected Students</v-btn>
+            <v-btn  color="primary"  depressed  @click="dialog=false">OK</v-btn>
         </v-card-actions>
 
 
@@ -41,29 +47,27 @@
 
 
 <script>
+import PayDailyFee from './PayDailyFee.vue'
+
 export default {
-    props:['classDetails'],
+    props:['studentID','valid'],
+
+    components:{
+        'app-PayDailyFee':PayDailyFee
+    },
+
     data(){
         return{
             
             dialog: false,
-            valid:true,
-            table:[],
-
-            
-
-
             search: '',
+            
             headers: [
-                { text: 'STUDENT',align: 'start', sortable: false, value:'studentName'},
-                { text: 'ID',align: 'start', sortable: false, value:'studentID'},
-                { text: 'GRADE',align: 'start', sortable: true, value:'grade'},
+                { text: 'CLASS',align: 'start', sortable: false, value:'className'},
                 { text: '', sortable: false, value: 'actions',align:'end'},
             ],
 
-            students: [],
-
-            selectedStudents:[],
+            classes: [],
             
         }
         
@@ -73,50 +77,22 @@ export default {
    
 
     methods:{
-        getSelect(values) {
-            this.selectedStudents = values.map(function(value){ return value.studentID })
-        },
 
+        getClasses(){
+            this.axios.get(this.$apiUrl+"/api/v1.0/EnrollmentManagement/students/"+this.studentID).then(Response=>{
+                console.log(Response.data.enrollment.data[0].classes)
+                this.classes=Response.data.enrollment.data[0].classes,
 
-        getAllStudent(){
-            this.axios.get(this.$apiUrl+"/api/v1.0/EnrollmentManagement/classes/"+this.classDetails.classID+"/notInClass")
-            .then(Response=>(
-                this.students=Response.data.students
-            ))
-        },
-
-
-        enrollStudent(){
-            this.axios.post(this.$apiUrl+"/api/v1.0/EnrollmentManagement/classes",{
-                studentID:this.selectedStudents,
-                classID: this.classDetails.classID
-
-            })
-            .then(Response=>{
-                if(Response.data.success == true){
-                    this.dialog=false
-                    this.successAlert()
-                    this.getAllStudent()
-                    
-                    // ---------empty array----------------
-                    while(this.table.length>0){
-                        this.table.pop()
+                this.classes.forEach(element => {
+                    if(element.paymentStatus == '0'){
+                        element.paymentStatusText=false
+                    }else if(element.paymentStatus == '1'){
+                        element.paymentStatusText=true
                     }
-                    //console.log(this.table)
-                }else{
-                    this.failedAlert()
-                }
+                })
             })
-            .catch(error => {
-                this.failedAlert()
-                console.log(error)
-                console.log(this.selectedStudents)
-                console.log(this.classDetails.classID)
-            });
-            
         },
 
-        
 
         successAlert(){
             this.$emit('success',true)
