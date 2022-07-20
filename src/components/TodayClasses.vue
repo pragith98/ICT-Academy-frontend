@@ -7,6 +7,15 @@
             </template>
         </v-breadcrumbs>
 
+        <!-- ---------------------------------overlay for waiting ----------------------------------------->
+        <v-overlay :value="overlay">
+            <div class="text-center">
+                <v-progress-circular indeterminate size="64"></v-progress-circular><br><br>
+                <p>Please wait..</p>
+            </div>
+        </v-overlay>
+        <!-- ---------------------------------overlay for waiting ----------------------------------------->
+
         <v-container>
 
 
@@ -117,6 +126,8 @@
         
         data(){
             return{
+                overlay:false,
+
                 enrolledClasses:[],
                 classDetails:[],
                 startedClasses:[],
@@ -141,6 +152,7 @@
         },
 
         created(){
+            this.overlay=true
             this.getTodayDate()
             this.getTodayDay()
             this.getEnrolledClassDetails()
@@ -203,11 +215,13 @@
                             var classID=element.classID
                             if(this.startedClasses.length == 0){
                                 this.newClassDetails.push(classElements)
+                                this.overlay=false
                             }else{
                                 this.startedClasses.forEach(element=>{
                                     if(element.classID == classID){
                                         this.startedClassDetails.push(classElements)
                                     }
+                                    this.overlay=false
                                 })
                             }      
                         }),
@@ -242,6 +256,7 @@
                                         this.newClassDetails.push(classElements)
                                     }
                                     
+                                    this.overlay=false
                                 })
                             }
                         })    
@@ -270,6 +285,7 @@
 
 
             startClass(classID){
+                this.overlay=true
                 this.axios.post(this.$apiUrl+'/api/v1.0/AttendanceManagement/attendances/classes',{
                     classID: classID
                 })
@@ -277,6 +293,7 @@
                     if(Response.data.success == true){
                         this.classStartAlert=true
                         this.getEnrolledClassDetails()
+                        //this.overlay=false
                     }else{
                         this.startUnsuccessAlert=true
                     }
@@ -284,12 +301,14 @@
                 .catch(error => {
                     this.startUnsuccessAlert=true
                     console.log(error.data)
+                    //this.overlay=false
                 });
             },
 
 
 
             cancelAlert(success){
+                this.overlay=true
                 this.successAlert = success;
                 this.getEnrolledClassDetails()
             },
