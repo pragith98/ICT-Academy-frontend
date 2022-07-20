@@ -24,6 +24,8 @@
 
             <v-snackbar :timeout="3000" v-model="unsuccessfulCreateClass" color="red"  bottom ><v-icon left>mdi-alert-outline</v-icon> Class create <strong>failed</strong> </v-snackbar>
            
+            <v-snackbar :timeout="3000" v-model="unsuccessAlertSubjectCreate" color="red"  bottom ><v-icon left>mdi-alert-outline</v-icon>Subject Create <strong>failed</strong> </v-snackbar>
+            <v-snackbar :timeout="3000" v-model="successAlertSubjectCreate" color="green"  bottom><v-icon left>mdi-check</v-icon>Subject Create <strong>successful</strong> </v-snackbar>
             <!----------------------------- Alerts ---------------------------------->
  
 
@@ -93,7 +95,7 @@
                                             </v-card-text>
                                             <v-col cols="12" md="6" sm="6">
                                                 <v-card-text>
-                                                    <v-autocomplete @click="getAllCategories(), subject.subjectID=''" @change="getSubjectsByCategory()"  prepend-icon="mdi-candy-outline" :items="categories" v-model="category" :filter="categoryFilter" item-text='categoryName' item-value="categoryID" label="Category"  :rules="subjectRules" return-object></v-autocomplete>
+                                                    <v-autocomplete @click="getAllCategories(), subject.subjectID='', subject.subjectName='' " @change="getSubjectsByCategory()"  prepend-icon="mdi-candy-outline" :items="categories" v-model="category" :filter="categoryFilter" item-text='categoryName' item-value="categoryID" label="Category"  :rules="subjectRules" return-object></v-autocomplete>
                                                 </v-card-text>
                                             </v-col>
 
@@ -110,7 +112,7 @@
                                                 If you won't find the <strong>Subject</strong>, please create new <strong>Subject</strong>,
                                             </v-card-text>
                                             <div class="mt-5">
-                                                <app-createSubject @success="successfulCreateSubjectAlert($event)" @failed="unsuccessfulCreateSubjectAlert($event)"></app-createSubject>
+                                                <app-createSubject @success="subjectCreateSuccessAlert($event)" @failed="subjectCreateFaileAlert($event)"></app-createSubject>
                                             </div>
                                         </v-card>
                                         
@@ -123,7 +125,7 @@
                                             <v-icon >mdi-chevron-left</v-icon>
                                             Back
                                         </v-btn>
-                                        <v-btn color="primary" @click="e1=3" depressed :disabled="!valid || !subject.subjectID || !category.categoryID">Next
+                                        <v-btn color="primary" @click="e1=3" depressed :disabled="!valid  || !category.categoryID || !subject.subjectID">Next
                                             <v-icon>mdi-chevron-right</v-icon>
                                         </v-btn>
                                     </v-card-actions>
@@ -285,11 +287,11 @@
 
                 teacher:null,
                 subject:[{
-                    subjectID:null, subjectName:null
+                    subjectID:'', subjectName:''
                 }],
 
                 category:[{
-                    categoryID:null, categoryName:null
+                    categoryID:'', categoryName:''
                 }],
                 
 
@@ -349,6 +351,8 @@
 
                 
                 unsuccessfulCreateClass:false,
+                unsuccessAlertSubjectCreate:false,
+                successAlertSubjectCreate:false,
             }
         },
 
@@ -464,7 +468,22 @@
                             this.overlay=false
                             this.dialog = true
                             this.e1=1
-                            this.Reset()
+
+                            this.getLocation=''
+                            this.getDay=''
+                            this.getFeeType='Daily'
+                            this.className=''
+                            this.fee='0.00'
+                            this.getGrade=''
+                            this.startTime= null
+                            this.endTime= null
+                            this.teacher=' '
+                            this.subject.subjectID=''
+                            this.subject.subjectName=''
+                            this.category.categoryID=''
+                            this.category.categoryName=''
+
+                            
                         }else{
                             this.unsuccessfulCreateClass = true;
                         }
@@ -477,6 +496,14 @@
                     });
                     
                 }
+            },
+
+            subjectCreateSuccessAlert(success){
+                this.getAllCategories()
+                this.successAlertSubjectCreate = success;
+            },
+            subjectCreateFaileAlert(failed){
+                this.unsuccessAlertSubjectCreate = failed;
             },
 
 
