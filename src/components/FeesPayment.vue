@@ -13,40 +13,33 @@
             
             
             <template>
-                <v-card flat class="blue-grey lighten-5" outlined color="red">
-                    <v-card-title class="heading-1 blue-grey lighten-4  blue-grey--text text--darken-2">Today Classes</v-card-title>
-                    <v-row class="pa-5">
-                        <v-col lg="4" md="4" sm="6" cols="12" v-for="classes in classes" :key="classes.name">
-                            <v-card flat outlined>
-        
-                                <v-card-title style="background: #5D4037" class="mb-2">
-                                    <div class="title white--text">{{ classes.name }}</div>
-                                </v-card-title>
+                <v-row>
+                    <v-col lg="4" md="6" sm="6" cols="12" width="300">
+                        <v-form ref="form" v-model="valid" lazy-validation>
+                            <v-card class="pb-5">
                                 
-                                <v-card-text><v-icon left>mdi-clock</v-icon> {{classes.time}} <br>
-                                <v-icon left>mdi-home</v-icon><v-chip small outlined>{{classes.location}}</v-chip> <br>
-                                <v-icon left>mdi-account</v-icon> {{classes.teacher}} </v-card-text>
-
-
-                                <v-card-actions  class="pb-5">
-                                    <app-PayFeesStudents class="ml-1" :classDetails='classes'></app-PayFeesStudents>
-                                    <v-spacer></v-spacer>
-                                    <!-- <app-CancelClass class="mr-1" :classDetails='classes'  @success="cancelAlert($event)" @failed="faileAlert($event)"></app-CancelClass> -->
+                                <v-row justify="center" class="px-5 pb-1" dense>
+                                    <v-card-title class="blue-grey--text text--darken-2">Class Fees Payment</v-card-title>
+                                    <v-col cols="12" md="12" sm="12">
+                                        <v-text-field v-model="studentID" maxlength="11" :rules="studentIdRule" clearable  label="Student ID" placeholder="ICTAxxxxxxx"></v-text-field>
+                                    </v-col>
+                                </v-row>
+                                <v-card-actions class="px-6">
+                                    <app-PaymentClassList  :valid="valid" :studentID="studentID"></app-PaymentClassList>
                                 </v-card-actions>
                                 
                             </v-card>
-                            
-                            
-                        </v-col>
+                        </v-form>
 
-                    </v-row>
-                </v-card>
+                        
+                    </v-col>
+                </v-row>
             </template>
             
 
             
 
-            <template>
+            <!-- <template>
                 <v-card flat>
                     <v-card-title class="heading-1 blue-grey lighten-4  blue-grey--text text--darken-2">All Classes</v-card-title>
                     <v-card-title><v-spacer></v-spacer><v-text-field v-model="search" append-icon="mdi-magnify" label="Search" single-line hide-details></v-text-field></v-card-title>
@@ -61,7 +54,7 @@
                         
                     </template>
                 </v-card>
-            </template>
+            </template> -->
         </v-container>
     </div>
  
@@ -71,18 +64,23 @@
 <script>
     
     
-    import PayFeesStudents from './PayFeesStudents.vue'
-    import ClassConductedMonths from './ClassConductedMonths.vue'
+    // import PayFeesStudents from './PayFeesStudents.vue'
+    //import ClassConductedMonths from './ClassConductedMonths.vue'
+    import PaymentClassList from './PaymentClassList.vue'
 
     export default {
         
         components:{
-            'app-PayFeesStudents':PayFeesStudents,
-            'app-ClassConductedMonths':ClassConductedMonths
+            // 'app-PayFeesStudents':PayFeesStudents,
+            //'app-ClassConductedMonths':ClassConductedMonths,
+            'app-PaymentClassList':PaymentClassList
         },
 
         data () {
             return {
+                studentID:'',
+
+                valid:true,
                 menu:false,
 
                 search: '',
@@ -112,6 +110,10 @@
 
                 successAlert:false,
                 unsuccessAlert:false,
+
+
+                // -----------Validation rules-----------
+                studentIdRule: [v=> !!v || 'Student ID is required', v=> /ICTA+\d\d\d\d\d\d\d/.test(v) || 'Invalid student ID', v=> (v && v.length ==11)|| 'Invalid student ID'],
             }
         },
 
