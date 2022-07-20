@@ -14,7 +14,7 @@
                 <v-card flat>
                     <v-card-title class="heading-1 blue-grey lighten-4  blue-grey--text text--darken-2">Mark Attendance</v-card-title>
                     <v-card-text class="mt-2">
-                        Mark <strong>Attendance</strong> & <strong>Daily Payments</strong> of <strong>{{classDetails.className}}</strong>
+                        Mark <strong>Attendance</strong> & <strong>Monthly Payments</strong> of <strong>{{classDetails.className}}</strong>
                     </v-card-text>
                     <v-card class="pl-10 pr-10" flat>
                         <v-card-title><v-spacer></v-spacer><v-text-field v-model="search" append-icon="mdi-magnify" label="Search" single-line hide-details></v-text-field></v-card-title>
@@ -79,10 +79,6 @@
                     
                 ],
 
-
-                // students: [
-                //     {fname:'Saman Herath', id:'20212021',attendance:false, payment:true, notifications:' '},
-                // ],
                 students: [],
 
                 classDetails:[],
