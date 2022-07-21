@@ -26,7 +26,7 @@
                                             <v-switch color="blue" @change="markAttendance(item.studentID,item.attendance)" inset v-model="item.attendance" :label="switchLabel(item.attendance)" class="mr-3"></v-switch>
                                             <v-spacer></v-spacer>
                                             <v-badge bordered :content="item.paymentStatus" :value="item.paymentStatus>1" color="error">
-                                                <app-PayDailyFee @success="paymentSuccessAlert($event)" @failed="paymentFaileAlert($event)" :student="item" :classDetails="classDetails" class="ml-2"></app-PayDailyFee>
+                                                <app-PayDailyFee @success="paymentSuccessAlert($event)" @failed="paymentFaileAlert($event)" :show="item.paymentStatus" :student="item" :classDetails="classDetails" class="ml-2"></app-PayDailyFee>
                                             </v-badge>
                                         </v-card-actions>
                                     </template>
