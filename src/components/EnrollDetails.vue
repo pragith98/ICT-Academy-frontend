@@ -111,11 +111,10 @@
                 search: '',
 
                 classCount:'',
-                studentCount:'',
 
                 headers: [
                     { text: 'CLASSES',align: 'start', sortable: false, value:'className'},
-                    { text: 'STUDENT COUNT', sortable: false, value: 'studentCount' },
+                    { text: 'STUDENT COUNT', sortable: false, value: 'students_count' },
                     { text: '', sortable: false, value: 'actions'}
                 ],
 
@@ -174,17 +173,12 @@
 
 
             getAllClasses(){
-                this.axios.get(this.$apiUrl+"/api/v1.0/EnrollmentManagement/classes",{
-                
+                this.axios.get(this.$apiUrl+"/api/v1.0/ClassManagement/classes",{
+                    params:{
+                        status: "Active"
+                    }
                 }).then(Response=>(
-                    this.classes=Response.data.enrollment.data,
-                    
-                    this.classes.forEach(element =>{
-                        var student=[]
-                        student=element.students
-                        
-                        element.studentCount=student.length
-                    })
+                    this.classes=Response.data.class.data
                 ))
             },
 
