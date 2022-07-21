@@ -21,7 +21,7 @@
                                 <v-row justify="center" class="px-5 pb-1" dense>
                                     <v-card-title class="blue-grey--text text--darken-2">Class Fees Payment</v-card-title>
                                     <v-col cols="12" md="12" sm="12">
-                                        <v-text-field v-model="studentID" maxlength="11" :rules="studentIdRule" clearable  label="Student ID" placeholder="ICTAxxxxxxx"></v-text-field>
+                                        <v-autocomplete :open-on-clear="true" :items="students" maxlength="11" v-model="studentID" :filter="studentFilter" item-text="studentID" item-value="studentID" label="Student ID" placeholder="ICTAxxxxxxx"  :rules="studentIdRule" clearable></v-autocomplete>
                                     </v-col>
                                 </v-row>
                                 <v-card-actions class="px-6">
@@ -111,13 +111,39 @@
                 successAlert:false,
                 unsuccessAlert:false,
 
+                students:[],
+
 
                 // -----------Validation rules-----------
                 studentIdRule: [v=> !!v || 'Student ID is required', v=> /ICTA+\d\d\d\d\d\d\d/.test(v) || 'Invalid student ID', v=> (v && v.length ==11)|| 'Invalid student ID'],
             }
         },
 
+        created(){
+            this.getStudents()
+        },
+
         methods: {
+
+            getStudents(){
+                this.axios.get(this.$apiUrl+"/api/v1.0/StudentManagement/students",{
+                params:{
+                    status: "Active"
+                }
+                
+                }).then(Response=>(
+                    this.students=Response.data.student.data
+                ))
+            },
+
+            studentFilter (item, queryText) {
+                const textOne= item.studentID.toLowerCase()
+                const searchText = queryText.toLowerCase()
+
+                return textOne.indexOf(searchText) > -1 
+            },
+
+
             deleteAlert(success){
                 this.successAlert = success;
             },
