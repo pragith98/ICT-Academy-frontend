@@ -10,15 +10,15 @@
         <v-divider></v-divider>
         <v-card-text style="height: 800px;">
             <div>
-                <v-card-text>You can add students to <strong>clssname---</strong> class.</v-card-text>
+                <v-card-text>This is the list of <strong>{{student.studentName}}</strong>'s enrolled classes. Now, You can pay for those classes.</v-card-text>
                 <v-card-title><v-spacer></v-spacer><v-text-field v-model="search" append-icon="mdi-magnify" label="Search" single-line ></v-text-field></v-card-title>
                 
                 <template>
                     <v-data-table :headers="headers" :items="classes" :search="search" >
                         <template v-slot:[`item.actions`]="{ item }">
                             <v-card-actions>
-                                <v-badge bordered :content="item.paymentStatus" :value="item.paymentStatus>0" color="error">
-                                    <app-PayDailyFee @success="paymentSuccessAlert($event)" @failed="paymentFaileAlert($event)" :student="studentID" :classDetails="item" class="ml-2"></app-PayDailyFee>
+                                <v-badge bordered :content="item.paymentStatus" :value="item.paymentStatus>1" color="error">
+                                    <app-PayDailyFee @success="paymentSuccessAlert($event)" @failed="paymentFaileAlert($event)" :show="item.paymentStatus" :student="item" :classDetails="item" class="ml-2"></app-PayDailyFee>
                                 </v-badge>
                             </v-card-actions>
                         </template>
@@ -35,8 +35,10 @@
             <v-btn  color="primary"  depressed  @click="dialog=false">OK</v-btn>
         </v-card-actions>
 
-
-        
+        <!-- --------------------------------------------------------alerts-------------------------------------- -->
+        <v-snackbar v-model="successAlert" :timeout="3000" absolute bottom color="green"><v-icon left>mdi-check</v-icon>Payment has been <strong>successfully</strong> </v-snackbar>
+        <v-snackbar v-model="unsuccessAlert" :timeout="3000" absolute bottom color="red"><v-icon left>mdi-alert-outline</v-icon>Payment has been <strong>failed</strong></v-snackbar>
+        <!-- --------------------------------------------------------alerts-------------------------------------- -->
         
       </v-card>
       
@@ -50,7 +52,7 @@
 import PayDailyFee from './PayDailyFee.vue'
 
 export default {
-    props:['studentID','valid'],
+    props:['studentID','valid','openDialog'],
 
     components:{
         'app-PayDailyFee':PayDailyFee
@@ -59,7 +61,7 @@ export default {
     data(){
         return{
             
-            dialog: false,
+            dialog: this.openDialog,
             search: '',
             
             headers: [
@@ -68,6 +70,10 @@ export default {
             ],
 
             classes: [],
+            student:[],
+
+            successAlert:false,
+            unsuccessAlert:false,
             
         }
         
@@ -80,7 +86,8 @@ export default {
 
         getClasses(){
             this.axios.get(this.$apiUrl+"/api/v1.0/EnrollmentManagement/students/"+this.studentID).then(Response=>{
-                console.log(Response.data.enrollment.data[0].classes)
+                this.student=Response.data.enrollment.data[0],
+                //console.log(Response.data.enrollment.data[0].classes)
                 this.classes=Response.data.enrollment.data[0].classes,
 
                 this.classes.forEach(element => {
@@ -90,17 +97,24 @@ export default {
                         element.paymentStatusText=true
                     }
                 })
+
+                this.classes.forEach(element => {
+                    element.studentID = this.student.studentID,
+                    element.studentName = this.student.studentName
+                })
+                //console.log(this.classes)
             })
         },
 
 
-        successAlert(){
-            this.$emit('success',true)
-        },
+        paymentSuccessAlert(success){
+            this.getClasses()
+            this.successAlert = success;
 
-        failedAlert(){
-            this.$emit('failed',true)
-        }
+        },
+        paymentFaileAlert(failed){
+            this.unsuccessAlert = failed;
+        },
        
 
         
