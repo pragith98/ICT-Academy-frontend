@@ -21,7 +21,7 @@
                                 <v-row justify="center" class="px-5 pb-1" dense>
                                     <v-card-title class="blue-grey--text text--darken-2">Class Fees Payment</v-card-title>
                                     <v-col cols="12" md="12" sm="12">
-                                        <v-autocomplete :open-on-clear="true" :items="students" maxlength="11" v-model="studentID" :filter="studentFilter" item-text="studentID" item-value="studentID" label="Student ID" placeholder="ICTAxxxxxxx"  :rules="studentIdRule" clearable></v-autocomplete>
+                                        <v-autocomplete :append-icon="null" :items="students" maxlength="11" v-model="studentID" :filter="studentFilter" item-text="studentID" item-value="studentID" label="Student ID" placeholder="ICTAxxxxxxx"  :rules="studentIdRule" clearable></v-autocomplete>
                                     </v-col>
                                 </v-row>
                                 <v-card-actions class="px-6">
