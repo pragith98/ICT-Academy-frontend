@@ -183,7 +183,7 @@
             },
 
             getEnrolledClassDetails(){
-                
+                this.overlayMessage=true;
                 this.classDetails.splice(0);
                 this.startedClassDetails.splice(0);
                 this.newClassDetails.splice(0);
