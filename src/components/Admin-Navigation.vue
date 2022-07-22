@@ -109,6 +109,7 @@
                     { text: 'Classes', icon: 'mdi-google-classroom', link:'/Classes' },
                     { text: 'Attendance', icon: 'mdi-checkbox-marked-outline', link:'/Attendance' },
                     { text: 'Financial', icon: 'mdi-credit-card-outline', link:'/Financial' },
+                    { text: 'Exams', icon: 'mdi-file-document-edit', link:'/Exams' },
                     { text: 'Staff', icon: 'mdi-account-multiple', link:'/Staff' },
                     { text: 'Users', icon: 'mdi-account-cog', link:'/Users' },
                     { text: 'Branches', icon: 'mdi-sitemap', link:'/Branches' },
