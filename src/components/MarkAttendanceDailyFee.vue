@@ -12,7 +12,9 @@
 
             <template>
                 <v-card flat>
-                    <v-card-title class="heading-1 blue-grey lighten-4  blue-grey--text text--darken-2">Mark Attendance</v-card-title>
+                    <v-card-title class="heading-1 blue-grey lighten-4  blue-grey--text text--darken-2">Mark Attendance
+                        <app-AddOneStudentToAttendanceVue @success="StudentAddSuccessAlert($event)" @failed="StudentAddFaileAlert($event)" class="mr-2" :classID="classID"></app-AddOneStudentToAttendanceVue>
+                    </v-card-title>
                     <v-card-text class="mt-2">
                         Mark <strong>Attendance</strong> & <strong>Daily Payments</strong> of <strong>{{classDetails.className}}</strong>
                     </v-card-text>
@@ -48,6 +50,9 @@
                 <v-snackbar v-model="failAlert" :timeout="3000" absolute bottom color="red"><v-icon left>mdi-alert-outline</v-icon>Operation is <strong>failed</strong></v-snackbar>
                 <v-snackbar v-model="successAlert" :timeout="3000" absolute bottom color="green"><v-icon left>mdi-check</v-icon>Payment has been <strong>successfully</strong> </v-snackbar>
                 <v-snackbar v-model="unsuccessAlert" :timeout="3000" absolute bottom color="red"><v-icon left>mdi-alert-outline</v-icon>Payment has been <strong>failed</strong></v-snackbar>
+                
+                <v-snackbar v-model="addStudentSuccessful" :timeout="3000" absolute bottom color="green"><v-icon left>mdi-check</v-icon>Add student <strong>successfully</strong> </v-snackbar>
+                <v-snackbar v-model="addStudentUnsuccessful" :timeout="3000" absolute bottom color="red"><v-icon left>mdi-alert-outline</v-icon>Add student <strong>failed</strong>. Please check STUDENT ID</v-snackbar>
                 <!-- --------------------------------------------------------alerts-------------------------------------- -->
 
         </v-container>
@@ -58,11 +63,13 @@
 
 <script>
     import PayDailyFee from './PayDailyFee.vue'
+    import AddOneStudentToAttendanceVue from './AddOneStudentToAttendance.vue'
 
     export default {
 
         components:{
-            'app-PayDailyFee':PayDailyFee
+            'app-PayDailyFee':PayDailyFee,
+            'app-AddOneStudentToAttendanceVue':AddOneStudentToAttendanceVue
         },
         data () {
             return {
@@ -80,9 +87,7 @@
                 ],
 
 
-                // students: [
-                //     {fname:'Saman Herath', id:'20212021',attendance:false, payment:true, notifications:' '},
-                // ],
+                
                 students: [],
 
                 classDetails:[],
@@ -92,6 +97,9 @@
                 failAlert:false,
                 successAlert:false,
                 unsuccessAlert:false,
+
+                addStudentUnsuccessful:false,
+                addStudentSuccessful:false,
 
                 breadcrumbs: [
                     { text: 'Attendance', disabled: false, href: '/Attendance' },
@@ -217,10 +225,19 @@
             paymentSuccessAlert(success){
                 this.getStudents()
                 this.successAlert = success;
-
             },
+
             paymentFaileAlert(failed){
                 this.unsuccessAlert = failed;
+            },
+
+            StudentAddSuccessAlert(success){
+                this.getStudents()
+                this.addStudentSuccessful = success;
+            },
+            
+            StudentAddFaileAlert(failed){
+                this.addStudentUnsuccessful = failed;
             },
         }
     }
