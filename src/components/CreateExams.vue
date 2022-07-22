@@ -22,227 +22,93 @@
 
             <!----------------------------- Alerts ---------------------------------->
 
-            <v-snackbar :timeout="3000" v-model="unsuccessfulCreateClass" color="red"  bottom ><v-icon left>mdi-alert-outline</v-icon> Class create <strong>failed</strong> </v-snackbar>
-           
-            <v-snackbar :timeout="3000" v-model="unsuccessAlertSubjectCreate" color="red"  bottom ><v-icon left>mdi-alert-outline</v-icon>Subject Create <strong>failed</strong> </v-snackbar>
-            <v-snackbar :timeout="3000" v-model="successAlertSubjectCreate" color="green"  bottom><v-icon left>mdi-check</v-icon>Subject Create <strong>successful</strong> </v-snackbar>
+            <v-snackbar :timeout="3000" v-model="unSuccessAlert" color="red"  bottom ><v-icon left>mdi-alert-outline</v-icon>Exam Create <strong>failed</strong> </v-snackbar>
+            <v-snackbar :timeout="3000" v-model="successAlert" color="green"  bottom><v-icon left>mdi-check</v-icon>Exam Create <strong>successful</strong> </v-snackbar>
             <!----------------------------- Alerts ---------------------------------->
  
 
-            <template>
+            <v-form ref="form" v-model="valid" lazy-validation>
                 <v-card flat max-width="750px" style="margin: auto">
-                    <v-card-title class="heading-1 blue-grey lighten-4  blue-grey--text text--darken-2">Create Class</v-card-title>
+                    <v-card-title class="heading-1 blue-grey lighten-4  blue-grey--text text--darken-2">Create Exam</v-card-title>
                     
-                    <v-stepper v-model="e1" flat alt-labels>
-                        <v-stepper-header style="box-shadow:0px 0px 0px 0px" class="px-15">
-                            <v-stepper-step :complete="e1 > 1" step="1">
-                                Select Teacher
-                            </v-stepper-step>
-                            <v-divider></v-divider>
-
-                            <v-stepper-step :complete="e1 > 2" step="2">
-                                Select Subject
-                            </v-stepper-step>
-                            <v-divider></v-divider>
-
-                            <v-stepper-step :complete="e1 > 3" step="3">
-                                Class Details
-                            </v-stepper-step>
-                            <v-divider></v-divider>
-
-                            <v-stepper-step step="4">
-                                Finish
-                            </v-stepper-step>
-                        </v-stepper-header>
-                        <v-divider></v-divider>
-                        <v-stepper-items>
-                            <v-form ref="form" v-model="valid" lazy-validation>
-                                <v-stepper-content step="1">
-                                    <v-card class="mb-12" flat min-height="200px">
-                                        <v-row dense>
-                                            <v-card-text class="grey--text">
-                                                Please select <strong>Teacher</strong> from below menu.
-                                            </v-card-text>
-                                            <v-col cols="12" md="12" sm="12">
-                                                <v-card-text>
-                                                    <v-autocomplete :items="teachers" v-model="teacher" :filter="teacherFilter" item-text="firstName" item-value="teacherID" label="Teacher" prepend-icon="mdi-account" :rules="teacherRules"></v-autocomplete>
-                                                </v-card-text>
-                                            </v-col>
-                                            <v-col cols="12" md="12" sm="12" align-self="center">
-                                                <v-card-text class="grey--text">
-                                                    * Use Name or ID to search for a teacher 
-                                                </v-card-text>
-                                            </v-col>
-
-                                        </v-row>
-                                        
-                                    </v-card>
-                                    <v-card-actions>
-                                        <v-spacer></v-spacer>
-                                        <v-btn outlined color="grey" @click="Reset(),scrollToTop()">Cancel</v-btn>
-                                        
-                                        <v-btn color="primary" @click="e1=2" depressed :disabled="!valid || !teacher">Next
-                                            <v-icon>mdi-chevron-right</v-icon>
-                                        </v-btn>
-                                    </v-card-actions>
-                                </v-stepper-content>
-
-                                <v-stepper-content step="2">
-                                    <v-card class="mb-12" flat min-height="200px">
-                                        <v-row dense>
-                                            <v-card-text class="grey--text">
-                                                Please select <strong>Category</strong> and the <strong>Subject</strong> from below menu.
-                                            </v-card-text>
-                                            <v-col cols="12" md="6" sm="6">
-                                                <v-card-text>
-                                                    <v-autocomplete @click="getAllCategories(), subject.subjectID='', subject.subjectName='' " @change="getSubjectsByCategory()"  prepend-icon="mdi-candy-outline" :items="categories" v-model="category" :filter="categoryFilter" item-text='categoryName' item-value="categoryID" label="Category"  :rules="subjectRules" return-object></v-autocomplete>
-                                                </v-card-text>
-                                            </v-col>
-
-                                            <v-col cols="12" md="6" sm="6">
-                                                <v-card-text>
-                                                    <v-autocomplete prepend-icon="mdi-format-align-center" :items="subjects" v-model="subject" :filter="subjectFilter" item-text='subjectName' item-value="subjectID" label="Subject" :rules="subjectRules" return-object></v-autocomplete>
-                                                </v-card-text>
-                                            </v-col>
-
-                                        </v-row>
-                                        
-                                        <v-card color="grey lighten-3" flat class="pa-5">
-                                            <v-card-text>
-                                                If you won't find the <strong>Subject</strong>, please create new <strong>Subject</strong>,
-                                            </v-card-text>
-                                            <div class="mt-5">
-                                                <app-createSubject @success="subjectCreateSuccessAlert($event)" @failed="subjectCreateFaileAlert($event)"></app-createSubject>
-                                            </div>
-                                        </v-card>
-                                        
-                                        
-                                    </v-card>
+                          
+                    <v-row style="padding:12px">
+                        <v-col>
+                            <fieldset class="px-5 mb-3">
+                                <legend><v-card-text class="grey--text">Exam Details</v-card-text></legend>
+                                <v-row dense>
+                                
+                                    <v-col cols="12" md="12" sm="12">
+                                        <v-text-field v-model="examName" label="Exam Name" prepend-icon="mdi-file-document-edit" :rules="nameRules" required ></v-text-field>
+                                    </v-col>
                                     
-                                    <v-card-actions>
-                                        <v-spacer></v-spacer>
-                                        <v-btn outlined color="grey" @click="e1=1">
-                                            <v-icon >mdi-chevron-left</v-icon>
-                                            Back
-                                        </v-btn>
-                                        <v-btn color="primary" @click="e1=3" depressed :disabled="!valid  || !category.categoryID || !subject.subjectID">Next
-                                            <v-icon>mdi-chevron-right</v-icon>
-                                        </v-btn>
-                                    </v-card-actions>
-                                </v-stepper-content>
+                                    <v-col cols="12" md="6" sm="6">
+                                        <v-text-field v-model="totalMark" placeholder="eg: 100" :rules="markRules" label="Total Mark" prepend-icon="mdi-flag-triangle" required maxlength="3" ></v-text-field>
+                                    </v-col>
+                                    
+                                    <v-col cols="12" md="6" sm="6">
+                                        <template>
+                                            <div>
+                                                <v-menu ref="menu" v-model="menu" :close-on-content-click="false" transition="scale-transition" offset-y min-width="auto">
+                                                    <template v-slot:activator="{ on, attrs }">
+                                                        <v-text-field v-model="date" label="Conducting Date" prepend-icon="mdi-calendar" readonly v-bind="attrs" v-on="on" :rules="dateRules"></v-text-field>
+                                                    </template>
+                                                    <v-date-picker @input="menu = false" v-model="date" :active-picker.sync="activePicker"  :min="(new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().substr(0, 10)" ></v-date-picker>
+                                                </v-menu>
+                                            </div>
+                                        </template>
+                                    </v-col>
 
-                                <v-stepper-content step="3">
-                                    <v-card class="mb-12" flat min-height="250px">
-                                        <v-row dense>
+                                </v-row>
+                            </fieldset>
 
-                                            <v-col cols="12" md="12" sm="12">
-                                                <v-select :items="grade" :rules="gradeRules" label="Grade" prepend-icon="mdi-card-bulleted" v-model="getGrade"></v-select>
-                                            </v-col>
+                            <fieldset class="px-5 mb-3">
+                                <legend><v-card-text class="grey--text">Subject Details</v-card-text></legend>
+                                <v-row dense>
 
-                                            <v-col cols="12" md="6" sm="6">
-                                                <v-select :items="feeType"  label="Fee Type" prepend-icon="mdi-form-select" v-model="getFeeType" :rules="feeTypeRules" Required></v-select>
-                                            </v-col>
+                                    <v-col cols="12" md="6" sm="6">
+                                        <v-autocomplete @click="getAllCategories(), subject.subjectID='', subject.subjectName='' " @change="getSubjectsByCategory()"  prepend-icon="mdi-candy-outline" :items="categories" v-model="category" :filter="categoryFilter" item-text='categoryName' item-value="categoryID" label="Category"  :rules="subjectRules" return-object></v-autocomplete>
+                                    </v-col>
 
-                                            <v-col cols="12" md="6" sm="6">
-                                                <v-text-field v-model="fee" label="Fee" prepend-icon="mdi-cash-multiple" :rules="feeRules" Required prefix="RS." placeholder="0.00" clearable></v-text-field>
-                                            </v-col>
+                                    <v-col cols="12" md="6" sm="6">
+                                            <v-autocomplete prepend-icon="mdi-format-align-center" @click="classs.classID='', classs.className=''" @change="getAllClasses()" :items="subjects" v-model="subject" :filter="subjectFilter" item-text='subjectName' item-value="subjectID" label="Subject" :rules="subjectRules" return-object></v-autocomplete>
+                                    </v-col>
 
-                                            <v-col cols="12" md="6" sm="6">
-                                                <v-select :items="day" label="Day" prepend-icon="mdi-calendar" v-model="getDay" :rules="dayRules" Required ></v-select>
-                                            </v-col>
+                                </v-row>
+                            </fieldset>
 
-                                            <v-col cols="12" md="6" sm="6">
-                                                <v-select :items="location"  label="Location" prepend-icon="mdi-map-marker" v-model="getLocation" :rules="locationRules" Required :disabled="!getDay"></v-select>
-                                            </v-col>
+                            <fieldset class="px-5 mb-3">
+                                <legend><v-card-text class="grey--text">Class Details</v-card-text></legend>
+                                <v-row dense>
+                                
+                                    <v-col cols="12" md="12" sm="12">
+                                        <v-autocomplete prepend-icon="mdi-home-variant"  :items="classes" v-model="classs" :filter="classFilter" item-text='className' item-value="classID" label="Class" :rules="subjectRules" return-object></v-autocomplete>
+                                    </v-col>
+                                    
+                                </v-row>
+                            </fieldset>
+                        </v-col>
+                    </v-row>
 
-                                            <v-col cols="12" md="6" sm="6">
-                                                <div>
-                                                    <v-menu ref="startTimeMenu" v-model="startTimeMenu" :close-on-content-click="false" :nudge-right="40" :return-value.sync="startTime" transition="scale-transition" offset-y max-width="290px" min-width="290px">
-                                                        <template v-slot:activator="{ on, attrs }">
-                                                            <v-text-field v-model="startTime" label="Start Time" prepend-icon="mdi-clock-time-four-outline" readonly v-bind="attrs" v-on="on" :rules="timeRules" Required :disabled="!getDay"></v-text-field>
-                                                        </template>
-                                                        <v-time-picker v-if="startTimeMenu" v-model="startTime" full-width @click:minute="$refs.startTimeMenu.save(startTime)" ></v-time-picker>
-                                                    </v-menu>
-                                                </div>
-                                            </v-col>
-
-                                            <v-col cols="12" md="6" sm="6">
-                                                <div>
-                                                    <v-menu ref="endTimeMenu" v-model="endTimeMenu" :close-on-content-click="false" :nudge-right="40" :return-value.sync="endTime" transition="scale-transition" offset-y max-width="290px" min-width="290px">
-                                                        <template v-slot:activator="{ on, attrs }">
-                                                            <v-text-field v-model="endTime" label="End Time" prepend-icon="mdi-clock-time-four-outline" readonly v-bind="attrs" v-on="on" :rules="timeRules" Required :disabled="!startTime"></v-text-field>
-                                                        </template>
-                                                        <v-time-picker v-if="endTimeMenu" v-model="endTime" full-width @click:minute="$refs.endTimeMenu.save(endTime)"></v-time-picker>
-                                                    </v-menu>
-                                                </div>
-                                            </v-col>
-
-                                        </v-row>
-                                        
-                                    </v-card>
-                                    <v-card-actions>
-                                        <v-spacer></v-spacer>
-                                        <v-btn outlined color="grey" @click="e1=2">
-                                            <v-icon >mdi-chevron-left</v-icon>
-                                            Back
-                                        </v-btn>
-                                        <v-btn color="primary" @click="e1=4, createClassName()" depressed :disabled="!valid || !getFeeType || !fee || !getLocation || !getDay || !startTime || !endTime || !getGrade">Next
-                                            <v-icon>mdi-chevron-right</v-icon>
-                                        </v-btn>
-                                    </v-card-actions>
-                                </v-stepper-content>
-
-                                <v-stepper-content step="4">
-                                    <v-card  class="mb-12 text-center" height="100px" flat>
-                                        <v-col cols="12" md="12" sm="12">
-                                            <v-text-field v-model="className" label="Class Name" prepend-icon="mdi-home-variant" :rules="nameRules" required ></v-text-field>
-                                        </v-col>
-
-
-                                        <v-btn x-large color="primary" depressed @click="createClass()">Create Class
-                                            <v-icon right>mdi-home-plus</v-icon>
-                                        </v-btn>
-                                        <br>
-                                        <v-btn text color="grey" class="mt-3" @click="Reset(), e1=1">Cancel</v-btn>
-                                    </v-card>
-
-                                    <v-card-actions>
-                                        <v-spacer></v-spacer>
-                                        <v-btn outlined color="grey" @click="e1=3">
-                                            <v-icon >mdi-chevron-left</v-icon>
-                                            Back
-                                        </v-btn>
-                                    </v-card-actions>
-                                </v-stepper-content>
-                            </v-form>
-                            
-                        </v-stepper-items>
-                    </v-stepper>
-                </v-card>
-            </template>
-
-
-            <!----------------------------------- dialog box ------------------------------------------>
-
-            <v-dialog v-model="dialog" persistent max-width="400px">
-                <v-card>
-                    <v-container class="text-center">
-                        <v-card-title>
-                            <v-row justify="center">
-                                <v-icon size="100" color="success">mdi-check-circle-outline</v-icon>
-                            </v-row>
-                        </v-card-title>
-                        <span class="text-h6 text-center">Class created <strong>successfully</strong> </span>
-                    </v-container>
                     
-                    
-                    <v-card-actions style="justify-content: center">
-                        <v-btn @click="dialog=false" depressed block color="success">Ok</v-btn>
+                    <v-card-actions>
+                        <v-spacer></v-spacer>
+                        <v-btn outlined color="grey" @click="Reset()">Cancel</v-btn>
+                        
+                        <v-btn color="primary" @click="createExam()" depressed :disabled="!valid || !examName || !totalMark || !date || !category.categoryID || !subject.subjectID || !classs.classID">Create</v-btn>
                     </v-card-actions>
-                </v-card>
-            </v-dialog>
+                                
 
-            <!----------------------------------- dialog box ------------------------------------------>
+                                
+                                    
+                                
+                            
+                            
+                        
+                </v-card>
+            </v-form>
+
+
             
         </v-container>
     </div>
@@ -251,41 +117,31 @@
 </template>
 
 <script>
-    import CreateSubject from './CreateSubject.vue'
+    
     
 
     export default {
         components:{
-            'app-createSubject':CreateSubject
+            
         },
         data () {
             return {
                 overlay:false,
 
-                dialog:false,
-
                 valid:true,
-                e1: 1,
-
                 
+                examName:'',
+                totalMark:'',
+        
 
-                getLocation:'',
-                getDay:'',
-                getFeeType:'Daily',
-                className:'',
-                fee:'0.00',
-                getGrade:'',
+                activePicker: null,
+                date: null,
+                menu: false,
 
+                subjects: [],
+                categories:[],
+                classes:[],
 
-                startTimeMenu: false,
-                startTimeModel: false,
-                startTime: null,
-
-                endTimeMenu: false,
-                endTimeModel: false,
-                endTime: null,
-
-                teacher:null,
                 subject:[{
                     subjectID:'', subjectName:''
                 }],
@@ -293,79 +149,42 @@
                 category:[{
                     categoryID:'', categoryName:''
                 }],
-                
 
-                
-                
+                classs:[{
+                    classID:'', className:''
+                }],
 
-                
 
                 breadcrumbs: [
-                    { text: 'Classes', disabled: false, href: '/Classes' },
-                    { text: 'CreateClass', disabled: true, href: '/Class/CreateClass' }
+                    { text: 'Exams', disabled: false, href: '/Exams' },
+                    { text: 'CreateExams', disabled: true, href: '/Exams/CreateExams' }
                 ],
 
 
                 // -----------Validation rules-----------
+
+                markRules: [v=> !!v || 'Total mark is required', v => /^\d+$/.test(v) || 'Must be a number', v=> (v !=0)|| 'must be greater than 0'],
+
                 nameRules: [v=> !!v || 'Class name is required', v=> (v && v.length >3)|| 'Name must be greater than 3'],
-                
-                feeTypeRules: [v=> !!v || 'Fee type is required'],
 
-                locationRules: [v=> !!v || 'Location is required'],
+                subjectRules: [v=> !!v || 'This field is required'],
 
-                dayRules: [v=> !!v || 'Day is required'],
-
-                timeRules: [v=> !!v || 'Time is required'],
-
-                feeRules: [v=> !!v || 'Fee is required', v => /^\d{0,8}(\.\d{1,4})?$/.test(v) ||'Invalid fee', v=> v != 0.00 ],
-
-                teacherRules: [v=> !!v || 'Teacher is required'],
-
-                subjectRules: [v=> !!v || 'Subject is required'],
-
-                gradeRules: [v=> !!v || 'Grade is required'],
-
-
-
-                // -----------dropdown list-----------
-                location:[],
-                
-                subjects: [],
-
-                categories:[],
-
-                teachers:[],
-
-                day:['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'],
-
-                feeType:['Monthly','Daily'],
-
-                grade:['1','2','3','4','5','6','7','8','9','10','11','12','13','Other'],
-                
+                dateRules: [v=> !!v || 'Conducted date is required'],
 
 
 
                 
 
-                multiLine: true,
-
-                
-                unsuccessfulCreateClass:false,
-                unsuccessAlertSubjectCreate:false,
-                successAlertSubjectCreate:false,
+                successAlert:false,
+                unSuccessAlert:false
             }
         },
 
         created(){
-            this.getClassHall()
-            this.getTeachers()
             this.getAllCategories()
         },
 
         methods: {
-            createClassName(){
-                this.className = this.subject.subjectName+"/Grd"+this.getGrade+"/"+this.getDay+"/"+this.startTime;
-            },
 
             getSubjectsByCategory(){
                 this.axios.get(this.$apiUrl+"/api/v1.0/CategoryManagement/categories/"+this.category.categoryID+"/subjects").then(Response=>(
@@ -380,45 +199,16 @@
                 
             },
 
-            getClassHall(){
-                this.axios.get(this.$apiUrl+"/api/v1.0/BranchManagement/branches/"+localStorage.getItem('branch'))
-                .then(Response=>{
-                    var halls=Response.data.branch.data[0].noOfRooms;
-
-                    for(var i=1; i<=halls; i++){
-                        this.location.push("Room No. "+i);
-                    }
-                    this.location.push("Online");
-                })
-            },
-
-            getTeachers(){
-                this.axios.get(this.$apiUrl+"/api/v1.0/TeacherManagement/teachers",{
-                params:{
-                    status: "Active"
-                }
-                
-                }).then(Response=>(
-                    this.teachers=Response.data.teacher.data,
-                    
-                    this.teachers.forEach(element => {
-                        element.firstName=element.title+" "+element.firstName+" "+element.lastName
-                    })
-                    
+            getAllClasses(){
+                this.axios.get(this.$apiUrl+"/api/v1.0/SubjectManagement/subjects/"+this.subject.subjectID+"/classes").then(Response=>(
+                    this.classes= Response.data.subject.data[0].classes
                 ))
+                
             },
 
-            Reset() {
-                this.$refs.form.reset()
-            },
-
-            scrollToTop() {
-                window.scrollTo(0, 0);
-            },
-
-            teacherFilter (item, queryText) {
-                const textOne = item.firstName.toLowerCase()
-                const textTwo = item.teacherID.toLowerCase()
+            classFilter (item, queryText) {
+                const textOne = item.className.toLowerCase()
+                const textTwo = item.classID.toLowerCase()
                 const searchText = queryText.toLowerCase()
 
                 return textOne.indexOf(searchText) > -1 || textTwo.indexOf(searchText) > -1
@@ -441,56 +231,50 @@
             },
 
 
-            createClass(){
+            createExam(){
                 this.overlay=!this.overlay
 
                 if(this.$refs.form.validate()){
-                    this.axios.post(this.$apiUrl+"/api/v1.0/ClassManagement/classes",{
-                        className: this.className,
-                        day: this.getDay,
-                        startTime: this.startTime,
-                        endTime : this.endTime,
-                        grade : this.getGrade,
-                        room: this.getLocation,
-                        classFee: this.fee +".00",
-                        feeType: this.getFeeType,
-                        status: "Active",
-                        subjectID: this.subject.subjectID,
+                    this.axios.post(this.$apiUrl+"/api/v1.0/ExamManagement/exams",{
+                        exam: this.examName,
+                        totalMark: this.totalMark,
+                        date: this.date,
+                        subjectID : this.subject.subjectID,
                         categoryID: this.category.categoryID,
-                        teacherID: this.teacher,
+                        classID : this.classs.classID,
                         branchID: localStorage.getItem('branch'),
-                        
                         
                     })
                     .then(Response=>{
-                        
                         if(Response.data.success == true){
-                            this.overlay=false
-                            this.dialog = true
-                            this.e1=1
+                            //-----------store students acording to class-----------
+                            this.axios.post(this.$apiUrl+"/api/v1.0/MarkManagement/exams",{
+                                examID:Response.data.examID
 
-                            this.getLocation=''
-                            this.getDay=''
-                            this.getFeeType='Daily'
-                            this.className=''
-                            this.fee='0.00'
-                            this.getGrade=''
-                            this.startTime= null
-                            this.endTime= null
-                            this.teacher=' '
-                            this.subject.subjectID=''
-                            this.subject.subjectName=''
-                            this.category.categoryID=''
-                            this.category.categoryName=''
-
-                            
+                            }).then(Response=>{
+                                if(Response.data.success == true){
+                                    this.overlay=false
+                                    this.successAlert=true
+                                    this.Reset()
+                                    
+                                }else{
+                                    this.unsuccessfulCreateClass = true;
+                                }
+                            }).catch(error => {
+                                this.overlay=false
+                                this.unSuccessAlert=true
+                                console.log(error.data)
+                                
+                            });
+                                
+                           
                         }else{
-                            this.unsuccessfulCreateClass = true;
+                            this.unSuccessAlert=true
                         }
                     })
                     .catch(error => {
                         this.overlay=false
-                        this.unsuccessfulCreateClass = true;
+                        this.unSuccessAlert=true
                         console.log(error.data)
                         
                     });
@@ -498,18 +282,10 @@
                 }
             },
 
-            subjectCreateSuccessAlert(success){
-                this.getAllCategories()
-                this.successAlertSubjectCreate = success;
+            Reset() {
+                this.$refs.form.reset()
             },
-            subjectCreateFaileAlert(failed){
-                this.unsuccessAlertSubjectCreate = failed;
-            },
-
-
-
             
-
 
         }
     }
@@ -521,6 +297,13 @@
 <style scoped>
     .v-application .justify-end {
         justify-content: center !important;
+    }
+
+    fieldset{
+        border-color: rgb(225, 225, 225);
+        border-style: solid;
+        border:0.1;
+        border-style: solid;
     }
 </style>
 
