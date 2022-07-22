@@ -8,7 +8,7 @@
 
 
         <v-container>
-            <h1 class="title font-weight-black grey--text">CLASSES</h1>
+            <h1 class="title font-weight-black grey--text">Exams</h1>
             <v-row>
                 <v-col lg="3" md="4" sm="6" cols="12" v-for="cardlist in cardlist" :key="cardlist.name">
                     <v-hover close-delay="100" v-slot="{hover}">
