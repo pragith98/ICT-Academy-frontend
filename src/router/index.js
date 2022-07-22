@@ -17,6 +17,7 @@ import Teachers from '../views/Teachers.vue'
 import Users from '../views/Users.vue'
 import Login from '../views/Login.vue'
 import ForgotPassword from '../views/ForgotPassword.vue'
+import Exams from '../views/Exams.vue'
 
 Vue.use(VueRouter)
 
@@ -32,6 +33,7 @@ const routes = [
   { path:'/Users', name:'Users', component:Users},
   { path:'/Login', name:'Login', component:Login},
   { path:'/ForgotPassword', name:'ForgotPassword', component:ForgotPassword},
+  { path:'/Exams', name:'Exams', component:Exams},
 
   { path:'/Students/StudentRegistration', name:'StudentRegistration', component:()=> import('../components/StudentRegistration.vue')},
   { path:'/Students/StudentDetails', name:'StudentDetails', component:()=> import('../components/StudentDetails.vue')},
