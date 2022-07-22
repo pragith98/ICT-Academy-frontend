@@ -29,9 +29,19 @@
         </v-card-actions>
 
       </v-card>
-      
+
+        <!-- --------------------------------------------------------alerts-------------------------------------- -->
+        <v-snackbar v-model="addStudentUnsuccessful" :timeout="3000" absolute bottom color="red"><v-icon left>mdi-alert-outline</v-icon>Add student <strong>failed</strong>. Please check STUDENT ID</v-snackbar>
+        <!-- --------------------------------------------------------alerts-------------------------------------- -->
     </v-dialog>
+
+
+    
+  
+  
+  
   </v-row>
+  
 </template>
 
 
@@ -53,7 +63,7 @@ export default {
             // -----------Validation rules-----------
             studentIdRule: [v=> !!v || 'Student ID is required', v=> /ICTA+\d\d\d\d\d\d\d/.test(v) || 'Invalid student ID', v=> (v && v.length ==11)|| 'Invalid student ID'],
 
-            
+            addStudentUnsuccessful:false
         
         }
         
@@ -77,12 +87,14 @@ export default {
                         this.loading=false
                         this.Reset();
                     }else{
-                        this.failedAlert();
+                        //this.failedAlert();
+                        this.addStudentUnsuccessful=true
                     }
                 })
                 .catch(error => {
                     this.loading=false
-                    this.failedAlert()
+                    //this.failedAlert()
+                    this.addStudentUnsuccessful=true
                     console.log(error.data)
                     
                 });
