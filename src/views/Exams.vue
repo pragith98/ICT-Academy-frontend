@@ -41,17 +41,13 @@
         data(){
             return{
                 cardlist:[
-                    {name:'Create Class', icon:'mdi-plus-box-multiple', color:'green', link:'/Classes/CreateClass'},
-                    {name:'Class Details', icon:'mdi-view-list', color:'orange', link:'/Classes/ClassDetails'},
-                    {name:'Enroll Students', icon:'mdi-link-box-variant', color:'brown', link:'/Classes/EnrollDetails'},
-                    {name:'Subjects', icon:'mdi-format-align-center', color:'blue', link:'/Classes/Subjects'},
-                    {name:'Free Cards', icon:'mdi-credit-card-remove', color:'teal', link:'/Classes/FreeCards'},
-                    {name:'Deactivated Classes', icon:'mdi-checkbox-blank-off', color:'red', link:'/Classes/DeactivatedClassDetails'}
+                    {name:'Create Exam', icon:'mdi-note-plus', color:'cyan darken-1', link:'/Exams/CreateExams'},
+                    {name:'Exam Details', icon:'mdi-view-list', color:'orange', link:'/Exams/ExamDetails'},
                 ],
 
 
                 breadcrumbs: [
-                    { text: 'Classes', disabled: true, href: '/Classes' }
+                    { text: 'Exams', disabled: true, href: '/Exams' }
                 ],
             }
         }
