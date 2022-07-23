@@ -28,9 +28,7 @@
                             <v-data-table :headers="headers" :items="exams" :search="search">
                                 <template v-slot:[`item.actions`]="{ item }">
                                     <v-card-actions>
-                                        <v-btn :exam="item">view</v-btn>
-                                        <v-btn :exam="item">Marks</v-btn>
-                                        <!-- <app-EditClass @success="updateSuccessAlert($event)" @failed="updateFailAlert($event)" :examDetails='item'></app-EditClass> -->
+                                        <app-ViewExamDetails  :examDetails='item'></app-ViewExamDetails>
                                         <v-spacer></v-spacer>
                                         <!-- <app-DeleteClass class="ml-1" :classDetails='item' @success="deleteAlert($event)" @failed="faileAlert($event)"></app-DeleteClass> -->
                                     </v-card-actions>
@@ -50,13 +48,12 @@
 </template>
 
 <script>
-    // import EditClass from './EditClass.vue'
-    // import DeleteClass from './DeleteClass.vue'
+    
+    import ViewExamDetails from './ViewExamDetails.vue'
 
     export default {
         components:{
-            // 'app-EditClass':EditClass,
-            // 'app-DeleteClass':DeleteClass
+            'app-ViewExamDetails':ViewExamDetails,
         },
         data () {
             return {
