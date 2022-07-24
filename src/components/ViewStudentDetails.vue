@@ -132,7 +132,7 @@
         <v-card-actions>
             <v-spacer></v-spacer>
             <v-btn   @click="dialog = false" color="primary" v-if="!isEditing" depressed>OK</v-btn>
-            <v-btn   @click="cancelEdit()" outlined color="grey" v-if="isEditing">Cancel</v-btn>
+            <v-btn   @click="cancelEdit(),getStudent()" outlined color="grey" v-if="isEditing">Cancel</v-btn>
             <v-btn :loading="loading" :disabled="!valid" color="primary" @click="updateStudent()" depressed v-if="isEditing">Save
                 <v-icon left>mdi-content-save</v-icon>
             </v-btn>
