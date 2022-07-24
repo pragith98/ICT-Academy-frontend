@@ -25,7 +25,7 @@
                                     <v-card-actions>
                                         <app-ViewExamDetails @success="reCreate($event)"  :examDetails='item'></app-ViewExamDetails>
                                         <v-spacer></v-spacer>
-                                        <!-- <app-DeleteClass class="ml-1" :classDetails='item' @success="deleteAlert($event)" @failed="faileAlert($event)"></app-DeleteClass> -->
+                                        <app-DeleteExam class="ml-5" @success="deleteAlert($event)" @failed="faileAlert($event)"  :examDetails='item'></app-DeleteExam>
                                     </v-card-actions>
 
                                 </template>
@@ -45,10 +45,12 @@
 <script>
     
     import ViewExamDetails from './ViewExamDetails.vue'
+    import DeleteExam from './DeleteExam.vue'
 
     export default {
         components:{
             'app-ViewExamDetails':ViewExamDetails,
+            'app-DeleteExam':DeleteExam,
         },
         data () {
             return {
@@ -102,7 +104,8 @@
 
 
             deleteAlert(success){
-                this.getAllClasses()
+                this.exams=[]
+                this.getAllExams();
                 this.successAlert = success;
             },
             faileAlert(failed){
@@ -110,6 +113,7 @@
             },
 
             reCreate(success){
+                this.exams=[]
                 this.getAllExams();
                 console.log(success)
             },
