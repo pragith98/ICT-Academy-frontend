@@ -85,15 +85,16 @@
         <v-card-actions>
             <v-spacer></v-spacer>
             <v-btn   @click="dialog = false" color="primary" v-if="!isEditing" depressed>OK</v-btn>
-            <v-btn   @click="cancelEdit()" outlined color="grey" v-if="isEditing">Cancel</v-btn>
-            <v-btn :loading="loading" :disabled="!valid" depressed v-if="isEditing">Save
+            <v-btn   @click="cancelEdit(),getExam()" outlined color="grey" v-if="isEditing">Cancel</v-btn>
+            <v-btn @click="updateExam()" :loading="loading" :disabled="!valid" depressed v-if="isEditing" color="primary">Save
                 <v-icon left>mdi-content-save</v-icon>
             </v-btn>
         </v-card-actions>
 
-        <v-snackbar v-model="hasSaved" :timeout="2000" absolute bottom left color="green">Teacher details has been updated</v-snackbar>
-        <v-snackbar :timeout="3000" v-model="hasNotSaved" color="red"  absolute bottom left ><v-icon left>mdi-alert-outline</v-icon>Updated failed </v-snackbar>
-
+         <!-- ---------------------------alerts -------------------------------------------->
+        <v-snackbar v-model="hasSaved" :timeout="2000" absolute bottom left color="green">Exam details has been updated</v-snackbar>
+        <v-snackbar :timeout="3000" v-model="hasNotSaved" color="red"  absolute bottom left ><v-icon left>mdi-alert-outline</v-icon>Update failed </v-snackbar>
+         <!-- ---------------------------alerts -------------------------------------------->
 
       </v-card>
     </v-dialog>
@@ -119,10 +120,6 @@ export default {
             date: null,
             menu: false,
 
-            subjects: [],
-            categories:[],
-            classes:[],
-
             category:[{
                 categoryID:null, categoryName:null
             }],
@@ -130,8 +127,6 @@ export default {
             subject:[{
                 subjectID:null, subjectName:null,medium:null
             }],
-
-            
 
             classs:[{
                 classID:null, className:null
@@ -182,6 +177,37 @@ export default {
                 this.classs=Response.data.exam.data[0].class
                
             })
+        },
+
+        updateExam(){
+            if(this.$refs.form.validate()){
+                this.loading=true
+                this.axios.patch(this.$apiUrl+'/api/v1.0/ExamManagement/exams/'+this.examDetails.examID,{
+                    exam:this.examName,
+                    totalMark:this.totalMark,
+                    date:this.date,
+                    classID:this.classs.classID,
+                    subjectID:this.subject.subjectID,
+                    categoryID:this.category.categoryID,
+                    branchID:localStorage.getItem('branch'),
+
+                })
+                .then(Response=>{
+                    if(Response.data.success == true){
+                        this.hasSaved = true;
+                        this.isEditing = !this.isEditing;
+                        this.reCreate()
+                        this.loading=false
+                    }else{
+                        this.hasSaved = false;
+                    }
+                }).catch(error => {
+                    this.loading=false
+                    console.log(error.data)
+                    this.hasNotSaved=true
+                });
+                
+            }  
         },
 
 
