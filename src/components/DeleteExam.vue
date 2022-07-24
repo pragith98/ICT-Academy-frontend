@@ -11,14 +11,14 @@
                             <v-icon size="100" color="error">mdi-help-circle-outline</v-icon>
                         </v-row>
                     </v-card-title>
-                    <span class="text-h6 text-center">Do you really want to delete <br> <strong>"{{staff.firstName}}"</strong></span>
+                    <span class="text-h6 text-center">Do you really want to delete <br> <strong>"{{examDetails.exam}}"</strong></span>
                 </v-container>
                 
                 
                 <v-card-actions>
                     <v-spacer></v-spacer>
                     <v-btn color="grey" @click="dialog = false" outlined>Cancel</v-btn>
-                    <v-btn :loading="loading" color="error" @click="deleteStaff()" depressed>Delete
+                    <v-btn :loading="loading" color="error" @click="deleteExam()" depressed>Delete
                         <v-icon right>mdi-delete</v-icon>
                     </v-btn>
                 </v-card-actions>
@@ -31,16 +31,16 @@
 
 <script>
     export default {
-        props:['staff'],
+        props:['examDetails'],
         data: () => ({
             dialog: false,
             loading:false,
         }),
 
         methods:{
-            deleteStaff(){
+            deleteExam(){
                 this.loading=true
-                this.axios.delete(this.$apiUrl+'/api/v1.0/StaffManagement/staffs/'+this.staff.staffID)
+                this.axios.delete(this.$apiUrl+'/api/v1.0/ExamManagement/exams/'+this.examDetails.examID)
                     .then(Response=>{
                         if(Response.data.success == true){
                             this.successAlert();
