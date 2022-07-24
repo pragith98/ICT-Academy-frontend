@@ -62,7 +62,8 @@ const routes = [
   { path:'/Attendance/TodayClasses/MarkAttendanceDailyFee/:id', name:'MarkAttendanceDailyFee', component:()=> import('../components/MarkAttendanceDailyFee.vue')},
   { path:'/Attendance/TodayClasses/MarkAttendanceMonthlyFee/:id', name:'MarkAttendanceMonthlyFee', component:()=> import('../components/MarkAttendanceMonthlyFee.vue')},
   { path:'/Exams/CreateExams', name:'CreateExams', component:()=> import('../components/CreateExams.vue')},
-  { path:'/Exams/ExamDetails', name:'ExamDetails', component:()=> import('../components/ExamDetails.vue')}
+  { path:'/Exams/ExamDetails', name:'ExamDetails', component:()=> import('../components/ExamDetails.vue')},
+  { path:'/Exams/ExamMarksDetails', name:'ExamMarksDetails', component:()=> import('../components/ExamMarksDetails.vue')}
   
   // {
   //   path: '/about',
