@@ -7,6 +7,7 @@
         <v-card max-width="700" flat>
         <v-card-title class="heading-1 blue-grey lighten-4  blue-grey--text text--darken-2">Marks sheet
             <v-spacer></v-spacer>
+            <app-AddOneStudentToMarkList @success="StudentAddSuccessAlert($event)" @failed="StudentAddFaileAlert($event)" class="mr-2" :classID="classID"></app-AddOneStudentToMarkList>
             <v-btn depressed color="blue-grey" dark @click="isEditing = !isEditing" v-if="!isEditing"> Edit
                 <v-icon right>mdi-account-edit</v-icon>
             </v-btn>  
@@ -55,7 +56,13 @@
 
 
 <script>
+
+import AddOneStudentToMarkList from './AddOneStudentToMarkList.vue'
+
 export default {
+    components:{
+        'app-AddOneStudentToMarkList':AddOneStudentToMarkList,
+    },
     props:['examDetails'],
     data(){
         return{
