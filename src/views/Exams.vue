@@ -43,6 +43,7 @@
                 cardlist:[
                     {name:'Create Exam', icon:'mdi-note-plus', color:'cyan darken-1', link:'/Exams/CreateExams'},
                     {name:'Exam Details', icon:'mdi-view-list', color:'orange', link:'/Exams/ExamDetails'},
+                    {name:'Exam Marks', icon:'mdi-file-document-edit', color:'green', link:'/Exams/ExamMarksDetails'},
                 ],
 
 
