@@ -8,7 +8,7 @@
         <v-card-title class="heading-1 blue-grey lighten-4  blue-grey--text text--darken-2">Add student</v-card-title>
         <v-divider></v-divider>
         <v-card-text class="mt-2">
-            Add individual student to the attendance list
+            Add individual student to the <strong>{{examDetails.exam}}</strong> marks list.
         </v-card-text>
         <v-card-text >
             <v-form ref="form" v-model="valid" lazy-validation>
@@ -52,7 +52,7 @@
 
 
 export default {
-    props:['classID'],
+    props:['examDetails'],
     data(){
         return{
             dialog: false,
@@ -76,9 +76,9 @@ export default {
         addToList(){
             if(this.$refs.form.validate()){
                 this.loading=true
-                this.axios.post(this.$apiUrl+"/api/v1.0/AttendanceManagement/attendances/students",{
+                this.axios.post(this.$apiUrl+"/api/v1.0/MarkManagement/students",{
                     studentID: this.studentID,
-                    classID:this.classID
+                    examID:this.examDetails.examID
                 
                 }).then(Response=>{
                     if(Response.data.success == true){
