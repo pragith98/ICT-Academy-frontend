@@ -7,7 +7,7 @@
         <v-card max-width="700" flat>
         <v-card-title class="heading-1 blue-grey lighten-4  blue-grey--text text--darken-2">Marks sheet
             <v-spacer></v-spacer>
-            <app-AddOneStudentToMarkList @success="StudentAddSuccessAlert($event)" @failed="StudentAddFaileAlert($event)" class="mr-2" :classID="classID"></app-AddOneStudentToMarkList>
+            <app-AddOneStudentToMarkList v-if="!isEditing" @success="StudentAddSuccessAlert($event)" @failed="StudentAddFaileAlert($event)" class="mr-2" :examDetails="examDetails"></app-AddOneStudentToMarkList>
             <v-btn depressed color="blue-grey" dark @click="isEditing = !isEditing" v-if="!isEditing"> Edit
                 <v-icon right>mdi-account-edit</v-icon>
             </v-btn>  
@@ -39,12 +39,15 @@
         <v-card-actions>
             <v-spacer></v-spacer>
             <v-btn   @click="cancelEdit(),getAllStudent()" outlined color="grey" v-if="isEditing">Cancel</v-btn>
-            <v-btn  color="primary"  depressed @click="dialog=false" >Ok</v-btn>
+            <v-btn  color="primary" v-if="isEditing" @click="cancelEdit(),getAllStudent()"  depressed >Ok</v-btn>
+            <v-btn  color="primary" v-if="!isEditing"  depressed @click="dialog=false" >Ok</v-btn>
         </v-card-actions>
 
         <!-- ------------------------------alerts---------------------------- -->
         <v-snackbar v-model="successfulAlert" :timeout="2000" absolute bottom left color="green">Marks has been updated</v-snackbar>
         <v-snackbar :timeout="3000" v-model="unSuccessfulAlert" color="red"  absolute bottom left ><v-icon left>mdi-alert-outline</v-icon>Update failed </v-snackbar>
+        <v-snackbar v-model="addStudentSuccessful" :timeout="3000" absolute bottom color="green"><v-icon left>mdi-check</v-icon>Add student <strong>successfully</strong> </v-snackbar>
+        <v-snackbar v-model="addStudentUnsuccessful" :timeout="3000" absolute bottom color="red"><v-icon left>mdi-alert-outline</v-icon>Add student <strong>failed</strong>. Please check STUDENT ID</v-snackbar>
         <!-- ------------------------------alerts---------------------------- -->
         
       </v-card>
@@ -85,6 +88,8 @@ export default {
 
             successfulAlert:false,
             unSuccessfulAlert:false,
+            addStudentUnsuccessful:false,
+            addStudentSuccessful:false,
 
 
             // -----------Validation rules-----------
@@ -156,6 +161,15 @@ export default {
         cancelEdit(){
             this.isEditing = !this.isEditing;
             
+        },
+
+        StudentAddSuccessAlert(success){
+            this.getAllStudent()
+            this.addStudentSuccessful = success;
+        },
+        
+        StudentAddFaileAlert(failed){
+            this.addStudentUnsuccessful = failed;
         },
         
       
