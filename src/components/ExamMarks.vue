@@ -2,19 +2,31 @@
   <v-row justify="start">
     <v-dialog v-model="dialog" scrollable max-width="700px" persistent>
         <template v-slot:activator="{ on, attrs }">
-            <v-btn @click="getAllStudent(),selectedStudents=null" class="primary" small dark depressed  v-bind="attrs" v-on="on">Enroll New Students<v-icon dark right>mdi-link-variant</v-icon></v-btn>
+            <v-btn @click="getAllStudent()"  class="primary" small dark depressed  v-bind="attrs" v-on="on">Marks sheet<v-icon dark right>mdi-file-document-edit</v-icon></v-btn>
         </template>
         <v-card max-width="700" flat>
-        <v-card-title class="heading-1 blue-grey lighten-4  blue-grey--text text--darken-2">Enrollment</v-card-title>
+        <v-card-title class="heading-1 blue-grey lighten-4  blue-grey--text text--darken-2">Marks sheet
+            <v-spacer></v-spacer>
+            <v-btn depressed color="blue-grey" dark @click="isEditing = !isEditing" v-if="!isEditing"> Edit
+                <v-icon right>mdi-account-edit</v-icon>
+            </v-btn>  
+        </v-card-title>
         
         <v-divider></v-divider>
         <v-card-text style="height: 800px;">
             <div>
-                <v-card-text>You can add students to <strong>{{classDetails.className}}</strong> class.</v-card-text>
+                <v-card-text>This is marks sheet of <strong>{{examDetails.exam}}</strong> exam. These marks are out of  <v-chip small><strong>{{totalMark}}</strong></v-chip>. If student absent, please mark it as <strong>Ab</strong></v-card-text>
                 <v-card-title><v-spacer></v-spacer><v-text-field persistent-hint hint="*Use Name OR ID to search for a student" v-model="search" append-icon="mdi-magnify" label="Search" single-line ></v-text-field></v-card-title>
                 
                 <template>
-                    <v-data-table @input="getSelect($event)"   :headers="headers" :items="students" :search="search" item-key="studentID"  show-select v-model="table">
+                    <v-data-table  :headers="headers" :items="students" :search="search" item-key="studentID">
+                        <template v-slot:[`item.actions`]="{ item }">
+                            <v-card-actions>
+                                <v-text-field :readonly="!isEditing" :rules="[markLimit]"  @change="markStudentMarks(item.studentID,item.mark)" maxlength="3"  class="centered-input" style="width:70px" v-model="item.mark" dense ></v-text-field>
+                                
+                            </v-card-actions>
+                        </template>
+                        
                     </v-data-table>
                 </template>
                 
@@ -25,12 +37,14 @@
 
         <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn  color="grey" outlined depressed @click="dialog=false" >Cancel</v-btn>
-            <v-btn :loading="loading"  color="primary"  depressed @click="enrollStudent()" :disabled="!selectedStudents || selectedStudents==''">Enroll Selected Students</v-btn>
+            <v-btn   @click="cancelEdit(),getAllStudent()" outlined color="grey" v-if="isEditing">Cancel</v-btn>
+            <v-btn  color="primary"  depressed @click="dialog=false" >Ok</v-btn>
         </v-card-actions>
 
-
-        
+        <!-- ------------------------------alerts---------------------------- -->
+        <v-snackbar v-model="successfulAlert" :timeout="2000" absolute bottom left color="green">Marks has been updated</v-snackbar>
+        <v-snackbar :timeout="3000" v-model="unSuccessfulAlert" color="red"  absolute bottom left ><v-icon left>mdi-alert-outline</v-icon>Update failed </v-snackbar>
+        <!-- ------------------------------alerts---------------------------- -->
         
       </v-card>
       
@@ -42,28 +56,34 @@
 
 <script>
 export default {
-    props:['classDetails'],
+    props:['examDetails'],
     data(){
         return{
-            
             dialog: false,
             valid:true,
-            table:[],
+            isEditing: null,
 
-            loading:false,
-
+            totalMark:'',
+            markValid:false,
 
             search: '',
             headers: [
                 { text: 'STUDENT',align: 'start', sortable: false, value:'studentName'},
                 { text: 'ID',align: 'start', sortable: false, value:'studentID'},
-                { text: 'GRADE',align: 'start', sortable: true, value:'grade'},
-                { text: '', sortable: false, value: 'actions',align:'end'},
+                { text: 'MARK', sortable: true, value: 'actions',align:'center'},
             ],
 
             students: [],
+            marks:[],
 
-            selectedStudents:[],
+            successfulAlert:false,
+            unSuccessfulAlert:false,
+
+
+            // -----------Validation rules-----------
+            numberRules: [ v => /^\d+$/.test(v) || 'Must be numbers only'],
+            textRules: [ v => /^[Ab]{2}$/.test(v) || 'If Absent enter <strong>Ab</strong>'],
+
             
         }
         
@@ -73,70 +93,71 @@ export default {
    
 
     methods:{
-        getSelect(values) {
-            this.selectedStudents = values.map(function(value){ return value.studentID })
+        markLimit (value) {
+            if(value !='Ab'){
+                if(value <= this.totalMark){
+                    this.markValid=true
+                    return true
+                }else{
+                    this.markValid=false
+                    return "Invalid mark"
+                }
+            }else {
+                this.markValid=true
+                return true
+            }
         },
-
+  
 
         getAllStudent(){
-            this.axios.get(this.$apiUrl+"/api/v1.0/EnrollmentManagement/classes/"+this.classDetails.classID+"/notInClass")
+            
+            this.axios.get(this.$apiUrl+"/api/v1.0/MarkManagement/exams/"+this.examDetails.examID)
             .then(Response=>(
-                this.students=Response.data.students
+                this.students=Response.data.mark.students,
+                this.students.forEach(elements=>{
+                    elements.showEdit=false
+                }),
+
+                this.totalMark=Response.data.mark.totalMark
             ))
+            
+
         },
 
 
-        enrollStudent(){
-            this.loading=true
-            this.axios.post(this.$apiUrl+"/api/v1.0/EnrollmentManagement/classes",{
-                studentID:this.selectedStudents,
-                classID: this.classDetails.classID
-
-            })
-            .then(Response=>{
-                if(Response.data.success == true){
-                    this.dialog=false
-                    this.successAlert()
-                    this.getAllStudent()
-                    
-                    // ---------empty array----------------
-                    while(this.table.length>0){
-                        this.table.pop()
+        markStudentMarks(studentID,mark){
+            if(this.markValid==true){
+                this.axios.patch(this.$apiUrl+"/api/v1.0/MarkManagement/students/"+studentID+"/exams/"+this.examDetails.examID,{
+                    mark:mark
+                })
+                .then(Response=>{
+                    if(Response.data.success == true){
+                        this.successfulAlert=true
+                        
+                    }else{
+                        this.unSuccessfulAlert=true
                     }
-                    //console.log(this.table)
-                    this.loading=false
-                }else{
-                    this.failedAlert()
-                }
-            })
-            .catch(error => {
-                this.failedAlert()
-                console.log(error)
-                console.log(this.selectedStudents)
-                console.log(this.classDetails.classID)
-                this.loading=false
-            });
+                })
+                .catch(error => {
+                    this.unSuccessfulAlert=true
+                    console.log(error)
+                    
+                })
+            }
+        },  
+
+        cancelEdit(){
+            this.isEditing = !this.isEditing;
             
         },
-
-        
-
-        successAlert(){
-            this.$emit('success',true)
-        },
-
-        failedAlert(){
-            this.$emit('failed',true)
-        }
-       
-
-        
-        
-        
         
       
     }
 }
 </script>
 
-
+<style scoped>
+    .centered-input >>> input {
+        text-align: center
+    }
+</style>
