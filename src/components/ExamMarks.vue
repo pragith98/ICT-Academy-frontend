@@ -2,7 +2,7 @@
   <v-row justify="start">
     <v-dialog v-model="dialog" scrollable max-width="700px" persistent>
         <template v-slot:activator="{ on, attrs }">
-            <v-btn @click="getAllStudent()"  class="primary" small dark depressed  v-bind="attrs" v-on="on">Marks sheet<v-icon dark right>mdi-file-document-edit</v-icon></v-btn>
+            <v-btn @click="getAllStudent(),getAttendance()"  class="primary" small dark depressed  v-bind="attrs" v-on="on">Marks sheet<v-icon dark right>mdi-file-document-edit</v-icon></v-btn>
         </template>
         <v-card max-width="700" flat>
         <v-card-title class="heading-1 blue-grey lighten-4  blue-grey--text text--darken-2">Marks sheet
@@ -17,8 +17,24 @@
         <v-card-text style="height: 800px;">
             <div>
                 <v-card-text>This is marks sheet of <strong>{{examDetails.exam}}</strong> exam. These marks are out of  <v-chip small><strong>{{totalMark}}</strong></v-chip>. If student absent, please mark it as <strong>Ab</strong></v-card-text>
-                <v-card-title><v-spacer></v-spacer><v-text-field persistent-hint hint="*Use Name OR ID to search for a student" v-model="search" append-icon="mdi-magnify" label="Search" single-line ></v-text-field></v-card-title>
                 
+                <v-card flat color="grey lighten-3" v-if="!isEditing">
+                    <v-row>
+                        <v-col>
+                            <v-card-text>Present student count : <v-chip outlined small color="blue">{{presentCount}}</v-chip></v-card-text>
+                            <v-card-text>Absent student count : <v-chip  color="red" small outlined >{{absentCount}}</v-chip></v-card-text>
+                        </v-col>
+                        <v-divider vertical></v-divider>
+                        <v-col>
+                            <v-card-text>Present student count : <v-chip outlined small color="blue">{{presentCount}}</v-chip> || Absent student count : <v-chip small color="red" outlined >{{absentCount}}</v-chip></v-card-text>
+                        </v-col>
+                        
+                    </v-row>
+                    
+                </v-card>
+
+
+                <v-card-title><v-spacer></v-spacer><v-text-field persistent-hint hint="*Use Name OR ID to search for a student" v-model="search" append-icon="mdi-magnify" label="Search" single-line ></v-text-field></v-card-title>
                 <template>
                     <v-data-table  :headers="headers" :items="students" :search="search" item-key="studentID">
                         <template v-slot:[`item.actions`]="{ item }">
@@ -38,9 +54,9 @@
 
         <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn   @click="cancelEdit(),getAllStudent()" outlined color="grey" v-if="isEditing">Cancel</v-btn>
-            <v-btn  color="primary" v-if="isEditing" @click="cancelEdit(),getAllStudent()"  depressed >Ok</v-btn>
-            <v-btn  color="primary" v-if="!isEditing"  depressed @click="dialog=false" >Ok</v-btn>
+            <v-btn   @click="cancelEdit(),getAllStudent(),getAttendance()" outlined color="grey" v-if="isEditing" :disabled="btnDisabled">Cancel</v-btn>
+            <v-btn  color="primary" v-if="isEditing" @click="cancelEdit(),getAllStudent(),getAttendance()"  depressed :disabled="btnDisabled">Ok</v-btn>
+            <v-btn  color="primary" v-if="!isEditing"  depressed @click="dialog=false" :disabled="btnDisabled">Ok</v-btn>
         </v-card-actions>
 
         <!-- ------------------------------alerts---------------------------- -->
@@ -72,7 +88,10 @@ export default {
             dialog: false,
             valid:true,
             isEditing: null,
+            btnDisabled:false,
 
+            presentCount:'',
+            absentCount:'',
             totalMark:'',
             markValid:false,
 
@@ -105,6 +124,20 @@ export default {
    
 
     methods:{
+
+        getAttendance(){
+            
+            this.axios.get(this.$apiUrl+"/api/v1.0/MarkManagement/exams/"+this.examDetails.examID+"/attendCount")
+            .then(Response=>(
+                this.presentCount=Response.data.present_count,
+                this.absentCount=Response.data.absent_count
+                
+            ))
+            
+
+        },
+
+
         markLimit (value) {
             if(value !='Ab'){
                 if(value <= this.totalMark){
@@ -139,18 +172,21 @@ export default {
 
         markStudentMarks(studentID,mark){
             if(this.markValid==true){
+                this.btnDisabled=true
                 this.axios.patch(this.$apiUrl+"/api/v1.0/MarkManagement/students/"+studentID+"/exams/"+this.examDetails.examID,{
                     mark:mark
                 })
                 .then(Response=>{
                     if(Response.data.success == true){
                         this.successfulAlert=true
-                        
+                        this.btnDisabled=false
                     }else{
                         this.unSuccessfulAlert=true
+                        this.btnDisabled=false
                     }
                 })
                 .catch(error => {
+                    this.btnDisabled=false
                     this.unSuccessfulAlert=true
                     console.log(error)
                     
@@ -165,6 +201,7 @@ export default {
 
         StudentAddSuccessAlert(success){
             this.getAllStudent()
+            this.getAttendance()
             this.addStudentSuccessful = success;
         },
         
