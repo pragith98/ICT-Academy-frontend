@@ -38,7 +38,7 @@
 
         <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn  color="primary" @click="dialog = false" depressed>OK</v-btn>
+            <v-btn color="primary" @click="successAlert(),dialog = false" depressed>OK</v-btn>
         </v-card-actions>
 
         <v-snackbar v-model="addSuccessAlert" :timeout="3000" absolute bottom left color="green">Free Card has been added to the student</v-snackbar>
@@ -100,7 +100,7 @@ export default {
                 .then(Response=>{
                     if(Response.data.success == true){
                         this.addSuccessAlert=true
-                        this.successAlert()
+                        //this.successAlert()
                     }else{
                         this.failAlert=true
                         this.getStudentsEnrolledClasses()
@@ -119,8 +119,8 @@ export default {
                 })
                 .then(Response=>{
                     if(Response.data.success == true){
-                        this.removeSuccessAlert=
-                        this.successAlert()
+                        this.removeSuccessAlert=true
+                        //this.successAlert()
                     }else{
                         this.failAlert=true
                         this.getStudentsEnrolledClasses()
