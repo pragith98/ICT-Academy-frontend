@@ -43,7 +43,7 @@
                                     </v-col>
                                     
                                     <v-col cols="12" md="6" sm="6">
-                                        <v-text-field v-model="totalMark" placeholder="eg: 100" :rules="markRules" label="Total Mark" prepend-icon="mdi-flag-triangle" required maxlength="3" ></v-text-field>
+                                        <v-text-field v-model="totalMark" placeholder="ex: 100" :rules="markRules" label="Total Mark" prepend-icon="mdi-flag-triangle" required maxlength="3" ></v-text-field>
                                     </v-col>
                                     
                                     <v-col cols="12" md="6" sm="6">

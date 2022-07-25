@@ -73,7 +73,7 @@
                     </v-col>
 
                     <v-col cols="12" md="6" sm="6">
-                        <v-text-field v-model="tp" :rules="tpRules" label="Telephone No." prepend-icon="mdi-phone-classic" required maxlength="10" ></v-text-field>
+                        <v-text-field placeholder="ex: 0714332332" v-model="tp" :rules="tpRules" label="Telephone No." prepend-icon="mdi-phone-classic" required maxlength="10" ></v-text-field>
                     </v-col>
 
                     <v-col cols="12" md="6" sm="6">

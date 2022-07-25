@@ -47,7 +47,7 @@
                                     <v-text-field :rules="nameRules" v-model="branchName" label="Branch Name" prepend-icon="mdi-sitemap" required ></v-text-field>
                                 </v-col>
                                 <v-col cols="12" md="6" sm="6">
-                                    <v-text-field maxlength="10" :rules="tpRules" v-model="tp"  label="Telephone No." prepend-icon="mdi-phone-classic" required ></v-text-field>
+                                    <v-text-field maxlength="10" placeholder="ex: 0714332332" :rules="tpRules" v-model="tp"  label="Telephone No." prepend-icon="mdi-phone-classic" required ></v-text-field>
                                 </v-col>
                                 <v-col cols="12" md="6" sm="6">
                                     <v-text-field :rules="addressRules" v-model="address"  label="Address" prepend-icon="mdi-map-marker" required ></v-text-field>
