@@ -87,7 +87,8 @@
         methods: {
 
             getAllExams(){
-                this.axios.get(this.$apiUrl+"/api/v1.0/TeacherManagement/teachers/"+localStorage.getItem('userID')+"/classes").then(Response=>(
+                const LogedUser = JSON.parse(localStorage.getItem('user'));
+                this.axios.get(this.$apiUrl+"/api/v1.0/TeacherManagement/teachers/"+LogedUser.employee.employeeID+"/classes").then(Response=>(
                     this.classes=Response.data.teacher.classes,
 
                     this.classes.forEach(element => {

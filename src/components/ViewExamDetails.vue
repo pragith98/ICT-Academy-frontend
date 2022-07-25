@@ -181,6 +181,7 @@ export default {
 
         updateExam(){
             if(this.$refs.form.validate()){
+                const LogedUser = JSON.parse(localStorage.getItem('user'));
                 this.loading=true
                 this.axios.patch(this.$apiUrl+'/api/v1.0/ExamManagement/exams/'+this.examDetails.examID,{
                     exam:this.examName,
@@ -189,7 +190,7 @@ export default {
                     classID:this.classs.classID,
                     subjectID:this.subject.subjectID,
                     categoryID:this.category.categoryID,
-                    branchID:localStorage.getItem('branch'),
+                    branchID: LogedUser.employee.branch.branchID,
 
                 })
                 .then(Response=>{

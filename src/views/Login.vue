@@ -61,6 +61,7 @@
                 password:'',
 
                 token:'',
+                user:[],
 
                 userNameRules: [v=> !!v || 'Username is required'],
                 passwordRules: [v=> !!v || 'Password is required', v=> (v && v.length >8)|| 'Password must be greater than 8'],
@@ -73,12 +74,6 @@
                 
         },
             
-        watch:{
-            loading(val){
-                if(!val) return
-                setTimeout(()=>(this.loading=false),3000)
-            }
-        },
 
         methods:{
             // login(){
@@ -100,23 +95,33 @@
                     })
                     .then(Response=>{
                         if(Response.data.success == true){
-                            this.loading=false
                             this.token=Response.data._token
+                            this.user=Response.data.user
+
+                            this.saveUserLocalStorage()
+
+                            this.loading=false
                             this.Reset();
-                            this.successAlert=true;
+                            
                         }else{
-                            this.unsuccessAlert=true;
                             this.loading=false
                         }
                     })
                     .catch(error => {
                         this.loading=false
-                        this.unsuccessAlert=true;
                         console.log(error.data)
-                        
                     });
                 }
+            },
 
+            saveUserLocalStorage(){
+                const jsonObj = JSON.stringify(this.user)
+                localStorage.setItem('user', jsonObj)
+                localStorage.setItem('userToken', this.token)
+
+                
+                //const LogedUser = JSON.parse(localStorage.getItem('user'));
+                //console.log(LogedUser.userID)
             },
 
             Reset() {

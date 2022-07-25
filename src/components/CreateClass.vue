@@ -381,7 +381,8 @@
             },
 
             getClassHall(){
-                this.axios.get(this.$apiUrl+"/api/v1.0/BranchManagement/branches/"+localStorage.getItem('branch'))
+                const LogedUser = JSON.parse(localStorage.getItem('user'));
+                this.axios.get(this.$apiUrl+"/api/v1.0/BranchManagement/branches/"+LogedUser.employee.branch.branchID)
                 .then(Response=>{
                     var halls=Response.data.branch.data[0].noOfRooms;
 
@@ -443,7 +444,7 @@
 
             createClass(){
                 this.overlay=!this.overlay
-
+                const LogedUser = JSON.parse(localStorage.getItem('user'));
                 if(this.$refs.form.validate()){
                     this.axios.post(this.$apiUrl+"/api/v1.0/ClassManagement/classes",{
                         className: this.className,
@@ -458,7 +459,7 @@
                         subjectID: this.subject.subjectID,
                         categoryID: this.category.categoryID,
                         teacherID: this.teacher,
-                        branchID: localStorage.getItem('branch'),
+                        branchID: LogedUser.employee.branch.branchID,
                         
                         
                     })

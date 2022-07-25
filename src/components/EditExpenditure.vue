@@ -117,13 +117,14 @@
 
             updateExpense(){
                 if(this.$refs.form.validate()){
+                    const LogedUser = JSON.parse(localStorage.getItem('user'));
                     this.loading=true
                     this.axios.patch(this.$apiUrl+'/api/v1.0/ExpenditureManagement/expenditures/'+this.expenditure.expenseID,{
                         expense:this.description,
                         expenseAmount:this.amount+".00",
                         date:this.date,
-                        handlerStaffID: localStorage.getItem('userID'),
-                        branchID:localStorage.getItem('branch'),
+                        handlerStaffID: LogedUser.employee.employeeID,
+                        branchID: LogedUser.employee.branch.branchID,
                     })
                     .then(Response=>{
                         if(Response.data.success == true){

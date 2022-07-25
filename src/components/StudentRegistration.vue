@@ -428,7 +428,8 @@ export default {
 
     
     created(){
-        this.getBranch(localStorage.getItem('branch'))
+        const LogedUser = JSON.parse(localStorage.getItem('user'));
+        this.getBranch(LogedUser.employee.branch.branchID)
     }
 
 

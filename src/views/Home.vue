@@ -91,8 +91,9 @@
         },
 
         created(){
-            localStorage.setItem('branch', 'BRNCH001') //set localStorage to branch details
-            localStorage.setItem('userID', 'STAFF001') //set localStorage to branch details
+            //localStorage.setItem('branch', 'BRNCH001') //set localStorage to branch details
+            //localStorage.setItem('userID', 'STAFF001') //set localStorage to staff details
+            //localStorage.setItem('userID', 'TECHR002') //set localStorage to teacher details
 
             this.getClassDetails();
             this.getStudentCount();
