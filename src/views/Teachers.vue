@@ -43,7 +43,7 @@
                 cardlist:[
                     {name:'Register Teachers', icon:'mdi-account-plus', color:'teal', link:'/Teachers/TeacherRegistration'},
                     {name:'Teacher Details', icon:'mdi-view-list', color:'orange', link:'/Teachers/TeacherDetails'},
-                    {name:'Deactivated Teachers', icon:'mdi-account-off', color:'red', link:'/Teachers/DeactivatedTeacherDetails'},
+                    {name:'Deactivated Teacher', icon:'mdi-account-off', color:'red', link:'/Teachers/DeactivatedTeacherDetails'},
                 ],
 
 
