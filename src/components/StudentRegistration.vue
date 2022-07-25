@@ -136,7 +136,7 @@
                                 <v-row justify="center" dense >
 
                                     <v-col cols="12" md="6" sm="6">
-                                        <v-text-field disabled v-model="branch.branchName"  :rules="branchRules" label="Branch" prepend-icon="mdi-sitemap"></v-text-field>
+                                        <v-text-field disabled  v-model="branch.branchName"  :rules="branchRules" label="Branch" prepend-icon="mdi-sitemap"></v-text-field>
                                     </v-col>
 
                                     <v-col cols="12" md="6" sm="6">
@@ -325,10 +325,9 @@ export default {
 
 
         Register(){
-            this.overlay=!this.overlay
-
             if(this.$refs.form.validate()){
-                
+                this.overlay=!this.overlay
+
                 if(this.parent=="Father"){
                     this.title="Mr."
                 }else if(this.parent=="Mother"){
@@ -393,10 +392,18 @@ export default {
             this.image = files[0]
         },
         Reset () {
-            this.$refs.form.reset()
+            //this.$refs.form.reset()
+            // this.scrollToTop()
+            
+            Object.assign(this.$data, this.$options.data.call(this));
+            this.getBranch()
+            this.$refs.form.resetValidation()
         },
+
+
         scrollToTop() {
             window.scrollTo(0, 0);
+            //this.getBranch()
         },
 
         successAlert(){
@@ -415,22 +422,17 @@ export default {
             this.enrollFaile = failed;
         },
 
-        getBranch(branchID){
-            this.axios.get(this.$apiUrl+"/api/v1.0/BranchManagement/branches/"+branchID).then(Response=>(
-                this.branch= Response.data.branch.data[0]
-            ))
+        getBranch(){
+            const LogedUser = JSON.parse(localStorage.getItem('user'));
+            this.branch= LogedUser.employee.branch
         }
 
-        
-        
-      
     },
 
-    
     created(){
-        const LogedUser = JSON.parse(localStorage.getItem('user'));
-        this.getBranch(LogedUser.employee.branch.branchID)
-    }
+        this.getBranch()
+    },
+    
 
 
 }

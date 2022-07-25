@@ -257,9 +257,9 @@ export default {
 
     methods:{
         Register(){
-            this.overlay=!this.overlay
-
+            
             if(this.$refs.form.validate()){
+                this.overlay=!this.overlay
                 this.axios.post(this.$apiUrl+"/api/v1.0/StaffManagement/staffs",{
                     title:this.getTitle,
                     firstName:this.fname,
@@ -313,7 +313,12 @@ export default {
             this.image = files[0]
         },
         Reset () {
-            this.$refs.form.reset()
+            //this.$refs.form.reset()
+            // this.scrollToTop()
+            
+            Object.assign(this.$data, this.$options.data.call(this));
+            this.getBranch()
+            this.$refs.form.resetValidation()
         },
         scrollToTop() {
             window.scrollTo(0, 0);
@@ -327,10 +332,9 @@ export default {
             this.unsuccess=true
         },
 
-        getBranch(branchID){
-            this.axios.get(this.$apiUrl+"/api/v1.0/BranchManagement/branches/"+branchID).then(Response=>(
-                this.branch= Response.data.branch.data[0]
-            ))
+        getBranch(){
+            const LogedUser = JSON.parse(localStorage.getItem('user'));
+            this.branch= LogedUser.employee.branch
         }
 
         
@@ -338,9 +342,8 @@ export default {
     },
 
     created(){
-        const LogedUser = JSON.parse(localStorage.getItem('user'));
-        this.getBranch(LogedUser.employee.branch.branchID)
-    }
+        this.getBranch()
+    },
 
     
 }
