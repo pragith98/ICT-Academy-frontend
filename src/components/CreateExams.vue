@@ -62,7 +62,7 @@
                                 </v-row>
                             </fieldset>
 
-                            <fieldset class="px-5 mb-3">
+                            <!-- <fieldset class="px-5 mb-3">
                                 <legend><v-card-text class="grey--text">Subject Details</v-card-text></legend>
                                 <v-row dense>
 
@@ -75,7 +75,7 @@
                                     </v-col>
 
                                 </v-row>
-                            </fieldset>
+                            </fieldset> -->
 
                             <fieldset class="px-5 mb-3">
                                 <legend><v-card-text class="grey--text">Class Details</v-card-text></legend>
@@ -94,8 +94,7 @@
                     <v-card-actions>
                         <v-spacer></v-spacer>
                         <v-btn outlined color="grey" @click="Reset()">Cancel</v-btn>
-                        
-                        <v-btn color="primary" @click="createExam()" depressed :disabled="!valid || !examName || !totalMark || !date || !category.categoryID || !subject.subjectID || !classs.classID">Create</v-btn>
+                        <v-btn color="primary" @click="createExam()" depressed :disabled="!valid || !examName || !totalMark || !date || !classs.classID">Create</v-btn>
                     </v-card-actions>
                                 
 
@@ -150,9 +149,11 @@
                     categoryID:'', categoryName:''
                 }],
 
-                classs:[{
-                    classID:'', className:''
-                }],
+                // classs:[{
+                //     classID:'', className:''
+                // }],
+
+                classs:[],
 
 
                 breadcrumbs: [
@@ -181,10 +182,17 @@
         },
 
         created(){
-            this.getAllCategories()
+            this.getClassByTeacher()
         },
 
         methods: {
+
+            getClassByTeacher(){
+                this.axios.get(this.$apiUrl+"/api/v1.0/TeacherManagement/teachers/"+localStorage.getItem('userID')+"/classes").then(Response=>(
+                    this.classes= Response.data.teacher.classes
+                    
+                ))
+            },
 
             getSubjectsByCategory(){
                 this.axios.get(this.$apiUrl+"/api/v1.0/CategoryManagement/categories/"+this.category.categoryID+"/subjects").then(Response=>(
@@ -230,7 +238,6 @@
                 return textOne.indexOf(searchText) > -1 || textTwo.indexOf(searchText) > -1
             },
 
-
             createExam(){
                 this.overlay=!this.overlay
 
@@ -239,10 +246,10 @@
                         exam: this.examName,
                         totalMark: this.totalMark,
                         date: this.date,
-                        subjectID : this.subject.subjectID,
-                        categoryID: this.category.categoryID,
+                        subjectID : this.classs.subject.subjectID,
+                        categoryID: this.classs.category.categoryID,
                         classID : this.classs.classID,
-                        branchID: localStorage.getItem('branch'),
+                        branchID: this.classs.branch.branchID,
                         
                     })
                     .then(Response=>{
@@ -281,6 +288,51 @@
                     
                 }
             },
+
+
+            // createExam(){
+            //     this.overlay=!this.overlay
+            //     if(this.$refs.form.validate()){
+            //         this.axios.post(this.$apiUrl+"/api/v1.0/ExamManagement/exams",{
+            //             exam: this.examName,
+            //             totalMark: this.totalMark,
+            //             date: this.date,
+            //             subjectID : this.subject.subjectID,
+            //             categoryID: this.category.categoryID,
+            //             classID : this.classs.classID,
+            //             branchID: localStorage.getItem('branch'),
+            //         })
+            //         .then(Response=>{
+            //             if(Response.data.success == true){
+            //                 //-----------store students acording to class-----------
+            //                 this.axios.post(this.$apiUrl+"/api/v1.0/MarkManagement/exams",{
+            //                     examID:Response.data.examID
+            //                 }).then(Response=>{
+            //                     if(Response.data.success == true){
+            //                         this.overlay=false
+            //                         this.successAlert=true
+            //                         this.Reset()
+            //                     }else{
+            //                         this.unsuccessfulCreateClass = true;
+            //                     }
+            //                 }).catch(error => {
+            //                     this.overlay=false
+            //                     this.unSuccessAlert=true
+            //                     console.log(error.data)
+            //                 });
+            //             }else{
+            //                 this.unSuccessAlert=true
+            //             }
+            //         })
+            //         .catch(error => {
+            //             this.overlay=false
+            //             this.unSuccessAlert=true
+            //             console.log(error.data)
+                        
+            //         });
+                    
+            //     }
+            // },
 
             Reset() {
                 this.$refs.form.reset()
