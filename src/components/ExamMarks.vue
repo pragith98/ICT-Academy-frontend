@@ -16,7 +16,7 @@
         <v-divider></v-divider>
         <v-card-text style="height: 800px;">
             <div>
-                <v-card-text>This is marks sheet of <strong>{{examDetails.exam}}</strong> exam. These marks are out of  <v-chip small><strong>{{totalMark}}</strong></v-chip>. If student absent, please mark it as <strong>Ab</strong></v-card-text>
+                <v-card-text>This is marks sheet of <strong>{{examDetails.exam}}</strong> exam. These marks are out of  <v-chip small><strong>{{totalMark}}</strong></v-chip>. If the student is absent, please mark it as <strong>Ab</strong></v-card-text>
                 
                 <v-card flat color="grey lighten-3" v-if="!isEditing">
                     <v-row>
@@ -26,7 +26,11 @@
                         </v-col>
                         <v-divider vertical></v-divider>
                         <v-col>
-                            <v-card-text>Present student count : <v-chip outlined small color="blue">{{presentCount}}</v-chip> || Absent student count : <v-chip small color="red" outlined >{{absentCount}}</v-chip></v-card-text>
+                            <v-card-text>
+                                <v-select @change="filterStudents()" :items="selection" label="Filter students" v-model="filtering"></v-select>
+                                <v-text-field clearable label="Marks onward from:" v-show="showHighMark"  :rules="numberRules && [markLimit]"  @change="getHighMarksStudent()" maxlength="3" v-model="highMark" dense ></v-text-field>
+                            </v-card-text>
+                            
                         </v-col>
                         
                     </v-row>
@@ -89,11 +93,14 @@ export default {
             valid:true,
             isEditing: null,
             btnDisabled:false,
-
+            filtering:'',
             presentCount:'',
             absentCount:'',
             totalMark:'',
             markValid:false,
+
+            highMark:'',
+            showHighMark:false,
 
             search: '',
             headers: [
@@ -116,25 +123,61 @@ export default {
             textRules: [ v => /^[Ab]{2}$/.test(v) || 'If Absent enter <strong>Ab</strong>'],
 
             
+            // -----------------dropdown------------------
+            selection:['All students','Absent students']
         }
         
         
     },
 
+    
    
 
     methods:{
 
+        filterStudents(){
+            if(this.filtering=='Absent students'){
+                this.showHighMark=false
+                this.getAbsentStudent()
+            }else if(this.filtering=='All students'){
+                this.showHighMark=false
+                this.getAllStudent()
+            }else if(this.filtering=='High marks'){
+                this.showHighMark=true
+            }
+        },
+
+        getAbsentStudent(){
+            this.axios.get(this.$apiUrl+"/api/v1.0/MarkManagement/exams/"+this.examDetails.examID+'/absent')
+            .then(Response=>(
+                this.students=Response.data.mark.students
+            ))
+        },
+
+        getHighMarksStudent(){
+            if(this.markValid==true){
+                console.log(this.highMark)
+                this.axios.get(this.$apiUrl+"/api/v1.0/MarkManagement/exams/"+this.examDetails.examID+"/marksAbove",{
+                    params:{
+                        mark: this.highMark
+                    }
+                })
+                .then(Response=>(
+                    console.log(Response.data.mark.students),
+                    this.students=Response.data.mark.students
+                    
+                ))
+            }
+        },
+
+
+
         getAttendance(){
-            
             this.axios.get(this.$apiUrl+"/api/v1.0/MarkManagement/exams/"+this.examDetails.examID+"/attendCount")
             .then(Response=>(
                 this.presentCount=Response.data.present_count,
                 this.absentCount=Response.data.absent_count
-                
             ))
-            
-
         },
 
 
@@ -155,7 +198,6 @@ export default {
   
 
         getAllStudent(){
-            
             this.axios.get(this.$apiUrl+"/api/v1.0/MarkManagement/exams/"+this.examDetails.examID)
             .then(Response=>(
                 this.students=Response.data.mark.students,
