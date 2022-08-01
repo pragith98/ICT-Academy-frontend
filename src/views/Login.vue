@@ -2,13 +2,18 @@
     <div>
         
         <v-container>
-            <!-- <h1 class="title font-weight-black grey--text">CLASSES</h1> -->
+   
             <v-row class="mt-10">
                 <v-col cols="12" >
+                   
                     <v-form ref="form" v-model="valid" lazy-validation>
+
+                        <v-card max-width="500" style="margin: auto" class="mb-4" color="error" dark flat>
+                            <v-snackbar elevation="0" max-width="500" width="500" class="text-center" absolute timeout="-1" v-model="unsuccessAlert" color="red"  ><v-icon left>mdi-alert-outline</v-icon> Username or Password is incorrect!</v-snackbar>
+                        </v-card>
+
                         <v-card max-width="500" flat style="margin: auto">
                             <v-card-title class="heading-1 blue-grey lighten-4  blue-grey--text text--darken-2">Login</v-card-title>
-                            
                             <v-col cols="12" >
                                 <v-row dense style="padding:12px">
                                     <v-col cols="12" md="12" sm="12" >
@@ -50,6 +55,8 @@
 
 <script>
 
+
+
     export default{
 
         data(){
@@ -65,26 +72,14 @@
 
                 userNameRules: [v=> !!v || 'Username is required'],
                 passwordRules: [v=> !!v || 'Password is required', v=> (v && v.length >8)|| 'Password must be greater than 8'],
-                // rules: {
-                //     required: value => !!value || 'Required.',
-                //     min: v => v.length >= 8 || 'Min 8 characters',
-                //     emailMatch: () => (`The email and password you entered don't match`),
-                // },
+                
+                unsuccessAlert:false
             }
                 
         },
             
 
         methods:{
-            // login(){
-            //     if(this.$refs.form.validate()){
-            //         this.loading=true,
-            //         console.log("email: "+this.email+", Password: "+this.password)
-            //     }
-            // },
-
-            //localStorage.setItem('branch', 'BRNCH001') //set localStorage to branch details
-            //localStorage.setItem('userID', 'STAFF001') //set localStorage to staff details
 
             login(){
                 if(this.$refs.form.validate()){
@@ -102,12 +97,16 @@
 
                             this.loading=false
                             this.Reset();
-                            
+                            this.unsuccessAlert=false
+
+                            //router.push({path:'/'})
+                            window.location.replace("/")
                         }else{
                             this.loading=false
                         }
                     })
                     .catch(error => {
+                        this.unsuccessAlert=true
                         this.loading=false
                         console.log(error.data)
                     });
@@ -119,9 +118,6 @@
                 localStorage.setItem('user', jsonObj)
                 localStorage.setItem('userToken', this.token)
 
-                
-                //const LogedUser = JSON.parse(localStorage.getItem('user'));
-                //console.log(LogedUser.userID)
             },
 
             Reset() {
