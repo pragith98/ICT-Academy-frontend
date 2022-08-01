@@ -24,10 +24,10 @@
                             </v-row>
                             
                             <v-row justify="center">
-                                <v-card-title class="pb-0">Kamal Rathnayaka</v-card-title>
+                                <v-card-title class="pb-0">{{proName}}</v-card-title>
                             </v-row>
                             <v-row justify="center">
-                                <v-chip small outlined>Admin</v-chip>
+                                <v-chip small outlined>{{privilege}}</v-chip>
                             </v-row>
                             <v-row>
                                 <v-divider class="mt-2"></v-divider>
@@ -39,7 +39,7 @@
                                 <v-divider></v-divider>
                             </v-row>
                             <v-row justify="center" class="pa-5">
-                                <v-btn  depressed color="grey" dark class=" lighten-1" outlined>Logout
+                                <v-btn @click="logout()" :loading="loading"  depressed color="grey" dark class=" lighten-1" outlined>Logout
                                     <v-icon right>mdi-logout</v-icon>
                                 </v-btn>
                             </v-row>
@@ -99,6 +99,16 @@
 
         data(){
             return{
+                //----------logged User details-----------
+                logedUser : JSON.parse(localStorage.getItem('user')),
+                //----------logged User details-----------
+
+
+                proName:'',
+                privilege:'',
+
+                loading:false,
+
                 closeOnContentClick: false,
                 drawer:false,
                 selectedItem: 0,
@@ -122,6 +132,51 @@
 
             }
         },
+
+        created(){
+            this.showUser()
+        },
+
+        
+
+
+        methods:{
+            
+            showUser(){
+                if(this.logedUser){
+                    this.proName= this.logedUser.employee.name
+                    this.privilege=this.logedUser.privilege
+                }
+                
+            },
+
+            logout(){
+                this.loading=true
+                this.axios.post(this.$apiUrl+"/api/v1.0/UserManagement/users/"+this.logedUser.userID+"/logout",
+                    null
+                )
+                .then(Response=>{
+                    if(Response.data.success == true){
+                        this.clearUserLocalStorage()
+                        console.log("loged out!")
+                        this.loading=false
+
+                        window.location.replace("/Login")
+                    }else{
+                        this.loading=false
+                    }
+                })
+                .catch(error => {
+                    this.loading=false
+                    console.log(error.data)
+                });
+                
+            },
+
+            clearUserLocalStorage(){
+                localStorage.clear()
+            },
+        }
 
     }
 </script>
