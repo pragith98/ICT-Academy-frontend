@@ -21,11 +21,8 @@
                         <app-CreateSystemUser class="mr-2" @success="createSuccessAlert($event)" @failed="createFailAlert($event)"></app-CreateSystemUser>
                     </v-card-title>
                     <v-card-title><v-spacer></v-spacer><v-text-field v-model="search" append-icon="mdi-magnify" label="Search" single-line hide-details></v-text-field></v-card-title>
-                    <v-data-table :headers="headers" :items="staff" :search="search">
+                    <v-data-table :headers="headers" :items="users" :search="search">
                         <template v-slot:[`item.actions`]="{ item }">
-                                <!-- <v-chip small>{{item.role}}</v-chip>
-                                <v-chip outlined small>{{item.getBrach}}</v-chip> -->
-
                                 <v-card-actions>
                                     <app-EditSystemUser :staff='item'></app-EditSystemUser>
                                     <v-spacer></v-spacer>
@@ -60,21 +57,14 @@
             return {
                 search: '',
                 headers: [
-                    //{ text: 'ID', sortable: false, value: 'staffID' },
-                    { text: 'NAME',align: 'start', sortable: false, value:'fname'},
-                    { text: 'ROLE', sortable: true, value: 'role' },
-                    { text: 'TELEPHONE NO.', sortable: false, value: 'tp' },
-                    { text: 'BRANCH', sortable: true, value: 'getBrach' },
+                    { text: 'NAME',align: 'start', sortable: false, value:'employee.name'},
+                    { text: 'ROLE', sortable: true, value: 'privilege' },
+                    { text: 'EMAIL', sortable: false, value: 'employee.email' },
+                    { text: 'BRANCH', sortable: true, value: 'employee.branch.branchName' },
                     { text: '', sortable: false, value: 'actions' }
                 ],
 
-                staff: [
-                    {fname:'Mr. Saman Herath', nicType:'old', nicNo:'781982289v', tp:'0778787878', email:'Saman@Saman.com', address:'no1, rathnapura', getGender:'Male', staffID:'2621', date:'2021-02-17', getBrach:'Hakmana', role:'Teacher'},
-                    {fname:'Mr. Dasun Rathnayake', nicType:'old', nicNo:'921982289v', tp:'0784545454', email:'Dasun@Dasun.com', address:'no1, Matale', getGender:'Male', staffID:'2065', date:'2021-07-19', getBrach:'Walasmulla', role:'Admin'},
-                    {fname:'Mr. Kasun Bandara', nicType:'old', nicNo:'871982289v', tp:'0771412125', email:'Kasun@Kasun.com', address:'no1, Kandy', getGender:'Male', date:'2021-02-19', staffID:'2071', getBrach:'Kamburupitiya', role:'Standerd'},
-                    {fname:'Ms. Maheshi Ranathunga', nicType:'old', nicNo:'981982289v',tp:'0701212121', email:'Maheshi@Maheshi.com', address:'no1, Jafna', getGender:'Female', date:'2021-09-12', staffID:'2024', getBrach:'Walasmulla', role:'Standerd'},
-                    
-                ],
+                users: [],
 
                 breadcrumbs: [
                     { text: 'Users', disabled: false, href: '/Users' },
@@ -88,7 +78,25 @@
             }
         },
 
+        created(){
+            this.getUsers()
+        },
+
         methods: {
+
+            getUsers(){
+                this.axios.get(this.$apiUrl+"/api/v1.0/UserManagement/users",{
+                params:{
+                    status: "Active"
+                }
+                
+                }).then(Response=>(
+                    this.users=Response.data.user.data
+                ))
+            },
+
+
+
             deleteAlert(success){
                 this.successAlert = success;
             },
