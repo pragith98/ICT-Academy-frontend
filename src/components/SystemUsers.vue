@@ -21,7 +21,7 @@
                         <app-CreateSystemUser class="mr-2" @success="createSuccessAlert($event)" @failed="createFailAlert($event)"></app-CreateSystemUser>
                     </v-card-title>
                     <v-card-title><v-spacer></v-spacer><v-text-field v-model="search" append-icon="mdi-magnify" label="Search" single-line hide-details></v-text-field></v-card-title>
-                    <v-data-table :headers="headers" :items="users" :search="search">
+                    <v-data-table :headers="headers" :items="users" :search="search" :items-per-page=10>
                         <template v-slot:[`item.actions`]="{ item }">
                                 <v-card-actions>
                                     <app-EditSystemUser :staff='item'></app-EditSystemUser>
@@ -60,7 +60,7 @@
                     { text: 'NAME',align: 'start', sortable: false, value:'employee.name'},
                     { text: 'ROLE', sortable: true, value: 'privilege' },
                     { text: 'EMAIL', sortable: false, value: 'employee.email' },
-                    { text: 'BRANCH', sortable: true, value: 'employee.branch.branchName' },
+                    //{ text: 'BRANCH', sortable: true, value: 'employee.branch.branchName' },
                     { text: '', sortable: false, value: 'actions' }
                 ],
 
@@ -105,6 +105,7 @@
             },
 
             createSuccessAlert(success){
+                this.getUsers()
                 this.successCreateAlert = success
             },
             createFailAlert(failed){
