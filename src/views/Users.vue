@@ -41,7 +41,8 @@
         data(){
             return{
                 cardlist:[
-                    {name:'System Users', icon:'mdi-account-cog', color:'orange', link:'/Users/SystemUsers'},
+                    {name:'System Users', icon:'mdi-account-cog', color:'green', link:'/Users/SystemUsers'},
+                    {name:'Deactivated Users', icon:'mdi-account-off', color:'red', link:'/Users/DeactivatedSystemUsers'},
                 ],
 
 
