@@ -27,7 +27,7 @@
                 </v-col>
                 <v-col cols="12" md="12" sm="12" :hidden="!teacherShow">
                     <v-card-text>
-                        <v-autocomplete  :items="teachers" v-model="teacher" :filter="teacherFilter" item-text="name" item-value="teacherID" label="Teacher" prepend-icon="mdi-account" :rules="staffRules"></v-autocomplete>
+                        <v-autocomplete  :items="teachers" v-model="teacher" :filter="teacherFilter" item-text="name" return-object label="Teacher" prepend-icon="mdi-account" :rules="teacherRules"></v-autocomplete>
                     </v-card-text>
                 </v-col>
                 <v-col cols="12" md="6" sm="6" :hidden="!staffShow">
@@ -79,7 +79,7 @@ export default {
 
             loading:false,
             staffMember:[],
-            teacher:'',
+            teacher:[],
             getRole:'',
             teacherShow:false,
             staffShow:true,
@@ -101,7 +101,7 @@ export default {
 
 
             // -----------dropdown list-----------
-            role:['Standard','Admin'],
+            role:['Standard','Administrator'],
         
 
             unsuccessCreateAlert:false
@@ -113,7 +113,7 @@ export default {
 
     created(){
         this.getStaff()
-
+        this.getTeachers()
     },
     
 
@@ -121,9 +121,13 @@ export default {
 
         getStaff(){
             this.axios.get(this.$apiUrl+"/api/v1.0/UserManagement/users/staffNotUser").then(Response=>(
-                this.staff=Response.data.data,
-                console.log(Response)
-                
+                this.staff=Response.data.data
+            ))
+        },
+
+        getTeachers(){
+            this.axios.get(this.$apiUrl+"/api/v1.0/UserManagement/users/teachersNotUser").then(Response=>(
+                this.teachers=Response.data.data
             ))
         },
 
@@ -148,6 +152,8 @@ export default {
                     //------------send email-----------------
                     this.sendPassword(this.staffMember.email,this.userPassword)
 
+                    this.staffMember=[]
+
                 }else{
                     this.unsuccessAlert=true;
                     this.unsuccessCreateAlert=true
@@ -163,9 +169,36 @@ export default {
 
         createUserTeacher(){
             this.loading=true
-            console.log(this.teacher);
-            this.sendPassword("lakshanugc@gmail.com",this.genPassword())
-            this.loading=false
+            this.userPassword = this.genPassword()
+            this.axios.post(this.$apiUrl+"/api/v1.0/UserManagement/users",{
+                email:this.teacher.email,
+                password: this.userPassword,
+                password_confirmation: this.userPassword,
+                privilege:'Guess',
+                employeeID:this.teacher.teacherID,
+                status:"Active"
+            })
+            .then(Response=>{
+                if(Response.data.success == true){
+                    this.loading=false
+                    this.successAlert()
+                    this.dialog=false
+                    console.log(this.userPassword)
+                    //------------send email-----------------
+                    this.sendPassword(this.teacher.email,this.userPassword)
+
+                    this.teacher=[]
+
+                }else{
+                    this.unsuccessAlert=true;
+                    this.unsuccessCreateAlert=true
+                }
+            })
+            .catch(error => {
+                this.loading=false
+                this.unsuccessCreateAlert=true
+                console.log(error.data)
+            });
         },
 
         
@@ -199,6 +232,7 @@ export default {
             }
             return password
         },
+
 
         sendPassword(emailAddress,password){
             loadScript("https://smtpjs.com/v3/smtp.js")
