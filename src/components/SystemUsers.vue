@@ -24,9 +24,9 @@
                     <v-data-table :headers="headers" :items="users" :search="search" :items-per-page=10>
                         <template v-slot:[`item.actions`]="{ item }">
                                 <v-card-actions>
-                                    <app-EditSystemUser :staff='item'></app-EditSystemUser>
+                                    <app-EditSystemUser :users='item'></app-EditSystemUser>
                                     <v-spacer></v-spacer>
-                                    <app-RemoveSystemUser class="ml-5" :staff='item' @success="deleteAlert($event)" @failed="faileAlert($event)"></app-RemoveSystemUser>
+                                    <app-RemoveSystemUser class="ml-5" :users='item' @success="deleteAlert($event)" @failed="faileAlert($event)"></app-RemoveSystemUser>
                                 </v-card-actions>
                                 
                         </template>
@@ -99,6 +99,7 @@
 
             deleteAlert(success){
                 this.successAlert = success;
+                this.getUsers()
             },
             faileAlert(failed){
                 this.unsuccessAlert = failed;
