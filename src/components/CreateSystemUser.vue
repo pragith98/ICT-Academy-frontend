@@ -49,7 +49,7 @@
                 <v-btn :loading="loading"  :disabled="!staffMember || !getRole" color="primary" @click="createUserStaff()" depressed>Create</v-btn>
             </div>
             <div :hidden="!teacherShow">
-                <v-btn :loading="loading"  :disabled="!teacher" color="primary" @click="createUserTeacher()" depressed>Create</v-btn>
+                <v-btn :loading="loading"  :disabled="teacher.length==''" color="primary" @click="createUserTeacher()" depressed>Create</v-btn>
             </div>
             
             
