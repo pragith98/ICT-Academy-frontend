@@ -11,14 +11,14 @@
                             <v-icon size="100" color="error">mdi-help-circle-outline</v-icon>
                         </v-row>
                     </v-card-title>
-                    <span class="text-h6 text-center">Do you really want to remove <br> <strong>"{{staff.fname}}"</strong></span>
+                    <span class="text-h6 text-center">Do you really want to remove <br> <strong>"{{users.employee.name}}"</strong></span>
                 </v-container>
                 
                 
                 <v-card-actions>
                     <v-spacer></v-spacer>
-                    <v-btn color="grey" @click="dialog = false, failedAlert()" outlined>Cancel</v-btn>
-                    <v-btn :loading="loading" color="error" @click="dialog = false, successAlert()" depressed>Remove</v-btn>
+                    <v-btn color="grey" @click="dialog = false" outlined>Cancel</v-btn>
+                    <v-btn :loading="loading" color="error" @click="removeUser()" depressed>Remove</v-btn>
                 </v-card-actions>
             </v-card>
         </v-dialog>
@@ -29,13 +29,34 @@
 
 <script>
     export default {
-        props:['staff'],
+        props:['users'],
         data: () => ({
             dialog: false,
             loading:false,
         }),
 
         methods:{
+
+            removeUser(){
+                this.loading=true
+                this.axios.delete(this.$apiUrl+'/api/v1.0/UserManagement/users/'+this.users.userID)
+                    .then(Response=>{
+                        if(Response.data.success == true){
+                            this.successAlert();
+                            this.loading=false
+                            this.dialog=false
+                        }else{
+                            this.failedAlert();
+                        }
+                    }).catch(error => {
+                        this.loading=false
+                        this.failedAlert()
+                        console.log(error.data)
+                        
+                    });
+            },
+
+
             successAlert(){
                 this.$emit('success',true)
             },
