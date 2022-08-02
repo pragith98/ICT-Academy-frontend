@@ -2,7 +2,7 @@
   <v-row justify="end">
     <v-dialog v-model="dialog" scrollable max-width="700px" persistent>
         <template v-slot:activator="{ on, attrs }">
-            <v-btn class="teal" small block dark depressed  v-bind="attrs" v-on="on">Edit<v-icon dark right>mdi-pencil</v-icon></v-btn>
+            <v-btn @click="getUsers()" class="teal" small block dark depressed  v-bind="attrs" v-on="on">Edit<v-icon dark right>mdi-pencil</v-icon></v-btn>
         </template>
         <v-card max-width="700" flat>
         <v-card-title class="heading-1 blue-grey lighten-4  blue-grey--text text--darken-2">Edit system user</v-card-title>
@@ -28,11 +28,11 @@
                         <legend><v-card-text class="grey--text">Account Status</v-card-text></legend>  
                         <v-row>
                             <v-col cols="12" md="6" sm="6" >
-                                <v-select :items="status" :rules="statusRules" label="Status" prepend-icon="mdi-shield-account" v-model="getStatus" ></v-select>
-                            
+                                <v-select :items="role" :rules="roleRules" label="Role" prepend-icon="mdi-shield-account" v-model="getRole"></v-select>
                             </v-col>
-                            <v-col cols="12" md="6" sm="6" align-self="center">
-                                <v-btn color="primary" outlined @click="changeStatus()">Ok</v-btn>
+
+                            <v-col cols="12" md="6" sm="6">
+                                <v-switch color="red" @change="deactivateUser()"  inset v-model="status" label="Mark as a Deactivated User"></v-switch>
                             </v-col>
                         </v-row>  
                         
@@ -68,19 +68,22 @@
 import { loadScript } from "vue-plugin-load-script";
 
 export default {
-    props:['staff'],
+    props:['users'],
     data(){
         return{
             dialog: false,
+            getRole:'',
+            status:null,
+            showStatus:'',
 
-            getStatus:'Active',
+            user:[],
             
             // -----------Validation rules-----------
-            statusRules: [v=> !!v || 'Status is required'],
+            roleRules: [v=> !!v || 'Role is required'],
 
             
             // -----------dropdown list-----------
-            status:['Active','Deactive'],
+            role:['Standard','Administrator','Guess'],
 
 
 
@@ -94,6 +97,32 @@ export default {
     
 
     methods:{
+
+        getUsers(){
+            this.axios.patch(this.$apiUrl+"/api/v1.0/UserManagement/users/"+this.users.userID).then(Response=>{
+                if(Response.data.user.status=="Active"){
+                    this.status=false;
+                    this.showStatus="Active"
+                }else{
+                    this.status=true;
+                    this.showStatus="Deactivate"
+                }
+                this.getRole=Response.data.user.privilege
+            })
+        },
+
+
+
+        deactivateUser(){
+            if(this.status == false){
+                this.showStatus = "Active"
+            }else if(this.status == true){
+                this.showStatus = "Deactivate"
+            }
+        },
+        
+
+
         resetPassword(){
             console.log(this.staff.staffID);
             this.sendPassword("lakshanugc@gmail.com",this.genPassword());
