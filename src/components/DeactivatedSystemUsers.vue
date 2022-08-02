@@ -21,7 +21,7 @@
 
             <template>
                 <v-card flat>
-                    <v-card-title class="heading-1 blue-grey lighten-4  blue-grey--text text--darken-2">System Users</v-card-title>
+                    <v-card-title class="heading-1 blue-grey lighten-4  blue-grey--text text--darken-2">Deactivated System Users</v-card-title>
                     <v-card-title><v-spacer></v-spacer><v-text-field v-model="search" append-icon="mdi-magnify" label="Search" single-line hide-details></v-text-field></v-card-title>
                     <v-data-table :headers="headers" :items="users" :search="search" :items-per-page=10>
                         <template v-slot:[`item.actions`]="{ item }">
