@@ -22,7 +22,7 @@
                 
                 <v-col cols="12" md="6" sm="6" :hidden="!staffShow">
                     <v-card-text>
-                        <v-autocomplete :items="staffMembers" v-model="staffMember" :filter="staffFilter" item-text="name" item-value="staffID" label="Staff Member" prepend-icon="mdi-account" :rules="staffRules"></v-autocomplete>
+                        <v-autocomplete :items="staff" v-model="staffMember" :filter="staffFilter" item-text="name" return-object label="Staff Member" prepend-icon="mdi-account" :rules="staffRules"></v-autocomplete>
                     </v-card-text>
                 </v-col>
                 <v-col cols="12" md="12" sm="12" :hidden="!teacherShow">
@@ -44,12 +44,12 @@
 
         <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn   @click="dialog = false, failedAlert()" outlined color="grey" class="mr-2">Cancel</v-btn>
+            <v-btn   @click="dialog = false" outlined color="grey" class="mr-2">Cancel</v-btn>
             <div :hidden="!staffShow">
-                <v-btn :loading="loading"  :disabled="!staffMember || !getRole" color="primary" @click="createUserStaff(), successAlert(), dialog = false" depressed>Create</v-btn>
+                <v-btn :loading="loading"  :disabled="!staffMember || !getRole" color="primary" @click="createUserStaff()" depressed>Create</v-btn>
             </div>
             <div :hidden="!teacherShow">
-                <v-btn :loading="loading"  :disabled="!teacher" color="primary" @click="createUserTeacher(), successAlert(), dialog = false" depressed>Create</v-btn>
+                <v-btn :loading="loading"  :disabled="!teacher" color="primary" @click="createUserTeacher()" depressed>Create</v-btn>
             </div>
             
             
@@ -57,6 +57,11 @@
 
       </v-card>
       
+            <!-- ---------------------alert ---------------------->
+            <v-snackbar :timeout="3000" v-model="unsuccessCreateAlert" color="red"  bottom ><v-icon left>mdi-alert-outline</v-icon>Account Create <strong>failed</strong> </v-snackbar>
+            <!-- ---------------------alert ---------------------->
+
+
     </v-dialog>
   </v-row>
 </template>
@@ -69,18 +74,17 @@ import { loadScript } from "vue-plugin-load-script";
 export default {
     data(){
         return{
+            
             dialog: false,
 
             loading:false,
-            staffMember:'',
+            staffMember:[],
             teacher:'',
             getRole:'',
-
             teacherShow:false,
             staffShow:true,
 
-            lname:'Dasun',
-
+            userPassword:'',
 
             toggle_exclusive: undefined,
             
@@ -91,31 +95,72 @@ export default {
             staffRules: [v=> !!v || 'Staff member is required'],
             roleRules: [v=> !!v || 'Role is required'],
 
-            staffMembers:[
-                {name:'Samansfsdf Herathsfddf 2121', staffID:'2121'},
-                {name:'Dasun Rathnayake', staffID:'2133'},
-                {name:'Kasun Bandara', staffID:'24121'},
-                {name:'Maheshi Ranathunga', staffID:'3167'},
-            ],
+            staff:[],
 
-            teachers:[
-                {name:'Samansfsdf Herathsfddf 2121', teacherID:'2121'},
-                {name:'Dasun Rathnayake', teacherID:'2133'},
-                {name:'Kasun Bandara', teacherID:'24121'},
-                {name:'Maheshi Ranathunga', teacherID:'3167'},
-            ],
+            teachers:[],
 
 
             // -----------dropdown list-----------
-            role:['Standerd user','Admin'],
+            role:['Standard','Admin'],
         
+
+            unsuccessCreateAlert:false
         }
         
         
     },
+
+
+    created(){
+        this.getStaff()
+
+    },
     
 
     methods:{
+
+        getStaff(){
+            this.axios.get(this.$apiUrl+"/api/v1.0/UserManagement/users/staffNotUser").then(Response=>(
+                this.staff=Response.data.data,
+                console.log(Response)
+                
+            ))
+        },
+
+
+        createUserStaff(){
+            this.loading=true
+            this.userPassword = this.genPassword()
+            this.axios.post(this.$apiUrl+"/api/v1.0/UserManagement/users",{
+                email:this.staffMember.email,
+                password: this.userPassword,
+                password_confirmation: this.userPassword,
+                privilege:this.getRole,
+                employeeID:this.staffMember.staffID,
+                status:"Active"
+            })
+            .then(Response=>{
+                if(Response.data.success == true){
+                    this.loading=false
+                    this.successAlert()
+                    this.dialog=false
+                    console.log(this.userPassword)
+                    //------------send email-----------------
+                    this.sendPassword(this.staffMember.email,this.userPassword)
+
+                }else{
+                    this.unsuccessAlert=true;
+                    this.unsuccessCreateAlert=true
+                }
+            })
+            .catch(error => {
+                this.loading=false
+                this.unsuccessCreateAlert=true
+                console.log(error.data)
+            });
+        },
+
+
         createUserTeacher(){
             this.loading=true
             console.log(this.teacher);
@@ -123,12 +168,7 @@ export default {
             this.loading=false
         },
 
-        createUserStaff(){
-            this.loading=true
-            console.log(this.staffMember);
-            this.sendPassword("lakshanugc@gmail.com",this.genPassword())
-            this.loading=false
-        },
+        
 
         staffFilter (item, queryText) {
             const textOne = item.name.toLowerCase()
@@ -182,7 +222,7 @@ export default {
         
 
         successAlert(){
-                this.$emit('success',true)
+            this.$emit('success',true)
         },
         failedAlert(){
             this.$emit('failed',true)
