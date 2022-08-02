@@ -45,6 +45,7 @@ const routes = [
   { path:'/Staff/StaffDetails', name:'StaffDetails', component:()=> import('../components/StaffDetails.vue') ,meta:{ requiresAuth:true }},
   { path:'/Staff/DeactivatedStaffDetails', name:'DeactivatedStaffDetails', component:()=> import('../components/DeactivatedStaffDetails.vue') ,meta:{ requiresAuth:true }},
   { path:'/Users/SystemUsers', name:'SystemUsers', component:()=> import('../components/SystemUsers.vue') ,meta:{ requiresAuth:true }},
+  { path:'/Users/DeactivatedSystemUsers', name:'DeactivatedSystemUsers', component:()=> import('../components/DeactivatedSystemUsers.vue') ,meta:{ requiresAuth:true }},
   { path:'/Classes/CreateClass', name:'CreateClass', component:()=> import('../components/CreateClass.vue') ,meta:{ requiresAuth:true }},
   { path:'/Classes/Subjects', name:'Subjects', component:()=> import('../components/Subjects.vue') ,meta:{ requiresAuth:true }},
   { path:'/Classes/ClassDetails', name:'ClassDetails', component:()=> import('../components/ClassDetails.vue') ,meta:{ requiresAuth:true }},
