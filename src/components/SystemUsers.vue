@@ -8,12 +8,16 @@
             </v-breadcrumbs>
         <v-container>
 
+
+            <!----------------------------- alert ------------------------->
             <v-snackbar :timeout="3000" v-model="unsuccessAlert" color="red"  bottom ><v-icon left>mdi-alert-outline</v-icon>Account remove <strong>failed</strong> </v-snackbar>
             <v-snackbar :timeout="3000" v-model="successAlert" color="green"  bottom><v-icon left>mdi-check</v-icon>Account remove <strong>successful</strong> </v-snackbar>
             
             <v-snackbar :timeout="3000" v-model="unsuccessCreateAlert" color="red"  bottom ><v-icon left>mdi-alert-outline</v-icon>Account Create <strong>failed</strong> </v-snackbar>
             <v-snackbar :timeout="3000" v-model="successCreateAlert" color="green"  bottom><v-icon left>mdi-check</v-icon>Account Create <strong>successful</strong> </v-snackbar>
- 
+
+            <v-snackbar :timeout="3000" v-model="successUpdateAlert" color="green"  bottom><v-icon left>mdi-check</v-icon>Account update <strong>Successful</strong> </v-snackbar>
+            <!----------------------------- alert ------------------------->
 
             <template>
                 <v-card flat>
@@ -23,11 +27,11 @@
                     <v-card-title><v-spacer></v-spacer><v-text-field v-model="search" append-icon="mdi-magnify" label="Search" single-line hide-details></v-text-field></v-card-title>
                     <v-data-table :headers="headers" :items="users" :search="search" :items-per-page=10>
                         <template v-slot:[`item.actions`]="{ item }">
-                                <v-card-actions>
-                                    <app-EditSystemUser :users='item'></app-EditSystemUser>
-                                    <v-spacer></v-spacer>
-                                    <app-RemoveSystemUser class="ml-5" :users='item' @success="deleteAlert($event)" @failed="faileAlert($event)"></app-RemoveSystemUser>
-                                </v-card-actions>
+                            <v-card-actions>
+                                <app-EditSystemUser @success="updateSuccessAlert($event)" :users='item'></app-EditSystemUser>
+                                <v-spacer></v-spacer>
+                                <app-RemoveSystemUser class="ml-5" :users='item' @success="deleteAlert($event)" @failed="faileAlert($event)"></app-RemoveSystemUser>
+                            </v-card-actions>
                                 
                         </template>
                     </v-data-table>
@@ -74,7 +78,8 @@
                 successAlert:false,
                 unsuccessAlert:false,
                 unsuccessCreateAlert:false,
-                successCreateAlert:false
+                successCreateAlert:false,
+                successUpdateAlert:false
             }
         },
 
@@ -111,7 +116,14 @@
             },
             createFailAlert(failed){
                 this.unsuccessCreateAlert = failed
-            }
+            },
+
+            updateSuccessAlert(success){
+                this.getUsers()
+                this.successUpdateAlert = success
+            },
+
+            
         }
     }
 </script>

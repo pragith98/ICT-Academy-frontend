@@ -16,7 +16,7 @@
                         <legend><v-card-text class="grey--text">Account Password</v-card-text></legend>
                         <v-row>
                             <v-col cols="12" md="12" sm="12" >
-                                <v-btn color="primary" outlined @click="resetPassword()">Reset Password</v-btn>
+                                <v-btn color="primary" :loading="loading" outlined @click="resetPassword()">Reset Password</v-btn>
                             </v-col>
                         </v-row>
                         
@@ -48,15 +48,20 @@
 
         <v-card-actions>
             <v-spacer></v-spacer>
-            <div>
-                <v-btn color="primary" @click="dialog = false" depressed>Ok</v-btn>
-            </div>
+            <v-btn   @click="dialog = false" outlined color="grey">Cancel</v-btn>
+            <v-btn :loading="loading" :disabled="!getRole || !showStatus" color="primary" @click="updateUser()" depressed>Save
+                <v-icon left>mdi-content-save</v-icon>
+            </v-btn>
         </v-card-actions>
 
-        <v-snackbar v-model="statusUpdateSuccessAlert" :timeout="2000" absolute bottom left color="green">Account status has been updated</v-snackbar>
-        <v-snackbar v-model="passwordResetSuccessAlert" :timeout="2000" absolute bottom left color="green">Password reset successful</v-snackbar>
+        <!----------------------- alerts -------------------------------------->
+        <v-snackbar v-model="statusUpdateUnsuccessAlert" :timeout="3000" absolute bottom left color="red">Account update failed</v-snackbar>
+        <v-snackbar v-model="passwordResetUnsuccessAlert" :timeout="3000" absolute bottom left color="red">Password reset Unsuccessful</v-snackbar>
+        <v-snackbar v-model="passwordResetSuccessAlert" :timeout="3000" absolute bottom left color="green">Password reset Successful</v-snackbar>
+        <!----------------------- alerts -------------------------------------->
 
       </v-card>
+
       
     </v-dialog>
   </v-row>
@@ -71,12 +76,14 @@ export default {
     props:['users'],
     data(){
         return{
+            loading:false,
             dialog: false,
             getRole:'',
             status:null,
             showStatus:'',
+            userPassword:'',
 
-            user:[],
+            
             
             // -----------Validation rules-----------
             roleRules: [v=> !!v || 'Role is required'],
@@ -85,10 +92,9 @@ export default {
             // -----------dropdown list-----------
             role:['Standard','Administrator','Guess'],
 
-
-
-            statusUpdateSuccessAlert:false,
-            passwordResetSuccessAlert:false
+            passwordResetSuccessAlert:false,
+            statusUpdateUnsuccessAlert:false,
+            passwordResetUnsuccessAlert:false
         
         }
         
@@ -100,6 +106,7 @@ export default {
 
         getUsers(){
             this.axios.patch(this.$apiUrl+"/api/v1.0/UserManagement/users/"+this.users.userID).then(Response=>{
+
                 if(Response.data.user.status=="Active"){
                     this.status=false;
                     this.showStatus="Active"
@@ -111,7 +118,27 @@ export default {
             })
         },
 
-
+        updateUser(){
+            this.loading=true
+            this.axios.patch(this.$apiUrl+'/api/v1.0/UserManagement/users/'+this.users.userID,{
+                privilege:this.getRole,
+                status:this.showStatus,
+            })
+            .then(Response=>{
+                if(Response.data.success == true){
+                    this.loading=false
+                    this.successAlert()
+                    this.dialog=false
+                }else{
+                    this.loading=false
+                    this.statusUpdateUnsuccessAlert=true
+                }
+            }).catch(error => {
+                this.loading=false
+                this.statusUpdateUnsuccessAlert=true
+                console.log(error.data)
+            });
+        },
 
         deactivateUser(){
             if(this.status == false){
@@ -120,14 +147,36 @@ export default {
                 this.showStatus = "Deactivate"
             }
         },
-        
 
 
         resetPassword(){
-            console.log(this.staff.staffID);
-            this.sendPassword("lakshanugc@gmail.com",this.genPassword());
-            this.passwordResetSuccessAlert=true
+            this.loading=true
+            this.userPassword=this.genPassword()
+            this.axios.patch(this.$apiUrl+'/api/v1.0/UserManagement/users/'+this.users.userID+'/restPassword',{
+                password:this.userPassword,
+                password_confirmation:this.userPassword
+                
+            })
+            .then(Response=>{
+                if(Response.data.success == true){
+                    this.loading=false
+                    this.passwordResetSuccessAlert=true
+                    this.dialog=false
+
+                    //------------send email-----------------
+                    this.sendPassword(this.users.employee.email,this.userPassword)
+                    console.log(this.userPassword)
+                }else{
+                    this.loading=false
+                    this.passwordResetUnsuccessAlert=true
+                }
+            }).catch(error => {
+                this.loading=false
+                this.passwordResetUnsuccessAlert=true
+                console.log(error.data)
+            });
         },
+        
 
         genPassword() {
             var chars = "0123456789abcdefghijklmnopqrstuvwxyz!@#$%^&*()ABCDEFGHIJKLMNOPQRSTUVWXYZ";
@@ -145,12 +194,12 @@ export default {
             .then(() => {
                 window.Email && window.Email.send({
                     Host : "smtp.gmail.com",
-                    Username : "lakshanj1ace@gmail.com",
-                    Password : "nymefuphawvotnst",
+                    Username : this.$emailAddress,
+                    Password : this.$emailPassword,
                     To : emailAddress,
-                    From : "lakshanj1ace@gmail.com",
+                    From : this.$emailAddress,
                     Subject : "Password Reset",
-                    Body : `Hello ${this.staff.fname},<br>You got a new message from <b>ICT Academy</b>.<br><br>Your account password reset successfully. Please use the given password to log into the system. <br><br><b>User name:</b> ${emailAddress}<br><b>Password:</b> ${password}<br><br><i>Please change the password as soon as you log in to the system.</i><br><br>Best wishes,<br>ICT Academy - Hakmana<br>076 9198533`
+                    Body : `Hello!,<br>You got a new message from <b>ICT Academy</b>.<br><br>Your account password reset successfully. Please use the given password to log into the system. <br><br><b>User name:</b> ${emailAddress}<br><b>Password:</b> ${password}<br><br><i>Please change the password as soon as you log in to the system.</i><br><br>Best wishes,<br>ICT Academy - Hakmana<br>${this.$tpNo}`
                 }).then(
                     message => console.log(message)
                 );
@@ -159,18 +208,14 @@ export default {
             });
         },
 
+
         changeStatus(){
             this.statusUpdateSuccessAlert=true
         },
 
-        
-
         successAlert(){
-                this.$emit('success',true)
+            this.$emit('success',true)
         },
-        failedAlert(){
-            this.$emit('failed',true)
-        }
 
     },
 
