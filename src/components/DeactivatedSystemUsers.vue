@@ -21,9 +21,7 @@
 
             <template>
                 <v-card flat>
-                    <v-card-title class="heading-1 blue-grey lighten-4  blue-grey--text text--darken-2">System Users
-                        <app-CreateSystemUser class="mr-2" @success="createSuccessAlert($event)" @failed="createFailAlert($event)"></app-CreateSystemUser>
-                    </v-card-title>
+                    <v-card-title class="heading-1 blue-grey lighten-4  blue-grey--text text--darken-2">System Users</v-card-title>
                     <v-card-title><v-spacer></v-spacer><v-text-field v-model="search" append-icon="mdi-magnify" label="Search" single-line hide-details></v-text-field></v-card-title>
                     <v-data-table :headers="headers" :items="users" :search="search" :items-per-page=10>
                         <template v-slot:[`item.actions`]="{ item }">
@@ -48,13 +46,11 @@
 
 <script>
     import RemoveSystemUser from './RemoveSystemUser.vue'
-    import CreateSystemUser from './CreateSystemUser.vue'
     import EditSystemUser from './EditSystemUser.vue'
 
     export default {
         components:{
             'app-RemoveSystemUser':RemoveSystemUser,
-            'app-CreateSystemUser':CreateSystemUser,
             'app-EditSystemUser':EditSystemUser
         },
         data () {
@@ -64,7 +60,6 @@
                     { text: 'NAME',align: 'start', sortable: false, value:'employee.name'},
                     { text: 'ROLE', sortable: true, value: 'privilege' },
                     { text: 'EMAIL', sortable: false, value: 'employee.email' },
-                    //{ text: 'BRANCH', sortable: true, value: 'employee.branch.branchName' },
                     { text: '', sortable: false, value: 'actions' }
                 ],
 
@@ -92,7 +87,7 @@
             getUsers(){
                 this.axios.get(this.$apiUrl+"/api/v1.0/UserManagement/users",{
                 params:{
-                    status: "Active"
+                    status: "Deactivate"
                 }
                 
                 }).then(Response=>(
