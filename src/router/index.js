@@ -22,18 +22,18 @@ import Exams from '../views/Exams.vue'
 Vue.use(VueRouter)
 
 const routes = [
-  { path: '/', name: 'Home', component: Home },
-  { path:'/Students', name:'Students', component:Students},
-  { path:'/Attendance', name:'Attendance', component:Attendance},
-  { path:'/Branches', name:'Branches', component:Branches},
-  { path:'/Classes', name:'Classes', component:Classes},
-  { path:'/Financial', name:'Financial', component:Financial },
-  { path:'/Staff', name:'Staff', component:Staff},
-  { path:'/Teachers', name:'Teachers', component:Teachers},
-  { path:'/Users', name:'Users', component:Users},
-  { path:'/Login', name:'Login', component:Login},
+  { path: '/', name: 'Home', component: Home ,meta:{ requiresAuth:true }},
+  { path:'/Students', name:'Students', component:Students ,meta:{ requiresAuth:true }},
+  { path:'/Attendance', name:'Attendance', component:Attendance ,meta:{ requiresAuth:true }},
+  { path:'/Branches', name:'Branches', component:Branches ,meta:{ requiresAuth:true }},
+  { path:'/Classes', name:'Classes', component:Classes ,meta:{ requiresAuth:true }},
+  { path:'/Financial', name:'Financial', component:Financial  ,meta:{ requiresAuth:true }},
+  { path:'/Staff', name:'Staff', component:Staff ,meta:{ requiresAuth:true }},
+  { path:'/Teachers', name:'Teachers', component:Teachers ,meta:{ requiresAuth:true }},
+  { path:'/Users', name:'Users', component:Users ,meta:{ requiresAuth:true }},
+  { path:'/Login', name:'Login', component:Login },
   { path:'/ForgotPassword', name:'ForgotPassword', component:ForgotPassword},
-  { path:'/Exams', name:'Exams', component:Exams},
+  { path:'/Exams', name:'Exams', component:Exams ,meta:{ requiresAuth:true }},
 
   { path:'/Students/StudentRegistration', name:'StudentRegistration', component:()=> import('../components/StudentRegistration.vue')},
   { path:'/Students/StudentDetails', name:'StudentDetails', component:()=> import('../components/StudentDetails.vue')},
@@ -75,9 +75,7 @@ const routes = [
   // }
 ]
 
-// router.beforeEach(() =>{
-//   console.log("auth")
-// })
+
 
 
 const router = new VueRouter({
@@ -85,4 +83,29 @@ const router = new VueRouter({
   mode:'history'
 })
 
+
+
+router.beforeEach((to,from,next) =>{
+  const token=localStorage.getItem('userToken');
+  if(to.meta.requiresAuth){
+    if(token){
+      next();
+    }else{
+      next('/Login');
+    }
+  }else{
+    next();
+  }
+})
+
+
+
+
 export default router
+
+
+
+
+
+
+
