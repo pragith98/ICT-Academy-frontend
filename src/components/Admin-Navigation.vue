@@ -63,7 +63,7 @@
             <v-card color="#263238" class="pa-4 mt-3" flat>
                 <v-card flat class="text-center" color="#455A64" shaped>
                     <v-card-title class="font-weight-bold">ICT Academy</v-card-title>
-                    <v-select :items="branch" v-model="getBranch" outlined dense class="px-3"></v-select>
+                    <v-select @change="changeBranch()" return-object item-text="branchName" item-value="branchID" :items="branches" v-model="branch" outlined dense class="px-3"></v-select>
                     
                 </v-card>
             </v-card>
@@ -103,7 +103,7 @@
                 logedUser : JSON.parse(localStorage.getItem('user')),
                 //----------logged User details-----------
 
-
+                branch:[],
                 proName:'',
                 privilege:'',
 
@@ -127,20 +127,37 @@
                     { text: 'Processes', icon: 'mdi-cog', link:'' }
                 ],
 
-                getBranch:'Hakmana',
-                branch:['Hakmana','Walasmulla'],
+                
+                branches:[],
 
             }
         },
 
         created(){
             this.showUser()
+            this.getAllBranches()
         },
 
         
 
 
         methods:{
+            
+            changeBranch(){
+                var user=this.logedUser
+                user.employee.branch = this.branch
+
+                const jsonObj = JSON.stringify(user)
+                localStorage.setItem('user', jsonObj)
+                this.$router.go()
+            },
+
+            getAllBranches(){
+                this.axios.get(this.$apiUrl+"/api/v1.0/BranchManagement/branches").then(Response=>(
+                    this.branches=Response.data.branch.data,
+                    this.branch=this.logedUser.employee.branch
+                ))
+            },
             
             showUser(){
                 if(this.logedUser){
