@@ -60,6 +60,11 @@
         props:['show','classDetails','student'],
         data(){
             return{
+                //----------logged User details-----------
+                logedUser : JSON.parse(localStorage.getItem('user')),
+                //----------logged User details-----------
+
+
                 loading:false,
                 dialog: false,
                 valid:true,
@@ -80,6 +85,8 @@
 
                 selectedPayments:[],
                 selectedPaymentStatus:[],
+
+                amounts:[],
 
 
 
@@ -140,6 +147,7 @@
             },
 
             payNow(){
+                console.log(this.selectedPaymentStatus.length)
                 this.loading=true
                 this.axios.patch(this.$apiUrl+'/api/v1.0/EnrollmentManagement/students/'+this.student.studentID+'/classes/'+this.classDetails.classID+'/daily',{
                     decrement: this.selectedPaymentStatus.length
@@ -147,17 +155,15 @@
                 })
                 .then(Response=>{
                     if(Response.data.success == true){
-                        //call get student function
-                        this.getStudent(this.student.studentID)
-                        this.loading=false
-                        this.successAlert()
-                        this.dialog=false
+                        //------call fee manage function------
+                        this.feeManage()
+                        
                     }else{
                         this.failedAlert()
                     }
                 })
                 .catch(error => {
-                    this.failedAlert
+                    this.failedAlert()
                     console.log(error.data)
                     this.loading=false
                 });
@@ -169,6 +175,43 @@
 
             failedAlert(){
                 this.$emit('failed',true)
+            },
+
+
+            feeManage(){
+                this.selectedPayments.forEach(Element => {
+                    var amounts = {paidAmount:Element+".00"}
+                    this.amounts.push(amounts)
+                })
+
+                this.axios.post(this.$apiUrl+"/api/v1.0/FeeManagement/students/"+this.student.studentID+"/classes/"+this.classDetails.classID+"/fees",{
+                    amounts:this.amounts,
+                    date:(new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().substr(0, 10),
+                    handlerStaffID: this.logedUser.employee.employeeID,
+                    branchID: this.logedUser.employee.branch.branchID,
+                    paymentStatus: this.selectedPaymentStatus.length
+
+
+                })
+                .then(Response=>{
+                    
+                    if(Response.data.success == true){
+                        //call get student function
+                        this.getStudent(this.student.studentID)
+                        this.loading=false
+                        this.successAlert()
+                        this.dialog=false
+                    }else{
+                        this.failedAlert()
+                    }
+                })
+                .catch(error => {
+                    this.failedAlert()
+                    console.log(error.data)
+                    this.loading=false
+                    
+                });
+                   
             },
 
 
