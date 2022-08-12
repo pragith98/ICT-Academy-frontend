@@ -184,6 +184,32 @@
 
             payNow(){
                 this.loading=true
+                this.selectedPaymentDetails.forEach(Element=>{
+
+                    this.axios.patch(this.$apiUrl+'/api/v1.0/EnrollmentManagement/students/'+this.studentID+'/classes/'+Element.classID+'/daily',{
+                        decrement: 1
+
+                    })
+                    .then(Response=>{
+                        if(Response.data.success == true){
+                            //------call fee manage function------
+                            this.feeManage()
+                            
+                        }else{
+                            this.paymentUnsuccessAlert=true
+                        }
+                    })
+                    .catch(error => {
+                        this.paymentUnsuccessAlert=true
+                        console.log(error.data)
+                        this.loading=false
+                    });
+
+                })
+            },
+
+            feeManage(){
+                
                 this.axios.post(this.$apiUrl+'/api/v1.0/FeeManagement/students/'+this.studentID+'/fees',{
 
                     classes:this.selectedPaymentDetails,
@@ -193,14 +219,13 @@
 
                 })
                 .then(Response=>{
+                    
                     if(Response.data.success == true){
-                        //------call fee manage function------
-                        //this.feeManage()
+                        //call get student function
                         this.getStudent(this.studentID)
                         this.loading=false
                         this.successAlert()
                         this.dialog=false
-                        
                     }else{
                         this.paymentUnsuccessAlert=true
                     }
@@ -209,8 +234,11 @@
                     this.paymentUnsuccessAlert=true
                     console.log(error.data)
                     this.loading=false
+                    
                 });
+                   
             },
+
 
             successAlert(){
                 this.$emit('success',true)
