@@ -31,7 +31,7 @@ const routes = [
   { path:'/Staff', name:'Staff', component:Staff ,meta:{ requiresAuth:true }},
   { path:'/Teachers', name:'Teachers', component:Teachers ,meta:{ requiresAuth:true }},
   { path:'/Users', name:'Users', component:Users ,meta:{ requiresAuth:true }},
-  { path:'/Login', name:'Login', component:Login },
+  { path:'/Login', name:'Login', component:Login  ,meta:{ disableIfLoggedIn:true }},
   { path:'/ForgotPassword', name:'ForgotPassword', component:ForgotPassword},
   { path:'/Exams', name:'Exams', component:Exams ,meta:{ requiresAuth:true }},
 
@@ -92,6 +92,16 @@ router.beforeEach((to,from,next) =>{
   if(to.meta.requiresAuth){
     if(token){
       next();
+    }else{
+      next('/Login');
+    }
+  }else{
+    next();
+  }
+
+  if(to.meta.disableIfLoggedIn){
+    if(token){
+      next('/');
     }else{
       next('/Login');
     }
