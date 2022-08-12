@@ -130,8 +130,6 @@
 
             getSelectDetails(values){
                 this.selectedPaymentDetails = values.map(function(value){ return ( {classID:value.classID, paymentStatus:1, amounts:[{paidAmount:value.fee+".00"}]})} )
-                
-                console.log(this.selectedPaymentDetails)
             },
 
             getSelect(values) {
