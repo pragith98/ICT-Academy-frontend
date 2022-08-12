@@ -1,6 +1,8 @@
 <template>
   <v-app>
-    <app-AdminNavigation v-show="privilege == 'Super'"></app-AdminNavigation>
+    <app-AdminNavigation v-if="privilege == 'Super'"></app-AdminNavigation>
+    <app-TeacherNavigation v-else-if="privilege == 'Guess'"></app-TeacherNavigation>
+    <app-StandardNavigation v-else-if="privilege == 'Standard'"></app-StandardNavigation>
     <v-main class="blue-grey  lighten-5">
       <!-- <v-container> -->
         <router-view></router-view>
@@ -13,10 +15,14 @@
 
 <script>
     import AdminNavigation from './components/Admin-Navigation.vue'
+    import TeacherNavigation from './components/Teacher-Navigation.vue'
+    import StandardNavigation from './components/Standard-Navigation.vue'
 
   export default{
     components:{
-        'app-AdminNavigation':AdminNavigation
+        'app-AdminNavigation':AdminNavigation,
+        'app-TeacherNavigation':TeacherNavigation,
+        'app-StandardNavigation':StandardNavigation
     },
 
     data(){
