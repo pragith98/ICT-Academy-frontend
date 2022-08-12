@@ -11,7 +11,7 @@
             <v-card-text >
                 <v-form ref="form" v-model="valid" lazy-validation>
                     <div>
-                        <v-card-text>This is <strong>student name</strong>'s payment details. You can mark payment for <strong>Arrears/Today fee</strong>. And also you can <strong>change values</strong> before payment.</v-card-text>
+                        <v-card-text>This is <strong>{{studentID}}</strong>'s payment details. You can mark payment for <strong>Arrears/Fee</strong>. And also you can <strong>change values</strong> before payment.</v-card-text>
                         <template>
                             <div>
                                 <div class="pa-5">
@@ -85,7 +85,6 @@
                     { text: 'CLASS',align: 'start', sortable: false, value:'className'},
                     { text: 'DESCRIPTION', sortable: false, value:'description',groupable: false,},
                     { text: 'FEE (Rs.)', sortable: false, value: 'classFee',width:'40%',groupable: false,},
-                    { text: 'CLASSID',sortable: false, value: 'classID',groupable: false,},
                 ],
 
                 payments:[],
