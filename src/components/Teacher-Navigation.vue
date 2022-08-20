@@ -48,11 +48,6 @@
                     </v-card>
                     
                 </v-menu>
-
-                
-                <!-- <v-btn depressed color="grey" dark class="ml-5 lighten-1" small to="/Login">Login
-                    <v-icon right>mdi-login</v-icon>
-                </v-btn> -->
                 
             </v-app-bar>
             
@@ -84,7 +79,6 @@
                     </v-list-item>
                 </v-list-item-group>
             </v-list>
-            <!-- <router-link to="/students">students</router-link> -->
         </v-navigation-drawer>
     </nav>
 </template>
@@ -125,9 +119,6 @@
         created(){
             this.showUser()
             this.getAllBranches()
-            //this.setBranch()
-
-            
         },
 
         
