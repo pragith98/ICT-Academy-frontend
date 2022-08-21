@@ -11,7 +11,7 @@
                     <template v-slot:activator="{ on, attrs }">
                         <v-btn icon v-bind="attrs" v-on="on" class="mr-5">
                             <v-list-item-avatar size="40">
-                                <v-img src="../assets/propic.png"></v-img>
+                                <v-img src="../assets/icons/teacher.jpg"></v-img>
                             </v-list-item-avatar>
                         </v-btn>
                     </template>
@@ -19,7 +19,7 @@
                         <v-list>
                             <v-row justify="center" class="mt-3">
                                 <v-list-item-avatar size="100">
-                                    <v-img src="../assets/propic.png"></v-img>
+                                    <v-img src="../assets/icons/teacher.jpg"></v-img>
                                 </v-list-item-avatar>
                             </v-row>
                             

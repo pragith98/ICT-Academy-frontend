@@ -15,22 +15,15 @@
                         <v-card-text > 
 
                             <v-responsive class="text-center">
-                                <v-avatar  size="150" class="mb-2">
-                                    <v-icon size="150" v-if="!imageUrl">mdi-account-circle</v-icon>
-                                    <img :src="imageUrl" v-if="imageUrl">
-                                </v-avatar> <br>
-                                <v-btn @click="onPickFile" depressed class="white grey--text">
-                                    <v-icon left>mdi-camera</v-icon>
-                                    <span>upload image</span>
-                                </v-btn>
+                                <v-avatar  size="150" class="mb-2 mt-5">
+                                    <v-img v-if="userType == 'Super'" src="../assets/icons/admin.png"></v-img>
+                                    <v-img v-else-if="userType == 'Standard'" src="../assets/icons/staff.jpg"></v-img>
+                                    <v-img v-else-if="userType == 'Guess'" src="../assets/icons/teacher.jpg"></v-img>
+                                </v-avatar>
                             </v-responsive>
 
-
-                            <input type="file" v-show="false" ref="fileInput" accept="image/*" @change="onFilePicked">
-                        
-                        
                             <v-col cols="12" md="12" sm="6">
-                                <v-card-subtitle>Email: samanthabandara@gmail.com</v-card-subtitle>
+                                <v-card-subtitle>Email: {{logedUser.employee.email}}</v-card-subtitle>
                             </v-col>
 
                             <fieldset class="px-5 pb-3 mb-2">
@@ -106,8 +99,7 @@
                 //----------logged User details-----------
 
 
-                imageUrl:'',
-                image:null,
+                userType:'',
                 dialog:false,
                 loading:false,
                 loading2:false,
@@ -142,7 +134,6 @@
 
         methods:{
             
-
             changePassword(){
                 if(this.$refs.form.validate()){
                     
@@ -209,31 +200,15 @@
             },
 
 
-            onPickFile(){
-                this.$refs.fileInput.click();
-            },
-
-            onFilePicked(event){
-                const files = event.target.files
-                let filename = files[0].name
-                if(filename.lastIndexOf('.')<=0){
-                return alert('please add a valid file!!!')
-                }
-                const fileReader = new FileReader()
-                fileReader.addEventListener('load', () => {
-                this.imageUrl = fileReader.result
-                })
-                fileReader.readAsDataURL(files[0])
-                this.image = files[0]
+            setUserType(){
+                this.userType=this.logedUser.privilege
             },
             
-
-           
-            
-            
-        
         },
 
+        created(){
+            this.setUserType()
+        }
     }
 </script>
 
