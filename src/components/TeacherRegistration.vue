@@ -33,14 +33,9 @@
                             <fieldset class="px-5 pb-3">
                                 <legend><v-card-text class="grey--text">Teacher Details</v-card-text></legend>
                                 <v-responsive class="text-center">
-                                    <v-avatar  size="150" class="mb-2">
-                                        <v-icon size="150" v-if="!imageUrl">mdi-account-circle</v-icon>
-                                        <img :src="imageUrl" v-if="imageUrl">
-                                    </v-avatar> <br>
-                                    <v-btn @click="onPickFile" depressed class="white grey--text">
-                                        <v-icon left>mdi-camera</v-icon>
-                                        <span>upload image</span>
-                                    </v-btn>
+                                    <v-avatar  size="150" class="mb-10 mt-2">
+                                        <img src="../assets/icons/teacher.jpg">
+                                    </v-avatar>
                                 </v-responsive>
 
 
@@ -168,9 +163,6 @@ export default {
         return{
             overlay:false,
 
-            imageUrl:'',
-            image:null,
-
             valid:true,
             getTitle:'',
             fname: '',
@@ -288,22 +280,7 @@ export default {
             
         },
 
-        onPickFile(){
-            this.$refs.fileInput.click();
-        },
-        onFilePicked(event){
-            const files = event.target.files
-            let filename = files[0].name
-            if(filename.lastIndexOf('.')<=0){
-            return alert('please add a valid file!!!')
-            }
-            const fileReader = new FileReader()
-            fileReader.addEventListener('load', () => {
-            this.imageUrl = fileReader.result
-            })
-            fileReader.readAsDataURL(files[0])
-            this.image = files[0]
-        },
+        
         Reset () {
             this.$refs.form.reset()
         },
