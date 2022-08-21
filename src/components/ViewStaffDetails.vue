@@ -17,18 +17,11 @@
             <v-form ref="form" v-model="valid" lazy-validation class="px-5" :readonly="!isEditing">
                 <v-card-text class="grey--text">Staff Details</v-card-text>
                 <v-responsive class="text-center">
-                    <v-avatar  size="150" class="mb-2">
-                        <v-icon size="150" v-if="!imageUrl">mdi-account-circle</v-icon>
-                        <img :src="imageUrl" v-if="imageUrl">
-                    </v-avatar> <br>
-                    <v-btn @click="onPickFile" depressed class="white grey--text" v-if="isEditing">
-                        <v-icon left>mdi-camera</v-icon>
-                        <span>upload image</span>
-                    </v-btn>
+                    <v-avatar  size="150" class="mb-10 mt-2">
+                        <img src="../assets/icons/staff.jpg">
+                    </v-avatar>
                 </v-responsive>
-                <input type="file" v-show="false" ref="fileInput" accept="image/*" @change="onFilePicked">
                 
-
                 <v-row justify="center" dense >
 
                     <v-col cols="12" md="12" sm="12">
@@ -143,8 +136,7 @@ export default {
     props:['staff'],
     data(){
         return{
-            imageUrl:'',
-            image:null,
+           
             loading:false,
             valid:true,
             fname: '',
@@ -318,25 +310,6 @@ export default {
             }  
         },
 
-
-        
-
-        onPickFile(){
-            this.$refs.fileInput.click();
-        },
-        onFilePicked(event){
-            const files = event.target.files
-            let filename = files[0].name
-            if(filename.lastIndexOf('.')<=0){
-                return alert('please add a valid file!!!')
-            }
-            const fileReader = new FileReader()
-            fileReader.addEventListener('load', () => {
-            this.imageUrl = fileReader.result
-            })
-            fileReader.readAsDataURL(files[0])
-            this.image = files[0]
-        },
         
         cancelEdit(){
             this.isEditing = !this.isEditing;
