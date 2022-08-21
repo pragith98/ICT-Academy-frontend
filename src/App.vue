@@ -9,6 +9,13 @@
       <!-- </v-container> -->
       
     </v-main>
+
+    <div style="bottom:10px;left: 0;right: 0;">
+      <v-footer padless color="#ECEFF1">
+        <v-col class="text-center grey--text" cols="12">© ICT Academy - Hakmana, Sri Lanka</v-col>
+      </v-footer>
+    </div>
+
   </v-app>
 </template>
 
