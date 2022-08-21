@@ -35,12 +35,20 @@
         data: () => ({
             dialog: false,
             loading:false,
+
+            //----------logged User details-----------
+            logedUser : JSON.parse(localStorage.getItem('user')),
+            //----------logged User details-----------
         }),
 
         methods:{
             deleteAdvance(){
                 this.loading=true
-                this.axios.delete(this.$apiUrl+'/api/v1.0/AdvanceManagement/advances/'+this.advance.advanceID)
+                this.axios.delete(this.$apiUrl+'/api/v1.0/AdvanceManagement/advances/'+this.advance.advanceID,{
+                    params:{
+                        handlerStaffID:this.logedUser.employee.employeeID
+                    }
+                })
                     .then(Response=>{
                         if(Response.data.success == true){
                             this.successAlert();
