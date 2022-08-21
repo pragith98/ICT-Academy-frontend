@@ -67,7 +67,7 @@
                                     <template v-slot:activator="{ on, attrs }">
                                         <v-text-field v-model="month" label="Date"  readonly v-bind="attrs" v-on="on" hint="*Select Month to search for a previous month's Details" persistent-hint  single-line></v-text-field>
                                     </template>
-                                    <v-date-picker v-model="month" type="month" @input="monthMenu = false, getPaymentDetails()" ></v-date-picker>
+                                    <v-date-picker v-model="month" type="month" @input="monthMenu = false, getPaymentDetails()" :max="new Date().getFullYear()+'-'+String(new Date().getMonth()+ 1).padStart(2, '0')"></v-date-picker>
                                 </v-menu>
                             </v-card-title>
                             <v-card-title><v-spacer></v-spacer><v-text-field v-model="search" append-icon="mdi-magnify" label="Search" single-line hide-details ></v-text-field></v-card-title>
@@ -214,7 +214,7 @@
             getPaymentDetails(){
                 this.axios.get(this.$apiUrl+"/api/v1.0/FeeManagement/fees",{
                 params:{
-                    date: "2022"
+                    date: this.month
                 }
                 
                 }).then(Response=>(
