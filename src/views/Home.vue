@@ -77,9 +77,6 @@
 
                 headers: [
                     { text: 'NAME',align: 'start', sortable: false, value:'className'},
-                    //{ text: 'TEACHER', sortable: false, value: 'teacher.teacherName' },
-                    //{ text: 'GRADE',sortable: false, value: 'grade' },
-                    //{ text: 'SUBJECT', sortable: false, value: 'subject.subjectName' },
                     { text: 'TIME', sortable: false, value: 'startTime',align: 'center' },
                     { text: 'LOCATION', sortable: false, value: 'room', align: 'end'},
                 ],
@@ -91,9 +88,6 @@
         },
 
         created(){
-            //localStorage.setItem('branch', 'BRNCH001') //set localStorage to branch details
-            //localStorage.setItem('userID', 'STAFF001') //set localStorage to staff details
-            //localStorage.setItem('userID', 'TECHR002') //set localStorage to teacher details
 
             this.getClassDetails();
             this.getStudentCount();
@@ -106,10 +100,12 @@
         methods:{
 
             getClassDetails(){
+                const weekday = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
+                const d = new Date();
                 this.axios.get(this.$apiUrl+"/api/v1.0/ClassManagement/classes",{
                     params:{
                         status: "Active",
-                        //day:"Sunday"
+                        day:weekday[d.getDay()]
                     }
                 }).then(Response=>(this.classes= Response.data.class.data))
             },
