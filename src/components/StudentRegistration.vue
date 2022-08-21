@@ -34,19 +34,11 @@
                             <fieldset class="px-5 pb-lg-15 pb-md-15 pb-sm-15  pb-xs-3">
                                 <legend><v-card-text class="grey--text">Student Details</v-card-text></legend>
                                 <v-responsive class="text-center">
-                                    <v-avatar  size="150" class="mb-2">
-                                        <v-icon size="150" v-if="!imageUrl">mdi-account-circle</v-icon>
-                                        <img :src="imageUrl" v-if="imageUrl">
-                                    </v-avatar> <br>
-                                    <v-btn @click="onPickFile" depressed class="white grey--text">
-                                        <v-icon left>mdi-camera</v-icon>
-                                        <span>upload image</span>
-                                    </v-btn>
+                                    <v-avatar  size="150" class="mb-10 mt-2">
+                                        <img src="../assets/icons/student.jpg">
+                                    </v-avatar>
                                 </v-responsive>
 
-
-                                <input type="file" v-show="false" ref="fileInput" accept="image/*" @change="onFilePicked">
-                                
                                 <v-row justify="center" dense >
                                     
                                     <v-col cols="12" md="6" sm="6">
@@ -168,7 +160,7 @@
 
             <!----------------------------------- dialog box ------------------------------------------>
 
-            <v-dialog v-model="success" persistent max-width="500px">
+            <v-dialog v-model="success" persistent max-width="500px" >
                 <v-card>
                     <v-card  flat color="#66BB6A" class="pa-5" tile>
                         <v-card-title>
@@ -183,7 +175,7 @@
                     <v-container class="text-center pb-0" fluid>
                         <v-row class="pl-5 pr-3 ma-0">
                             <v-col cols="9" md="9" sm="9">
-                                <v-text-field v-model="studentID" label="Student ID" outlined append-icon="mdi-account-outline" dense readonly></v-text-field>
+                                <v-text-field v-model="studentID"  label="Student ID" outlined append-icon="mdi-account-outline" dense readonly></v-text-field>
                             </v-col>
                             <v-col cols="2" md="2" sm="2">
                                 <v-btn  outlined @click="copyID(),copySuccess=true">Copy</v-btn>
@@ -230,8 +222,7 @@ export default {
 
             copySuccess:false,
             studentID:'',
-            imageUrl:'',
-            image:null,
+            
 
             valid:true,
             fname: '',
@@ -291,10 +282,6 @@ export default {
 
             branch:[],
             
-
-
-
-
 
             breadcrumbs: [
                 { text: 'Students', disabled: false, href: '/Students'},
@@ -358,10 +345,10 @@ export default {
                 })
                 .then(Response=>{
                     if(Response.data.success == true){
-                        this.studentID=Response.data.student.studentID;
+                        this.getStudentID(Response.data.student.studentID)
                         this.overlay=false
-                        this.Reset();
                         this.successAlert()
+                        
                     }else{
                         this.failedAlert()
                     }
@@ -372,26 +359,17 @@ export default {
                     console.log(error)
                     
                 });
+
             }
         },
 
-        onPickFile(){
-            this.$refs.fileInput.click();
+
+        getStudentID(studentID){
+            this.studentID = studentID
         },
-        onFilePicked(event){
-            const files = event.target.files
-            let filename = files[0].name
-            if(filename.lastIndexOf('.')<=0){
-            return alert('please add a valid file!!!')
-            }
-            const fileReader = new FileReader()
-            fileReader.addEventListener('load', () => {
-            this.imageUrl = fileReader.result
-            })
-            fileReader.readAsDataURL(files[0])
-            this.image = files[0]
-        },
-        Reset () {
+
+
+        Reset(){
             //this.$refs.form.reset()
             // this.scrollToTop()
             
@@ -416,10 +394,14 @@ export default {
         enrollSuccessAlert(success){
             this.enrollSuccess = success;
             this.success=false;
+            this.Reset();
         },
+
+        
         
         enrollFaileAlert(failed){
             this.enrollFaile = failed;
+            this.Reset();
         },
 
         getBranch(){
