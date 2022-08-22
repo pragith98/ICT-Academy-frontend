@@ -22,48 +22,18 @@
                             
                             <v-tab-item value="1" class="mt-5">
                                 <app-TrashFeesPayment></app-TrashFeesPayment>
-                                <!-- <v-tabs vertical active-class="red--text" >
-                                    <v-tabs-slider color="red"></v-tabs-slider>
-                                    <v-tab href="#1-1">fsfsfs</v-tab>
-
-                                    <v-tab-item value="1-1">
-                                        
-                                    </v-tab-item>
-                                </v-tabs> -->
                             </v-tab-item>
                         
                             <v-tab-item value="2" class="mt-5">
-                                <v-tabs vertical active-class="red--text" >
-                                    <v-tabs-slider color="red"></v-tabs-slider>
-                                    <v-tab href="#2-1">sdfsdf</v-tab>
-
-                                    <v-tab-item value="2-1">
-                                        <!-- <app-NeedleTypes></app-NeedleTypes> -->
-                                    </v-tab-item>
-                                </v-tabs>
+                                <app-TrashTeacherAdvance></app-TrashTeacherAdvance>
                             </v-tab-item>
 
                             <v-tab-item value="3" class="mt-5">
-                                <v-tabs vertical active-class="red--text" >
-                                    <v-tabs-slider color="red"></v-tabs-slider>
-                                    <v-tab href="#3-1">sdfsdf</v-tab>
-
-                                    <v-tab-item value="3-1">
-                                        <!-- <app-EmployeeTitles></app-EmployeeTitles> -->
-                                    </v-tab-item>
-                                </v-tabs>
-                                
+                                <app-TrashStaffAdvance></app-TrashStaffAdvance>
                             </v-tab-item>
 
                             <v-tab-item value="4" class="mt-5">
-                                <v-tabs vertical active-class="red--text" >
-                                    <v-tabs-slider color="red"></v-tabs-slider>
-                                    <v-tab href="#5-1">sdfsdfs</v-tab>
-
-                                    <v-tab-item value="5-1">
-                                        <!-- <app-LocationCategories></app-LocationCategories> -->
-                                    </v-tab-item>
-                                </v-tabs>
+                                <app-TrashExpenditures></app-TrashExpenditures>
                             </v-tab-item>
                             
                             
@@ -83,16 +53,16 @@
 
 <script>
     import TrashFeesPayment from '../components/TrashFeesPayment.vue'
-    // import NeedleTypes from '../../components/needles/needleType/NeedleTypes.vue'
-    // import EmployeeTitles from '../../components/employees/employeeTitle/EmployeeTitles.vue'
-    // import LocationCategories from '../../components/locations/locationCategory/LocationCategories.vue'
+    import TrashTeacherAdvance from '../components/TrashTeacherAdvance.vue'
+    import TrashStaffAdvance from '../components/TrashStaffAdvance.vue'
+    import TrashExpenditures from '../components/TrashExpenditures.vue'
 
     export default{
         components:{
             'app-TrashFeesPayment':TrashFeesPayment,
-            // 'app-NeedleTypes':NeedleTypes,
-            // 'app-EmployeeTitles':EmployeeTitles,
-            // 'app-LocationCategories':LocationCategories,
+            'app-TrashTeacherAdvance':TrashTeacherAdvance,
+            'app-TrashStaffAdvance':TrashStaffAdvance,
+            'app-TrashExpenditures':TrashExpenditures,
         },
         data(){
             return{
