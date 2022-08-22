@@ -62,6 +62,7 @@ const routes = [
   { path:'/Financial/TeacherAdvance', name:'TeacherAdvance', component:()=> import('../components/TeacherAdvance.vue') ,meta:{ requiresAuth:true }},
   { path:'/Financial/StaffAdvance', name:'StaffAdvance', component:()=> import('../components/StaffAdvance.vue') ,meta:{ requiresAuth:true }},
   { path:'/Financial/Expenditure', name:'Expenditure', component:()=> import('../components/Expenditure.vue') ,meta:{ requiresAuth:true }},
+  { path:'/Financial/FinancialTrash', name:'FinancialTrash', component:()=> import('../components/FinancialTrash.vue') ,meta:{ requiresAuth:true }},
   { path:'/Attendance/TodayClasses/MarkAttendanceDailyFee/:id', name:'MarkAttendanceDailyFee', component:()=> import('../components/MarkAttendanceDailyFee.vue') ,meta:{ requiresAuth:true }},
   { path:'/Attendance/TodayClasses/MarkAttendanceMonthlyFee/:id', name:'MarkAttendanceMonthlyFee', component:()=> import('../components/MarkAttendanceMonthlyFee.vue') ,meta:{ requiresAuth:true }},
   { path:'/Exams/CreateExams', name:'CreateExams', component:()=> import('../components/CreateExams.vue') ,meta:{ requiresAuth:true }},
@@ -70,6 +71,7 @@ const routes = [
   { path:'/Processes/YearEndProcess', name:'YearEndProcess', component:()=> import('../components/YearEndProcess.vue') ,meta:{ requiresAuth:true }},
   { path:'/Processes/BatchEndProcess', name:'BatchEndProcess', component:()=> import('../components/BatchEndProcess.vue') ,meta:{ requiresAuth:true }},
   { path:'/Processes/MonthEndProcess', name:'MonthEndProcess', component:()=> import('../components/MonthEndProcess.vue') ,meta:{ requiresAuth:true }},
+  
   { path: '*', name: 'WildCard', component: Home ,meta:{ requiresAuth:true } }
   
   // {
