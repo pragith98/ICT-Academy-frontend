@@ -67,6 +67,7 @@ const routes = [
   { path:'/Exams/CreateExams', name:'CreateExams', component:()=> import('../components/CreateExams.vue') ,meta:{ requiresAuth:true }},
   { path:'/Exams/ExamDetails', name:'ExamDetails', component:()=> import('../components/ExamDetails.vue') ,meta:{ requiresAuth:true }},
   { path:'/Exams/ExamMarksDetails', name:'ExamMarksDetails', component:()=> import('../components/ExamMarksDetails.vue') ,meta:{ requiresAuth:true }},
+  { path:'/Processes/YearEndProcess', name:'YearEndProcess', component:()=> import('../components/YearEndProcess.vue') ,meta:{ requiresAuth:true }},
   { path: '*', name: 'WildCard', component: Home ,meta:{ requiresAuth:true } }
   
   // {
