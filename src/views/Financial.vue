@@ -67,7 +67,7 @@
                 ],
 
                 cardlist2:[
-                    {name:'Trashed', icon:'mdi-delete', color:'red', link:'/Financial/Expenditure'}
+                    {name:'Trashed', icon:'mdi-delete', color:'red', link:'/Financial/FinancialTrash'}
                 ],
 
 
