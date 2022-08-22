@@ -41,8 +41,8 @@
         data(){
             return{
                 cardlist:[
-                    {name:'Month End Process', icon:'mdi-timer-cog', color:'green', link:'/Branches/CreateBranch'},
-                    {name:'Batch End Process', icon:'mdi-archive-cog', color:'orange', link:'/Branches/BranchDetails'},
+                    {name:'Month End Process', icon:'mdi-timer-cog', color:'green', link:'/Processes/MonthEndProcess'},
+                    {name:'Batch End Process', icon:'mdi-archive-cog', color:'orange', link:'/Processes/BatchEndProcess'},
                     {name:'Year End Process', icon:'mdi-table-cog', color:'teal', link:'/Processes/YearEndProcess'}
                 ],
 
