@@ -87,7 +87,7 @@
         methods: {
 
             getProcess(){
-                this.axios.get(this.$apiUrl+"/api/v1.0/ProcessManagement/processes/showOrdinaryLevelEnd").then(Response=>(
+                this.axios.get(this.$apiUrl+"/api/v1.0/ProcessManagement/processes/showMonthEnd").then(Response=>(
                     this.setData(Response),
                     this.checkResponse(Response.data.success)
                     
@@ -114,7 +114,7 @@
             endProcess(){
                 const LogedUser = JSON.parse(localStorage.getItem('user'));
                 this.loading=true
-                this.axios.post(this.$apiUrl+"/api/v1.0/ProcessManagement/processes/ordinaryLevelEnd",{
+                this.axios.post(this.$apiUrl+"/api/v1.0/ProcessManagement/processes/monthEnd",{
                     handlerStaffID: LogedUser.employee.employeeID,
                     branchID: LogedUser.employee.branch.branchID
                 })
