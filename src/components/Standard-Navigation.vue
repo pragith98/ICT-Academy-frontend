@@ -114,7 +114,7 @@
                     { text: 'Classes', icon: 'mdi-google-classroom', link:'/Classes' },
                     { text: 'Attendance', icon: 'mdi-checkbox-marked-outline', link:'/Attendance' },
                     { text: 'Financial', icon: 'mdi-credit-card-outline', link:'/Financial' },
-                    { text: 'Processes', icon: 'mdi-cog', link:'' }
+                    { text: 'Processes', icon: 'mdi-cog', link:'/Processes' }
                 ],
 
                 branch:'',

@@ -123,7 +123,7 @@
                     { text: 'Users', icon: 'mdi-account-cog', link:'/Users' },
                     { text: 'Branches', icon: 'mdi-sitemap', link:'/Branches' },
                     { text: 'Reports', icon: 'mdi-file-document-multiple', link:'' },
-                    { text: 'Processes', icon: 'mdi-cog', link:'' }
+                    { text: 'Processes', icon: 'mdi-cog', link:'/Processes' }
                 ],
 
                 
