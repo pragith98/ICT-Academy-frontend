@@ -36,9 +36,9 @@
                                     <v-data-table :headers="headers" :items="paymentDetails" :search="search" :sort-by="['feeID']" :sort-desc="true">
                                         <template v-slot:[`item.actions`]="{ item }">
                                             <v-card-actions>
-                                                <app-RestoreTeacherAdvanceTrashed @success="updateSuccessAlert($event)" @failed="updateFaileAlert($event)" :payment='item'></app-RestoreTeacherAdvanceTrashed>
+                                                <app-RestoreAdvanceTrashed @success="updateSuccessAlert($event)" @failed="updateFaileAlert($event)" :payment='item'></app-RestoreAdvanceTrashed>
                                                 <v-spacer></v-spacer>
-                                                <app-DeleteTeacherAdvanceTrashed @success="deleteAlert($event)" @failed="faileAlert($event)" class="ml-5" :payment='item'></app-DeleteTeacherAdvanceTrashed>
+                                                <app-DeleteAdvanceTrashed @success="deleteAlert($event)" @failed="faileAlert($event)" class="ml-5" :payment='item'></app-DeleteAdvanceTrashed>
                                             </v-card-actions>        
                                         </template>
                                     </v-data-table>
@@ -58,13 +58,13 @@
 
 <script>
 
-    import DeleteTeacherAdvanceTrashed from './DeleteTeacherAdvanceTrashed.vue'
-    import RestoreTeacherAdvanceTrashed from './RestoreTeacherAdvanceTrashed.vue'
+    import DeleteAdvanceTrashed from './DeleteAdvanceTrashed.vue'
+    import RestoreAdvanceTrashed from './RestoreAdvanceTrashed.vue'
 
     export default {
         components:{
-            'app-DeleteTeacherAdvanceTrashed':DeleteTeacherAdvanceTrashed,
-            'app-RestoreTeacherAdvanceTrashed':RestoreTeacherAdvanceTrashed
+            'app-DeleteAdvanceTrashed':DeleteAdvanceTrashed,
+            'app-RestoreAdvanceTrashed':RestoreAdvanceTrashed
         },
         data () {
             return {
