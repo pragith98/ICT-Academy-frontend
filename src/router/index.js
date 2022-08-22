@@ -18,6 +18,7 @@ import Users from '../views/Users.vue'
 import Login from '../views/Login.vue'
 import ForgotPassword from '../views/ForgotPassword.vue'
 import Exams from '../views/Exams.vue'
+import Processes from '../views/Processes.vue'
 
 Vue.use(VueRouter)
 
@@ -34,6 +35,7 @@ const routes = [
   { path:'/Login', name:'Login', component:Login  ,meta:{ disableIfLoggedIn:true }},
   { path:'/ForgotPassword', name:'ForgotPassword', component:ForgotPassword},
   { path:'/Exams', name:'Exams', component:Exams ,meta:{ requiresAuth:true }},
+  { path:'/Processes', name:'Processes', component:Processes ,meta:{ requiresAuth:true }},
 
   { path:'/Students/StudentRegistration', name:'StudentRegistration', component:()=> import('../components/StudentRegistration.vue') ,meta:{ requiresAuth:true }},
   { path:'/Students/StudentDetails', name:'StudentDetails', component:()=> import('../components/StudentDetails.vue') ,meta:{ requiresAuth:true }},
