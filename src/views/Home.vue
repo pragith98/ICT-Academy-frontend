@@ -21,9 +21,6 @@
                         </v-row>
                     </v-card>
                 </v-col>
-
-                
-
             </v-row>
             <v-row>
                 <v-col>
@@ -39,9 +36,33 @@
                 </v-col>
                 <v-col>
                     <v-card flat width="566" height="200">
-                        <v-progress-circular class="ma-6" :rotate="-90" :size="150" :width="20" :value="expencesValue" color="primary">
+                        
+
+                        <v-card-title>EXPENDITURE</v-card-title>
+                        <v-card width="800" height="190" flat class="px-5 pt-2">
+                                <v-row>
+                                    <v-col>
+                                        <v-card flat color="red"  dark class="lighten-2 px-5">
+                                            <v-row>
+                                                <v-col  lg="6" md="6" sm="6" cols="12">
+                                                    <v-responsive class="text-left pl-5">
+                                                        <v-icon size="80">mdi-cash-clock</v-icon>
+                                                    </v-responsive>
+                                                </v-col>
+                                            
+                                            
+                                                <v-col class="text-right pr-2"  lg="6" md="6" sm="6" cols="12">
+                                                    <div class="display-1 font-weight-black" >444</div>
+                                                    <div class="title" >DDDDDDDDDD</div>
+                                                </v-col>
+                                            </v-row>
+                                        </v-card>
+                                    </v-col>
+                                </v-row>
+                            </v-card>
+                        <!-- <v-progress-circular class="ma-6" :rotate="-90" :size="150" :width="20" :value="expencesValue" color="primary">
                             <h2>{{ expencesValue }}%</h2>
-                        </v-progress-circular>
+                        </v-progress-circular> -->
                     </v-card>
                 </v-col>
             </v-row>
