@@ -24,11 +24,11 @@
                             </v-tab-item>
                         
                             <v-tab-item value="2" class="mt-5">
-                                <app-TrashTeacherAdvance></app-TrashTeacherAdvance>
+                                <app-AdvanceForEmployee></app-AdvanceForEmployee>
                             </v-tab-item>
 
                             <v-tab-item value="3" class="mt-5">
-                                <app-TrashStaffAdvance></app-TrashStaffAdvance>
+                                <app-AdvanceForType></app-AdvanceForType>
                             </v-tab-item>
                             
                             
@@ -48,16 +48,14 @@
 
 <script>
     import AllAdvanceReport from './AllAdvanceReport.vue'
-
-    import TrashTeacherAdvance from './TrashTeacherAdvance.vue'
-    import TrashStaffAdvance from './TrashStaffAdvance.vue'
+    import AdvanceForEmployee from './AdvanceForEmployee.vue'
+    import AdvanceForType from './AdvanceForType.vue'
 
     export default{
         components:{
             'app-AllAdvanceReport':AllAdvanceReport,
-
-            'app-TrashTeacherAdvance':TrashTeacherAdvance,
-            'app-TrashStaffAdvance':TrashStaffAdvance,
+            'app-AdvanceForEmployee':AdvanceForEmployee,
+            'app-AdvanceForType':AdvanceForType,
         },
         data(){
             return{
