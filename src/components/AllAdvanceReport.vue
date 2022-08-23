@@ -90,6 +90,7 @@
 
                 reportDetails: [],
                 meta:[],
+                branch:[],
 
                 paymentSuccessAlert:false,
                 successAlert:false,
@@ -143,7 +144,8 @@
                             {
                                 content: 'Date: '+this.meta.date
                                 +'\nPrinted by: '+this.meta.printedBy
-                                +'\nPrinted date: '+this.meta.printedDate,
+                                +'\nPrinted date: '+this.meta.printedDate
+                                +'\nBranch: '+this.branch.branchName,
                                 styles: {
                                 halign: 'left'
                                 }
@@ -252,6 +254,7 @@
                 }).then(Response=>{
                     this.reportDetails=Response.data.advances,
                     this.meta=Response.data.meta,
+                    this.branch=Response.data.branch
                     
                     this.reportDetails.forEach(Element=>{
                         if(Element.teacher){
