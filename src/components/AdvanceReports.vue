@@ -65,8 +65,8 @@
 
 
                 breadcrumbs: [
-                    { text: 'Financial', disabled: false, href: '/Financial' },
-                    { text: 'Trash', disabled: true, href: '/Financial/FinancialTrash' }
+                    { text: 'Reports', disabled: false, href: '/Reports' },
+                    { text: 'Advance Reports', disabled: true, href: '/Reportsv/FinancialTrash' }
                 ],
             }
         }
