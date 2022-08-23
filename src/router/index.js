@@ -73,6 +73,7 @@ const routes = [
   { path:'/Processes/YearEndProcess', name:'YearEndProcess', component:()=> import('../components/YearEndProcess.vue') ,meta:{ requiresAuth:true }},
   { path:'/Processes/BatchEndProcess', name:'BatchEndProcess', component:()=> import('../components/BatchEndProcess.vue') ,meta:{ requiresAuth:true }},
   { path:'/Processes/MonthEndProcess', name:'MonthEndProcess', component:()=> import('../components/MonthEndProcess.vue') ,meta:{ requiresAuth:true }},
+  { path:'/Reports/AdvanceReports', name:'AdvanceReports', component:()=> import('../components/AdvanceReports.vue') ,meta:{ requiresAuth:true }},
   
   { path: '*', name: 'WildCard', component: Home ,meta:{ requiresAuth:true } }
   
