@@ -12,16 +12,15 @@
             <v-row>
                 <v-col>
                     <v-card flat>
-                        <v-tabs align-with-title show-arrows fixed-tabs active-class="white--text grey" background-color="blue-grey lighten-4 " >
-                            <v-tabs-slider color="grey"></v-tabs-slider>
-                            <v-tab href="#1"><v-icon left>mdi-cash-check</v-icon> Fees Payment</v-tab>
-                            <v-tab href="#2"><v-icon left>mdi-account-cash</v-icon> Teacher Advance</v-tab>
-                            <v-tab href="#3"><v-icon left>mdi-account-cash</v-icon> Staff Advance</v-tab>
-                            <v-tab href="#4"><v-icon left>mdi-chart-donut</v-icon> Expenditures</v-tab>
+                        <v-tabs vertical center-active show-arrows active-class="white--text grey" background-color="blue-grey lighten-4 " >
+                            <v-tabs-slider color="blue-grey"></v-tabs-slider>
+                            <v-tab href="#1">All Advances</v-tab>
+                            <v-tab href="#2">Advance For Employee</v-tab>
+                            <v-tab href="#3">Advance For Type</v-tab>
 
                             
                             <v-tab-item value="1" class="mt-5">
-                                <app-TrashFeesPayment></app-TrashFeesPayment>
+                                <app-AllAdvanceReport></app-AllAdvanceReport>
                             </v-tab-item>
                         
                             <v-tab-item value="2" class="mt-5">
@@ -52,14 +51,16 @@
 
 
 <script>
-    import TrashFeesPayment from './TrashFeesPayment.vue'
+    import AllAdvanceReport from './AllAdvanceReport.vue'
+
     import TrashTeacherAdvance from './TrashTeacherAdvance.vue'
     import TrashStaffAdvance from './TrashStaffAdvance.vue'
     import TrashExpenditures from './TrashExpenditures.vue'
 
     export default{
         components:{
-            'app-TrashFeesPayment':TrashFeesPayment,
+            'app-AllAdvanceReport':AllAdvanceReport,
+
             'app-TrashTeacherAdvance':TrashTeacherAdvance,
             'app-TrashStaffAdvance':TrashStaffAdvance,
             'app-TrashExpenditures':TrashExpenditures,
