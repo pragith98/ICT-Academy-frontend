@@ -74,6 +74,12 @@ const routes = [
   { path:'/Processes/BatchEndProcess', name:'BatchEndProcess', component:()=> import('../components/BatchEndProcess.vue') ,meta:{ requiresAuth:true }},
   { path:'/Processes/MonthEndProcess', name:'MonthEndProcess', component:()=> import('../components/MonthEndProcess.vue') ,meta:{ requiresAuth:true }},
   { path:'/Reports/AdvanceReports', name:'AdvanceReports', component:()=> import('../components/AdvanceReports.vue') ,meta:{ requiresAuth:true }},
+  { path:'/Reports/ExpenceReports', name:'ExpenceReports', component:()=> import('../components/ExpenceReports.vue') ,meta:{ requiresAuth:true }},
+  { path:'/Reports/AttendanceReports', name:'AttendanceReports', component:()=> import('../components/AttendanceReports.vue') ,meta:{ requiresAuth:true }},
+  { path:'/Reports/ExamMarksReports', name:'ExamMarksReports', component:()=> import('../components/ExamMarksReports.vue') ,meta:{ requiresAuth:true }},
+  { path:'/Reports/FinancialReports', name:'FinancialReports', component:()=> import('../components/FinancialReports.vue') ,meta:{ requiresAuth:true }},
+  { path:'/Reports/RegisterReports', name:'RegisterReports', component:()=> import('../components/RegisterReports.vue') ,meta:{ requiresAuth:true }},
+  { path:'/Reports/TimeTableReports', name:'TimeTableReports', component:()=> import('../components/TimeTableReports.vue') ,meta:{ requiresAuth:true }},
   
   { path: '*', name: 'WildCard', component: Home ,meta:{ requiresAuth:true } }
   
