@@ -41,8 +41,12 @@
         data(){
             return{
                 cardlist:[
-                    {name:'Creat Branch', icon:'mdi-home-plus', color:'green', link:'/Branches/CreateBranch'},
-                    {name:'Branch Details', icon:'mdi-view-list', color:'orange', link:'/Branches/BranchDetails'}
+                    {name:'Advance Reports', icon:'mdi-file-document-multiple', color:'green', link:'/Reports/AdvanceReports'},
+                    {name:'Expence Reports', icon:'mdi-file-document-multiple', color:'orange', link:'/Branches/BranchDetails'},
+                    {name:'Register Reports', icon:'mdi-file-document-multiple', color:'blue', link:'/Branches/BranchDetails'},
+                    {name:'Exam Marks Reports', icon:'mdi-file-document-multiple', color:'purple', link:'/Branches/BranchDetails'},
+                    {name:'Attendance Reports', icon:'mdi-file-document-multiple', color:'red', link:'/Branches/BranchDetails'},
+                    {name:'Timetable Reports', icon:'mdi-file-document-multiple', color:'brown', link:'/Branches/BranchDetails'},
                 ],
 
 
