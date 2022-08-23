@@ -30,10 +30,6 @@
                             <v-tab-item value="3" class="mt-5">
                                 <app-TrashStaffAdvance></app-TrashStaffAdvance>
                             </v-tab-item>
-
-                            <v-tab-item value="4" class="mt-5">
-                                <app-TrashExpenditures></app-TrashExpenditures>
-                            </v-tab-item>
                             
                             
                         </v-tabs>
@@ -55,7 +51,6 @@
 
     import TrashTeacherAdvance from './TrashTeacherAdvance.vue'
     import TrashStaffAdvance from './TrashStaffAdvance.vue'
-    import TrashExpenditures from './TrashExpenditures.vue'
 
     export default{
         components:{
@@ -63,7 +58,6 @@
 
             'app-TrashTeacherAdvance':TrashTeacherAdvance,
             'app-TrashStaffAdvance':TrashStaffAdvance,
-            'app-TrashExpenditures':TrashExpenditures,
         },
         data(){
             return{
