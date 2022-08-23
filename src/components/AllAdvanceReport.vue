@@ -35,12 +35,13 @@
                             </v-card-title>
 
                             <v-card-title>
-                                <v-spacer></v-spacer><v-btn depressed color="primary">Download</v-btn>
+                                <v-spacer></v-spacer>
+                                <v-btn @click="generatePDF()" depressed color="primary">PRINT <v-icon right>mdi-printer</v-icon></v-btn>
                             </v-card-title>
                             
                             <template>
                                 <div class="mt-5">
-                                    <v-data-table :headers="headers" :items="reportDetails" :sort-desc="true" :items-per-page=10>
+                                    <v-data-table id="my-table" :headers="headers" :items="reportDetails" :sort-desc="true" :items-per-page=10>
                                     </v-data-table>
                                 </div>
                             </template>
@@ -67,7 +68,8 @@
 </template>
 
 <script>
-
+    import { jsPDF } from "jspdf";
+    import autoTable from 'jspdf-autotable';
 
     export default {
 
@@ -102,8 +104,144 @@
             this.getReports()
         },
 
+        
 
         methods: {
+            generatePDF(){
+                const doc = new jsPDF();
+
+                autoTable(doc, {
+                    body: [
+                        [
+                        {
+                            content: 'ICT ACADEMY',
+                            styles: {
+                            halign: 'left',
+                            fontSize: 20,
+                            textColor: '#ffffff'
+                            }
+                        },
+                        {
+                            content: 'Report',
+                            styles: {
+                            halign: 'right',
+                            fontSize: 20,
+                            textColor: '#ffffff'
+                            }
+                        }
+                        ],
+                    ],
+                    theme: 'plain',
+                    styles: {
+                        fillColor: '#3366ff'
+                    }
+                });
+
+                autoTable(doc, {
+                    body: [
+                        [   
+                            {
+                                content: 'Date: '+this.meta.date
+                                +'\nPrinted by: '+this.meta.printedBy
+                                +'\nPrinted date: '+this.meta.printedDate,
+                                styles: {
+                                halign: 'left'
+                                }
+                            },
+                            {
+                                content: 'ICT Academy,'
+                                +'\nHakmana - Sri Lanka,'
+                                +'\n076 9198533',
+                                styles: {
+                                halign: 'right'
+                                }
+                            }
+                        ],
+                    ],
+                    theme: 'plain'
+                });
+                
+                autoTable(doc, {
+                    body: [
+                        [
+                        {
+                            content: 'Advance Details Report',
+                            styles: {
+                            halign:'left',
+                            fontSize: 14
+                            }
+                        }
+                        ]
+                    ],
+                    theme: 'plain'
+                });
+
+                autoTable(doc, {
+                    columns: [
+                        { header: 'NO.', dataKey: 'no' },
+                        { header: 'DESCRIPTION', dataKey: 'description' },
+                        { header: 'AMOUNT(Rs.)', dataKey: 'advanceAmount' },
+                        { header: 'DATE', dataKey: 'date' },
+                        { header: 'PAYMENT RECEIVER', dataKey: 'employee' },
+                    ],
+                    body: this.reportDetails,
+                    theme: 'striped',
+                    headStyles:{
+                        fillColor: '#343a40'
+                    }
+                });
+
+                autoTable(doc, {
+                    body: [
+                        [
+                        {
+                            content: 'Total:',
+                            styles: {
+                            halign:'right',
+                            fontSize: 14
+                            }
+                        }
+                        ],
+                        [
+                        {
+                            content: 'Rs.'+this.meta.total,
+                            styles: {
+                            halign:'right',
+                            fontSize: 20,
+                            textColor: '#3366ff'
+                            }
+                        }
+                        ],
+                        [
+                        {
+                            content: 'Date: '+this.meta.date,
+                            styles: {
+                            halign:'right'
+                            }
+                        }
+                        ]
+                    ],
+                    theme: 'plain'
+                });
+
+                autoTable(doc, {
+                    body: [
+                        [
+                        {
+                            content: '--------xx--------',
+                            styles: {
+                            halign: 'center'
+                            }
+                        }
+                        ]
+                    ],
+                    theme: "plain"
+                });
+                doc.autoPrint();
+                //return doc.save("Advance Report - "+this.meta.date);
+                window.open(doc.output('bloburl'), '_blank');
+            },
+            
             
             getReports(){
                 var no = 1
