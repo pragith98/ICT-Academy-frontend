@@ -14,6 +14,17 @@ Vue.prototype.$tpNo="076 9198533"  //////////////system TP no.
 
 axios.defaults.headers.common['Authorization'] = 'Bearer ' + localStorage.getItem('userToken') ///////user token into header
 
+var logedUser = JSON.parse(localStorage.getItem('user'))
+if(logedUser){
+  axios.defaults.headers.common['employeeID']= JSON.parse(localStorage.getItem('user')).employee.employeeID
+  axios.defaults.headers.common['employeeName']= JSON.parse(localStorage.getItem('user')).employee.name
+  axios.defaults.headers.common['branchID']= JSON.parse(localStorage.getItem('user')).employee.branch.branchID
+  axios.defaults.headers.common['branchName']= JSON.parse(localStorage.getItem('user')).employee.branch.branchName
+
+}
+
+
+
 Vue.config.productionTip = false
 
 new Vue({
