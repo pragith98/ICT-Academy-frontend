@@ -25,7 +25,7 @@
             <v-row>
                 <v-col>
                     
-                    <v-card flat width="570" height="400">
+                    <v-card flat>
                         <v-card-title>TODAY CLASSES</v-card-title>
                         <v-data-table :headers="headers" :items="classes" :items-per-page="5">
                             <template v-slot:[`item.actions`]="{ item }">
@@ -34,11 +34,11 @@
                         </v-data-table>
                     </v-card>
                 </v-col>
-                <v-col>
-                    <v-card flat width="566" height="200">
+                <!-- <v-col>
+                    <v-card flat width="566" height="200"> -->
                         
 
-                        <v-card-title>EXPENDITURE</v-card-title>
+                        <!-- <v-card-title>EXPENDITURE</v-card-title>
                         <v-card width="800" height="190" flat class="px-5 pt-2">
                                 <v-row>
                                     <v-col>
@@ -59,12 +59,12 @@
                                         </v-card>
                                     </v-col>
                                 </v-row>
-                            </v-card>
+                            </v-card> -->
                         <!-- <v-progress-circular class="ma-6" :rotate="-90" :size="150" :width="20" :value="expencesValue" color="primary">
                             <h2>{{ expencesValue }}%</h2>
                         </v-progress-circular> -->
-                    </v-card>
-                </v-col>
+                    <!-- </v-card>
+                </v-col> -->
             </v-row>
 
         </v-container>
