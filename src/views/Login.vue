@@ -40,7 +40,7 @@
                                                         <v-btn :loading="loading" :disabled="!valid || !userName || !password" x-large block depressed color="primary" @click="login()">Login</v-btn>
                                                     </v-col>
                                                     <v-col cols="12" md="12" sm="12">
-                                                        <v-btn text block depressed color="primary" to="/ForgotPassword">Forgot Password?</v-btn><br>
+                                                        <v-btn disabled text block depressed color="primary" to="/ForgotPassword">Forgot Password?</v-btn><br>
                                                     </v-col>
                                                 </v-row>
                                             </v-card-actions>
