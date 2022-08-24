@@ -43,7 +43,8 @@
                                     <v-card-actions>
                                         <v-row>
                                             <v-col cols="12" md="12" sm="12">
-                                                <v-btn :disabled="!valid || !userEmail" x-large block depressed color="primary" @click="loading=true, resetPassword()">Submit</v-btn>
+                                                <!-- <v-btn :disabled="!valid || !userEmail" x-large block depressed color="primary" @click="loading=true, resetPassword()">Submit</v-btn> -->
+                                                <v-btn disabled x-large block depressed color="primary" @click="loading=true, resetPassword()">Submit</v-btn>
                                             </v-col>
                                             
                                         </v-row>

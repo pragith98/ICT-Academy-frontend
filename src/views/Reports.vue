@@ -43,11 +43,11 @@
                 cardlist:[
                     {name:'Advance Reports', icon:'mdi-file-document-multiple', color:'green', link:'/Reports/AdvanceReports'},
                     {name:'Expence Reports', icon:'mdi-file-document-multiple', color:'orange', link:'/Reports/ExpenceReports'},
-                    {name:'Register Reports', icon:'mdi-file-document-multiple', color:'blue', link:'/Reports/RegisterReports'},
-                    {name:'Exam Marks Reports', icon:'mdi-file-document-multiple', color:'purple', link:'/Reports/ExamMarksReports'},
-                    {name:'Attendance Reports', icon:'mdi-file-document-multiple', color:'red', link:'/Reports/AttendanceReports'},
-                    {name:'Timetable Reports', icon:'mdi-file-document-multiple', color:'brown', link:'/Reports/TimeTableReports'},
-                    {name:'Financial Reports', icon:'mdi-file-document-multiple', color:'teal', link:'/Reports/FinancialReports'},
+                    // {name:'Register Reports', icon:'mdi-file-document-multiple', color:'blue', link:'/Reports/RegisterReports'},
+                    // {name:'Exam Marks Reports', icon:'mdi-file-document-multiple', color:'purple', link:'/Reports/ExamMarksReports'},
+                    // {name:'Attendance Reports', icon:'mdi-file-document-multiple', color:'red', link:'/Reports/AttendanceReports'},
+                    // {name:'Timetable Reports', icon:'mdi-file-document-multiple', color:'brown', link:'/Reports/TimeTableReports'},
+                    // {name:'Financial Reports', icon:'mdi-file-document-multiple', color:'teal', link:'/Reports/FinancialReports'},
                 ],
 
 

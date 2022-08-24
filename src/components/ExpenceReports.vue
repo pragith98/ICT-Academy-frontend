@@ -15,16 +15,16 @@
                         <v-tabs vertical center-active show-arrows active-class="white--text grey" background-color="blue-grey lighten-4 " >
                             <v-tabs-slider color="blue-grey"></v-tabs-slider>
                             <v-tab href="#1">All Expences</v-tab>
-                            <v-tab href="#2">Expences For Branches</v-tab>
+                            <!-- <v-tab href="#2">Expences For Branches</v-tab> -->
 
                             
                             <v-tab-item value="1" class="mt-5">
                                 <app-AllExpenceReport></app-AllExpenceReport>
                             </v-tab-item>
                         
-                            <v-tab-item value="2" class="mt-5">
+                            <!-- <v-tab-item value="2" class="mt-5">
                                 <app-TrashTeacherAdvance></app-TrashTeacherAdvance>
-                            </v-tab-item>
+                            </v-tab-item> -->
                             
                         </v-tabs>
                     </v-card>
@@ -43,13 +43,13 @@
 <script>
     import AllExpenceReport from './AllExpenceReport.vue'
 
-    import TrashTeacherAdvance from './TrashTeacherAdvance.vue'
+    // import TrashTeacherAdvance from './TrashTeacherAdvance.vue'
 
     export default{
         components:{
             'app-AllExpenceReport':AllExpenceReport,
 
-            'app-TrashTeacherAdvance':TrashTeacherAdvance,
+            // 'app-TrashTeacherAdvance':TrashTeacherAdvance,
         },
         data(){
             return{
